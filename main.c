@@ -1,5 +1,6 @@
 #include <gb/gb.h>
 #include <rand.h>
+#include "binconst.h"
 #include "defines.h"
 #include "main.h"
 
@@ -16,6 +17,7 @@
 
 struct Player {
 	UBYTE x, y;
+	UBYTE xdir;
 	UBYTE ydir, yspeed;
 };
 
@@ -31,12 +33,15 @@ struct Enemy enemy[NUM_ENEMIES];
 void initIngame() {
 	UBYTE i;
 
+	set_sprite_tile(0U, 0U);
+	set_sprite_tile(1U, 2U);
 	player.x = 80U;
 	player.y = 0U;
+	player.xdir = RIGHT;
 	player.ydir = DOWN;
 	player.yspeed = 0U;
 
-	for(i = 0U; i < NUM_ENEMIES; ++i) {
+	for(i = 0U; i < 3U; ++i) {
 		spawnEnemy();
 	}
 }
@@ -46,28 +51,30 @@ void updateInput() {
 	joystate = joypad();
 	if(joystate & J_LEFT) {
 		player.x -= MOVE_SPEED;
+		player.xdir = LEFT;
 	}
 	if(joystate & J_RIGHT) {
 		player.x += MOVE_SPEED;
+		player.xdir = RIGHT;
 	}
 }
 
 void updatePlayer() {
-	UBYTE i;
+	UBYTE i, frame;
 	// Left and right borders
 	if(player.x < 16U) player.x = 16U;
 	else if(player.x > 144U) player.x = 144U;
 
 	// Bounce on water
-	if(player.y >= 100U && player.y <= 108U) {
+	if(player.y >= 108U && player.y <= 116U) {
 		for(i = 0U; i < NUM_ENEMIES; ++i) {
 			if(enemy[i].type != ENEMY_NONE
-			&& player.x > enemy[i].x-12U && player.x < enemy[i].x+12U) {
+			&& player.x > enemy[i].x-16U && player.x < enemy[i].x+16U) {
 				player.y = 100U;
 				player.ydir = UP;
 				player.yspeed = JUMP_SPEED;
-				killEnemy(i);
 				spawnEnemy();
+				killEnemy(i);
 				break;
 			}
 		}
@@ -90,56 +97,59 @@ void updatePlayer() {
 	}
 
 	// Update sprite
+	frame = 0U;
+	if(player.xdir == RIGHT) frame = 12U;
 	if(player.ydir == UP) {
 		if(player.y > 70U) {
-			set_sprite_tile(0, 8);
-			set_sprite_tile(1, 10);
-		} else {
-			set_sprite_tile(0, 0);
-			set_sprite_tile(1, 2);
+			frame += 8U;
 		}
 	} else {
-		set_sprite_tile(0, 4);
-		set_sprite_tile(1, 6);
+		frame += 4U;
 	}
 
+	// Update sprite
+	set_sprite_tile(0U, frame);
+	set_sprite_tile(1U, frame+2U);
+
 	// Move player sprite
-	move_sprite(0, player.x, player.y+16U);
-	move_sprite(1, player.x+8U, player.y+16U);
+	move_sprite(0U, player.x, player.y+16U);
+	move_sprite(1U, player.x+8U, player.y+16U);
 }
 
 void updateEnemies() {
 	UBYTE i;
 	for(i = 0U; i < NUM_ENEMIES; ++i) {
 		if(enemy[i].type == ENEMY_JUMP) {
-			move_sprite(2U*(i+1U), enemy[i].x, enemy[i].y+16U);
-			move_sprite(2U*(i+1U)+1U, enemy[i].x+8U, enemy[i].y+16U);
+			move_sprite(((i+1U)<<1U), enemy[i].x, enemy[i].y+16U);
+			move_sprite(((i+1U)<<1U) + 1U, enemy[i].x+8U, enemy[i].y+16U);
 		}
 	}
 }
 
 void spawnEnemy() {
-	UBYTE i;
-	for(i = 0U; i < NUM_ENEMIES; ++i) {
-		if(enemy[i].type == ENEMY_NONE) {
+	UBYTE i, j;
+	i = (UBYTE)rand() % NUM_ENEMIES;
+	for(j = 0U; j < NUM_ENEMIES; ++j) {
+		if(enemy[(i+j) % NUM_ENEMIES].type == ENEMY_NONE) {
+			i = (i+j) % NUM_ENEMIES;
 			break;
 		}
 	}
-	if(i == NUM_ENEMIES) return;
+	if(j == NUM_ENEMIES) return;
 
 	enemy[i].type = ENEMY_JUMP;
 	enemy[i].x = 16U + i*32U;
-	enemy[i].y = 116U;
+	enemy[i].y = 120U;
 	enemy[i].dir = (UBYTE)rand() % 1U;
 
-	set_sprite_tile((i+1)*2U, 12);
-	set_sprite_tile((i+1)*2U+1U, 14);
+	set_sprite_tile(((i+1)<<1U), 24U);
+	set_sprite_tile(((i+1)<<1U) + 1U, 26U);
 }
 
 void killEnemy(UBYTE i) {
 	enemy[i].type = ENEMY_NONE;
-	move_sprite(2U*(i+1U), 0, 0);
-	move_sprite(2U*(i+1U)+1U, 0, 0);
+	move_sprite(((i+1U)<<1U), 0U, 0U);
+	move_sprite(((i+1U)<<1U)+1U, 0U, 0U);
 }
 
 void main() {
@@ -153,8 +163,6 @@ void main() {
 
 	// Load sprite data
 	set_sprite_data(0, sprites_data_length, sprites_data);
-	set_sprite_tile(0, 0);
-	set_sprite_tile(1, 2);
 
 	SHOW_BKG;
 	SHOW_SPRITES;
