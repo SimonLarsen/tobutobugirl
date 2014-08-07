@@ -10,28 +10,12 @@
 // Sprites
 #include "data/sprite/sprites.h"
 
-#define MOVE_SPEED 2U
-#define JUMP_SPEED 28U
-#define MAX_YSPEED 20U
-#define JUMP_THRESHOLD 10U
-
-#define NUM_ENEMIES 5U
-
-struct Player {
-	UBYTE x, y;
-	UBYTE xdir, ydir, yspeed;
-	UBYTE jumped;
-};
-
-struct Enemy {
-	UBYTE type;
-	UBYTE x, y, dir;
-	UBYTE state, frame;
-};
-
 UBYTE time, bkg_scroll;
 struct Player player;
-struct Enemy enemy[NUM_ENEMIES];
+
+struct Enemy water_enemy[NUM_WATER];
+struct Enemy low_enemy[NUM_LOW];
+struct Enemy high_enemy[NUM_HIGH];
 UBYTE enemy_count[ENEMY_TYPES];
 
 void initIngame() {
@@ -42,6 +26,8 @@ void initIngame() {
 
 	set_sprite_tile(0U, 0U);
 	set_sprite_tile(1U, 2U);
+	set_sprite_prop(0U, B8(00010000));
+	set_sprite_prop(1U, B8(00010000));
 	player.x = 80U;
 	player.y = 0U;
 	player.xdir = RIGHT;
@@ -83,15 +69,12 @@ void updatePlayer() {
 
 	// Bounce on enemies
 	if(player.y >= 108U && player.y <= 116U) {
-		for(i = 0U; i < NUM_ENEMIES; ++i) {
-			if(enemy[i].type != ENEMY_NONE
-			&& player.x > enemy[i].x-16U && player.x < enemy[i].x+16U) {
-				player.y = 100U;
-				player.ydir = UP;
-				player.yspeed = JUMP_SPEED;
-				player.jumped = 0U;
+		for(i = 0U; i < NUM_WATER; ++i) {
+			if(water_enemy[i].type != ENEMY_NONE
+			&& player.x > water_enemy[i].x-16U && player.x < water_enemy[i].x+16U) {
+				bouncePlayer();
 				spawnEnemy();
-				killEnemy(i);
+				killEnemy(&water_enemy[i]);
 				break;
 			}
 		}
@@ -125,76 +108,92 @@ void updatePlayer() {
 	}
 
 	// Update sprite
-	set_sprite_tile(0U, frame);
-	set_sprite_tile(1U, frame+2U);
+	set_sprite_tile(SPR_PLAYER, frame);
+	set_sprite_tile(SPR_PLAYER+1U, frame+2U);
 
 	// Move player sprite
-	move_sprite(0U, player.x, player.y+16U);
-	move_sprite(1U, player.x+8U, player.y+16U);
+	move_sprite(SPR_PLAYER, player.x, player.y+16U);
+	move_sprite(SPR_PLAYER+1U, player.x+8U, player.y+16U);
+}
+
+void bouncePlayer() {
+	player.y = 100U;
+	player.ydir = UP;
+	player.yspeed = JUMP_SPEED;
+	player.jumped = 0U;
 }
 
 void updateEnemies() {
-	UBYTE i, offset;
+	UBYTE i, spr, offset;
+	struct Enemy* e;
 
-	for(i = 0U; i < NUM_ENEMIES; ++i) {
-		enemy[i].frame++;
-		if(enemy[i].state < 3U) {
-			if((enemy[i].frame & 7U) == 7U) {
-				enemy[i].state++;
-			}
-		}
-		else if((enemy[i].frame & 7U) == 7U) {
-			enemy[i].state++;
-			if(enemy[i].state == 5U) enemy[i].state = 3U;
-		}
-		offset = enemy[i].state << 2U;
-		if(enemy[i].type == ENEMY_JUMP) {
-			set_sprite_tile(((i+1)<<1U), 24U+offset);
-			set_sprite_tile(((i+1)<<1U) + 1U, 26U+offset);
-		}
-		else if(enemy[i].type == ENEMY_SPIKES) {
-			set_sprite_tile(((i+1)<<1U), 44U+offset);
-			set_sprite_tile(((i+1)<<1U) + 1U, 46U+offset);
+	for(i = 0U; i < NUM_WATER; ++i) {
+		e = &water_enemy[i];
+		e->frame++;
+		switch(e->type) {
+			case ENEMY_NONE:
+				move_sprite(((SPR_WATER_E+i)<<1U), 0U, 0U);
+				move_sprite(((SPR_WATER_E+i)<<1U) + 1U, 0U, 0U);
+				break;
+
+			case ENEMY_JUMP:
+			case ENEMY_SPIKES:
+				if(e->state < 3U) {
+					if((e->frame & 7U) == 7U) {
+						e->state++;
+					}
+				}
+				else if((e->frame & 7U) == 7U) {
+					e->state++;
+					if(e->state == 5U) e->state = 3U;
+				}
+				offset = e->state << 2U;
+				spr = (SPR_WATER_E+i) << 1U;
+				if(e->type == ENEMY_JUMP) {
+					set_sprite_tile(spr, 24U+offset);
+					set_sprite_tile(spr+1U, 26U+offset);
+				}
+				else if(e->type == ENEMY_SPIKES) {
+					set_sprite_tile(spr, 44U+offset);
+					set_sprite_tile(spr+1U, 46U+offset);
+				}
+				move_sprite(spr, e->x, e->y+16U);
+				move_sprite(spr+1U, e->x+8U, e->y+16U);
+				break;
 		}
 	}
 }
 
 void spawnEnemy() {
 	UBYTE i, j;
-	i = (UBYTE)rand() % NUM_ENEMIES;
-	for(j = 0U; j < NUM_ENEMIES; ++j) {
-		if(enemy[(i+j) % NUM_ENEMIES].type == ENEMY_NONE) {
-			i = (i+j) % NUM_ENEMIES;
+	struct Enemy* e;
+	i = (UBYTE)rand() % NUM_WATER;
+	for(j = 0U; j < NUM_WATER; ++j) {
+		if(water_enemy[(i+j) % NUM_WATER].type == ENEMY_NONE) {
+			i = (i+j) % NUM_WATER;
 			break;
 		}
 	}
-	if(j == NUM_ENEMIES) return;
+	if(j == NUM_WATER) return;
 
+	e = &water_enemy[i];
 	if(enemy_count[ENEMY_SPIKES] < 1U) {
-		enemy[i].type = ENEMY_SPIKES;
+		e->type = ENEMY_SPIKES;
 		enemy_count[ENEMY_SPIKES]++;
 	} else {
-		enemy[i].type = ENEMY_JUMP;
+		e->type = ENEMY_JUMP;
 		enemy_count[ENEMY_JUMP]++;
 	}
-	enemy[i].x = 16U + i*32U;
-	enemy[i].y = 122U;
-	enemy[i].dir = (UBYTE)rand() % 1U;
-	enemy[i].state = 0U;
-	enemy[i].frame = 0U;
-
-	set_sprite_tile(((i+1)<<1U), 24U);
-	set_sprite_tile(((i+1)<<1U) + 1U, 26U);
-
-	move_sprite(((i+1U)<<1U), enemy[i].x, enemy[i].y+16U);
-	move_sprite(((i+1U)<<1U) + 1U, enemy[i].x+8U, enemy[i].y+16U);
+	e->x = 16U + i*32U;
+	e->y = 122U;
+	e->dir = (UBYTE)rand() % 1U;
+	e->state = 0U;
+	e->frame = 0U;
 }
 
-void killEnemy(UBYTE i) {
-	enemy_count[enemy[i].type]--;
-	enemy[i].type = ENEMY_NONE;
-	move_sprite(((i+1U)<<1U), 0U, 0U);
-	move_sprite(((i+1U)<<1U)+1U, 0U, 0U);
+void killEnemy(struct Enemy *e) {
+	enemy_count[e->type]--;
+	e->type = ENEMY_NONE;
 }
 
 void main() {
@@ -202,14 +201,15 @@ void main() {
 	DISPLAY_OFF;
 	SPRITES_8x16;
 
-	// Load BKG data
+	OBP0_REG = B8(11100100);
+	OBP1_REG = B8(11010000);
+
 	set_bkg_data(0, background_data_length, background_data);
 	set_bkg_data(background_data_length, window_data_length, window_data);
 	set_bkg_tiles(0, 0, background_tiles_width, background_tiles_height, background_tiles);
 	set_win_tiles(0, 0, window_tiles_width, window_tiles_height, window_tiles);
 	move_win(7U, 72U);
 
-	// Load sprite data
 	set_sprite_data(0, sprites_data_length, sprites_data);
 
 	SHOW_BKG;
