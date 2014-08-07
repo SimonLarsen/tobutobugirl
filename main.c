@@ -207,7 +207,7 @@ void main() {
 	set_bkg_data(background_data_length, window_data_length, window_data);
 	set_bkg_tiles(0, 0, background_tiles_width, background_tiles_height, background_tiles);
 	set_win_tiles(0, 0, window_tiles_width, window_tiles_height, window_tiles);
-	move_win(7U, 80U);
+	move_win(7U, 72U);
 
 	// Load sprite data
 	set_sprite_data(0, sprites_data_length, sprites_data);
@@ -223,7 +223,7 @@ void main() {
 
 	while(1) {
 		time++;
-		if((time & 15U) == 15U) {
+		if((time & 31U) == 31U) {
 			bkg_scroll++;
 			move_bkg(bkg_scroll, 0U);
 		}
