@@ -6,32 +6,39 @@
 
 // Maps
 #include "data/bg/background.h"
+#include "data/bg/window.h"
 // Sprites
 #include "data/sprite/sprites.h"
 
 #define MOVE_SPEED 2U
 #define JUMP_SPEED 28U
 #define MAX_YSPEED 20U
+#define JUMP_THRESHOLD 10U
 
 #define NUM_ENEMIES 5U
 
 struct Player {
 	UBYTE x, y;
-	UBYTE xdir;
-	UBYTE ydir, yspeed;
+	UBYTE xdir, ydir, yspeed;
+	UBYTE jumped;
 };
 
 struct Enemy {
 	UBYTE type;
 	UBYTE x, y, dir;
-	UBYTE frame;
+	UBYTE state, frame;
 };
 
+UBYTE time, bkg_scroll;
 struct Player player;
 struct Enemy enemy[NUM_ENEMIES];
+UBYTE enemy_count[ENEMY_TYPES];
 
 void initIngame() {
 	UBYTE i;
+
+	time = 0U;
+	bkg_scroll = 0U;
 
 	set_sprite_tile(0U, 0U);
 	set_sprite_tile(1U, 2U);
@@ -40,8 +47,12 @@ void initIngame() {
 	player.xdir = RIGHT;
 	player.ydir = DOWN;
 	player.yspeed = 0U;
+	player.jumped = 0U;
 
-	for(i = 0U; i < 3U; ++i) {
+	for(i = 0U; i < ENEMY_TYPES; ++i) {
+		enemy_count[i] = 0U;
+	}
+	for(i = 0U; i < 2U; ++i) {
 		spawnEnemy();
 	}
 }
@@ -57,6 +68,11 @@ void updateInput() {
 		player.x += MOVE_SPEED;
 		player.xdir = RIGHT;
 	}
+	if(joystate & J_A && player.jumped == 0U && player.yspeed < JUMP_THRESHOLD) {
+		player.ydir = UP;
+		player.yspeed = JUMP_SPEED;
+		player.jumped = 1U;
+	}
 }
 
 void updatePlayer() {
@@ -65,7 +81,7 @@ void updatePlayer() {
 	if(player.x < 16U) player.x = 16U;
 	else if(player.x > 144U) player.x = 144U;
 
-	// Bounce on water
+	// Bounce on enemies
 	if(player.y >= 108U && player.y <= 116U) {
 		for(i = 0U; i < NUM_ENEMIES; ++i) {
 			if(enemy[i].type != ENEMY_NONE
@@ -73,6 +89,7 @@ void updatePlayer() {
 				player.y = 100U;
 				player.ydir = UP;
 				player.yspeed = JUMP_SPEED;
+				player.jumped = 0U;
 				spawnEnemy();
 				killEnemy(i);
 				break;
@@ -117,11 +134,27 @@ void updatePlayer() {
 }
 
 void updateEnemies() {
-	UBYTE i;
+	UBYTE i, offset;
+
 	for(i = 0U; i < NUM_ENEMIES; ++i) {
+		enemy[i].frame++;
+		if(enemy[i].state < 3U) {
+			if((enemy[i].frame & 7U) == 7U) {
+				enemy[i].state++;
+			}
+		}
+		else if((enemy[i].frame & 7U) == 7U) {
+			enemy[i].state++;
+			if(enemy[i].state == 5U) enemy[i].state = 3U;
+		}
+		offset = enemy[i].state << 2U;
 		if(enemy[i].type == ENEMY_JUMP) {
-			move_sprite(((i+1U)<<1U), enemy[i].x, enemy[i].y+16U);
-			move_sprite(((i+1U)<<1U) + 1U, enemy[i].x+8U, enemy[i].y+16U);
+			set_sprite_tile(((i+1)<<1U), 24U+offset);
+			set_sprite_tile(((i+1)<<1U) + 1U, 26U+offset);
+		}
+		else if(enemy[i].type == ENEMY_SPIKES) {
+			set_sprite_tile(((i+1)<<1U), 44U+offset);
+			set_sprite_tile(((i+1)<<1U) + 1U, 46U+offset);
 		}
 	}
 }
@@ -137,16 +170,28 @@ void spawnEnemy() {
 	}
 	if(j == NUM_ENEMIES) return;
 
-	enemy[i].type = ENEMY_JUMP;
+	if(enemy_count[ENEMY_SPIKES] < 1U) {
+		enemy[i].type = ENEMY_SPIKES;
+		enemy_count[ENEMY_SPIKES]++;
+	} else {
+		enemy[i].type = ENEMY_JUMP;
+		enemy_count[ENEMY_JUMP]++;
+	}
 	enemy[i].x = 16U + i*32U;
-	enemy[i].y = 120U;
+	enemy[i].y = 122U;
 	enemy[i].dir = (UBYTE)rand() % 1U;
+	enemy[i].state = 0U;
+	enemy[i].frame = 0U;
 
 	set_sprite_tile(((i+1)<<1U), 24U);
 	set_sprite_tile(((i+1)<<1U) + 1U, 26U);
+
+	move_sprite(((i+1U)<<1U), enemy[i].x, enemy[i].y+16U);
+	move_sprite(((i+1U)<<1U) + 1U, enemy[i].x+8U, enemy[i].y+16U);
 }
 
 void killEnemy(UBYTE i) {
+	enemy_count[enemy[i].type]--;
 	enemy[i].type = ENEMY_NONE;
 	move_sprite(((i+1U)<<1U), 0U, 0U);
 	move_sprite(((i+1U)<<1U)+1U, 0U, 0U);
@@ -159,13 +204,17 @@ void main() {
 
 	// Load BKG data
 	set_bkg_data(0, background_data_length, background_data);
+	set_bkg_data(background_data_length, window_data_length, window_data);
 	set_bkg_tiles(0, 0, background_tiles_width, background_tiles_height, background_tiles);
+	set_win_tiles(0, 0, window_tiles_width, window_tiles_height, window_tiles);
+	move_win(7U, 80U);
 
 	// Load sprite data
 	set_sprite_data(0, sprites_data_length, sprites_data);
 
 	SHOW_BKG;
 	SHOW_SPRITES;
+	SHOW_WIN;
 	DISPLAY_ON;
 	enable_interrupts();
 
@@ -173,6 +222,11 @@ void main() {
 	spawnEnemy();
 
 	while(1) {
+		time++;
+		if((time & 15U) == 15U) {
+			bkg_scroll++;
+			move_bkg(bkg_scroll, 0U);
+		}
 		updateEnemies();
 		updateInput();
 		updatePlayer();
