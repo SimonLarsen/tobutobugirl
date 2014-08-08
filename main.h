@@ -4,11 +4,11 @@
 struct Player {
 	UBYTE x, y;
 	UBYTE xdir, ydir, yspeed;
-	UBYTE jumped;
+	UBYTE jumped, bounce;
 };
 
 struct Enemy {
-	UBYTE type;
+	UBYTE type, sprite;
 	UBYTE x, y, dir;
 	UBYTE state, frame;
 };
@@ -17,8 +17,10 @@ void initIngame();
 void updateInput();
 void updatePlayer();
 void bouncePlayer();
+void updateEnemy(struct Enemy* e);
 void updateEnemies();
-void spawnEnemy();
+void spawnWaterEnemy();
+void spawnLowEnemy();
 void killEnemy(struct Enemy *e);
 
 #endif
