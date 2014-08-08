@@ -9,8 +9,9 @@ struct Player {
 
 struct Enemy {
 	UBYTE type, sprite;
-	UBYTE x, y, dir;
+	UBYTE x, y;
 	UBYTE state, frame;
+	UBYTE dir;
 };
 
 void initIngame();

@@ -38,7 +38,7 @@ void initIngame() {
 	set_sprite_prop(1U, B8(00010000));
 
 	player.x = 80U;
-	player.y = 0U;
+	player.y = 72U;
 	player.xdir = RIGHT;
 	player.ydir = DOWN;
 	player.yspeed = 0U;
@@ -108,8 +108,8 @@ void updatePlayer() {
 			&& player.x > low_enemy[i].x-16U && player.x < low_enemy[i].x+16U) {
 				if(player.ydir == DOWN) {
 					bouncePlayer();
-					spawnLowEnemy();
 					killEnemy(&low_enemy[i]);
+					spawnLowEnemy();
 				}
 				break;
 			}
@@ -197,7 +197,7 @@ void updateEnemy( struct Enemy *e) {
 
 		case ENEMY_BIRD:
 			if(e->frame & 1U) {
-				if(e->dir == LEFT) e->x--;
+				if(e->state == LEFT) e->x--;
 				else e->x++;
 			}
 			if((e->frame & 7U) == 7U) {
@@ -223,11 +223,9 @@ void updateEnemies() {
 	for(i = 0U; i < NUM_WATER; ++i) {
 		updateEnemy(&water_enemy[i]);
 	}
-
 	for(i = 0; i < NUM_LOW; ++i) {
 		updateEnemy(&low_enemy[i]);
 	}
-
 	for(i = 0; i < NUM_HIGH; ++i) {
 		updateEnemy(&high_enemy[i]);
 	}
@@ -265,16 +263,26 @@ void spawnLowEnemy() {
 	UBYTE i;
 	struct Enemy *e;
 
-	i = 0;
+	for(i = 0U; i < NUM_LOW; ++i) {
+		if(low_enemy[i].type == ENEMY_NONE) {
+			break;
+		}
+	}
+	if(i == NUM_LOW) return;
 
 	e = &low_enemy[i];
 	e->sprite = SPR_LOW_E + (i << 1U);
 	e->type = ENEMY_BIRD;
-	e->x = 0U;
-	e->y = LOW_Y;
-	e->dir = RIGHT;
 	e->state = 0U;
 	e->frame = 0U;
+	if((UBYTE)rand() & 1U) {
+		e->x = 0U;
+		e->dir = RIGHT;
+	} else {
+		e->x = 160U;
+		e->dir = LEFT;
+	}
+	e->y = LOW_Y;
 }
 
 void killEnemy(struct Enemy *e) {

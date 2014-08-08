@@ -2,9 +2,9 @@
 #define __DEFINES_H
 
 #define UP		0U
-#define DOWN	1U
-#define LEFT	0U
 #define RIGHT	1U
+#define DOWN	2U
+#define LEFT	3U
 
 #define MOVE_SPEED 2U
 #define JUMP_SPEED 32U
