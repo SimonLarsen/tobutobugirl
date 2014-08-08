@@ -6,18 +6,23 @@
 #define DOWN	2U
 #define LEFT	3U
 
+#define SCRLMGN 42U
+#define SCRLBTM (256U-144U+SCRLMGN)
+
 #define MOVE_SPEED 2U
-#define JUMP_SPEED 32U
-#define DJUMP_SPEED 25U;
+#define JUMP_SPEED 28U
+#define DJUMP_SPEED 25U
 #define MAX_YSPEED 24U
 #define JUMP_THRESHOLD 10U
 
 #define NUM_WATER 5U
 #define NUM_LOW 2U
 #define NUM_HIGH 2U
+#define NUM_ENEMY (NUM_WATER+NUM_LOW+NUM_HIGH)
 
 #define WATER_Y 234U
-#define LOW_Y 	162U
+#define LOW_Y 	176U
+#define HIGH_Y	130U
 
 #define ENEMY_NONE 		0U
 #define ENEMY_JUMP		1U
