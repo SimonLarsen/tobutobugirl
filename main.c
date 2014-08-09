@@ -18,10 +18,13 @@ UBYTE player_x, player_y;
 UBYTE player_xdir, player_ydir;
 UBYTE player_yspeed, player_jumped, player_bounce;
 
-struct Enemy water_enemy[NUM_WATER];
-struct Enemy low_enemy[NUM_LOW];
-struct Enemy high_enemy[NUM_HIGH];
-UBYTE enemy_count[ENEMY_TYPES];
+UBYTE enemy_x[NUM_ENEMIES];
+UBYTE enemy_y[NUM_ENEMIES];
+UBYTE enemy_type[NUM_ENEMIES];
+UBYTE enemy_sprite[NUM_ENEMIES];
+UBYTE enemy_state[NUM_ENEMIES];
+UBYTE enemy_frame[NUM_ENEMIES];
+UBYTE enemy_dir[NUM_ENEMIES];
 
 #define CLICKED(x) ((joystate & x) != (oldjoystate & x))
 #define HELD(x) (joystate & x)
@@ -41,17 +44,14 @@ void initIngame() {
 	set_sprite_prop(1U, B8(00010000));
 
 	player_x = 80U;
-	player_y = 72U;
+	player_y = 16U;
 	player_xdir = RIGHT;
 	player_ydir = DOWN;
 	player_yspeed = 0U;
 	player_jumped = 0U;
 	player_bounce = 0U;
 
-	for(i = 0U; i < ENEMY_TYPES; ++i) enemy_count[i] = 0U;
-	for(i = 0U; i < NUM_WATER; ++i) water_enemy[i].type = ENEMY_NONE;
-	for(i = 0U; i < NUM_LOW; ++i) low_enemy[i].type = ENEMY_NONE;
-	for(i = 0U; i < NUM_HIGH; ++i) high_enemy[i].type == ENEMY_NONE;
+	for(i = 0U; i < NUM_ENEMIES; ++i) enemy_type[i] = ENEMY_NONE;
 
 	for(i = SPR_LOW_E; i < SPR_LOW_E+NUM_LOW*2U; ++i) {
 		set_sprite_prop(i, B8(00010000));
@@ -59,15 +59,18 @@ void initIngame() {
 	for(i = SPR_HIGH_E; i < SPR_HIGH_E+NUM_HIGH*2U; ++i) {
 		set_sprite_prop(i, B8(00010000));
 	}
-
 	for(i = 0U; i < 3U; ++i) {
 		spawnWaterEnemy();
 	}
 
-	spawnLowEnemy();
-	spawnLowEnemy();
-	spawnHighEnemy();
-	spawnHighEnemy();
+	for(i = NUM_WATER; i < NUM_WATER+NUM_LOW; ++i) {
+		spawnLowEnemy();
+		enemy_x[i] = (UBYTE)rand() % 160U;
+	}
+	for(i = NUM_WATER+NUM_LOW; i < NUM_ENEMIES; ++i) {
+		spawnHighEnemy();
+		enemy_x[i] = (UBYTE)rand() % 160U;
+	}
 }
 
 void updateInput() {
@@ -95,45 +98,24 @@ void updatePlayer() {
 	if(player_x < 16U) player_x = 16U;
 	else if(player_x > 144U) player_x = 144U;
 
-	// Check water enemies
-	if(player_y >= WATER_Y-14U && player_y <= WATER_Y-6U) {
-		for(i = 0U; i < NUM_WATER; ++i) {
-			if(water_enemy[i].type != ENEMY_NONE
-			&& player_x > water_enemy[i].x-16U && player_x < water_enemy[i].x+16U) {
-				bouncePlayer();
-				spawnWaterEnemy();
-				killEnemy(&water_enemy[i]);
-				break;
+	for(i = 0U; i < NUM_ENEMIES; ++i) {
+		if(enemy_type[i] != ENEMY_NONE
+		&& player_x > enemy_x[i]-16U && player_x < enemy_x[i]+16U
+		&& player_y > enemy_y[i]-15U && player_y < enemy_y[i]-7U) {
+			bouncePlayer();
+			killEnemy(i);
+			if(enemy_type[i] == ENEMY_JUMP || enemy_type[i] == ENEMY_SPIKES) {
+					spawnWaterEnemy();
 			}
-		}
-	}
-
-	// Check low enemies
-	if(player_y >= LOW_Y-12U && player_y <= LOW_Y-8U) {
-		for(i = 0U; i < NUM_LOW; ++i) {
-			if(low_enemy[i].type != ENEMY_NONE
-			&& player_x > low_enemy[i].x-16U && player_x < low_enemy[i].x+16U) {
-				if(player_ydir == DOWN) {
-					bouncePlayer();
-					killEnemy(&low_enemy[i]);
+			else if(enemy_type[i] == ENEMY_BIRD) {
+				killEnemy(i);
+				if(enemy_y[i] == LOW_Y) {
 					spawnLowEnemy();
-				}
-				break;
-			}
-		}
-	}
-
-	// Check high enemies
-	if(player_y >= HIGH_Y-12U && player_y <= HIGH_Y-8U) {
-		for(i = 0U; i < NUM_HIGH; ++i) {
-			if(high_enemy[i].type != ENEMY_NONE
-			&& player_x > high_enemy[i].x-16U && player_x < high_enemy[i].x+16U) {
-				if(player_ydir == DOWN) {
-					bouncePlayer();
-					killEnemy(&high_enemy[i]);
+				} else {
 					spawnHighEnemy();
 				}
 			}
+			break;
 		}
 	}
 
@@ -181,58 +163,64 @@ void bouncePlayer() {
 	player_bounce = 16U;
 }
 
-void updateEnemy( struct Enemy *e) {
+void updateEnemy(UBYTE i) {
 	UBYTE offset;
 
-	e->frame++;
-	switch(e->type) {
+	enemy_frame[i]++;
+	switch(enemy_type[i]) {
 		case ENEMY_NONE:
-			move_sprite(e->sprite, 0U, 0U);
-			move_sprite(e->sprite+1U, 0U, 0U);
+			move_sprite(enemy_sprite[i], 0U, 0U);
+			move_sprite(enemy_sprite[i]+1U, 0U, 0U);
 			break;
 
 		case ENEMY_JUMP:
 		case ENEMY_SPIKES:
-			if(e->state < 3U) {
-				if((e->frame & 7U) == 7U) {
-					e->state++;
+			if(enemy_state[i] < 3U) {
+				if((enemy_frame[i] & 7U) == 7U) {
+					enemy_state[i]++;
 				}
 			}
-			else if((e->frame & 7U) == 7U) {
-				e->state++;
-				if(e->state == 5U) e->state = 3U;
+			else if((enemy_frame[i] & 7U) == 7U) {
+				enemy_state[i]++;
+				if(enemy_state[i] == 5U) enemy_state[i] = 3U;
 			}
-			offset = e->state << 2U;
-			if(e->type == ENEMY_JUMP) {
-				set_sprite_tile(e->sprite, 24U+offset);
-				set_sprite_tile(e->sprite+1U, 26U+offset);
+			offset = enemy_state[i] << 2U;
+			if(enemy_type[i] == ENEMY_JUMP) {
+				set_sprite_tile(enemy_sprite[i], 24U+offset);
+				set_sprite_tile(enemy_sprite[i]+1U, 26U+offset);
 			}
-			else if(e->type == ENEMY_SPIKES) {
-				set_sprite_tile(e->sprite, 44U+offset);
-				set_sprite_tile(e->sprite+1U, 46U+offset);
+			else if(enemy_type[i] == ENEMY_SPIKES) {
+				set_sprite_tile(enemy_sprite[i], 44U+offset);
+				set_sprite_tile(enemy_sprite[i]+1U, 46U+offset);
 			}
-			move_sprite(e->sprite, e->x, e->y-scrolly+16U);
-			move_sprite(e->sprite+1U, e->x+8U, e->y-scrolly+16U);
+			move_sprite(enemy_sprite[i], enemy_x[i], enemy_y[i]-scrolly+16U);
+			move_sprite(enemy_sprite[i]+1U, enemy_x[i]+8U, enemy_y[i]-scrolly+16U);
 			break;
 
 		case ENEMY_BIRD:
-			if(e->frame & 1U) {
-				if(e->state == RIGHT) e->x++;
-				else e->x--;
-			}
-			if((e->frame & 7U) == 7U) {
-				e->state = e->state ^ 1U;
+			if(enemy_frame[i] & 1U) {
+				if(enemy_dir[i] == RIGHT) {
+					enemy_x[i]++;
+					if(enemy_x[i] == 168U) enemy_x[i] = 248U;
+				}
+				else {
+					enemy_x[i]--;
+					if(enemy_x[i] == 248U) enemy_x[i] = 168U;
+				}
 			}
 
-			offset = 64U + (e->state << 2U);
-			if(e->dir == RIGHT) offset += 8U;
+			if((enemy_frame[i] & 7U) == 7U) {
+				enemy_state[i] = enemy_state[i] ^ 1U;
+			}
+
+			offset = 64U + (enemy_state[i] << 2U);
+			if(enemy_dir[i] == RIGHT) offset += 8U;
 			
-			set_sprite_tile(e->sprite, offset);
-			set_sprite_tile(e->sprite+1, offset+2U);
+			set_sprite_tile(enemy_sprite[i], offset);
+			set_sprite_tile(enemy_sprite[i]+1U, offset+2U);
 
-			move_sprite(e->sprite, e->x, e->y-scrolly+16U);
-			move_sprite(e->sprite+1U, e->x+8U, e->y-scrolly+16U);
-
+			move_sprite(enemy_sprite[i], enemy_x[i], enemy_y[i]-scrolly+16U);
+			move_sprite(enemy_sprite[i]+1U, enemy_x[i]+8U, enemy_y[i]-scrolly+16U);
 			break;
 	}
 }
@@ -240,103 +228,85 @@ void updateEnemy( struct Enemy *e) {
 void updateEnemies() {
 	UBYTE i;
 
-	for(i = 0U; i < NUM_WATER; ++i) {
-		updateEnemy(&water_enemy[i]);
-	}
-	for(i = 0; i < NUM_LOW; ++i) {
-		updateEnemy(&low_enemy[i]);
-	}
-	for(i = 0; i < NUM_HIGH; ++i) {
-		updateEnemy(&high_enemy[i]);
+	for(i = 0; i < NUM_ENEMIES; ++i) {
+		updateEnemy(i);
 	}
 }
 
 void spawnWaterEnemy() {
 	UBYTE i, j;
-	struct Enemy* e;
 	i = (UBYTE)rand() % NUM_WATER;
 	for(j = 0U; j < NUM_WATER; ++j) {
-		if(water_enemy[(i+j) % NUM_WATER].type == ENEMY_NONE) {
+		if(enemy_type[(i+j) % NUM_WATER] == ENEMY_NONE) {
 			i = (i+j) % NUM_WATER;
 			break;
 		}
 	}
 	if(j == NUM_WATER) return;
 
-	e = &water_enemy[i];
-	if(enemy_count[ENEMY_SPIKES] < 1U) {
-		e->type = ENEMY_SPIKES;
-		enemy_count[ENEMY_SPIKES]++;
-	} else {
-		e->type = ENEMY_JUMP;
-		enemy_count[ENEMY_JUMP]++;
-	}
-	e->sprite = SPR_WATER_E + (i << 1U);
-	e->x = 16U + i*32U;
-	e->y = WATER_Y;
-	e->dir = (UBYTE)rand() % 1U;
-	e->state = 0U;
-	e->frame = 0U;
+	enemy_type[i] = ENEMY_JUMP;
+	enemy_sprite[i] = SPR_ENEMIES + (i << 1U);
+	enemy_x[i] = 16U + i*32U;
+	enemy_y[i] = WATER_Y;
+	enemy_state[i] = 0U;
+	enemy_frame[i] = 0U;
 }
 
 void spawnLowEnemy() {
 	UBYTE i;
-	struct Enemy *e;
 
-	for(i = 0U; i < NUM_LOW; ++i) {
-		if(low_enemy[i].type == ENEMY_NONE) {
+	for(i = NUM_WATER; i < NUM_WATER+NUM_LOW; ++i) {
+		if(enemy_type[i] == ENEMY_NONE) {
 			break;
 		}
 	}
 	if(i == NUM_LOW) return;
 
-	e = &low_enemy[i];
-	e->sprite = SPR_LOW_E + (i << 1U);
-	e->type = ENEMY_BIRD;
-	e->state = 0U;
-	e->frame = 0U;
+	enemy_sprite[i] = SPR_ENEMIES + (i << 1U);
+	enemy_type[i] = ENEMY_BIRD;
+	enemy_state[i] = 0U;
+	enemy_frame[i] = 0U;
+	enemy_y[i] = LOW_Y;
 	if((UBYTE)rand() & 1U) {
-		e->x = 0U;
-		e->dir = RIGHT;
+		enemy_x[i] = 240U;
+		enemy_dir[i] = RIGHT;
 	} else {
-		e->x = 160U;
-		e->dir = LEFT;
+		enemy_x[i] = 176U;
+		enemy_dir[i] = LEFT;
 	}
-	e->y = LOW_Y;
 }
 
 void spawnHighEnemy() {
 	UBYTE i;
-	struct Enemy *e;
 
-	for(i = 0U; i < NUM_HIGH; ++i) {
-		if(high_enemy[i].type == ENEMY_NONE) {
+	for(i = NUM_WATER+NUM_LOW; i < NUM_ENEMIES; ++i) {
+		if(enemy_type[i] == ENEMY_NONE) {
 			break;
 		}
 	}
 	if(i == NUM_HIGH) return;
 
-	e = &high_enemy[i];
-	e->sprite = SPR_HIGH_E + (i << 1U);
-	e->type = ENEMY_BIRD;
-	e->state = 0U;
-	e->frame = 0U;
+	enemy_sprite[i] = SPR_ENEMIES + (i << 1U);
+	enemy_type[i] = ENEMY_BIRD;
+	enemy_state[i] = 0U;
+	enemy_frame[i] = 0U;
+	enemy_y[i] = HIGH_Y;
 	if((UBYTE)rand() & 1U) {
-		e->x = 0U;
-		e->dir = RIGHT;
+		enemy_x[i] = 240U;
+		enemy_dir[i] = RIGHT;
 	} else {
-		e->x = 160U;
-		e->dir = LEFT;
+		enemy_x[i] = 176U;
+		enemy_dir[i] = LEFT;
 	}
-	e->y = HIGH_Y;
 }
 
-void killEnemy(struct Enemy *e) {
-	enemy_count[e->type]--;
-	e->type = ENEMY_NONE;
+void killEnemy(UBYTE i) {
+	enemy_type[i] = ENEMY_NONE;
 }
 
 void main() {
+	UBYTE tmp;
+
 	disable_interrupts();
 	DISPLAY_OFF;
 	SPRITES_8x16;
@@ -372,7 +342,8 @@ void main() {
 		else if(player_y > SCRLBTM) scrolly = 112U;
 		else scrolly = player_y - SCRLMGN;
 
-		move_bkg(scrollx, 112U - ((112U - scrolly) >> 1U));
+		tmp = 112U - scrolly;
+		move_bkg(scrollx, 112U - (tmp >> 1U) - (tmp >> 2U));
 
 		if(player_y > SCRLBTM) move_win(7U, 72U);
 		else move_win(7U, (72U+SCRLBTM)-player_y);
