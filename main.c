@@ -22,9 +22,8 @@ UBYTE enemy_x[NUM_ENEMIES];
 UBYTE enemy_y[NUM_ENEMIES];
 UBYTE enemy_type[NUM_ENEMIES];
 UBYTE enemy_sprite[NUM_ENEMIES];
-UBYTE enemy_state[NUM_ENEMIES];
-UBYTE enemy_frame[NUM_ENEMIES];
 UBYTE enemy_dir[NUM_ENEMIES];
+UBYTE enemy_frame;
 
 #define CLICKED(x) ((joystate & x) != (oldjoystate & x))
 #define HELD(x) (joystate & x)
@@ -51,26 +50,12 @@ void initIngame() {
 	player_jumped = 0U;
 	player_bounce = 0U;
 
-	for(i = 0U; i < NUM_ENEMIES; ++i) enemy_type[i] = ENEMY_NONE;
+	enemy_frame = 0U;
+	for(i = 0U; i < NUM_ENEMIES; ++i) killEnemy(i);
 
-	for(i = SPR_LOW_E; i < SPR_LOW_E+NUM_LOW*2U; ++i) {
-		set_sprite_prop(i, B8(00010000));
-	}
-	for(i = SPR_HIGH_E; i < SPR_HIGH_E+NUM_HIGH*2U; ++i) {
-		set_sprite_prop(i, B8(00010000));
-	}
-	for(i = 0U; i < 3U; ++i) {
-		spawnWaterEnemy();
-	}
-
-	for(i = NUM_WATER; i < NUM_WATER+NUM_LOW; ++i) {
-		spawnLowEnemy();
-		enemy_x[i] = (UBYTE)rand() % 160U;
-	}
-	for(i = NUM_WATER+NUM_LOW; i < NUM_ENEMIES; ++i) {
-		spawnHighEnemy();
-		enemy_x[i] = (UBYTE)rand() % 160U;
-	}
+	spawnEnemy(0U, 48U, WATER_Y, ENEMY_JUMP, 0U);
+	spawnEnemy(1U, 80U, WATER_Y, ENEMY_JUMP, 0U);
+	spawnEnemy(2U, 0U, LOW_Y, ENEMY_BIRD, RIGHT);
 }
 
 void updateInput() {
@@ -104,17 +89,6 @@ void updatePlayer() {
 		&& player_y > enemy_y[i]-15U && player_y < enemy_y[i]-7U) {
 			bouncePlayer();
 			killEnemy(i);
-			if(enemy_type[i] == ENEMY_JUMP || enemy_type[i] == ENEMY_SPIKES) {
-					spawnWaterEnemy();
-			}
-			else if(enemy_type[i] == ENEMY_BIRD) {
-				killEnemy(i);
-				if(enemy_y[i] == LOW_Y) {
-					spawnLowEnemy();
-				} else {
-					spawnHighEnemy();
-				}
-			}
 			break;
 		}
 	}
@@ -163,145 +137,60 @@ void bouncePlayer() {
 	player_bounce = 16U;
 }
 
-void updateEnemy(UBYTE i) {
-	UBYTE offset;
-
-	enemy_frame[i]++;
-	switch(enemy_type[i]) {
-		case ENEMY_NONE:
-			move_sprite(enemy_sprite[i], 0U, 0U);
-			move_sprite(enemy_sprite[i]+1U, 0U, 0U);
-			break;
-
-		case ENEMY_JUMP:
-		case ENEMY_SPIKES:
-			if(enemy_state[i] < 3U) {
-				if((enemy_frame[i] & 7U) == 7U) {
-					enemy_state[i]++;
-				}
-			}
-			else if((enemy_frame[i] & 7U) == 7U) {
-				enemy_state[i]++;
-				if(enemy_state[i] == 5U) enemy_state[i] = 3U;
-			}
-			offset = enemy_state[i] << 2U;
-			if(enemy_type[i] == ENEMY_JUMP) {
-				set_sprite_tile(enemy_sprite[i], 24U+offset);
-				set_sprite_tile(enemy_sprite[i]+1U, 26U+offset);
-			}
-			else if(enemy_type[i] == ENEMY_SPIKES) {
-				set_sprite_tile(enemy_sprite[i], 44U+offset);
-				set_sprite_tile(enemy_sprite[i]+1U, 46U+offset);
-			}
-			move_sprite(enemy_sprite[i], enemy_x[i], enemy_y[i]-scrolly+16U);
-			move_sprite(enemy_sprite[i]+1U, enemy_x[i]+8U, enemy_y[i]-scrolly+16U);
-			break;
-
-		case ENEMY_BIRD:
-			if(enemy_frame[i] & 1U) {
-				if(enemy_dir[i] == RIGHT) {
-					enemy_x[i]++;
-					if(enemy_x[i] == 168U) enemy_x[i] = 248U;
-				}
-				else {
-					enemy_x[i]--;
-					if(enemy_x[i] == 248U) enemy_x[i] = 168U;
-				}
-			}
-
-			if((enemy_frame[i] & 7U) == 7U) {
-				enemy_state[i] = enemy_state[i] ^ 1U;
-			}
-
-			offset = 64U + (enemy_state[i] << 2U);
-			if(enemy_dir[i] == RIGHT) offset += 8U;
-			
-			set_sprite_tile(enemy_sprite[i], offset);
-			set_sprite_tile(enemy_sprite[i]+1U, offset+2U);
-
-			move_sprite(enemy_sprite[i], enemy_x[i], enemy_y[i]-scrolly+16U);
-			move_sprite(enemy_sprite[i]+1U, enemy_x[i]+8U, enemy_y[i]-scrolly+16U);
-			break;
-	}
-}
-
 void updateEnemies() {
 	UBYTE i;
+	UBYTE frame;
 
-	for(i = 0; i < NUM_ENEMIES; ++i) {
-		updateEnemy(i);
+	if((time & 7U) == 7U) enemy_frame++;
+
+	for(i = 0U; i < NUM_ENEMIES; ++i) {
+		switch(enemy_type[i]) {
+			case ENEMY_BIRD:
+				if(time & 1U) {
+					if(enemy_dir[i] == RIGHT) {
+						enemy_x[i]++;
+						if(enemy_x[i] == 168U) enemy_x[i] = 248U;
+					}
+					else {
+						enemy_x[i]--;
+						if(enemy_x[i] == 248U) enemy_x[i] = 168U;
+					}
+				}
+				break;
+		}
+
+		frame = enemy_sprites[enemy_type[i]];
+		if(enemy_frame & 1U) frame += 4U;
+		if(enemy_dir[i] == RIGHT) frame += 8U;
+		
+		set_sprite_tile(enemy_sprite[i], frame);
+		set_sprite_tile(enemy_sprite[i]+1U, frame+2U);
+
+		move_sprite(enemy_sprite[i], enemy_x[i], enemy_y[i]-scrolly+16U);
+		move_sprite(enemy_sprite[i]+1U, enemy_x[i]+8U, enemy_y[i]-scrolly+16U);
 	}
 }
 
-void spawnWaterEnemy() {
-	UBYTE i, j;
-	i = (UBYTE)rand() % NUM_WATER;
-	for(j = 0U; j < NUM_WATER; ++j) {
-		if(enemy_type[(i+j) % NUM_WATER] == ENEMY_NONE) {
-			i = (i+j) % NUM_WATER;
-			break;
-		}
-	}
-	if(j == NUM_WATER) return;
-
-	enemy_type[i] = ENEMY_JUMP;
+void spawnEnemy(UBYTE i, UBYTE x, UBYTE y, UBYTE type, UBYTE dir) {
+	enemy_x[i] = x;
+	enemy_y[i] = y;
+	enemy_type[i] = type;
 	enemy_sprite[i] = SPR_ENEMIES + (i << 1U);
-	enemy_x[i] = 16U + i*32U;
-	enemy_y[i] = WATER_Y;
-	enemy_state[i] = 0U;
-	enemy_frame[i] = 0U;
-}
+	enemy_dir[i] = dir;
 
-void spawnLowEnemy() {
-	UBYTE i;
-
-	for(i = NUM_WATER; i < NUM_WATER+NUM_LOW; ++i) {
-		if(enemy_type[i] == ENEMY_NONE) {
-			break;
-		}
-	}
-	if(i == NUM_LOW) return;
-
-	enemy_sprite[i] = SPR_ENEMIES + (i << 1U);
-	enemy_type[i] = ENEMY_BIRD;
-	enemy_state[i] = 0U;
-	enemy_frame[i] = 0U;
-	enemy_y[i] = LOW_Y;
-	if((UBYTE)rand() & 1U) {
-		enemy_x[i] = 240U;
-		enemy_dir[i] = RIGHT;
+	if(type == ENEMY_BIRD) {
+		set_sprite_prop(enemy_sprite[i], B8(00010000));
+		set_sprite_prop(enemy_sprite[i]+1U, B8(00010000));
 	} else {
-		enemy_x[i] = 176U;
-		enemy_dir[i] = LEFT;
-	}
-}
-
-void spawnHighEnemy() {
-	UBYTE i;
-
-	for(i = NUM_WATER+NUM_LOW; i < NUM_ENEMIES; ++i) {
-		if(enemy_type[i] == ENEMY_NONE) {
-			break;
-		}
-	}
-	if(i == NUM_HIGH) return;
-
-	enemy_sprite[i] = SPR_ENEMIES + (i << 1U);
-	enemy_type[i] = ENEMY_BIRD;
-	enemy_state[i] = 0U;
-	enemy_frame[i] = 0U;
-	enemy_y[i] = HIGH_Y;
-	if((UBYTE)rand() & 1U) {
-		enemy_x[i] = 240U;
-		enemy_dir[i] = RIGHT;
-	} else {
-		enemy_x[i] = 176U;
-		enemy_dir[i] = LEFT;
+		set_sprite_prop(enemy_sprite[i], B8(00000000));
+		set_sprite_prop(enemy_sprite[i]+1U, B8(00000000));
 	}
 }
 
 void killEnemy(UBYTE i) {
 	enemy_type[i] = ENEMY_NONE;
+	enemy_x[i] = 168U;
+	enemy_y[i] = 0U;
 }
 
 void main() {
@@ -334,10 +223,8 @@ void main() {
 
 	while(1) {
 		time++;
+		if((time & 31U) == 31U) scrollx++;
 
-		if((time & 31U) == 31U) {
-			scrollx++;
-		}
 		if(player_y < SCRLMGN) scrolly = 0;
 		else if(player_y > SCRLBTM) scrolly = 112U;
 		else scrolly = player_y - SCRLMGN;
