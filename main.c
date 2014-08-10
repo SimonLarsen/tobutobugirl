@@ -4,14 +4,16 @@
 #include "defines.h"
 #include "main.h"
 
+// Levels
+#include "levels.h"
 // Maps
 #include "data/bg/background.h"
 #include "data/bg/window.h"
 // Sprites
 #include "data/sprite/sprites.h"
 
+UBYTE time, level, completed;
 UBYTE scrolly, scrollx;
-UBYTE time;
 UBYTE joystate, oldjoystate;
 
 UBYTE player_x, player_y;
@@ -33,6 +35,7 @@ UBYTE entity_frame;
 void initIngame() {
 	UBYTE i;
 
+	completed = 0U;
 	time = 0U;
 	scrollx = 0U;
 	scrolly = 112U;
@@ -52,15 +55,15 @@ void initIngame() {
 	player_jumped = 0U;
 	player_bounce = 0U;
 
+	cloud_frame = 5U;
+
 	entity_frame = 0U;
 	for(i = 0U; i < NUM_ENEMIES; ++i) killEntity(i);
 
-	spawnEntity(0U, 48U, WATER_Y, E_SEAL, 0U);
-	spawnEntity(1U, 80U, WATER_Y, E_SEAL, 0U);
-	spawnEntity(2U, 0U, LOW_Y, E_BIRD, RIGHT);
-	spawnEntity(3U, 152U, LOW_Y, E_BIRD, LEFT);
-
-	spawnEntity(4U, 80U, 80U, E_GRAPES, 0U);
+	for(i = 0U; i < MAX_ENTITIES; ++i) {
+		if(levels[level][i][0] == E_NONE) continue;
+		spawnEntity(i, levels[level][i][0], levels[level][i][1], levels[level][i][2], levels[level][i][3]);
+	}
 }
 
 void updateInput() {
@@ -91,17 +94,23 @@ void updatePlayer() {
 
 	for(i = 0U; i < NUM_ENEMIES; ++i) {
 		if(entity_type[i] != E_NONE
-		&& player_x > entity_x[i]-16U && player_x < entity_x[i]+16U
-		&& player_y > entity_y[i]-16U && player_y < entity_y[i]+15U) {
-			if(entity_type[i] < FIRST_FRUIT) {
-				if(player_ydir == DOWN && player_y < entity_y[i]-10U) {
+		&& player_x > entity_x[i]-14U && player_x < entity_x[i]+14U
+		&& player_y > entity_y[i]-16U && player_y < entity_y[i]+13U) {
+			if(entity_type[i] == E_SPIKES) {
+				player_y = 0U;
+			}
+			else if(entity_type[i] == E_DOOR) {
+
+			}
+			else if(entity_type[i] < FIRST_FRUIT) {
+				if(player_ydir == DOWN && player_y < entity_y[i]-8U) {
 					bouncePlayer();
 					killEntity(i);
 					setCloud(player_x, player_y+5U);
 				}
 				else {
 					// TODO: Die
-					player_y = 8U;
+					player_y = 0U;
 				}
 			} else {
 				killEntity(i);
@@ -147,9 +156,9 @@ void updatePlayer() {
 	move_sprite(SPR_PLAYER+1U, player_x+8U, player_y-scrolly+16U);
 
 	// Update cloud
-	if(cloud_frame != 5U) {
-		if((time & 3U) == 3U) cloud_frame++;
+	if(cloud_frame != 5U && (time & 3U) == 3U) cloud_frame++;
 
+	if(cloud_frame != 5U) {
 		frame = entity_sprites[E_CLOUD] + (cloud_frame << 2U);
 
 		move_sprite(SPR_CLOUD, cloud_x, cloud_y-scrolly+16U);
@@ -216,7 +225,7 @@ void updateEnemies() {
 	}
 }
 
-void spawnEntity(UBYTE i, UBYTE x, UBYTE y, UBYTE type, UBYTE dir) {
+void spawnEntity(UBYTE i, UBYTE type, UBYTE x, UBYTE y, UBYTE dir) {
 	UBYTE palette;
 
 	entity_x[i] = x;
@@ -236,9 +245,23 @@ void killEntity(UBYTE i) {
 	entity_y[i] = 0U;
 }
 
-void main() {
+void updateScroll() {
 	UBYTE tmp;
 
+	if((time & 31U) == 31U) scrollx++;
+
+	if(player_y < SCRLMGN) scrolly = 0;
+	else if(player_y > SCRLBTM) scrolly = 112U;
+	else scrolly = player_y - SCRLMGN;
+
+	tmp = 112U - scrolly;
+	move_bkg(scrollx, 112U - (tmp >> 1U) - (tmp >> 2U));
+
+	if(player_y > SCRLBTM) move_win(7U, 72U);
+	else move_win(7U, (72U+SCRLBTM)-player_y);
+}
+
+void main() {
 	disable_interrupts();
 	DISPLAY_OFF;
 	SPRITES_8x16;
@@ -262,21 +285,13 @@ void main() {
 	DISPLAY_ON;
 	enable_interrupts();
 
+	level = 0U;
 	initIngame();
 
 	while(1) {
 		time++;
-		if((time & 31U) == 31U) scrollx++;
 
-		if(player_y < SCRLMGN) scrolly = 0;
-		else if(player_y > SCRLBTM) scrolly = 112U;
-		else scrolly = player_y - SCRLMGN;
-
-		tmp = 112U - scrolly;
-		move_bkg(scrollx, 112U - (tmp >> 1U) - (tmp >> 2U));
-
-		if(player_y > SCRLBTM) move_win(7U, 72U);
-		else move_win(7U, (72U+SCRLBTM)-player_y);
+		updateScroll();
 
 		updateEnemies();
 		updateInput();
