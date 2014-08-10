@@ -2,7 +2,10 @@
 #include <rand.h>
 #include "binconst.h"
 #include "defines.h"
+#include "fade.h"
+
 #include "game.h"
+
 
 // Levels
 #include "levels.h"
@@ -34,7 +37,38 @@ UBYTE entity_frame;
 #define HELD(x) (joystate & x)
 #define IS_KILLABLE(x) (x != E_NONE && x <= LAST_FRUIT && x != E_SPIKES)
 
-void initIngame() {
+void gameIntro() {
+	UBYTE tmp;
+
+	time = 0U;
+	player_y = 200U;
+
+	while(scrolly != 0U) {
+		if(time & 7U == 7U) player_y--;
+		updateEnemies(0U);
+
+		if(player_y < SCRLMGN) scrolly = 0;
+		else if(player_y > SCRLBTM) scrolly = 112U;
+		else scrolly = player_y - SCRLMGN;
+
+		tmp = 112U - scrolly;
+		move_bkg(scrollx, 112U - (tmp >> 1U) - (tmp >> 2U));
+
+		if(player_y > SCRLBTM) move_win(7U, 72U);
+		else move_win(7U, (72U+SCRLBTM)-player_y);
+
+		updateJoystate();
+		if(CLICKED(J_START)) scrolly = 0U;
+
+		time++;
+		wait_vbl_done();
+	}
+
+	player_y = 0U;
+	time = 0U;
+}
+
+void initGame() {
 	UBYTE i;
 
 	completed = 0U;
@@ -69,8 +103,14 @@ void initIngame() {
 	}
 }
 
-void updateInput() {
+void updateJoystate() {
+	oldjoystate = joystate;
 	joystate = joypad();
+}
+
+void updateInput() {
+	updateJoystate();
+
 	if(HELD(J_LEFT)) {
 		player_x -= MOVE_SPEED;
 		player_xdir = LEFT;
@@ -85,8 +125,6 @@ void updateInput() {
 		player_jumped = 1U;
 		setCloud(player_x, player_y+5U);
 	}
-
-	oldjoystate = joystate;
 }
 
 void updatePlayer() {
@@ -194,7 +232,7 @@ void setCloud(UBYTE x, UBYTE y) {
 	set_sprite_tile(SPR_CLOUD+1U, entity_sprites[E_CLOUD]+2U);
 }
 
-void updateEnemies() {
+void updateEnemies(UBYTE move) {
 	UBYTE i;
 	UBYTE frame;
 
@@ -203,7 +241,7 @@ void updateEnemies() {
 	for(i = 0U; i < NUM_ENEMIES; ++i) {
 		switch(entity_type[i]) {
 			case E_BIRD:
-				if(time & 1U) {
+				if(time & 1U && move) {
 					if(entity_dir[i] == RIGHT) {
 						entity_x[i]++;
 						if(entity_x[i] == 168U) entity_x[i] = 248U;
@@ -295,15 +333,21 @@ void main() {
 	DISPLAY_ON;
 	enable_interrupts();
 
+	HIDE_SPRITES;
+	fadeFromWhite();
+	SHOW_SPRITES;
+
 	level = 0U;
-	initIngame();
+	initGame();
+
+	gameIntro();
 
 	while(1) {
 		time++;
 
 		updateScroll();
 
-		updateEnemies();
+		updateEnemies(1U);
 		updateInput();
 		updatePlayer();
 

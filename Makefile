@@ -1,4 +1,4 @@
-default: game.gb
+default: backgrounds sprites levels game.gb
 
 backgrounds:
 	imgtogb --map data/bg/background.png -o data/bg/background.h
@@ -12,8 +12,11 @@ levels:
 sprites:
 	imgtogb --sprite --8x16 data/sprite/sprites.png -o data/sprite/sprites.h
 	
-game.gb: backgrounds sprites levels game.c
-	lcc game.c -o game.gb
+.PHONY: game.gb
+game.gb: 
+	lcc -c game.c
+	lcc -c fade.c
+	lcc game.o fade.o -o game.gb
 
 .PHONY: run
 run:
