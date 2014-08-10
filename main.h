@@ -6,10 +6,10 @@ void updateInput();
 void updatePlayer();
 void bouncePlayer();
 void updateEnemies();
-void spawnEnemy(UBYTE i, UBYTE x, UBYTE y, UBYTE type, UBYTE dir);
-void killEnemy(UBYTE i);
+void spawnEntity(UBYTE i, UBYTE x, UBYTE y, UBYTE type, UBYTE dir);
+void killEntity(UBYTE i);
 
-const UBYTE enemy_sprites[] = {
+const UBYTE entity_sprites[] = {
 	0U,		// ENEMY_NONE
 	24U,	// ENEMY_JUMP
 	32U,	// ENEMY_SPIKES

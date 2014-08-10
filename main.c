@@ -18,12 +18,12 @@ UBYTE player_x, player_y;
 UBYTE player_xdir, player_ydir;
 UBYTE player_yspeed, player_jumped, player_bounce;
 
-UBYTE enemy_x[NUM_ENEMIES];
-UBYTE enemy_y[NUM_ENEMIES];
-UBYTE enemy_type[NUM_ENEMIES];
-UBYTE enemy_sprite[NUM_ENEMIES];
-UBYTE enemy_dir[NUM_ENEMIES];
-UBYTE enemy_frame;
+UBYTE entity_x[NUM_ENEMIES];
+UBYTE entity_y[NUM_ENEMIES];
+UBYTE entity_type[NUM_ENEMIES];
+UBYTE entity_sprite[NUM_ENEMIES];
+UBYTE entity_dir[NUM_ENEMIES];
+UBYTE entity_frame;
 
 #define CLICKED(x) ((joystate & x) != (oldjoystate & x))
 #define HELD(x) (joystate & x)
@@ -50,12 +50,12 @@ void initIngame() {
 	player_jumped = 0U;
 	player_bounce = 0U;
 
-	enemy_frame = 0U;
-	for(i = 0U; i < NUM_ENEMIES; ++i) killEnemy(i);
+	entity_frame = 0U;
+	for(i = 0U; i < NUM_ENEMIES; ++i) killEntity(i);
 
-	spawnEnemy(0U, 48U, WATER_Y, ENEMY_JUMP, 0U);
-	spawnEnemy(1U, 80U, WATER_Y, ENEMY_JUMP, 0U);
-	spawnEnemy(2U, 0U, LOW_Y, ENEMY_BIRD, RIGHT);
+	spawnEntity(0U, 48U, WATER_Y, E_SEAL, 0U);
+	spawnEntity(1U, 80U, WATER_Y, E_SEAL, 0U);
+	spawnEntity(2U, 0U, LOW_Y, E_BIRD, RIGHT);
 }
 
 void updateInput() {
@@ -84,11 +84,11 @@ void updatePlayer() {
 	else if(player_x > 144U) player_x = 144U;
 
 	for(i = 0U; i < NUM_ENEMIES; ++i) {
-		if(enemy_type[i] != ENEMY_NONE
-		&& player_x > enemy_x[i]-16U && player_x < enemy_x[i]+16U
-		&& player_y > enemy_y[i]-15U && player_y < enemy_y[i]-7U) {
+		if(entity_type[i] != E_NONE
+		&& player_x > entity_x[i]-16U && player_x < entity_x[i]+16U
+		&& player_y > entity_y[i]-15U && player_y < entity_y[i]-7U) {
 			bouncePlayer();
-			killEnemy(i);
+			killEntity(i);
 			break;
 		}
 	}
@@ -141,56 +141,56 @@ void updateEnemies() {
 	UBYTE i;
 	UBYTE frame;
 
-	if((time & 7U) == 7U) enemy_frame++;
+	if((time & 7U) == 7U) entity_frame++;
 
 	for(i = 0U; i < NUM_ENEMIES; ++i) {
-		switch(enemy_type[i]) {
-			case ENEMY_BIRD:
+		switch(entity_type[i]) {
+			case E_BIRD:
 				if(time & 1U) {
-					if(enemy_dir[i] == RIGHT) {
-						enemy_x[i]++;
-						if(enemy_x[i] == 168U) enemy_x[i] = 248U;
+					if(entity_dir[i] == RIGHT) {
+						entity_x[i]++;
+						if(entity_x[i] == 168U) entity_x[i] = 248U;
 					}
 					else {
-						enemy_x[i]--;
-						if(enemy_x[i] == 248U) enemy_x[i] = 168U;
+						entity_x[i]--;
+						if(entity_x[i] == 248U) entity_x[i] = 168U;
 					}
 				}
 				break;
 		}
 
-		frame = enemy_sprites[enemy_type[i]];
-		if(enemy_frame & 1U) frame += 4U;
-		if(enemy_dir[i] == RIGHT) frame += 8U;
+		frame = entity_sprites[entity_type[i]];
+		if(entity_frame & 1U) frame += 4U;
+		if(entity_dir[i] == RIGHT) frame += 8U;
 		
-		set_sprite_tile(enemy_sprite[i], frame);
-		set_sprite_tile(enemy_sprite[i]+1U, frame+2U);
+		set_sprite_tile(entity_sprite[i], frame);
+		set_sprite_tile(entity_sprite[i]+1U, frame+2U);
 
-		move_sprite(enemy_sprite[i], enemy_x[i], enemy_y[i]-scrolly+16U);
-		move_sprite(enemy_sprite[i]+1U, enemy_x[i]+8U, enemy_y[i]-scrolly+16U);
+		move_sprite(entity_sprite[i], entity_x[i], entity_y[i]-scrolly+16U);
+		move_sprite(entity_sprite[i]+1U, entity_x[i]+8U, entity_y[i]-scrolly+16U);
 	}
 }
 
-void spawnEnemy(UBYTE i, UBYTE x, UBYTE y, UBYTE type, UBYTE dir) {
-	enemy_x[i] = x;
-	enemy_y[i] = y;
-	enemy_type[i] = type;
-	enemy_sprite[i] = SPR_ENEMIES + (i << 1U);
-	enemy_dir[i] = dir;
+void spawnEntity(UBYTE i, UBYTE x, UBYTE y, UBYTE type, UBYTE dir) {
+	entity_x[i] = x;
+	entity_y[i] = y;
+	entity_type[i] = type;
+	entity_sprite[i] = SPR_ENEMIES + (i << 1U);
+	entity_dir[i] = dir;
 
-	if(type == ENEMY_BIRD) {
-		set_sprite_prop(enemy_sprite[i], B8(00010000));
-		set_sprite_prop(enemy_sprite[i]+1U, B8(00010000));
+	if(type == E_BIRD) {
+		set_sprite_prop(entity_sprite[i], B8(00010000));
+		set_sprite_prop(entity_sprite[i]+1U, B8(00010000));
 	} else {
-		set_sprite_prop(enemy_sprite[i], B8(00000000));
-		set_sprite_prop(enemy_sprite[i]+1U, B8(00000000));
+		set_sprite_prop(entity_sprite[i], B8(00000000));
+		set_sprite_prop(entity_sprite[i]+1U, B8(00000000));
 	}
 }
 
-void killEnemy(UBYTE i) {
-	enemy_type[i] = ENEMY_NONE;
-	enemy_x[i] = 168U;
-	enemy_y[i] = 0U;
+void killEntity(UBYTE i) {
+	entity_type[i] = E_NONE;
+	entity_x[i] = 168U;
+	entity_y[i] = 0U;
 }
 
 void main() {

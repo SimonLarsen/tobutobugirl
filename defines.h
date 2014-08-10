@@ -24,12 +24,12 @@
 #define LOW_Y 	176U
 #define HIGH_Y	120U
 
-#define ENEMY_NONE 		0U
-#define ENEMY_JUMP		1U
-#define ENEMY_SPIKES	2U
-#define ENEMY_BIRD		3U
-#define ENEMY_BALL		4U
-#define ENEMY_TYPES		5U
+#define E_NONE 		0U
+#define E_SEAL		1U
+#define E_SPIKESEAL	2U
+#define E_BIRD		3U
+#define E_BALL		4U
+#define E_SPIKES	5U
 
 #define SPR_PLAYER	0U
 #define SPR_CLOUD	2U
