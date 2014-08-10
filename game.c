@@ -97,15 +97,53 @@ void gameIntro() {
 	time = 0U;
 }
 
+void deathAnimation() {
+	bouncePlayer();
+	set_sprite_tile(SPR_PLAYER, 112U);
+	set_sprite_tile(SPR_PLAYER+1U, 114U);
+	
+	while(player_y < scrolly+144U && player_y < 255U) {
+		// Flying UP
+		if(player_ydir == UP) {
+			player_yspeed--;
+			if(player_yspeed == 0U) {
+				player_ydir = DOWN;
+			}
+			player_y -= (player_yspeed / 7U);
+		}
+		// Flying DOWN
+		else {
+			player_yspeed++;
+			player_y += (player_yspeed / 7U);
+			if(player_yspeed > MAX_YSPEED) {
+				player_yspeed = MAX_YSPEED;
+			}
+		}
+
+		move_sprite(SPR_PLAYER, player_x, player_y-scrolly+16U);
+		move_sprite(SPR_PLAYER+1U, player_x+8U, player_y-scrolly+16U);
+
+		wait_vbl_done();
+	}
+}
+
 void initGame() {
 	UBYTE i;
 
-	completed = 0U;
+	for(i = 0U; i < NUM_ENEMIES; ++i) killEntity(i);
+
+	enemies = 0U;
+	for(i = 0U; i < MAX_ENTITIES; ++i) {
+		if(levels[level][i][0] == E_NONE) continue;
+		spawnEntity(i, levels[level][i][0], levels[level][i][1], levels[level][i][2], levels[level][i][3]);
+	}
+
 	time = 0U;
 	scrollx = 0U;
 	scrolly = 112U;
-	joystate = 0U;
-	oldjoystate = 0U;
+	completed = 0U;
+
+	joystate = oldjoystate = 0U;
 
 	set_sprite_tile(0U, 0U);
 	set_sprite_tile(1U, 2U);
@@ -119,17 +157,11 @@ void initGame() {
 	player_yspeed = 0U;
 	player_jumped = 0U;
 	player_bounce = 0U;
+	move_sprite(SPR_PLAYER, 168U, 0U);
+	move_sprite(SPR_PLAYER+1U, 168U, 0U);
 
 	cloud_frame = 5U;
-
 	entity_frame = 0U;
-	for(i = 0U; i < NUM_ENEMIES; ++i) killEntity(i);
-
-	enemies = 0U;
-	for(i = 0U; i < MAX_ENTITIES; ++i) {
-		if(levels[level][i][0] == E_NONE) continue;
-		spawnEntity(i, levels[level][i][0], levels[level][i][1], levels[level][i][2], levels[level][i][3]);
-	}
 }
 
 void updateInput() {
@@ -162,7 +194,7 @@ void updatePlayer() {
 		&& player_x > entity_x[i]-14U && player_x < entity_x[i]+14U
 		&& player_y > entity_y[i]-16U && player_y < entity_y[i]+13U) {
 			if(entity_type[i] == E_SPIKES) {
-				player_y = 0U;
+				loop = 0U;
 			}
 			else if(entity_type[i] == E_DOOR) {
 				if(completed) {
@@ -176,8 +208,7 @@ void updatePlayer() {
 					setCloud(player_x, player_y+5U);
 				}
 				else {
-					// TODO: Die
-					player_y = 0U;
+					loop = 0U;
 				}
 			} else {
 				killEntity(i);
@@ -382,6 +413,8 @@ void enterGame() {
 		HIDE_SPRITES;
 		fadeToWhite();
 	} else {
-
+		deathAnimation();
+		HIDE_SPRITES;
+		fadeToWhite();
 	}
 }

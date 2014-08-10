@@ -25,6 +25,8 @@ void enterTitle() {
 	DISPLAY_ON;
 	enable_interrupts();
 
+	fadeFromWhite();
+
 	loop = 1U;
 	while(loop) {
 		updateJoystate();

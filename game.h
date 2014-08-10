@@ -2,6 +2,7 @@
 #define GAME_H
 
 void gameIntro();
+void deathAnimation();
 void initGame();
 void updateInput();
 void updatePlayer();
