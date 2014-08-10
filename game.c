@@ -2,7 +2,7 @@
 #include <rand.h>
 #include "binconst.h"
 #include "defines.h"
-#include "main.h"
+#include "game.h"
 
 // Levels
 #include "levels.h"
@@ -13,6 +13,7 @@
 #include "data/sprite/sprites.h"
 
 UBYTE time, level, completed;
+UBYTE enemies;
 UBYTE scrolly, scrollx;
 UBYTE joystate, oldjoystate;
 
@@ -31,6 +32,7 @@ UBYTE entity_frame;
 
 #define CLICKED(x) ((joystate & x) != (oldjoystate & x))
 #define HELD(x) (joystate & x)
+#define IS_KILLABLE(x) (x != E_NONE && x <= LAST_FRUIT && x != E_SPIKES)
 
 void initIngame() {
 	UBYTE i;
@@ -60,6 +62,7 @@ void initIngame() {
 	entity_frame = 0U;
 	for(i = 0U; i < NUM_ENEMIES; ++i) killEntity(i);
 
+	enemies = 0U;
 	for(i = 0U; i < MAX_ENTITIES; ++i) {
 		if(levels[level][i][0] == E_NONE) continue;
 		spawnEntity(i, levels[level][i][0], levels[level][i][1], levels[level][i][2], levels[level][i][3]);
@@ -215,6 +218,7 @@ void updateEnemies() {
 
 		frame = entity_sprites[entity_type[i]];
 		if(entity_type[i] < FIRST_FRUIT && entity_frame & 1U) frame += 4U;
+		else if(entity_type[i] == E_DOOR && completed) frame += 4U;
 		if(entity_dir[i] == RIGHT) frame += 8U;
 		
 		set_sprite_tile(entity_sprite[i], frame);
@@ -237,9 +241,15 @@ void spawnEntity(UBYTE i, UBYTE type, UBYTE x, UBYTE y, UBYTE dir) {
 	palette = entity_palette[type] << 4U;
 	set_sprite_prop(entity_sprite[i], palette);
 	set_sprite_prop(entity_sprite[i]+1U, palette);
+
+	if(IS_KILLABLE(type)) enemies++;
 }
 
 void killEntity(UBYTE i) {
+	if(IS_KILLABLE(entity_type[i])) {
+		enemies--;
+		if(enemies == 0U) completed = 1U;
+	}
 	entity_type[i] = E_NONE;
 	entity_x[i] = 168U;
 	entity_y[i] = 0U;

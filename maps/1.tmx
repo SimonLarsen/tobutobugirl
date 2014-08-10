@@ -12,7 +12,7 @@
   <object gid="6" x="112" y="192"/>
   <object gid="7" x="72" y="128"/>
   <object gid="11" x="72" y="208"/>
-  <object gid="10" x="144" y="64"/>
+  <object gid="10" x="128" y="64"/>
   <object gid="10" x="16" y="64"/>
  </objectgroup>
 </map>

@@ -23,6 +23,7 @@
 #define MAX_ENTITIES 15U
 
 #define FIRST_FRUIT E_GRAPES
+#define LAST_FRUIT E_PEACH
 
 #define WATER_Y 234U
 

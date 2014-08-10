@@ -1,5 +1,5 @@
-#ifndef MAIN_H
-#define MAIN_H
+#ifndef GAME_H
+#define GAME_H
 
 void initIngame();
 void updateInput();
@@ -32,7 +32,7 @@ const UBYTE entity_palette[] = {
 	0U,	// E_SHIELD
 	1U,	// E_BIRD
 	1U,	// E_SPIKES
-	0U,	// E_BAT
+	1U,	// E_BAT
 	0U,	// E_GRAPES
 	0U,	// E_BANANA
 	0U,	// E_PEACH

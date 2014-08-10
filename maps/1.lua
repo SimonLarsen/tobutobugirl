@@ -130,7 +130,7 @@ return {
           name = "",
           type = "",
           shape = "rectangle",
-          x = 144,
+          x = 128,
           y = 64,
           width = 0,
           height = 0,

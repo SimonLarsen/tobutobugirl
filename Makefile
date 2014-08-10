@@ -12,8 +12,8 @@ levels:
 sprites:
 	imgtogb --sprite --8x16 data/sprite/sprites.png -o data/sprite/sprites.h
 	
-game.gb: backgrounds sprites levels main.c
-	lcc main.c -o game.gb
+game.gb: backgrounds sprites levels game.c
+	lcc game.c -o game.gb
 
 .PHONY: run
 run:
