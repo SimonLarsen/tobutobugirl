@@ -18,6 +18,8 @@ UBYTE player_x, player_y;
 UBYTE player_xdir, player_ydir;
 UBYTE player_yspeed, player_jumped, player_bounce;
 
+UBYTE cloud_x, cloud_y, cloud_frame;
+
 UBYTE entity_x[NUM_ENEMIES];
 UBYTE entity_y[NUM_ENEMIES];
 UBYTE entity_type[NUM_ENEMIES];
@@ -56,6 +58,9 @@ void initIngame() {
 	spawnEntity(0U, 48U, WATER_Y, E_SEAL, 0U);
 	spawnEntity(1U, 80U, WATER_Y, E_SEAL, 0U);
 	spawnEntity(2U, 0U, LOW_Y, E_BIRD, RIGHT);
+	spawnEntity(3U, 152U, LOW_Y, E_BIRD, LEFT);
+
+	spawnEntity(4U, 80U, 80U, E_GRAPES, 0U);
 }
 
 void updateInput() {
@@ -72,6 +77,7 @@ void updateInput() {
 		player_ydir = UP;
 		player_yspeed = DJUMP_SPEED;
 		player_jumped = 1U;
+		setCloud(player_x, player_y+5U);
 	}
 
 	oldjoystate = joystate;
@@ -86,9 +92,20 @@ void updatePlayer() {
 	for(i = 0U; i < NUM_ENEMIES; ++i) {
 		if(entity_type[i] != E_NONE
 		&& player_x > entity_x[i]-16U && player_x < entity_x[i]+16U
-		&& player_y > entity_y[i]-15U && player_y < entity_y[i]-7U) {
-			bouncePlayer();
-			killEntity(i);
+		&& player_y > entity_y[i]-16U && player_y < entity_y[i]+15U) {
+			if(entity_type[i] < FIRST_FRUIT) {
+				if(player_ydir == DOWN && player_y < entity_y[i]-10U) {
+					bouncePlayer();
+					killEntity(i);
+					setCloud(player_x, player_y+5U);
+				}
+				else {
+					// TODO: Die
+					player_y = 8U;
+				}
+			} else {
+				killEntity(i);
+			}
 			break;
 		}
 	}
@@ -128,6 +145,22 @@ void updatePlayer() {
 	// Move player sprite
 	move_sprite(SPR_PLAYER, player_x, player_y-scrolly+16U);
 	move_sprite(SPR_PLAYER+1U, player_x+8U, player_y-scrolly+16U);
+
+	// Update cloud
+	if(cloud_frame != 5U) {
+		if((time & 3U) == 3U) cloud_frame++;
+
+		frame = entity_sprites[E_CLOUD] + (cloud_frame << 2U);
+
+		move_sprite(SPR_CLOUD, cloud_x, cloud_y-scrolly+16U);
+		move_sprite(SPR_CLOUD+1U, cloud_x+8U, cloud_y-scrolly+16U);
+
+		set_sprite_tile(SPR_CLOUD, frame);
+		set_sprite_tile(SPR_CLOUD+1U, frame+2U);
+	} else {
+		move_sprite(SPR_CLOUD, 168U, 0U);
+		move_sprite(SPR_CLOUD+1U, 168U, 0U);
+	}
 }
 
 void bouncePlayer() {
@@ -135,6 +168,18 @@ void bouncePlayer() {
 	player_yspeed = JUMP_SPEED;
 	player_jumped = 0U;
 	player_bounce = 16U;
+}
+
+void setCloud(UBYTE x, UBYTE y) {
+	cloud_x = x;
+	cloud_y = y;
+	cloud_frame = 0U;
+
+	move_sprite(SPR_CLOUD, x, y-scrolly+16U);
+	move_sprite(SPR_CLOUD+1U, x+8U, y-scrolly+16U);
+
+	set_sprite_tile(SPR_CLOUD, entity_sprites[E_CLOUD]);
+	set_sprite_tile(SPR_CLOUD+1U, entity_sprites[E_CLOUD]+2U);
 }
 
 void updateEnemies() {
@@ -160,7 +205,7 @@ void updateEnemies() {
 		}
 
 		frame = entity_sprites[entity_type[i]];
-		if(entity_frame & 1U) frame += 4U;
+		if(entity_type[i] < FIRST_FRUIT && entity_frame & 1U) frame += 4U;
 		if(entity_dir[i] == RIGHT) frame += 8U;
 		
 		set_sprite_tile(entity_sprite[i], frame);
@@ -172,19 +217,17 @@ void updateEnemies() {
 }
 
 void spawnEntity(UBYTE i, UBYTE x, UBYTE y, UBYTE type, UBYTE dir) {
+	UBYTE palette;
+
 	entity_x[i] = x;
 	entity_y[i] = y;
 	entity_type[i] = type;
 	entity_sprite[i] = SPR_ENEMIES + (i << 1U);
 	entity_dir[i] = dir;
 
-	if(type == E_BIRD) {
-		set_sprite_prop(entity_sprite[i], B8(00010000));
-		set_sprite_prop(entity_sprite[i]+1U, B8(00010000));
-	} else {
-		set_sprite_prop(entity_sprite[i], B8(00000000));
-		set_sprite_prop(entity_sprite[i]+1U, B8(00000000));
-	}
+	palette = entity_palette[type] << 4U;
+	set_sprite_prop(entity_sprite[i], palette);
+	set_sprite_prop(entity_sprite[i]+1U, palette);
 }
 
 void killEntity(UBYTE i) {
