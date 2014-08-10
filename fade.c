@@ -9,8 +9,9 @@ const UINT8 fadePals[] = {
 
 void fadeToWhite() {
 	UINT8 i;
-	for(i = 0; i != 4; ++i) {
+	for(i = 1; i != 4; ++i) {
 		BGP_REG = fadePals[i];
+		wait_vbl_done(); wait_vbl_done();
 		wait_vbl_done(); wait_vbl_done();
 		wait_vbl_done(); wait_vbl_done();
 		wait_vbl_done(); wait_vbl_done();
@@ -23,6 +24,7 @@ void fadeFromWhite() {
 
 	for(i = 3; i != 0; --i) {
 		BGP_REG = fadePals[i];
+		wait_vbl_done(); wait_vbl_done();
 		wait_vbl_done(); wait_vbl_done();
 		wait_vbl_done(); wait_vbl_done();
 		wait_vbl_done(); wait_vbl_done();

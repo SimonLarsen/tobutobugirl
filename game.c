@@ -3,9 +3,9 @@
 #include "binconst.h"
 #include "defines.h"
 #include "fade.h"
+#include "input.h"
 
 #include "game.h"
-
 
 // Levels
 #include "levels.h"
@@ -15,10 +15,9 @@
 // Sprites
 #include "data/sprite/sprites.h"
 
-UBYTE time, level, completed;
+UBYTE time, level, completed, loop;
 UBYTE enemies;
 UBYTE scrolly, scrollx;
-UBYTE joystate, oldjoystate;
 
 UBYTE player_x, player_y;
 UBYTE player_xdir, player_ydir;
@@ -33,12 +32,42 @@ UBYTE entity_sprite[NUM_ENEMIES];
 UBYTE entity_dir[NUM_ENEMIES];
 UBYTE entity_frame;
 
-#define CLICKED(x) ((joystate & x) != (oldjoystate & x))
-#define HELD(x) (joystate & x)
 #define IS_KILLABLE(x) (x != E_NONE && x <= LAST_FRUIT && x != E_SPIKES)
+
+const UBYTE entity_sprites[] = {
+	0U,		// E_NONE
+	24U,	// E_SEAL
+	32U,	// E_SHIELD
+	40U,	// E_BIRD
+	56U,	// E_SPIKES
+	64U,	// E_BAT
+	72U,	// E_GRAPES
+	76U,	// E_BANANA
+	80U,	// E_PEACH
+	84U,	// E_CLOUD
+	104U,	// E_DOOR
+};
+
+const UBYTE entity_palette[] = {
+	0U,	// E_NONE
+	0U,	// E_SEAL
+	0U,	// E_SHIELD
+	1U,	// E_BIRD
+	1U,	// E_SPIKES
+	1U,	// E_BAT
+	0U,	// E_GRAPES
+	0U,	// E_BANANA
+	0U,	// E_PEACH
+	0U, // E_CLOUD
+	0U, // E_DOOR
+};
 
 void gameIntro() {
 	UBYTE tmp;
+
+	HIDE_SPRITES;
+	fadeFromWhite();
+	SHOW_SPRITES;
 
 	time = 0U;
 	player_y = 200U;
@@ -103,11 +132,6 @@ void initGame() {
 	}
 }
 
-void updateJoystate() {
-	oldjoystate = joystate;
-	joystate = joypad();
-}
-
 void updateInput() {
 	updateJoystate();
 
@@ -141,7 +165,9 @@ void updatePlayer() {
 				player_y = 0U;
 			}
 			else if(entity_type[i] == E_DOOR) {
-
+				if(completed) {
+					loop = 0U;
+				}
 			}
 			else if(entity_type[i] < FIRST_FRUIT) {
 				if(player_ydir == DOWN && player_y < entity_y[i]-8U) {
@@ -309,13 +335,14 @@ void updateScroll() {
 	else move_win(7U, (72U+SCRLBTM)-player_y);
 }
 
-void main() {
+void enterGame() {
 	disable_interrupts();
 	DISPLAY_OFF;
 	SPRITES_8x16;
 
 	OBP0_REG = B8(11100100);
 	OBP1_REG = B8(11010000);
+	BGP_REG = B8(11100100);
 
 	set_bkg_data(0, background_data_length, background_data);
 	set_bkg_data(background_data_length, window_data_length, window_data);
@@ -333,16 +360,13 @@ void main() {
 	DISPLAY_ON;
 	enable_interrupts();
 
-	HIDE_SPRITES;
-	fadeFromWhite();
-	SHOW_SPRITES;
-
 	level = 0U;
 	initGame();
 
 	gameIntro();
 
-	while(1) {
+	loop = 1U;
+	while(loop) {
 		time++;
 
 		updateScroll();
@@ -352,5 +376,12 @@ void main() {
 		updatePlayer();
 
 		wait_vbl_done();
+	}
+
+	if(completed) {
+		HIDE_SPRITES;
+		fadeToWhite();
+	} else {
+
 	}
 }
