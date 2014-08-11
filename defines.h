@@ -8,6 +8,8 @@
 #define DOWN	2U
 #define LEFT	3U
 
+#define NUM_LEVELS 16U
+
 #define E_NONE 		0U
 #define E_SEAL		1U
 #define E_SHIELD	2U

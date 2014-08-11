@@ -1,4 +1,5 @@
 #include <gb/gb.h>
+#include "defines.h"
 #include "binconst.h"
 #include "fade.h"
 #include "gamestate.h"
@@ -13,17 +14,31 @@
 
 const UBYTE yoffsets[4] = {0U, 1U, 2U, 1U};
 
-#define NUM_LEVELS 15U
-
 #define SPR_GIRL	0U
 #define SPR_NUMBER1 8U
 #define SPR_NUMBER2 9U
+#define SPR_COMPL1  10U
+#define SPR_COMPL2  11U
+#define SPR_COMPL3  12U
+#define SPR_COMPL4  13U
 
 UBYTE time, frame, y;
 
-void updateLevelNumber() {
+void updateLevelScreen() {
 	set_sprite_tile(SPR_NUMBER1, (level+1U) / 10);
 	set_sprite_tile(SPR_NUMBER2, (level+1U) % 10);
+
+	if(completed[level]) {
+		move_sprite(SPR_COMPL1, 80U, 120U);
+		move_sprite(SPR_COMPL2, 88U, 120U);
+		move_sprite(SPR_COMPL3, 80U, 128U);
+		move_sprite(SPR_COMPL4, 88U, 128U);
+	} else {
+		move_sprite(SPR_COMPL1, 0U, 120U);
+		move_sprite(SPR_COMPL2, 0U, 120U);
+		move_sprite(SPR_COMPL3, 0U, 120U);
+		move_sprite(SPR_COMPL4, 0U, 120U);
+	}
 }
 
 void enterLevel() {
@@ -58,13 +73,20 @@ void enterLevel() {
 
 	clearSprites();
 
-	for(i = 0U; i < 8U; ++i) set_sprite_prop(i, B8(00010000));
+	for(i = 0U; i < 10U; ++i) set_sprite_prop(i, B8(00010000));
+	for(i = 10U; i <= 14U; ++i) set_sprite_prop(i, B8(00010000));
 
 	set_sprite_prop(SPR_NUMBER1, 0U);
 	set_sprite_prop(SPR_NUMBER2, 0U);
 	move_sprite(SPR_NUMBER1, 104U, 111U);
 	move_sprite(SPR_NUMBER2, 112U, 111U);
-	updateLevelNumber();
+
+	set_sprite_tile(SPR_COMPL1, 26U);
+	set_sprite_tile(SPR_COMPL2, 27U);
+	set_sprite_tile(SPR_COMPL3, 28U);
+	set_sprite_tile(SPR_COMPL4, 29U);
+
+	updateLevelScreen();
 
 	SHOW_BKG;
 	SHOW_SPRITES;
@@ -98,12 +120,12 @@ void enterLevel() {
 		if(CLICKED(J_LEFT)) {
 			if(level > 0) {
 				level--;
-				updateLevelNumber();
+				updateLevelScreen();
 			}
 		} else if(CLICKED(J_RIGHT)) {
 			if(level < NUM_LEVELS-1U) {
 				level++;
-				updateLevelNumber();
+				updateLevelScreen();
 			}
 		} else if(CLICKED(J_START)) {
 			gamestate = GAMESTATE_GAME;

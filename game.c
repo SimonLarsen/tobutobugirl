@@ -16,7 +16,7 @@
 // Sprites
 #include "data/sprite/sprites.h"
 
-UBYTE time, loop;
+UBYTE time, loop, dead;
 UBYTE enemies;
 UBYTE scrolly, scrollx;
 
@@ -155,6 +155,7 @@ void initGame() {
 	player_yspeed = 0U;
 	player_jumped = 0U;
 	player_bounce = 0U;
+	dead = 0U;
 	move_sprite(SPR_PLAYER, 168U, 0U);
 	move_sprite(SPR_PLAYER+1U, 168U, 0U);
 
@@ -178,10 +179,6 @@ void updateInput() {
 		player_yspeed = DJUMP_SPEED;
 		player_jumped = 1U;
 		setCloud(player_x, player_y+5U);
-	}
-	if(CLICKED(J_SELECT)) {
-		loop = 0U;
-		enemies = 0U;
 	}
 }
 
@@ -221,8 +218,7 @@ void updatePlayer() {
 
 	// Check water
 	if(player_y > 246U) {
-		loop = 0U;
-		enemies = 1U;
+		killPlayer();
 	}
 	// Check top of screen
 	if(player_y < 4U) player_y = 4U;
@@ -288,8 +284,7 @@ void bouncePlayer() {
 }
 
 void killPlayer() {
-	loop = 0U;
-	enemies = 1U;
+	dead = 1U;
 }
 
 void setCloud(UBYTE x, UBYTE y) {
@@ -413,7 +408,7 @@ void enterGame() {
 	gameIntro();
 
 	loop = 1U;
-	while(loop) {
+	while(loop && !dead) {
 		time++;
 
 		updateScroll();
@@ -422,17 +417,25 @@ void enterGame() {
 		updateInput();
 		updatePlayer();
 
+		if(CLICKED(J_SELECT)) {
+			enemies = 1U;
+			break;
+		}
+
 		wait_vbl_done();
 	}
 
 	if(enemies == 0U) {
-		HIDE_SPRITES;
-		fadeToWhite();
 		gamestate = GAMESTATE_LEVEL;
-	} else {
+		completed[level] = 1U;
+	} else if (dead) {
 		deathAnimation();
-		HIDE_SPRITES;
-		fadeToWhite();
 		gamestate = GAMESTATE_GAME;
 	}
+	else {
+		gamestate = GAMESTATE_LEVEL;
+	}
+
+	HIDE_SPRITES;
+	fadeToWhite();
 }

@@ -14,6 +14,7 @@ local levels = {
 	"Lukas3.lua",
 	"Lukas5.lua",
 	"Lukas6.lua",
+	"Lukas15.lua",
 }
 
 local basedir = "maps/"

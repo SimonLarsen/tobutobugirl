@@ -7,7 +7,9 @@
 
 extern UBYTE gamestate;
 extern UBYTE level;
+extern UBYTE completed[];
 
+void clearCompleted();
 void clearSprites();
 
 #endif

@@ -9,6 +9,7 @@
 #include "main.h"
 
 void main() {
+	clearCompleted();
 	gamestate = GAMESTATE_TITLE;
 	while(1) {
 		joystate = oldjoystate = 0U;
