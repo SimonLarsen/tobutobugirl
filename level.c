@@ -127,7 +127,7 @@ void enterLevel() {
 				level++;
 				updateLevelScreen();
 			}
-		} else if(CLICKED(J_START)) {
+		} else if(CLICKED(J_START) || CLICKED(J_A)) {
 			gamestate = GAMESTATE_GAME;
 			loop = 0U;
 		}

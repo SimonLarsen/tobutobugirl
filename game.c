@@ -425,12 +425,13 @@ void enterGame() {
 		wait_vbl_done();
 	}
 
-	if(enemies == 0U) {
-		gamestate = GAMESTATE_LEVEL;
-		completed[level] = 1U;
-	} else if (dead) {
+	if (dead) {
 		deathAnimation();
 		gamestate = GAMESTATE_GAME;
+	}
+	else if(enemies == 0U) {
+		gamestate = GAMESTATE_LEVEL;
+		completed[level] = 1U;
 	}
 	else {
 		gamestate = GAMESTATE_LEVEL;
