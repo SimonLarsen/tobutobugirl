@@ -29,7 +29,6 @@ UBYTE cloud_x, cloud_y, cloud_frame;
 UBYTE entity_x[NUM_ENEMIES];
 UBYTE entity_y[NUM_ENEMIES];
 UBYTE entity_type[NUM_ENEMIES];
-UBYTE entity_sprite[NUM_ENEMIES];
 UBYTE entity_dir[NUM_ENEMIES];
 UBYTE entity_frame;
 
@@ -137,7 +136,6 @@ void initGame() {
 
 	enemies = 0U;
 	for(i = 0U; i < MAX_ENTITIES; ++i) {
-		if(levels[level][i][0] == E_NONE) continue;
 		spawnEntity(i, levels[level][i][0], levels[level][i][1], levels[level][i][2], levels[level][i][3]);
 	}
 
@@ -181,6 +179,10 @@ void updateInput() {
 		player_jumped = 1U;
 		setCloud(player_x, player_y+5U);
 	}
+	if(CLICKED(J_SELECT)) {
+		loop = 0U;
+		enemies = 0U;
+	}
 }
 
 void updatePlayer() {
@@ -194,8 +196,7 @@ void updatePlayer() {
 		&& player_x > entity_x[i]-14U && player_x < entity_x[i]+14U
 		&& player_y > entity_y[i]-16U && player_y < entity_y[i]+13U) {
 			if(entity_type[i] == E_SPIKES) {
-				loop = 0U;
-				enemies = 1U;
+				killPlayer();
 			}
 			else if(entity_type[i] == E_DOOR) {
 				if(enemies == 0U) {
@@ -209,8 +210,7 @@ void updatePlayer() {
 					setCloud(player_x, player_y+5U);
 				}
 				else {
-					loop = 0U;
-					enemies = 1U;
+					killPlayer();
 				}
 			} else {
 				killEntity(i);
@@ -218,6 +218,14 @@ void updatePlayer() {
 			break;
 		}
 	}
+
+	// Check water
+	if(player_y > 246U) {
+		loop = 0U;
+		enemies = 1U;
+	}
+	// Check top of screen
+	if(player_y < 4U) player_y = 4U;
 
 	// Flying UP
 	if(player_ydir == UP) {
@@ -279,6 +287,11 @@ void bouncePlayer() {
 	player_bounce = 16U;
 }
 
+void killPlayer() {
+	loop = 0U;
+	enemies = 1U;
+}
+
 void setCloud(UBYTE x, UBYTE y) {
 	cloud_x = x;
 	cloud_y = y;
@@ -292,15 +305,14 @@ void setCloud(UBYTE x, UBYTE y) {
 }
 
 void updateEnemies(UBYTE move) {
-	UBYTE i;
-	UBYTE frame;
+	UBYTE i, sprite, frame;
 
 	if((time & 7U) == 7U) entity_frame++;
 
 	for(i = 0U; i < NUM_ENEMIES; ++i) {
 		switch(entity_type[i]) {
 			case E_BIRD:
-				if(time & 1U && move) {
+				if((time & 1U) && move) {
 					if(entity_dir[i] == RIGHT) {
 						entity_x[i]++;
 						if(entity_x[i] == 168U) entity_x[i] = 248U;
@@ -318,26 +330,28 @@ void updateEnemies(UBYTE move) {
 		else if(entity_type[i] == E_DOOR && enemies == 0U) frame += 4U;
 		if(entity_dir[i] == RIGHT) frame += 8U;
 		
-		set_sprite_tile(entity_sprite[i], frame);
-		set_sprite_tile(entity_sprite[i]+1U, frame+2U);
+		sprite = SPR_ENEMIES + (i << 1U);
+		set_sprite_tile(sprite, frame);
+		set_sprite_tile(sprite+1U, frame+2U);
 
-		move_sprite(entity_sprite[i], entity_x[i], entity_y[i]-scrolly+16U);
-		move_sprite(entity_sprite[i]+1U, entity_x[i]+8U, entity_y[i]-scrolly+16U);
+		move_sprite(sprite, entity_x[i], entity_y[i]-scrolly+16U);
+		move_sprite(sprite+1U, entity_x[i]+8U, entity_y[i]-scrolly+16U);
 	}
 }
 
 void spawnEntity(UBYTE i, UBYTE type, UBYTE x, UBYTE y, UBYTE dir) {
-	UBYTE palette;
+	UBYTE palette, sprite;
+	if(type == E_NONE) return;
 
 	entity_x[i] = x;
 	entity_y[i] = y;
 	entity_type[i] = type;
-	entity_sprite[i] = SPR_ENEMIES + (i << 1U);
 	entity_dir[i] = dir;
 
+	sprite = SPR_ENEMIES + (i << 1U);
 	palette = entity_palette[type] << 4U;
-	set_sprite_prop(entity_sprite[i], palette);
-	set_sprite_prop(entity_sprite[i]+1U, palette);
+	set_sprite_prop(sprite, palette);
+	set_sprite_prop(sprite+1U, palette);
 
 	if(IS_KILLABLE(type)) enemies++;
 }

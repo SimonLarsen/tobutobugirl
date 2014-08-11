@@ -1,6 +1,19 @@
 local levels = {
+	"Lukas9.lua",
+	"Lukas10.lua",
+	"Lukas11.lua",
+	"Lukas12.lua",
+	"Lukas13.lua",
+	"Lukas14.lua",
+	"Lukas7.lua",
+	"Lukas8.lua",
 	"1.lua",
-	"2.lua"
+	"2.lua",
+	"Lukas1.lua",
+	"Lukas2.lua",
+	"Lukas3.lua",
+	"Lukas5.lua",
+	"Lukas6.lua",
 }
 
 local basedir = "maps/"

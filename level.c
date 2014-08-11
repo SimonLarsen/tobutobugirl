@@ -13,7 +13,7 @@
 
 const UBYTE yoffsets[4] = {0U, 1U, 2U, 1U};
 
-#define NUM_LEVELS 2
+#define NUM_LEVELS 15U
 
 #define SPR_GIRL	0U
 #define SPR_NUMBER1 8U
@@ -22,8 +22,8 @@ const UBYTE yoffsets[4] = {0U, 1U, 2U, 1U};
 UBYTE time, frame, y;
 
 void updateLevelNumber() {
-	set_sprite_tile(SPR_NUMBER1, level / 10);
-	set_sprite_tile(SPR_NUMBER2, level % 10);
+	set_sprite_tile(SPR_NUMBER1, (level+1U) / 10);
+	set_sprite_tile(SPR_NUMBER2, (level+1U) % 10);
 }
 
 void enterLevel() {
@@ -44,8 +44,6 @@ void enterLevel() {
 	OBP0_REG = B8(00000000);
 	OBP1_REG = B8(10010000);
 
-	for(i = 0U; i < 8U; ++i) set_sprite_prop(i, B8(00010000));
-
 	// Clear win tiles
 	tmp = 0U;
 	for(iy = 0; iy < 6U; ++iy) {
@@ -60,6 +58,10 @@ void enterLevel() {
 
 	clearSprites();
 
+	for(i = 0U; i < 8U; ++i) set_sprite_prop(i, B8(00010000));
+
+	set_sprite_prop(SPR_NUMBER1, 0U);
+	set_sprite_prop(SPR_NUMBER2, 0U);
 	move_sprite(SPR_NUMBER1, 104U, 111U);
 	move_sprite(SPR_NUMBER2, 112U, 111U);
 	updateLevelNumber();

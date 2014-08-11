@@ -25,7 +25,7 @@ game.gb:
 	lcc -c fade.c
 	lcc -c input.c
 	lcc -c gamestate.c
-	lcc main.o title.o level.o game.o fade.o input.o gamestate.o -o game.gb
+	lcc main.o title.o game.o fade.o level.o input.o gamestate.o -o game.gb
 
 .PHONY: run
 run:

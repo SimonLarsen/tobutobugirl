@@ -7,6 +7,7 @@ void initGame();
 void updateInput();
 void updatePlayer();
 void bouncePlayer();
+void killPlayer();
 void setCloud(UBYTE x, UBYTE y);
 void updateEnemies(UBYTE move);
 void spawnEntity(UBYTE i, UBYTE type, UBYTE x, UBYTE y, UBYTE dir);
