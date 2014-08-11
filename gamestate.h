@@ -6,5 +6,8 @@
 #define GAMESTATE_GAME	2U
 
 extern UBYTE gamestate;
+extern UBYTE level;
+
+void clearSprites();
 
 #endif

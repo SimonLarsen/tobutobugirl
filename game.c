@@ -4,6 +4,7 @@
 #include "defines.h"
 #include "fade.h"
 #include "input.h"
+#include "gamestate.h"
 
 #include "game.h"
 
@@ -15,7 +16,7 @@
 // Sprites
 #include "data/sprite/sprites.h"
 
-UBYTE time, level, completed, loop;
+UBYTE time, completed, loop;
 UBYTE enemies;
 UBYTE scrolly, scrollx;
 
@@ -375,15 +376,16 @@ void enterGame() {
 	OBP1_REG = B8(11010000);
 	BGP_REG = B8(11100100);
 
-	set_bkg_data(0, background_data_length, background_data);
+	set_bkg_data(0U, background_data_length, background_data);
 	set_bkg_data(background_data_length, window_data_length, window_data);
-	set_bkg_tiles(0, 0, background_tiles_width, background_tiles_height, background_tiles);
-	set_win_tiles(0, 0, window_tiles_width, window_tiles_height, window_tiles);
+	set_bkg_tiles(0U, 0U, background_tiles_width, background_tiles_height, background_tiles);
+	set_win_tiles(0U, 0U, window_tiles_width, window_tiles_height, window_tiles);
 
 	move_bkg(0U, 112U);
 	move_win(7U, 72U);
 
-	set_sprite_data(0, sprites_data_length, sprites_data);
+	clearSprites();
+	set_sprite_data(0U, sprites_data_length, sprites_data);
 
 	SHOW_BKG;
 	SHOW_SPRITES;
@@ -412,9 +414,11 @@ void enterGame() {
 	if(completed) {
 		HIDE_SPRITES;
 		fadeToWhite();
+		gamestate = GAMESTATE_LEVEL;
 	} else {
 		deathAnimation();
 		HIDE_SPRITES;
 		fadeToWhite();
+		gamestate = GAMESTATE_GAME;
 	}
 }

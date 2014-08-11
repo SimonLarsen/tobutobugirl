@@ -21,6 +21,7 @@ void enterTitle() {
 
 	SHOW_BKG;
 	HIDE_SPRITES;
+	HIDE_WIN;
 
 	DISPLAY_ON;
 	enable_interrupts();
@@ -31,7 +32,7 @@ void enterTitle() {
 	while(loop) {
 		updateJoystate();
 		if(CLICKED(J_START)) {
-			gamestate = GAMESTATE_GAME;
+			gamestate = GAMESTATE_LEVEL;
 			loop = 0U;
 		}
 		wait_vbl_done();
