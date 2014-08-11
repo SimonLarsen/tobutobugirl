@@ -2,7 +2,7 @@ default: backgrounds sprites levels game.gb
 
 backgrounds:
 	imgtogb --map data/bg/background.png -o data/bg/background.h
-	imgtogb --map data/bg/window.png -O 105 -o data/bg/window.h
+	imgtogb --map data/bg/window.png -O 117 -o data/bg/window.h
 	imgtogb --map data/bg/title.png -o data/bg/title.h
 	imgtogb --map data/bg/level.png -o data/bg/level.h
 	imgtogb --map data/bg/leveltext.png -O 53 -o data/bg/leveltext.h

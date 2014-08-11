@@ -191,6 +191,18 @@ return {
           gid = 11,
           visible = true,
           properties = {}
+        },
+        {
+          name = "",
+          type = "",
+          shape = "rectangle",
+          x = 72,
+          y = 192,
+          width = 0,
+          height = 0,
+          gid = 6,
+          visible = true,
+          properties = {}
         }
       }
     }

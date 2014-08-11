@@ -16,7 +16,7 @@
 // Sprites
 #include "data/sprite/sprites.h"
 
-UBYTE time, completed, loop;
+UBYTE time, loop;
 UBYTE enemies;
 UBYTE scrolly, scrollx;
 
@@ -103,7 +103,8 @@ void deathAnimation() {
 	set_sprite_tile(SPR_PLAYER, 112U);
 	set_sprite_tile(SPR_PLAYER+1U, 114U);
 	
-	while(player_y < scrolly+144U && player_y < 255U) {
+	time = 0U;
+	while(time != 86U) {
 		// Flying UP
 		if(player_ydir == UP) {
 			player_yspeed--;
@@ -124,6 +125,7 @@ void deathAnimation() {
 		move_sprite(SPR_PLAYER, player_x, player_y-scrolly+16U);
 		move_sprite(SPR_PLAYER+1U, player_x+8U, player_y-scrolly+16U);
 
+		time++;
 		wait_vbl_done();
 	}
 }
@@ -142,9 +144,6 @@ void initGame() {
 	time = 0U;
 	scrollx = 0U;
 	scrolly = 112U;
-	completed = 0U;
-
-	joystate = oldjoystate = 0U;
 
 	set_sprite_tile(0U, 0U);
 	set_sprite_tile(1U, 2U);
@@ -196,9 +195,10 @@ void updatePlayer() {
 		&& player_y > entity_y[i]-16U && player_y < entity_y[i]+13U) {
 			if(entity_type[i] == E_SPIKES) {
 				loop = 0U;
+				enemies = 1U;
 			}
 			else if(entity_type[i] == E_DOOR) {
-				if(completed) {
+				if(enemies == 0U) {
 					loop = 0U;
 				}
 			}
@@ -210,6 +210,7 @@ void updatePlayer() {
 				}
 				else {
 					loop = 0U;
+					enemies = 1U;
 				}
 			} else {
 				killEntity(i);
@@ -314,7 +315,7 @@ void updateEnemies(UBYTE move) {
 
 		frame = entity_sprites[entity_type[i]];
 		if(entity_type[i] < FIRST_FRUIT && entity_frame & 1U) frame += 4U;
-		else if(entity_type[i] == E_DOOR && completed) frame += 4U;
+		else if(entity_type[i] == E_DOOR && enemies == 0U) frame += 4U;
 		if(entity_dir[i] == RIGHT) frame += 8U;
 		
 		set_sprite_tile(entity_sprite[i], frame);
@@ -344,7 +345,6 @@ void spawnEntity(UBYTE i, UBYTE type, UBYTE x, UBYTE y, UBYTE dir) {
 void killEntity(UBYTE i) {
 	if(IS_KILLABLE(entity_type[i])) {
 		enemies--;
-		if(enemies == 0U) completed = 1U;
 	}
 	entity_type[i] = E_NONE;
 	entity_x[i] = 168U;
@@ -384,8 +384,9 @@ void enterGame() {
 	move_bkg(0U, 112U);
 	move_win(7U, 72U);
 
-	clearSprites();
 	set_sprite_data(0U, sprites_data_length, sprites_data);
+
+	clearSprites();
 
 	SHOW_BKG;
 	SHOW_SPRITES;
@@ -393,7 +394,6 @@ void enterGame() {
 	DISPLAY_ON;
 	enable_interrupts();
 
-	level = 0U;
 	initGame();
 
 	gameIntro();
@@ -411,7 +411,7 @@ void enterGame() {
 		wait_vbl_done();
 	}
 
-	if(completed) {
+	if(enemies == 0U) {
 		HIDE_SPRITES;
 		fadeToWhite();
 		gamestate = GAMESTATE_LEVEL;

@@ -6,13 +6,14 @@
 
 #include "level.h"
 
-#include "levels.h"
 #include "data/bg/level.h"
 #include "data/bg/leveltext.h"
 #include "data/sprite/numbers.h"
 #include "data/sprite/levelsprites.h"
 
 const UBYTE yoffsets[4] = {0U, 1U, 2U, 1U};
+
+#define NUM_LEVELS 2
 
 #define SPR_GIRL	0U
 #define SPR_NUMBER1 8U
