@@ -186,8 +186,8 @@ void updateInput() {
 void updatePlayer() {
 	UBYTE i, frame;
 	// Left and right borders
-	if(player_x < 16U) player_x = 16U;
-	else if(player_x > 144U) player_x = 144U;
+	if(player_x < 8U) player_x = 8U;
+	else if(player_x > 152U) player_x = 152U;
 
 	for(i = 0U; i < MAX_ENTITIES; ++i) {
 		if(entity_type[i] != E_NONE
