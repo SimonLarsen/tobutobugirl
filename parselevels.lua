@@ -48,6 +48,10 @@ function parseLevel(path)
 
 	for i, layer in ipairs(t.layers) do
 		if layer.type == "objectgroup" then
+			if #layer.objects > MAX_ENTITIES then
+				io.stderr:write("error: Too many entities in level " .. path .. "\n")
+				os.exit(1)
+			end
 			for j, o in ipairs(layer.objects) do
 				local type = TYPES[o.gid-1]
 				local e = { name = type.name, x = o.x+8, y = o.y-24, dir = type.dir }
