@@ -18,6 +18,10 @@ return {
       image = "tiles.png",
       imagewidth = 16,
       imageheight = 176,
+      tileoffset = {
+        x = 0,
+        y = 0
+      },
       properties = {},
       tiles = {}
     }
@@ -38,6 +42,7 @@ return {
           y = 144,
           width = 0,
           height = 0,
+          rotation = 0,
           gid = 4,
           visible = true,
           properties = {}
@@ -50,6 +55,7 @@ return {
           y = 144,
           width = 0,
           height = 0,
+          rotation = 0,
           gid = 5,
           visible = true,
           properties = {}
@@ -62,6 +68,7 @@ return {
           y = 256,
           width = 0,
           height = 0,
+          rotation = 0,
           gid = 2,
           visible = true,
           properties = {}
@@ -74,6 +81,7 @@ return {
           y = 256,
           width = 0,
           height = 0,
+          rotation = 0,
           gid = 2,
           visible = true,
           properties = {}
@@ -86,6 +94,7 @@ return {
           y = 192,
           width = 0,
           height = 0,
+          rotation = 0,
           gid = 6,
           visible = true,
           properties = {}
@@ -98,6 +107,7 @@ return {
           y = 192,
           width = 0,
           height = 0,
+          rotation = 0,
           gid = 6,
           visible = true,
           properties = {}
@@ -110,6 +120,7 @@ return {
           y = 128,
           width = 0,
           height = 0,
+          rotation = 0,
           gid = 7,
           visible = true,
           properties = {}
@@ -122,6 +133,7 @@ return {
           y = 208,
           width = 0,
           height = 0,
+          rotation = 0,
           gid = 11,
           visible = true,
           properties = {}
@@ -134,6 +146,7 @@ return {
           y = 64,
           width = 0,
           height = 0,
+          rotation = 0,
           gid = 10,
           visible = true,
           properties = {}
@@ -146,6 +159,7 @@ return {
           y = 64,
           width = 0,
           height = 0,
+          rotation = 0,
           gid = 10,
           visible = true,
           properties = {}

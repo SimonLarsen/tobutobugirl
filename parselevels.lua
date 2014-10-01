@@ -66,14 +66,14 @@ end
 
 print(HEADER)
 print("#define NUM_LEVELS " .. #levels)
-print(string.format("const char levels[%d][%d][4] = {", #levels, MAX_ENTITIES))
+print(string.format("const char levels[%d][%d][%d] = {", #levels, MAX_ENTITIES, 4))
 for j, e in ipairs(output) do
 	print("\t{")
 	for i=1, MAX_ENTITIES do
 		if e[i] then
-			print(string.format("\t\t{%s, %dU, %dU, %s},", e[i].name, e[i].x, e[i].y, e[i].dir))
+			print(string.format("\t\t{ %s, %dU, %dU, %s },", e[i].name, e[i].x, e[i].y, e[i].dir))
 		else
-			print("\t\t{0U, 0U, 0U, 0U},")
+			print("\t\t{ 0U, 0U, 0U, 0U },")
 		end
 	end
 	print("\t},")

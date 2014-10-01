@@ -17,7 +17,7 @@
 #include "data/sprite/sprites.h"
 
 UBYTE time, loop, dead;
-UBYTE enemies;
+UBYTE entities, enemies;
 UBYTE scrolly, scrollx;
 
 UBYTE player_x, player_y;
@@ -26,10 +26,10 @@ UBYTE player_yspeed, player_jumped, player_bounce;
 
 UBYTE cloud_x, cloud_y, cloud_frame;
 
-UBYTE entity_x[NUM_ENEMIES];
-UBYTE entity_y[NUM_ENEMIES];
-UBYTE entity_type[NUM_ENEMIES];
-UBYTE entity_dir[NUM_ENEMIES];
+UBYTE entity_x[MAX_ENTITIES];
+UBYTE entity_y[MAX_ENTITIES];
+UBYTE entity_type[MAX_ENTITIES];
+UBYTE entity_dir[MAX_ENTITIES];
 UBYTE entity_frame;
 
 #define IS_KILLABLE(x) (x != E_NONE && x <= LAST_FRUIT && x != E_SPIKES)
@@ -132,11 +132,12 @@ void deathAnimation() {
 void initGame() {
 	UBYTE i;
 
-	for(i = 0U; i < NUM_ENEMIES; ++i) killEntity(i);
+	for(i = 0U; i < MAX_ENTITIES; ++i) killEntity(i);
 
 	enemies = 0U;
+	entities = 0U;
 	for(i = 0U; i < MAX_ENTITIES; ++i) {
-		spawnEntity(i, levels[level][i][0], levels[level][i][1], levels[level][i][2], levels[level][i][3]);
+		spawnEntity(levels[level][i][0], levels[level][i][1], levels[level][i][2], levels[level][i][3]);
 	}
 
 	time = 0U;
@@ -188,7 +189,7 @@ void updatePlayer() {
 	if(player_x < 16U) player_x = 16U;
 	else if(player_x > 144U) player_x = 144U;
 
-	for(i = 0U; i < NUM_ENEMIES; ++i) {
+	for(i = 0U; i < MAX_ENTITIES; ++i) {
 		if(entity_type[i] != E_NONE
 		&& player_x > entity_x[i]-14U && player_x < entity_x[i]+14U
 		&& player_y > entity_y[i]-16U && player_y < entity_y[i]+13U) {
@@ -304,7 +305,7 @@ void updateEnemies(UBYTE move) {
 
 	if((time & 7U) == 7U) entity_frame++;
 
-	for(i = 0U; i < NUM_ENEMIES; ++i) {
+	for(i = 0U; i < MAX_ENTITIES; ++i) {
 		switch(entity_type[i]) {
 			case E_BIRD:
 				if((time & 1U) && move) {
@@ -334,9 +335,11 @@ void updateEnemies(UBYTE move) {
 	}
 }
 
-void spawnEntity(UBYTE i, UBYTE type, UBYTE x, UBYTE y, UBYTE dir) {
-	UBYTE palette, sprite;
+void spawnEntity(UBYTE type, UBYTE x, UBYTE y, UBYTE dir) {
+	UBYTE i, palette, sprite;
 	if(type == E_NONE) return;
+
+	i = entities;
 
 	entity_x[i] = x;
 	entity_y[i] = y;
@@ -349,6 +352,7 @@ void spawnEntity(UBYTE i, UBYTE type, UBYTE x, UBYTE y, UBYTE dir) {
 	set_sprite_prop(sprite+1U, palette);
 
 	if(IS_KILLABLE(type)) enemies++;
+	entities++;
 }
 
 void killEntity(UBYTE i) {

@@ -30,3 +30,7 @@ game.gb:
 .PHONY: run
 run:
 	gambatte -s 3 game.gb
+
+.PHONY: clean
+clean:
+	rm *.o
