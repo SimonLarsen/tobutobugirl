@@ -35,28 +35,26 @@ UBYTE entity_frame;
 #define IS_KILLABLE(x) (x != E_NONE && x <= LAST_FRUIT && x != E_SPIKES)
 
 const UBYTE entity_sprites[] = {
-	0U,		// E_NONE
-	24U,	// E_SEAL
-	32U,	// E_SHIELD
-	40U,	// E_BIRD
-	56U,	// E_SPIKES
-	64U,	// E_BAT
-	72U,	// E_GRAPES
-	76U,	// E_BANANA
-	80U,	// E_PEACH
-	84U,	// E_CLOUD
-	104U,	// E_DOOR
+	   0,	// E_NONE
+	 4*4,	// E_SEAL
+	 6*4,	// E_BIRD
+	 8*4,	// E_SPIKES
+	10*4,	// E_BAT
+
+	23*4,	// E_GRAPES
+	24*4,	// E_PEACH
+	25*4,	// E_CLOUD
+	30*4,	// E_DOOR
 };
 
 const UBYTE entity_palette[] = {
 	0U,	// E_NONE
 	0U,	// E_SEAL
-	0U,	// E_SHIELD
 	1U,	// E_BIRD
 	1U,	// E_SPIKES
 	1U,	// E_BAT
+
 	0U,	// E_GRAPES
-	0U,	// E_BANANA
 	0U,	// E_PEACH
 	0U, // E_CLOUD
 	0U, // E_DOOR
@@ -99,8 +97,8 @@ void gameIntro() {
 
 void deathAnimation() {
 	bouncePlayer();
-	set_sprite_tile(SPR_PLAYER, 112U);
-	set_sprite_tile(SPR_PLAYER+1U, 114U);
+	set_sprite_tile(SPR_PLAYER, SPR_PLAYER_DEAD);
+	set_sprite_tile(SPR_PLAYER+1U, SPR_PLAYER_DEAD+2U);
 	
 	time = 0U;
 	while(time != 86U) {
@@ -144,10 +142,10 @@ void initGame() {
 	scrollx = 0U;
 	scrolly = 112U;
 
-	set_sprite_tile(0U, 0U);
-	set_sprite_tile(1U, 2U);
-	set_sprite_prop(0U, B8(00010000));
-	set_sprite_prop(1U, B8(00010000));
+	set_sprite_tile(SPR_PLAYER, 0U);
+	set_sprite_tile(SPR_PLAYER+1U, 2U);
+	set_sprite_prop(SPR_PLAYER, B8(00110000));
+	set_sprite_prop(SPR_PLAYER+1U, B8(00110000));
 
 	player_x = 80U;
 	player_y = 16U;
@@ -243,7 +241,7 @@ void updatePlayer() {
 
 	// Update sprite
 	frame = 0U;
-	if(player_xdir == RIGHT) frame = 12U;
+	//if(player_xdir == RIGHT) frame = 12U;
 	if(player_bounce != 0U) {
 		frame += 8U;
 		player_bounce--;
@@ -252,11 +250,18 @@ void updatePlayer() {
 		frame += 4;
 	}
 
-	// Update sprite
-	set_sprite_tile(SPR_PLAYER, frame);
-	set_sprite_tile(SPR_PLAYER+1U, frame+2U);
+	if(player_xdir == LEFT) {
+		set_sprite_prop(SPR_PLAYER, B8(00010000));
+		set_sprite_prop(SPR_PLAYER+1U, B8(00010000));
+		set_sprite_tile(SPR_PLAYER, frame);
+		set_sprite_tile(SPR_PLAYER+1U, frame+2U);
+	} else {
+		set_sprite_prop(SPR_PLAYER, B8(00110000));
+		set_sprite_prop(SPR_PLAYER+1U, B8(00110000));
+		set_sprite_tile(SPR_PLAYER+1U, frame);
+		set_sprite_tile(SPR_PLAYER, frame+2U);
+	}
 
-	// Move player sprite
 	move_sprite(SPR_PLAYER, player_x, player_y-scrolly+16U);
 	move_sprite(SPR_PLAYER+1U, player_x+8U, player_y-scrolly+16U);
 

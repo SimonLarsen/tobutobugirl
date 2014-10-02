@@ -1,20 +1,5 @@
 local levels = {
-	"Lukas9.lua",
-	"Lukas10.lua",
-	"Lukas11.lua",
-	"Lukas12.lua",
-	"Lukas13.lua",
-	"Lukas14.lua",
-	"Lukas7.lua",
-	"Lukas8.lua",
 	"1.lua",
-	"2.lua",
-	"Lukas1.lua",
-	"Lukas2.lua",
-	"Lukas3.lua",
-	"Lukas5.lua",
-	"Lukas6.lua",
-	"Lukas15.lua",
 }
 
 local basedir = "maps/"
@@ -22,13 +7,11 @@ local basedir = "maps/"
 local MAX_ENTITIES = 15
 local TYPES = {
 	{ name = "E_SEAL", dir = "NONE" },
-	{ name = "E_SHIELD", dir = "NONE" },
 	{ name = "E_BIRD", dir = "LEFT" },
 	{ name = "E_BIRD", dir = "RIGHT" },
 	{ name = "E_SPIKES", dir = "NONE" },
 	{ name = "E_BAT", dir = "NONE" },
 	{ name = "E_GRAPES", dir = "NONE" },
-	{ name = "E_BANANA", dir = "NONE" },
 	{ name = "E_PEACH", dir = "NONE" },
 	{ name = "E_DOOR", dir = "NONE" },
 }
