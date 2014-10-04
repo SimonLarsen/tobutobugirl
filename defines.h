@@ -25,7 +25,7 @@
 #define E_DOOR		8U
 #define E_DOOR_OPEN	9U
 
-#define MAX_ENTITIES 15U
+#define MAX_ENTITIES 20U
 
 #define FIRST_HAZARD E_SPIKES
 #define LAST_HAZARD E_SPIKES

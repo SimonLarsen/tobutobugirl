@@ -3,13 +3,12 @@
 
 void initGame();
 void gameIntro();
-void deathAnimation();
 void updateInput();
 void updatePlayer();
 void bouncePlayer();
 void killPlayer();
 void setCloud(UBYTE x, UBYTE y);
-void updateEnemies(UBYTE move);
+void updateEntities();
 void spawnEntity(UBYTE type, UBYTE x, UBYTE y, UBYTE dir);
 void killEntity(UBYTE i);
 void updateScroll();

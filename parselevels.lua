@@ -4,7 +4,7 @@ local levels = {
 
 local basedir = "maps/"
 
-local MAX_ENTITIES = 15
+local MAX_ENTITIES = 20
 local TYPES = {
 	{ name = "E_SPIKES", dir = "NONE" },
 	{ name = "E_SEAL", dir = "NONE" },
