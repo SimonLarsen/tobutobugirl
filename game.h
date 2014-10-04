@@ -1,9 +1,9 @@
 #ifndef GAME_H
 #define GAME_H
 
+void initGame();
 void gameIntro();
 void deathAnimation();
-void initGame();
 void updateInput();
 void updatePlayer();
 void bouncePlayer();
@@ -13,6 +13,8 @@ void updateEnemies(UBYTE move);
 void spawnEntity(UBYTE type, UBYTE x, UBYTE y, UBYTE dir);
 void killEntity(UBYTE i);
 void updateScroll();
+void setSprite(UBYTE x, UBYTE y, UBYTE tile, UBYTE prop);
+void clearRemainingSprites();
 void enterGame();
 
 #define SCRLMGN 42U
@@ -23,11 +25,5 @@ void enterGame();
 #define DJUMP_SPEED 25U
 #define MAX_YSPEED 24U
 #define JUMP_THRESHOLD 10U
-
-#define SPR_PLAYER	0U
-#define SPR_CLOUD	2U
-#define SPR_ENEMIES	4U
-
-#define SPR_PLAYER_DEAD 12U
 
 #endif

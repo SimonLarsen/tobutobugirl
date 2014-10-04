@@ -36,4 +36,10 @@
 #define FIRST_FRUIT E_GRAPES
 #define LAST_FRUIT E_PEACH
 
+#define FLIP_X 32U
+#define FLIP_Y 64U
+
+#define OBJ_PAL0 0U
+#define OBJ_PAL1 16U
+
 #endif
