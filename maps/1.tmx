@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" renderorder="right-down" width="10" height="16" tilewidth="16" tileheight="16">
  <tileset firstgid="1" name="tiles" tilewidth="16" tileheight="16">
-  <image source="tiles.png" width="16" height="144"/>
+  <image source="tiles.png" width="16" height="160"/>
  </tileset>
  <objectgroup name="Objects">
-  <object gid="2" x="24" y="256"/>
-  <object gid="2" x="72" y="256"/>
-  <object gid="2" x="120" y="256"/>
   <object gid="4" x="128" y="80"/>
-  <object gid="4" x="16" y="112"/>
   <object gid="6" x="32" y="176"/>
   <object gid="6" x="112" y="176"/>
   <object gid="9" x="72" y="208"/>
+  <object gid="5" x="16" y="112"/>
+  <object gid="2" x="72" y="144"/>
+  <object gid="3" x="48" y="256"/>
+  <object gid="3" x="96" y="256"/>
  </objectgroup>
 </map>

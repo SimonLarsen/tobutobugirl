@@ -17,7 +17,7 @@
 #include "data/sprite/sprites.h"
 
 UBYTE time, loop, dead;
-UBYTE entities, enemies;
+UBYTE entities, killables;
 UBYTE scrolly, scrollx;
 
 UBYTE player_x, player_y;
@@ -36,28 +36,36 @@ UBYTE entity_frame;
 
 const UBYTE entity_sprites[] = {
 	   0,	// E_NONE
-	 4*4,	// E_SEAL
-	 6*4,	// E_BIRD
-	 8*4,	// E_SPIKES
+	 // Hazards
+	 4*4,	// E_SPIKES
+	 // Enemies
+	 6*4,	// E_SEAL
+	 8*4,	// E_BIRD
 	10*4,	// E_BAT
-
+	// Fruits
 	23*4,	// E_GRAPES
 	24*4,	// E_PEACH
+	// Special
 	25*4,	// E_CLOUD
 	30*4,	// E_DOOR
+	31*4,	// E_DOOR_OPEN
 };
 
 const UBYTE entity_palette[] = {
 	0U,	// E_NONE
+	// Hazards
+	1U,	// E_SPIKES
+	// Enemies
 	0U,	// E_SEAL
 	1U,	// E_BIRD
-	1U,	// E_SPIKES
 	1U,	// E_BAT
-
+	// Fruits
 	0U,	// E_GRAPES
 	0U,	// E_PEACH
+	// Special
 	0U, // E_CLOUD
 	0U, // E_DOOR
+	0U, // E_DOOR_OPEN
 };
 
 void gameIntro() {
@@ -132,7 +140,7 @@ void initGame() {
 
 	for(i = 0U; i < MAX_ENTITIES; ++i) killEntity(i);
 
-	enemies = 0U;
+	killables = 0U;
 	entities = 0U;
 	for(i = 0U; i < MAX_ENTITIES; ++i) {
 		spawnEntity(levels[level][i][0], levels[level][i][1], levels[level][i][2], levels[level][i][3]);
@@ -187,19 +195,15 @@ void updatePlayer() {
 	if(player_x < 8U) player_x = 8U;
 	else if(player_x > 152U) player_x = 152U;
 
+	// Check entity collisions
 	for(i = 0U; i < MAX_ENTITIES; ++i) {
 		if(entity_type[i] != E_NONE
 		&& player_x > entity_x[i]-14U && player_x < entity_x[i]+14U
 		&& player_y > entity_y[i]-16U && player_y < entity_y[i]+13U) {
-			if(entity_type[i] == E_SPIKES) {
+			// Enemies
+			if(entity_type[i] <= LAST_HAZARD) {
 				killPlayer();
-			}
-			else if(entity_type[i] == E_DOOR) {
-				if(enemies == 0U) {
-					loop = 0U;
-				}
-			}
-			else if(entity_type[i] < FIRST_FRUIT) {
+			} else if(entity_type[i] <= LAST_ENEMY) {
 				if(player_ydir == DOWN && player_y < entity_y[i]-8U) {
 					bouncePlayer();
 					killEntity(i);
@@ -208,10 +212,13 @@ void updatePlayer() {
 				else {
 					killPlayer();
 				}
-			} else {
+			} else if(entity_type[i] <= LAST_FRUIT) {
 				killEntity(i);
+			} else {
+				if(entity_type[i] == E_DOOR_OPEN) {
+					loop = 0U;
+				}
 			}
-			break;
 		}
 	}
 
@@ -324,12 +331,14 @@ void updateEnemies(UBYTE move) {
 					}
 				}
 				break;
+			case E_DOOR:
+				if(killables == 0U) {
+					entity_type[i] = E_DOOR_OPEN;
+				}
 		}
 
 		frame = entity_sprites[entity_type[i]];
 		if(entity_type[i] < FIRST_FRUIT && entity_frame & 1U) frame += 4U;
-		else if(entity_type[i] == E_DOOR && enemies == 0U) frame += 4U;
-		if(entity_dir[i] == RIGHT) frame += 8U;
 		
 		sprite = SPR_ENEMIES + (i << 1U);
 		set_sprite_tile(sprite, frame);
@@ -356,13 +365,13 @@ void spawnEntity(UBYTE type, UBYTE x, UBYTE y, UBYTE dir) {
 	set_sprite_prop(sprite, palette);
 	set_sprite_prop(sprite+1U, palette);
 
-	if(IS_KILLABLE(type)) enemies++;
+	if(IS_KILLABLE(type)) killables++;
 	entities++;
 }
 
 void killEntity(UBYTE i) {
 	if(IS_KILLABLE(entity_type[i])) {
-		enemies--;
+		killables--;
 	}
 	entity_type[i] = E_NONE;
 	entity_x[i] = 168U;
@@ -427,7 +436,7 @@ void enterGame() {
 		updatePlayer();
 
 		if(CLICKED(J_SELECT)) {
-			enemies = 1U;
+			killables = 1U;
 			break;
 		}
 
@@ -438,7 +447,7 @@ void enterGame() {
 		deathAnimation();
 		gamestate = GAMESTATE_GAME;
 	}
-	else if(enemies == 0U) {
+	else if(killables == 0U) {
 		gamestate = GAMESTATE_LEVEL;
 		completed[level] = 1U;
 	}

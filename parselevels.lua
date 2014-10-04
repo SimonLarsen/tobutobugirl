@@ -6,10 +6,10 @@ local basedir = "maps/"
 
 local MAX_ENTITIES = 15
 local TYPES = {
+	{ name = "E_SPIKES", dir = "NONE" },
 	{ name = "E_SEAL", dir = "NONE" },
 	{ name = "E_BIRD", dir = "LEFT" },
 	{ name = "E_BIRD", dir = "RIGHT" },
-	{ name = "E_SPIKES", dir = "NONE" },
 	{ name = "E_BAT", dir = "NONE" },
 	{ name = "E_GRAPES", dir = "NONE" },
 	{ name = "E_PEACH", dir = "NONE" },
