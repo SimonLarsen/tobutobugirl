@@ -31,6 +31,7 @@ UBYTE entity_x[MAX_ENTITIES];
 UBYTE entity_y[MAX_ENTITIES];
 UBYTE entity_type[MAX_ENTITIES];
 UBYTE entity_dir[MAX_ENTITIES];
+UBYTE entity_var1[MAX_ENTITIES];
 UBYTE entity_frame;
 
 #define IS_KILLABLE(x) (x != E_NONE && x <= LAST_FRUIT && x != E_SPIKES)
@@ -43,6 +44,7 @@ const UBYTE entity_sprites[] = {
 	 6*4,	// E_SEAL
 	 8*4,	// E_BIRD
 	10*4,	// E_BAT
+	12*4,	// E_GHOST
 	// Fruits
 	23*4,	// E_GRAPES
 	24*4,	// E_PEACH
@@ -60,6 +62,7 @@ const UBYTE entity_palette[] = {
 	OBJ_PAL0,	// E_SEAL
 	OBJ_PAL1,	// E_BIRD
 	OBJ_PAL1,	// E_BAT
+	OBJ_PAL1,	// E_GHOST
 	// Fruits
 	OBJ_PAL1,	// E_GRAPES
 	OBJ_PAL1,	// E_PEACH
@@ -93,7 +96,7 @@ void initGame() {
 	clearSprites();
 
 
-	for(i = 0U; i != MAX_ENTITIES; ++i) killEntity(i);
+	for(i = 0U; i != MAX_ENTITIES; ++i) entity_type[i] = E_NONE;
 
 	killables = 0U;
 	entities = 0U;
@@ -257,6 +260,8 @@ void updateEntities() {
 
 	for(i = 0U; i != entities; ++i) {
 		type = entity_type[i];
+
+		if(type == E_NONE) continue;
 		switch(type) {
 			case E_BIRD:
 				if(time & 1U) {
@@ -276,6 +281,7 @@ void updateEntities() {
 				}
 		}
 
+		// Draw entities on screen
 		if(entity_y[i]+16U > scrolly && entity_y[i]-16U < scrolly+143U) {
 			frame = entity_sprites[type];
 			if(type < FIRST_FRUIT && entity_frame & 1U) frame += 4U;
@@ -301,12 +307,23 @@ void spawnEntity(UBYTE type, UBYTE x, UBYTE y, UBYTE dir) {
 	entity_y[i] = y;
 	entity_type[i] = type;
 	entity_dir[i] = dir;
+	entity_var1[i] = 0U;
 
 	if(IS_KILLABLE(type)) killables++;
 	entities++;
 }
 
 void killEntity(UBYTE i) {
+	if(entity_type[i] == E_GHOST) {
+		if(entity_dir[i] == LEFT) {
+			entity_x[i] -= 32U;
+		} else {
+			entity_x[i] += 32U;
+		}
+		entity_var1[i]++;
+		if(entity_var1[i] != 3U) return;
+	}
+
 	if(IS_KILLABLE(entity_type[i])) {
 		killables--;
 	}

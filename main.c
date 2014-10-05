@@ -10,7 +10,7 @@
 
 void main() {
 	clearCompleted();
-	gamestate = GAMESTATE_TITLE;
+	gamestate = GAMESTATE_GAME;
 	while(1) {
 		joystate = oldjoystate = 0U;
 

@@ -11,6 +11,8 @@ local TYPES = {
 	{ name = "E_BIRD", dir = "LEFT" },
 	{ name = "E_BIRD", dir = "RIGHT" },
 	{ name = "E_BAT", dir = "NONE" },
+	{ name = "E_GHOST", dir = "LEFT" },
+	{ name = "E_GHOST", dir = "RIGHT" },
 	{ name = "E_GRAPES", dir = "NONE" },
 	{ name = "E_PEACH", dir = "NONE" },
 	{ name = "E_DOOR", dir = "NONE" },
