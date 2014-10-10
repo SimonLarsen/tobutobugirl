@@ -261,8 +261,9 @@ void updateEntities() {
 	for(i = 0U; i != entities; ++i) {
 		type = entity_type[i];
 
-		if(type == E_NONE) continue;
 		switch(type) {
+			case E_NONE:
+				continue;
 			case E_BIRD:
 				if(time & 1U) {
 					if(entity_dir[i] == RIGHT) {

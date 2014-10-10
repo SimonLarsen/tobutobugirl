@@ -4,12 +4,13 @@
   <image source="tiles.png" width="16" height="176"/>
  </tileset>
  <objectgroup name="Objects">
-  <object gid="11" x="80" y="224"/>
+  <object gid="11" x="32" y="224"/>
   <object gid="8" x="48" y="128"/>
   <object gid="2" x="64" y="112"/>
   <object gid="2" x="96" y="112"/>
-  <object gid="2" x="32" y="112"/>
-  <object gid="9" x="128" y="224"/>
-  <object gid="9" x="80" y="176"/>
+  <object gid="9" x="128" y="192"/>
+  <object gid="8" x="48" y="160"/>
+  <object gid="6" x="128" y="224"/>
+  <object gid="7" x="112" y="144"/>
  </objectgroup>
 </map>
