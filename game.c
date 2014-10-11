@@ -11,6 +11,7 @@
 // Levels
 #include "levels.h"
 // Maps
+#include "data/bg/tiles.h"
 #include "data/bg/background.h"
 #include "data/bg/window.h"
 // Sprites
@@ -33,6 +34,8 @@ UBYTE entity_type[MAX_ENTITIES];
 UBYTE entity_dir[MAX_ENTITIES];
 UBYTE entity_var1[MAX_ENTITIES];
 UBYTE entity_frame;
+
+UBYTE map[256];
 
 #define IS_KILLABLE(x) (x != E_NONE && x <= LAST_FRUIT && x != E_SPIKES)
 
@@ -72,8 +75,10 @@ const UBYTE entity_palette[] = {
 	OBJ_PAL0,	// E_DOOR_OPEN
 };
 
+const UBYTE numbers[] = { 0U, 1U, 2U, 3U, 4U, 5U, 6U, 7U };
+
 void initGame() {
-	UBYTE i;
+	UBYTE i, ix, iy, tile;
 
 	disable_interrupts();
 	DISPLAY_OFF;
@@ -83,30 +88,38 @@ void initGame() {
 	OBP1_REG = B8(11010000);
 	BGP_REG = B8(11100100);
 
-	set_bkg_data(0U, background_data_length, background_data);
-	set_bkg_data(background_data_length, window_data_length, window_data);
+	set_bkg_data(0U, tiles_data_length, tiles_data);
+	set_bkg_data(tiles_data_length, background_data_length, background_data);
 	set_bkg_tiles(0U, 0U, background_tiles_width, background_tiles_height, background_tiles);
-	set_win_tiles(0U, 0U, window_tiles_width, window_tiles_height, window_tiles);
 
-	move_bkg(0U, 112U);
-	move_win(7U, 72U);
+	move_bkg(0U, 0U);
 
 	set_sprite_data(0U, sprites_data_length, sprites_data);
 
 	clearSprites();
-
 
 	for(i = 0U; i != MAX_ENTITIES; ++i) entity_type[i] = E_NONE;
 
 	killables = 0U;
 	entities = 0U;
 	for(i = 0U; i != MAX_ENTITIES; ++i) {
-		spawnEntity(levels[level][i][0], levels[level][i][1], levels[level][i][2], levels[level][i][3]);
+		spawnEntity(level_entities[level][i][0], level_entities[level][i][1], level_entities[level][i][2], level_entities[level][i][3]);
+	}
+
+	i = 0U;
+	for(iy = 0U; iy < MAPH; ++iy) {
+		for(ix = 0U; ix < MAPW; ++ix) {
+			tile = level_tiles[level][i];
+			map[ix + (iy << 4)] = tile;
+			if(tile > 0U) {
+				set_bkg_tiles((ix << 1), (iy << 1), 2, 2, &numbers[(tile-1U) << 2]);
+			}
+			++i;
+		}
 	}
 
 	time = 0U;
-	scrollx = 0U;
-	scrolly = 112U;
+	scrolly = 0U;
 
 	player_x = 80U;
 	player_y = 16U;
@@ -122,7 +135,7 @@ void initGame() {
 
 	SHOW_BKG;
 	SHOW_SPRITES;
-	SHOW_WIN;
+	HIDE_WIN;
 	DISPLAY_ON;
 	enable_interrupts();
 }
@@ -152,11 +165,41 @@ void updateInput() {
 	}
 }
 
+UBYTE collides(UBYTE x, UBYTE y) {
+	return map[(x >> 4) + ((y >> 4) << 4)];
+}
+
 void updatePlayer() {
-	UBYTE i, frame;
+	UBYTE i, frame, tile1, tile2;
 	// Left and right borders
 	if(player_x < 8U) player_x = 8U;
 	else if(player_x > 152U) player_x = 152U;
+
+	// Check tile collisions
+	tile1 = collides(player_x-4U, player_y+4U);
+	tile2 = collides(player_x-4U, player_y+12U);
+	if(tile1 || tile2) {
+		player_x = ((player_x >> 4) << 4) + 5U; // 11 = 16-5
+	}
+	tile1 = collides(player_x+4U, player_y+4U);
+	tile2 = collides(player_x+4U, player_y+12U);
+	if(tile1 || tile2) {
+		player_x = ((player_x >> 4) << 4) + 11U;
+	}
+
+	// Check jump
+	if(collides(player_x, player_y+15U)) {
+		player_ydir = UP;
+		player_yspeed = JUMP_SPEED;
+		player_jumped = 0U;
+		player_bounce = 16U;
+	}
+
+	if(collides(player_x, player_y+1U)) {
+		player_y = ((player_y+4U) >> 4) << 4;
+		player_ydir = DOWN;
+		player_yspeed = 0U;
+	}
 
 	// Check entity collisions
 	for(i = 0U; i != MAX_ENTITIES; ++i) {
@@ -334,19 +377,11 @@ void killEntity(UBYTE i) {
 }
 
 void updateScroll() {
-	UBYTE tmp;
-
-	if((time & 31U) == 31U) scrollx++;
-
 	if(player_y < SCRLMGN) scrolly = 0;
 	else if(player_y > SCRLBTM) scrolly = 112U;
 	else scrolly = player_y - SCRLMGN;
 
-	tmp = 112U - scrolly;
-	move_bkg(scrollx, 112U - (tmp >> 1U) - (tmp >> 2U));
-
-	if(player_y > SCRLBTM) move_win(7U, 72U);
-	else move_win(7U, (72U+SCRLBTM)-player_y);
+	move_bkg(0U, scrolly);
 }
 
 void setSprite(UBYTE x, UBYTE y, UBYTE tile, UBYTE prop) {

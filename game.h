@@ -4,6 +4,7 @@
 void initGame();
 void gameIntro();
 void updateInput();
+UBYTE collides(UBYTE x, UBYTE y);
 void updatePlayer();
 void bouncePlayer();
 void killPlayer();
@@ -15,6 +16,9 @@ void updateScroll();
 void setSprite(UBYTE x, UBYTE y, UBYTE tile, UBYTE prop);
 void clearRemainingSprites();
 void enterGame();
+
+#define MAPW 10U
+#define MAPH 16U
 
 #define SCRLMGN 42U
 #define SCRLBTM (256U-144U+SCRLMGN)

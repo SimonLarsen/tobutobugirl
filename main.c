@@ -2,7 +2,6 @@
 
 #include "game.h"
 #include "title.h"
-#include "level.h"
 #include "input.h"
 #include "gamestate.h"
 
@@ -17,9 +16,6 @@ void main() {
 		switch(gamestate) {
 			case GAMESTATE_TITLE:
 				enterTitle();
-				break;
-			case GAMESTATE_LEVEL:
-				enterLevel();
 				break;
 			case GAMESTATE_GAME:
 				enterGame();

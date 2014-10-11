@@ -10,6 +10,11 @@
 
 #define NUM_LEVELS 16U
 
+// Tiles
+#define T_WALL	1U
+#define T_UNDEF	2U
+
+// Entities
 #define E_NONE 		0U
 
 #define E_SPIKES	1U
@@ -37,6 +42,7 @@
 #define FIRST_FRUIT E_GRAPES
 #define LAST_FRUIT E_PEACH
 
+// Entity properties
 #define FLIP_X 32U
 #define FLIP_Y 64U
 
