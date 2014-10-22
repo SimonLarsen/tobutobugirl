@@ -40,14 +40,16 @@ UBYTE map[256];
 #define IS_KILLABLE(x) (x != E_NONE && x <= LAST_FRUIT && x != E_SPIKES)
 
 const UBYTE entity_sprites[] = {
-	   0,	// E_NONE
+	0,		// E_NONE
 	 // Hazards
-	 4*4,	// E_SPIKES
+	4*4,	// E_SPIKES
+	6*4,	// E_LAZER_H
+	8*4,	// E_LAZER_V
 	 // Enemies
-	 6*4,	// E_SEAL
-	 8*4,	// E_BIRD
-	10*4,	// E_BAT
-	12*4,	// E_GHOST
+	10*4,	// E_SEAL
+	12*4,	// E_BIRD
+	14*4,	// E_BAT
+	16*4,	// E_GHOST
 	// Fruits
 	23*4,	// E_GRAPES
 	24*4,	// E_PEACH
@@ -61,6 +63,8 @@ const UBYTE entity_palette[] = {
 	OBJ_PAL0,	// E_NONE
 	// Hazards
 	OBJ_PAL1,	// E_SPIKES
+	OBJ_PAL0,	// E_LAZER_H
+	OBJ_PAL0,	// E_LAZER_V
 	// Enemies
 	OBJ_PAL0,	// E_SEAL
 	OBJ_PAL1,	// E_BIRD
@@ -411,9 +415,9 @@ void enterGame() {
 	while(loop && !dead) {
 		time++;
 
-		updateScroll();
-
 		sprites_used = 0U;
+
+		updateScroll();
 
 		updateEntities();
 		updateInput();

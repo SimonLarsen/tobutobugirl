@@ -5,10 +5,14 @@ local levels = {
 local basedir = "maps/"
 
 local MAX_ENTITIES = 20
-local LAST_ENTITY = 11
+local LAST_ENTITY = 15
 local TYPES = {
 	{ },
 	{ name = "E_SPIKES", dir = "NONE" },
+	{ name = "E_LAZER_H", dir = "LEFT" },
+	{ name = "E_LAZER_H", dir = "RIGHT" },
+	{ name = "E_LAZER_V", dir = "LEFT" },
+	{ name = "E_LAZER_V", dir = "RIGHT" },
 	{ name = "E_SEAL", dir = "NONE" },
 	{ name = "E_BIRD", dir = "LEFT" },
 	{ name = "E_BIRD", dir = "RIGHT" },
@@ -51,11 +55,14 @@ function parseLevel(path)
 			for j, o in ipairs(layer.objects) do
 				local type = TYPES[o.gid]
 				if o.gid <= LAST_ENTITY then
-					local e = { name = type.name, x = o.x+8, y = o.y-24, dir = type.dir }
+					local e = { name = type.name, x = o.x+8, y = o.y-16, dir = type.dir }
+					if type.name == "E_SEAL" then
+						e.y = e.y-8
+					end
 					table.insert(entities, e)
 				else
 					local cx = o.x / 16
-					local cy = o.y / 16
+					local cy = o.y / 16 - 1
 					tiles[cx][cy] = type.name
 				end
 			end
