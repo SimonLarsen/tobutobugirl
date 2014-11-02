@@ -96,13 +96,9 @@ void initGame() {
 	set_bkg_data(tiles_data_length, background_data_length, background_data);
 	set_bkg_tiles(0U, 0U, background_tiles_width, background_tiles_height, background_tiles);
 
-	move_bkg(0U, 0U);
-
 	set_sprite_data(0U, sprites_data_length, sprites_data);
 
 	clearSprites();
-
-	for(i = 0U; i != MAX_ENTITIES; ++i) entity_type[i] = E_NONE;
 
 	killables = 0U;
 	entities = 0U;
@@ -121,9 +117,6 @@ void initGame() {
 			++i;
 		}
 	}
-
-	time = 0U;
-	scrolly = 0U;
 
 	player_x = 80U;
 	player_y = 16U;
@@ -384,8 +377,6 @@ void updateScroll() {
 	if(player_y < SCRLMGN) scrolly = 0;
 	else if(player_y > SCRLBTM) scrolly = 112U;
 	else scrolly = player_y - SCRLMGN;
-
-	move_bkg(0U, scrolly);
 }
 
 void setSprite(UBYTE x, UBYTE y, UBYTE tile, UBYTE prop) {
@@ -408,10 +399,9 @@ void clearRemainingSprites() {
 void enterGame() {
 	initGame();
 
-	//gameIntro();
-
 	loop = 1U;
 	next_sprite = 0U;
+	time = 0U;
 	while(loop && !dead) {
 		time++;
 
@@ -431,10 +421,11 @@ void enterGame() {
 		}
 
 		wait_vbl_done();
+
+		move_bkg(0U, scrolly);
 	}
 
 	if (dead) {
-		//deathAnimation();
 		gamestate = GAMESTATE_GAME;
 	}
 	else if(killables == 0U) {
