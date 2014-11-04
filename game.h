@@ -10,6 +10,7 @@ void bouncePlayer();
 void killPlayer();
 void setCloud(UBYTE x, UBYTE y);
 void updateEntities();
+void switchLazers();
 void spawnEntity(UBYTE type, UBYTE x, UBYTE y, UBYTE dir);
 void killEntity(UBYTE i);
 void updateScroll();

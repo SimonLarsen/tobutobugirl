@@ -51,8 +51,10 @@ const UBYTE entity_sprites[] = {
 	14*4,	// E_BAT
 	16*4,	// E_GHOST
 	// Fruits
-	23*4,	// E_GRAPES
-	24*4,	// E_PEACH
+	22*4,	// E_GRAPES
+	23*4,	// E_PEACH
+	// Others
+	24*4,	// E_SWITCH
 	// Special
 	25*4,	// E_CLOUD
 	30*4,	// E_DOOR
@@ -73,6 +75,8 @@ const UBYTE entity_palette[] = {
 	// Fruits
 	OBJ_PAL1,	// E_GRAPES
 	OBJ_PAL1,	// E_PEACH
+	// Other
+	OBJ_PAL1,	// E_SWITCH
 	// Special
 	OBJ_PAL0,	// E_CLOUD
 	OBJ_PAL0,	// E_DOOR
@@ -200,7 +204,7 @@ void updatePlayer() {
 
 	// Check entity collisions
 	for(i = 0U; i != MAX_ENTITIES; ++i) {
-		if(entity_type[i] != E_NONE
+		if(entity_type[i] != E_NONE && entity_type[i] <= LAST_COLLIDABLE
 		&& player_y > entity_y[i]-16U && player_y < entity_y[i]+13U
 		&& player_x > entity_x[i]-14U && player_x < entity_x[i]+14U) {
 			// Hazards
@@ -301,9 +305,10 @@ void updateEntities() {
 	for(i = 0U; i != entities; ++i) {
 		type = entity_type[i];
 
+		// Update entity
 		switch(type) {
-			case E_NONE:
-				continue;
+			case E_NONE: continue;
+
 			case E_BIRD:
 				if(time & 1U) {
 					if(entity_dir[i] == RIGHT) {
@@ -316,10 +321,22 @@ void updateEntities() {
 					}
 				}
 				break;
+
 			case E_DOOR:
 				if(killables == 0U) {
 					entity_type[i] = E_DOOR_OPEN;
 				}
+				break;
+
+			case E_LAZER_OFF_V:
+			case E_LAZER_OFF_H:
+				continue;
+
+			case E_TRIGGER:
+				if((time & 63U) == 63U) {
+					switchLazers();
+				}
+				continue;
 		}
 
 		// Draw entities on screen
@@ -334,6 +351,26 @@ void updateEntities() {
 				setSprite(entity_x[i]+8U, entity_y[i]-scrolly+16U, frame, entity_palette[type] | FLIP_X);
 				setSprite(entity_x[i], entity_y[i]-scrolly+16U, frame+2U, entity_palette[type] | FLIP_X);
 			}
+		}
+	}
+}
+
+void switchLazers() {
+	UBYTE i;
+	for(i = 0; i != entities; ++i) {
+		switch(entity_type[i]) {
+			case E_LAZER_H:
+				entity_type[i] = E_LAZER_OFF_H;
+				break;
+			case E_LAZER_OFF_H:
+				entity_type[i] = E_LAZER_H;
+				break;
+			case E_LAZER_V:
+				entity_type[i] = E_LAZER_OFF_V;
+				break;
+			case E_LAZER_OFF_V:
+				entity_type[i] = E_LAZER_OFF_V;
+				break;
 		}
 	}
 }

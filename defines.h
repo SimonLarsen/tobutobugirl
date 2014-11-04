@@ -29,9 +29,15 @@
 #define E_GRAPES	8U
 #define E_PEACH		9U
 
-#define E_CLOUD		10U
-#define E_DOOR		11U
-#define E_DOOR_OPEN	12U
+#define E_SWITCH		10U
+
+#define E_CLOUD			11U
+#define E_DOOR			12U
+#define E_DOOR_OPEN		13U
+
+#define E_LAZER_OFF_H	14U
+#define E_LAZER_OFF_V	15U
+#define E_TRIGGER		16U
 
 #define FIRST_HAZARD E_SPIKES
 #define LAST_HAZARD E_LAZER_V
@@ -41,6 +47,8 @@
 
 #define FIRST_FRUIT E_GRAPES
 #define LAST_FRUIT E_PEACH
+
+#define LAST_COLLIDABLE E_PEACH
 
 #define MAX_ENTITIES 20U
 

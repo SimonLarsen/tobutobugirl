@@ -5,14 +5,14 @@ local levels = {
 local basedir = "maps/"
 
 local MAX_ENTITIES = 20
-local LAST_ENTITY = 15
+local LAST_ENTITY = 17
 local TYPES = {
 	{ },
 	{ name = "E_SPIKES", dir = "NONE" },
-	{ name = "E_LAZER_H", dir = "LEFT" },
-	{ name = "E_LAZER_H", dir = "RIGHT" },
-	{ name = "E_LAZER_V", dir = "LEFT" },
-	{ name = "E_LAZER_V", dir = "RIGHT" },
+	{ name = "E_LAZER_H", dir = "NONE" },
+	{ name = "E_LAZER_OFF_H", dir = "NONE" },
+	{ name = "E_LAZER_V", dir = "NONE" },
+	{ name = "E_LAZER_OFF_V", dir = "NONE" },
 	{ name = "E_SEAL", dir = "NONE" },
 	{ name = "E_BIRD", dir = "LEFT" },
 	{ name = "E_BIRD", dir = "RIGHT" },
@@ -22,6 +22,8 @@ local TYPES = {
 	{ name = "E_GRAPES", dir = "NONE" },
 	{ name = "E_PEACH", dir = "NONE" },
 	{ name = "E_DOOR", dir = "NONE" },
+	{ name = "E_SWITCH", dir = "NONE" },
+	{ name = "E_TRIGGER", dir = "NONE" },
 
 	{ name = "T_WALL" },
 	{ name = "T_UNDEF" },
