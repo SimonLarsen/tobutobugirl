@@ -8,27 +8,23 @@ const UINT8 fadePals[] = {
 };
 
 void fadeToWhite() {
-	UINT8 i;
+	UINT8 i, j;
 	for(i = 1; i != 4; ++i) {
 		BGP_REG = fadePals[i];
-		wait_vbl_done(); wait_vbl_done();
-		wait_vbl_done(); wait_vbl_done();
-		wait_vbl_done(); wait_vbl_done();
-		wait_vbl_done(); wait_vbl_done();
-		wait_vbl_done(); wait_vbl_done();
+		for(j = 0; j != 10; ++j) {
+			wait_vbl_done();
+		}
 	}
 }
 
 void fadeFromWhite() {
-	UINT8 i;
+	UINT8 i, j;
 
 	for(i = 3; i != 0; --i) {
 		BGP_REG = fadePals[i];
-		wait_vbl_done(); wait_vbl_done();
-		wait_vbl_done(); wait_vbl_done();
-		wait_vbl_done(); wait_vbl_done();
-		wait_vbl_done(); wait_vbl_done();
-		wait_vbl_done(); wait_vbl_done();
+		for(j = 0; j != 10; ++j) {
+			wait_vbl_done();
+		}
 	}
 
 	BGP_REG = fadePals[0];
