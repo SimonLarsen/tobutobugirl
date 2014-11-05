@@ -8,19 +8,14 @@
 
 #include "game.h"
 
-// Levels
-#include "levels.h"
 // Maps
-#include "data/bg/tiles.h"
 #include "data/bg/background.h"
-#include "data/bg/window.h"
 // Sprites
 #include "data/sprite/sprites.h"
 
 UBYTE time, loop, dead;
-UBYTE entities, killables;
 UBYTE next_sprite, sprites_used;
-UBYTE scrolly, scrollx;
+UBYTE scrolly, scrolled, last_spawn_x;
 
 UBYTE player_x, player_y;
 UBYTE player_xdir, player_ydir;
@@ -32,41 +27,27 @@ UBYTE entity_x[MAX_ENTITIES];
 UBYTE entity_y[MAX_ENTITIES];
 UBYTE entity_type[MAX_ENTITIES];
 UBYTE entity_dir[MAX_ENTITIES];
-UBYTE entity_var1[MAX_ENTITIES];
 UBYTE entity_frame;
-
-UBYTE map[256];
-
-#define IS_KILLABLE(x) (x != E_NONE && x <= LAST_FRUIT && x != E_SPIKES)
 
 const UBYTE entity_sprites[] = {
 	0,		// E_NONE
 	 // Hazards
 	4*4,	// E_SPIKES
-	6*4,	// E_LAZER_H
-	8*4,	// E_LAZER_V
 	 // Enemies
-	10*4,	// E_SEAL
-	12*4,	// E_BIRD
-	14*4,	// E_BAT
-	16*4,	// E_GHOST
+	6*4,	// E_BIRD
+	8*4,	// E_BAT
+	10*4,	// E_GHOST
 	// Fruits
-	22*4,	// E_GRAPES
-	23*4,	// E_PEACH
-	// Others
-	24*4,	// E_SWITCH
+	25*4,	// E_GRAPES
+	26*4,	// E_PEACH
 	// Special
-	25*4,	// E_CLOUD
-	30*4,	// E_DOOR
-	31*4,	// E_DOOR_OPEN
+	27*4,	// E_CLOUD
 };
 
 const UBYTE entity_palette[] = {
 	OBJ_PAL0,	// E_NONE
 	// Hazards
 	OBJ_PAL1,	// E_SPIKES
-	OBJ_PAL0,	// E_LAZER_H
-	OBJ_PAL0,	// E_LAZER_V
 	// Enemies
 	OBJ_PAL0,	// E_SEAL
 	OBJ_PAL1,	// E_BIRD
@@ -75,19 +56,13 @@ const UBYTE entity_palette[] = {
 	// Fruits
 	OBJ_PAL1,	// E_GRAPES
 	OBJ_PAL1,	// E_PEACH
-	// Other
-	OBJ_PAL1,	// E_SWITCH
 	// Special
 	OBJ_PAL0,	// E_CLOUD
-	OBJ_PAL0,	// E_DOOR
-	OBJ_PAL0,	// E_DOOR_OPEN
 };
 
 const UBYTE numbers[] = { 0U, 1U, 2U, 3U, 4U, 5U, 6U, 7U };
 
 void initGame() {
-	UBYTE i, ix, iy, tile;
-
 	disable_interrupts();
 	DISPLAY_OFF;
 	SPRITES_8x16;
@@ -96,34 +71,20 @@ void initGame() {
 	OBP1_REG = B8(11010000);
 	BGP_REG = B8(11100100);
 
-	set_bkg_data(0U, tiles_data_length, tiles_data);
-	set_bkg_data(tiles_data_length, background_data_length, background_data);
+	set_bkg_data(0U, background_data_length, background_data);
 	set_bkg_tiles(0U, 0U, background_tiles_width, background_tiles_height, background_tiles);
 
 	set_sprite_data(0U, sprites_data_length, sprites_data);
 
 	clearSprites();
+	clearEntities();
 
-	killables = 0U;
-	entities = 0U;
-	for(i = 0U; i != MAX_ENTITIES; ++i) {
-		spawnEntity(level_entities[level][i][0], level_entities[level][i][1], level_entities[level][i][2], level_entities[level][i][3]);
-	}
-
-	i = 0U;
-	for(iy = 0U; iy < MAPH; ++iy) {
-		for(ix = 0U; ix < MAPW; ++ix) {
-			tile = level_tiles[level][i];
-			map[ix + (iy << 4)] = tile;
-			if(tile > 0U) {
-				set_bkg_tiles((ix << 1), (iy << 1), 2, 2, &numbers[(tile-1U) << 2]);
-			}
-			++i;
-		}
-	}
+	spawnEntity(E_BAT, 80U, 110U, NONE);
+	spawnEntity(E_BAT, 120U, 70U, NONE);
+	spawnEntity(E_BAT, 40U, 30U, NONE);
 
 	player_x = 80U;
-	player_y = 16U;
+	player_y = 60U;
 	player_xdir = RIGHT;
 	player_ydir = DOWN;
 	player_yspeed = 0U;
@@ -135,26 +96,20 @@ void initGame() {
 	entity_frame = 0U;
 
 	SHOW_BKG;
-	SHOW_SPRITES;
 	HIDE_WIN;
+	SHOW_SPRITES;
 	DISPLAY_ON;
 	enable_interrupts();
-}
-
-void gameIntro() {
-	HIDE_SPRITES;
-	fadeFromWhite();
-	SHOW_SPRITES;
 }
 
 void updateInput() {
 	updateJoystate();
 
-	if(HELD(J_LEFT)) {
+	if(ISDOWN(J_LEFT)) {
 		player_x -= MOVE_SPEED;
 		player_xdir = LEFT;
 	}
-	if(HELD(J_RIGHT)) {
+	if(ISDOWN(J_RIGHT)) {
 		player_x += MOVE_SPEED;
 		player_xdir = RIGHT;
 	}
@@ -166,41 +121,11 @@ void updateInput() {
 	}
 }
 
-UBYTE collides(UBYTE x, UBYTE y) {
-	return map[(x >> 4) + ((y >> 4) << 4)];
-}
-
 void updatePlayer() {
-	UBYTE i, frame, tile1, tile2;
+	UBYTE i, frame;
 	// Left and right borders
 	if(player_x < 8U) player_x = 8U;
 	else if(player_x > 152U) player_x = 152U;
-
-	// Check tile collisions
-	tile1 = collides(player_x-4U, player_y+4U);
-	tile2 = collides(player_x-4U, player_y+12U);
-	if(tile1 || tile2) {
-		player_x = ((player_x >> 4) << 4) + 5U; // 11 = 16-5
-	}
-	tile1 = collides(player_x+4U, player_y+4U);
-	tile2 = collides(player_x+4U, player_y+12U);
-	if(tile1 || tile2) {
-		player_x = ((player_x >> 4) << 4) + 11U;
-	}
-
-	// Check jump
-	if(collides(player_x, player_y+15U)) {
-		player_ydir = UP;
-		player_yspeed = JUMP_SPEED;
-		player_jumped = 0U;
-		player_bounce = 16U;
-	}
-
-	if(collides(player_x, player_y+1U)) {
-		player_y = ((player_y+4U) >> 4) << 4;
-		player_ydir = DOWN;
-		player_yspeed = 0U;
-	}
 
 	// Check entity collisions
 	for(i = 0U; i != MAX_ENTITIES; ++i) {
@@ -208,12 +133,12 @@ void updatePlayer() {
 		&& player_y > entity_y[i]-16U && player_y < entity_y[i]+13U
 		&& player_x > entity_x[i]-14U && player_x < entity_x[i]+14U) {
 			// Hazards
-			if(entity_type[i] <= LAST_HAZARD) {
+			if(entity_type[i] == E_SPIKES) {
 				killPlayer();
 			// Enemies
 			} else if(entity_type[i] <= LAST_ENEMY) {
 				// Stomp
-				if(player_ydir == DOWN && player_y < entity_y[i]-8U) {
+				if(player_ydir == DOWN && player_y < entity_y[i]-10U) {
 					player_ydir = UP;
 					player_yspeed = JUMP_SPEED;
 					player_jumped = 0U;
@@ -227,18 +152,13 @@ void updatePlayer() {
 				}
 			} else if(entity_type[i] <= LAST_FRUIT) {
 				killEntity(i);
-			} else if(entity_type[i] == E_DOOR_OPEN) {
-				loop = 0U;
 			}
 		}
 	}
 
 	// Check bounds
-	if(player_y > 246U) {
+	if(player_y > SCREENH) {
 		killPlayer();
-	}
-	else if(player_y < 4U) {
-		player_y = 4U;
 	}
 
 	// Flying UP
@@ -269,19 +189,27 @@ void updatePlayer() {
 	}
 
 	if(player_xdir == LEFT) {
-		setSprite(player_x, player_y-scrolly+16U, frame, OBJ_PAL1);
-		setSprite(player_x+8U, player_y-scrolly+16U, frame+2U, OBJ_PAL1);
+		setSprite(player_x, player_y+16U, frame, OBJ_PAL1);
+		setSprite(player_x+8U, player_y+16U, frame+2U, OBJ_PAL1);
 	} else {
-		setSprite(player_x+8U, player_y-scrolly+16U, frame, FLIP_X | OBJ_PAL1);
-		setSprite(player_x, player_y-scrolly+16U, frame+2U, FLIP_X | OBJ_PAL1);
+		setSprite(player_x+8U, player_y+16U, frame, FLIP_X | OBJ_PAL1);
+		setSprite(player_x, player_y+16U, frame+2U, FLIP_X | OBJ_PAL1);
+	}
+
+	// Update scroll
+	scrolly = 0U;
+	if(player_y < SCRLMGN) {
+		scrolly = SCRLMGN - player_y;
+		player_y = SCRLMGN;
 	}
 
 	// Update cloud
 	if(cloud_frame != 5U) {
 		frame = entity_sprites[E_CLOUD] + (cloud_frame << 2U);
 
-		setSprite(cloud_x, cloud_y-scrolly+16U, frame, 0U);
-		setSprite(cloud_x+8U, cloud_y-scrolly+16U, frame+2U, 0U);
+		cloud_y += scrolly;
+		setSprite(cloud_x, cloud_y+16U, frame, 0U);
+		setSprite(cloud_x+8U, cloud_y+16U, frame+2U, 0U);
 
 		if((time & 3U) == 3U) cloud_frame++;
 	}
@@ -302,7 +230,7 @@ void updateEntities() {
 
 	if((time & 7U) == 7U) entity_frame++;
 
-	for(i = 0U; i != entities; ++i) {
+	for(i = 0U; i != MAX_ENTITIES; ++i) {
 		type = entity_type[i];
 
 		// Update entity
@@ -321,74 +249,42 @@ void updateEntities() {
 					}
 				}
 				break;
+		}
 
-			case E_DOOR:
-				if(killables == 0U) {
-					entity_type[i] = E_DOOR_OPEN;
-				}
-				break;
+		// Scroll entitites
+		entity_y[i] += scrolly;
 
-			case E_LAZER_OFF_V:
-			case E_LAZER_OFF_H:
-				continue;
-
-			case E_TRIGGER:
-				if((time & 63U) == 63U) {
-					switchLazers();
-				}
-				continue;
+		if(entity_y[i] > SCREENH) {
+			entity_type[i] = E_NONE;
+			entity_y[i] = 0U;
+			continue;
 		}
 
 		// Draw entities on screen
-		if(entity_y[i]+16U > scrolly && entity_y[i]-16U < scrolly+143U) {
-			frame = entity_sprites[type];
-			if(type < FIRST_FRUIT && entity_frame & 1U) frame += 4U;
+		frame = entity_sprites[type];
+		if(type < FIRST_FRUIT && entity_frame & 1U) frame += 4U;
 			
-			if(entity_dir[i] == LEFT) {
-				setSprite(entity_x[i], entity_y[i]-scrolly+16U, frame, entity_palette[type]);
-				setSprite(entity_x[i]+8U, entity_y[i]-scrolly+16U, frame+2U, entity_palette[type]);
-			} else {
-				setSprite(entity_x[i]+8U, entity_y[i]-scrolly+16U, frame, entity_palette[type] | FLIP_X);
-				setSprite(entity_x[i], entity_y[i]-scrolly+16U, frame+2U, entity_palette[type] | FLIP_X);
-			}
-		}
-	}
-}
-
-void switchLazers() {
-	UBYTE i;
-	for(i = 0; i != entities; ++i) {
-		switch(entity_type[i]) {
-			case E_LAZER_H:
-				entity_type[i] = E_LAZER_OFF_H;
-				break;
-			case E_LAZER_OFF_H:
-				entity_type[i] = E_LAZER_H;
-				break;
-			case E_LAZER_V:
-				entity_type[i] = E_LAZER_OFF_V;
-				break;
-			case E_LAZER_OFF_V:
-				entity_type[i] = E_LAZER_OFF_V;
-				break;
+		if(entity_dir[i] == LEFT) {
+			setSprite(entity_x[i], entity_y[i]+16U, frame, entity_palette[type]);
+			setSprite(entity_x[i]+8U, entity_y[i]+16U, frame+2U, entity_palette[type]);
+		} else {
+			setSprite(entity_x[i]+8U, entity_y[i]+16U, frame, entity_palette[type] | FLIP_X);
+			setSprite(entity_x[i], entity_y[i]+16U, frame+2U, entity_palette[type] | FLIP_X);
 		}
 	}
 }
 
 void spawnEntity(UBYTE type, UBYTE x, UBYTE y, UBYTE dir) {
 	UBYTE i;
-	if(type == E_NONE) return;
-
-	i = entities;
+	for(i = 0U; i != MAX_ENTITIES; ++i) {
+		if(entity_type[i] == E_NONE) break;
+	}
+	if(i == MAX_ENTITIES) return;
 
 	entity_x[i] = x;
 	entity_y[i] = y;
 	entity_type[i] = type;
 	entity_dir[i] = dir;
-	entity_var1[i] = 0U;
-
-	if(IS_KILLABLE(type)) killables++;
-	entities++;
 }
 
 void killEntity(UBYTE i) {
@@ -398,22 +294,11 @@ void killEntity(UBYTE i) {
 		} else {
 			entity_x[i] += 32U;
 		}
-		entity_var1[i]++;
-		if(entity_var1[i] != 3U) return;
 	}
 
-	if(IS_KILLABLE(entity_type[i])) {
-		killables--;
-	}
 	entity_type[i] = E_NONE;
 	entity_x[i] = 168U;
 	entity_y[i] = 0U;
-}
-
-void updateScroll() {
-	if(player_y < SCRLMGN) scrolly = 0;
-	else if(player_y > SCRLBTM) scrolly = 112U;
-	else scrolly = player_y - SCRLMGN;
 }
 
 void setSprite(UBYTE x, UBYTE y, UBYTE tile, UBYTE prop) {
@@ -433,44 +318,48 @@ void clearRemainingSprites() {
 	}
 }
 
+void clearEntities() {
+	UBYTE i;
+	for(i = 0U; i != MAX_ENTITIES; ++i) {
+		entity_type[i] = E_NONE;
+	}
+}
+
 void enterGame() {
+	UBYTE x, type;
 	initGame();
 
 	loop = 1U;
 	next_sprite = 0U;
 	time = 0U;
+	scrolled = 0U;
+	last_spawn_x = 0U;
+
+	move_bkg(0U, 112U);
+
 	while(loop && !dead) {
 		time++;
 
 		sprites_used = 0U;
 
-		updateScroll();
+		updatePlayer();
+
+		scrolled += scrolly;
+		if(scrolled > 32U) {
+			scrolled -= 32U;
+			x = (last_spawn_x + 32U + ((UBYTE)rand() & 63U)) & 127U;
+			last_spawn_x = x;
+			spawnEntity(E_BAT, 16U+x, 1U, NONE);
+		}
 
 		updateEntities();
 		updateInput();
-		updatePlayer();
 
 		clearRemainingSprites();
 
-		if(CLICKED(J_SELECT)) {
-			killables = 1U;
-			break;
-		}
-
 		wait_vbl_done();
 
-		move_bkg(0U, scrolly);
-	}
-
-	if (dead) {
-		gamestate = GAMESTATE_GAME;
-	}
-	else if(killables == 0U) {
-		gamestate = GAMESTATE_LEVEL;
-		completed[level] = 1U;
-	}
-	else {
-		gamestate = GAMESTATE_LEVEL;
+		scroll_bkg(0U, -scrolly);
 	}
 
 	HIDE_SPRITES;

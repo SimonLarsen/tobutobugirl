@@ -6,6 +6,6 @@ void updateJoystate();
 extern UBYTE joystate, oldjoystate;
 
 #define CLICKED(x) ((joystate & x) && (joystate & x) != (oldjoystate & x))
-#define HELD(x) (joystate & x)
+#define ISDOWN(x) (joystate & x)
 
 #endif

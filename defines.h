@@ -1,6 +1,9 @@
 #ifndef __DEFINES_H
 #define __DEFINES_H
 
+#define SCREENW 160U
+#define SCREENH	144U
+
 #define NONE	0U
 
 #define UP		0U
@@ -8,39 +11,19 @@
 #define DOWN	2U
 #define LEFT	3U
 
-#define NUM_LEVELS 16U
-
-// Tiles
-#define T_WALL	1U
-#define T_UNDEF	2U
-
 // Entities
 #define E_NONE 		0U
 
 #define E_SPIKES	1U
-#define E_LAZER_H	2U
-#define E_LAZER_V	3U
 
-#define E_SEAL		4U
-#define E_BIRD		5U
-#define E_BAT		6U
-#define E_GHOST		7U
+#define E_BIRD		2U
+#define E_BAT		3U
+#define E_GHOST		4U
 
-#define E_GRAPES	8U
-#define E_PEACH		9U
+#define E_GRAPES	5U
+#define E_PEACH		6U
 
-#define E_SWITCH		10U
-
-#define E_CLOUD			11U
-#define E_DOOR			12U
-#define E_DOOR_OPEN		13U
-
-#define E_LAZER_OFF_H	14U
-#define E_LAZER_OFF_V	15U
-#define E_TRIGGER		16U
-
-#define FIRST_HAZARD E_SPIKES
-#define LAST_HAZARD E_LAZER_V
+#define E_CLOUD		7U
 
 #define FIRST_ENEMY E_SEAL
 #define LAST_ENEMY E_GHOST
@@ -50,7 +33,7 @@
 
 #define LAST_COLLIDABLE E_PEACH
 
-#define MAX_ENTITIES 20U
+#define MAX_ENTITIES 18U
 
 // Entity properties
 #define FLIP_X 32U
