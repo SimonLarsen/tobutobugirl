@@ -17,7 +17,7 @@ void enterGame();
 #define MAPW 10U
 #define MAPH 16U
 
-#define SCRLMGN 60U
+#define SCRLMGN 76U
 
 #define MOVE_SPEED 2U
 #define JUMP_SPEED 28U

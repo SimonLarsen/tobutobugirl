@@ -130,7 +130,7 @@ void updatePlayer() {
 	// Check entity collisions
 	for(i = 0U; i != MAX_ENTITIES; ++i) {
 		if(entity_type[i] != E_NONE && entity_type[i] <= LAST_COLLIDABLE
-		&& player_y > entity_y[i]-16U && player_y < entity_y[i]+13U
+		&& player_y > entity_y[i]-16U && player_y < entity_y[i]+11U
 		&& player_x > entity_x[i]-14U && player_x < entity_x[i]+14U) {
 			// Hazards
 			if(entity_type[i] == E_SPIKES) {
@@ -138,7 +138,7 @@ void updatePlayer() {
 			// Enemies
 			} else if(entity_type[i] <= LAST_ENEMY) {
 				// Stomp
-				if(player_ydir == DOWN && player_y < entity_y[i]-10U) {
+				if(player_ydir == DOWN && player_y < entity_y[i]-4U) {
 					player_ydir = UP;
 					player_yspeed = JUMP_SPEED;
 					player_jumped = 0U;
@@ -189,11 +189,11 @@ void updatePlayer() {
 	}
 
 	if(player_xdir == LEFT) {
-		setSprite(player_x, player_y+16U, frame, OBJ_PAL1);
-		setSprite(player_x+8U, player_y+16U, frame+2U, OBJ_PAL1);
+		setSprite(player_x, player_y, frame, OBJ_PAL1);
+		setSprite(player_x+8U, player_y, frame+2U, OBJ_PAL1);
 	} else {
-		setSprite(player_x+8U, player_y+16U, frame, FLIP_X | OBJ_PAL1);
-		setSprite(player_x, player_y+16U, frame+2U, FLIP_X | OBJ_PAL1);
+		setSprite(player_x+8U, player_y, frame, FLIP_X | OBJ_PAL1);
+		setSprite(player_x, player_y, frame+2U, FLIP_X | OBJ_PAL1);
 	}
 
 	// Update scroll
@@ -208,8 +208,8 @@ void updatePlayer() {
 		frame = entity_sprites[E_CLOUD] + (cloud_frame << 2U);
 
 		cloud_y += scrolly;
-		setSprite(cloud_x, cloud_y+16U, frame, 0U);
-		setSprite(cloud_x+8U, cloud_y+16U, frame+2U, 0U);
+		setSprite(cloud_x, cloud_y, frame, 0U);
+		setSprite(cloud_x+8U, cloud_y, frame+2U, 0U);
 
 		if((time & 3U) == 3U) cloud_frame++;
 	}
@@ -254,7 +254,7 @@ void updateEntities() {
 		// Scroll entitites
 		entity_y[i] += scrolly;
 
-		if(entity_y[i] > SCREENH) {
+		if(entity_y[i] > 176U) {
 			entity_type[i] = E_NONE;
 			entity_y[i] = 0U;
 			continue;
@@ -265,11 +265,11 @@ void updateEntities() {
 		if(type < FIRST_FRUIT && entity_frame & 1U) frame += 4U;
 			
 		if(entity_dir[i] == LEFT) {
-			setSprite(entity_x[i], entity_y[i]+16U, frame, entity_palette[type]);
-			setSprite(entity_x[i]+8U, entity_y[i]+16U, frame+2U, entity_palette[type]);
+			setSprite(entity_x[i], entity_y[i], frame, entity_palette[type]);
+			setSprite(entity_x[i]+8U, entity_y[i], frame+2U, entity_palette[type]);
 		} else {
-			setSprite(entity_x[i]+8U, entity_y[i]+16U, frame, entity_palette[type] | FLIP_X);
-			setSprite(entity_x[i], entity_y[i]+16U, frame+2U, entity_palette[type] | FLIP_X);
+			setSprite(entity_x[i]+8U, entity_y[i], frame, entity_palette[type] | FLIP_X);
+			setSprite(entity_x[i], entity_y[i], frame+2U, entity_palette[type] | FLIP_X);
 		}
 	}
 }
@@ -326,7 +326,7 @@ void clearEntities() {
 }
 
 void enterGame() {
-	UBYTE x, type;
+	UBYTE x;
 	initGame();
 
 	loop = 1U;
