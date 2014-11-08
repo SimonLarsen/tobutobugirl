@@ -90,7 +90,7 @@ void initGame() {
 	set_bkg_data(0U, background_data_length, background_data);
 	set_bkg_tiles(0U, 0U, background_tiles_width, background_tiles_height, background_tiles);
 
-	set_win_data(0U, hud_data_length, hud_data);
+	set_bkg_data(background_data_length, hud_data_length, hud_data);
 	set_win_tiles(0U, 0U, hud_tiles_width, hud_tiles_height, hud_tiles);
 
 	set_sprite_data(0U, sprites_data_length, sprites_data);
@@ -373,7 +373,7 @@ void updateSpawns() {
 		last_spawn_x = (last_spawn_x + 32U + ((UBYTE)rand() & 63U)) & 127U;
 		x = last_spawn_x + 16U;
 
-		type = (UBYTE)rand() % 7U;
+		type = (UBYTE)rand() & 7U;
 		switch(type) {
 			case 0:
 			case 1:
@@ -415,7 +415,8 @@ void enterGame() {
 			scrolled -= 32U;
 			progress++;
 			progressbar = progress * 2U / 3U;
-			scroll_bkg(0U, -1);
+			//scroll_bkg(0U, -1);
+			move_bkg(0U, 112U-progress);
 		}
 
 		setSprite(24U+progressbar, 145U, 16U, OBJ_PAL1);
