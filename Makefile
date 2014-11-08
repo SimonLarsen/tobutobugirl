@@ -2,6 +2,7 @@ default: backgrounds sprites game.gb
 
 backgrounds:
 	imgtogb --map data/bg/background.png -o data/bg/background.h
+	imgtogb --map data/bg/hud.png -o data/bg/hud.h
 
 sprites:
 	imgtogb --sprite --8x16 data/sprite/sprites.png -o data/sprite/sprites.h

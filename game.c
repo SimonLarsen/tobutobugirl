@@ -10,12 +10,15 @@
 
 // Maps
 #include "data/bg/background.h"
+#include "data/bg/hud.h"
 // Sprites
 #include "data/sprite/sprites.h"
 
-UBYTE time, loop, dead;
+UBYTE time, dead;
+UBYTE progress, progressbar;
 UBYTE next_sprite, sprites_used;
-UBYTE scrolly, scrolled, last_spawn_x;
+UBYTE next_spawn, last_spawn_x, skip_spawns;
+UBYTE scrolly, scrolled;
 
 UBYTE player_x, player_y;
 UBYTE player_xdir, player_ydir;
@@ -32,11 +35,18 @@ UBYTE entity_frame;
 const UBYTE entity_sprites[] = {
 	0,		// E_NONE
 	 // Hazards
-	4*4,	// E_SPIKES
+	5*4,	// E_SPIKES
 	 // Enemies
-	6*4,	// E_BIRD
-	8*4,	// E_BAT
-	10*4,	// E_GHOST
+	7*4,	// E_BIRD
+	9*4,	// E_BAT
+	11*4,	// E_GHOST
+	// Powerups
+	0,		// E_ROCKET
+	0,		// E_DRILL
+	0,		// E_BALLOON
+	0,		// E_UMBRELLA
+	// Jumppad
+	23*4,	// E_JUMPPAD
 	// Fruits
 	25*4,	// E_GRAPES
 	26*4,	// E_PEACH
@@ -49,10 +59,16 @@ const UBYTE entity_palette[] = {
 	// Hazards
 	OBJ_PAL1,	// E_SPIKES
 	// Enemies
-	OBJ_PAL0,	// E_SEAL
 	OBJ_PAL1,	// E_BIRD
 	OBJ_PAL1,	// E_BAT
 	OBJ_PAL1,	// E_GHOST
+	// Powerups,
+	OBJ_PAL1,	// E_ROCKET
+	OBJ_PAL1,	// E_DRILL
+	OBJ_PAL1,	// E_BALLOON
+	OBJ_PAL1,	// E_UMBRELLA
+	// Jumppad
+	OBJ_PAL1,	// E_JUMPPAD
 	// Fruits
 	OBJ_PAL1,	// E_GRAPES
 	OBJ_PAL1,	// E_PEACH
@@ -74,17 +90,16 @@ void initGame() {
 	set_bkg_data(0U, background_data_length, background_data);
 	set_bkg_tiles(0U, 0U, background_tiles_width, background_tiles_height, background_tiles);
 
+	set_win_data(0U, hud_data_length, hud_data);
+	set_win_tiles(0U, 0U, hud_tiles_width, hud_tiles_height, hud_tiles);
+
 	set_sprite_data(0U, sprites_data_length, sprites_data);
 
 	clearSprites();
 	clearEntities();
 
-	spawnEntity(E_BAT, 80U, 110U, NONE);
-	spawnEntity(E_BAT, 120U, 70U, NONE);
-	spawnEntity(E_BAT, 40U, 30U, NONE);
-
 	player_x = 80U;
-	player_y = 60U;
+	player_y = 40U;
 	player_xdir = RIGHT;
 	player_ydir = DOWN;
 	player_yspeed = 0U;
@@ -95,8 +110,18 @@ void initGame() {
 	cloud_frame = 5U;
 	entity_frame = 0U;
 
+	next_sprite = 0U;
+	time = 0U;
+	next_spawn = 0U;
+	last_spawn_x = 80U;
+	skip_spawns = 0U;
+	progress = 0U;
+
+	move_bkg(0U, 112U);
+	move_win(7U, 128U);
+
 	SHOW_BKG;
-	HIDE_WIN;
+	SHOW_WIN;
 	SHOW_SPRITES;
 	DISPLAY_ON;
 	enable_interrupts();
@@ -131,14 +156,19 @@ void updatePlayer() {
 	for(i = 0U; i != MAX_ENTITIES; ++i) {
 		if(entity_type[i] != E_NONE && entity_type[i] <= LAST_COLLIDABLE
 		&& player_y > entity_y[i]-16U && player_y < entity_y[i]+11U
-		&& player_x > entity_x[i]-14U && player_x < entity_x[i]+14U) {
+		&& player_x > entity_x[i]-12U && player_x < entity_x[i]+12U) {
 			// Hazards
 			if(entity_type[i] == E_SPIKES) {
 				killPlayer();
+			} else if(entity_type[i] == E_JUMPPAD) {
+				player_ydir = UP;
+				player_yspeed = JUMPPAD_SPEED;
+				player_jumped = 0U;
+				player_bounce = 16U;
 			// Enemies
 			} else if(entity_type[i] <= LAST_ENEMY) {
 				// Stomp
-				if(player_ydir == DOWN && player_y < entity_y[i]-4U) {
+				if(player_ydir == DOWN && player_y < entity_y[i]-2U) {
 					player_ydir = UP;
 					player_yspeed = JUMP_SPEED;
 					player_jumped = 0U;
@@ -150,14 +180,12 @@ void updatePlayer() {
 				else {
 					killPlayer();
 				}
-			} else if(entity_type[i] <= LAST_FRUIT) {
-				killEntity(i);
-			}
+			} 
 		}
 	}
 
 	// Check bounds
-	if(player_y > SCREENH) {
+	if(player_y > SCREENHEIGHT-12U) {
 		killPlayer();
 	}
 
@@ -253,8 +281,7 @@ void updateEntities() {
 
 		// Scroll entitites
 		entity_y[i] += scrolly;
-
-		if(entity_y[i] > 176U) {
+		if(entity_y[i] > 136U) {
 			entity_type[i] = E_NONE;
 			entity_y[i] = 0U;
 			continue;
@@ -325,41 +352,78 @@ void clearEntities() {
 	}
 }
 
+void initSpawns() {
+	spawnEntity(E_BAT, 32U, 1U, NONE);
+	spawnEntity(E_BAT, 128U, 1U, NONE);
+
+	spawnEntity(E_JUMPPAD, 80U, 78U, NONE);
+}
+
+void updateSpawns() {
+	UBYTE x, type;
+	next_spawn += scrolly;
+	if(next_spawn > 36U) {
+		next_spawn -= 36U;
+
+		if(skip_spawns != 0) {
+			skip_spawns--;
+			return;
+		}
+
+		last_spawn_x = (last_spawn_x + 32U + ((UBYTE)rand() & 63U)) & 127U;
+		x = last_spawn_x + 16U;
+
+		type = (UBYTE)rand() % 7U;
+		switch(type) {
+			case 0:
+			case 1:
+				if(x < 80U) {
+					spawnEntity(E_BIRD, x, 1U, RIGHT);
+				} else {
+					spawnEntity(E_BIRD, x, 1U, LEFT);
+				}
+				break;
+			case 2:
+				spawnEntity(E_JUMPPAD, x, 1U, NONE);
+				skip_spawns = 2U;
+				break;
+			default:
+				spawnEntity(E_BAT, x, 1U, NONE);
+				break;
+		}
+	}
+}
+
 void enterGame() {
-	UBYTE x;
 	initGame();
+	initSpawns();
 
-	loop = 1U;
-	next_sprite = 0U;
-	time = 0U;
-	scrolled = 0U;
-	last_spawn_x = 0U;
-
-	move_bkg(0U, 112U);
-
-	while(loop && !dead) {
+	while(!dead) {
 		time++;
 
 		sprites_used = 0U;
 
 		updatePlayer();
 
+		updateEntities();
+		updateInput();
+
+		updateSpawns();
+
 		scrolled += scrolly;
 		if(scrolled > 32U) {
 			scrolled -= 32U;
-			x = (last_spawn_x + 32U + ((UBYTE)rand() & 63U)) & 127U;
-			last_spawn_x = x;
-			spawnEntity(E_BAT, 16U+x, 1U, NONE);
+			progress++;
+			progressbar = progress * 2U / 3U;
+			scroll_bkg(0U, -1);
 		}
 
-		updateEntities();
-		updateInput();
+		setSprite(24U+progressbar, 145U, 16U, OBJ_PAL1);
+		setSprite(32U+progressbar, 145U, 18U, OBJ_PAL1);
 
 		clearRemainingSprites();
 
 		wait_vbl_done();
-
-		scroll_bkg(0U, -scrolly);
 	}
 
 	HIDE_SPRITES;
