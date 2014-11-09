@@ -1,4 +1,4 @@
-default: backgrounds sprites game.gb
+default: backgrounds sprites tobu.gb
 
 backgrounds:
 	imgtogb --map data/bg/background.png -o data/bg/background.h
@@ -7,8 +7,8 @@ backgrounds:
 sprites:
 	imgtogb --sprite --8x16 data/sprite/sprites.png -o data/sprite/sprites.h
 
-.PHONY: game.gb
-game.gb: 
+.PHONY: tobu.gb
+tobu.gb: 
 	lcc -c main.c 
 	lcc -c game.c
 	lcc -c fade.c
@@ -18,7 +18,7 @@ game.gb:
 
 .PHONY: run
 run:
-	gambatte -s 3 game.gb
+	gambatte -s 3 tobu.gb
 
 .PHONY: clean
 clean:

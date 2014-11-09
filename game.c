@@ -14,7 +14,7 @@
 // Sprites
 #include "data/sprite/sprites.h"
 
-UBYTE time, dead;
+UBYTE time, dead, blink;
 UBYTE progress, progressbar;
 UBYTE next_sprite, sprites_used;
 UBYTE next_spawn, last_spawn_x, skip_spawns;
@@ -40,13 +40,14 @@ const UBYTE entity_sprites[] = {
 	7*4,	// E_BIRD
 	9*4,	// E_BAT
 	11*4,	// E_GHOST
+	// Jumppad
+	21*4,	// E_JUMPPAD
 	// Powerups
+	23*4,	// E_BLIP
 	0,		// E_ROCKET
 	0,		// E_DRILL
 	0,		// E_BALLOON
 	0,		// E_UMBRELLA
-	// Jumppad
-	23*4,	// E_JUMPPAD
 	// Fruits
 	25*4,	// E_GRAPES
 	26*4,	// E_PEACH
@@ -62,18 +63,19 @@ const UBYTE entity_palette[] = {
 	OBJ_PAL1,	// E_BIRD
 	OBJ_PAL1,	// E_BAT
 	OBJ_PAL1,	// E_GHOST
+	// Jumppad
+	OBJ_PAL1,	// E_JUMPPAD
 	// Powerups,
+	OBJ_PAL1,	// E_BLIP
 	OBJ_PAL1,	// E_ROCKET
 	OBJ_PAL1,	// E_DRILL
 	OBJ_PAL1,	// E_BALLOON
 	OBJ_PAL1,	// E_UMBRELLA
-	// Jumppad
-	OBJ_PAL1,	// E_JUMPPAD
 	// Fruits
 	OBJ_PAL1,	// E_GRAPES
 	OBJ_PAL1,	// E_PEACH
 	// Special
-	OBJ_PAL0,	// E_CLOUD
+	OBJ_PAL1,	// E_CLOUD
 };
 
 const UBYTE numbers[] = { 0U, 1U, 2U, 3U, 4U, 5U, 6U, 7U };
@@ -106,6 +108,7 @@ void initGame() {
 	player_jumped = 0U;
 	player_bounce = 0U;
 	dead = 0U;
+	blink = 0U;
 
 	cloud_frame = 5U;
 	entity_frame = 0U;
@@ -147,7 +150,7 @@ void updateInput() {
 }
 
 void updatePlayer() {
-	UBYTE i, frame;
+	UBYTE i, frame, palette;
 	// Left and right borders
 	if(player_x < 8U) player_x = 8U;
 	else if(player_x > 152U) player_x = 152U;
@@ -157,7 +160,6 @@ void updatePlayer() {
 		if(entity_type[i] != E_NONE && entity_type[i] <= LAST_COLLIDABLE
 		&& player_y > entity_y[i]-16U && player_y < entity_y[i]+11U
 		&& player_x > entity_x[i]-12U && player_x < entity_x[i]+12U) {
-			// Hazards
 			if(entity_type[i] == E_SPIKES) {
 				killPlayer();
 			} else if(entity_type[i] == E_JUMPPAD) {
@@ -165,7 +167,9 @@ void updatePlayer() {
 				player_yspeed = JUMPPAD_SPEED;
 				player_jumped = 0U;
 				player_bounce = 16U;
-			// Enemies
+			} else if(entity_type[i] == E_BLIP) {
+				killEntity(i);
+				blink = 8U;
 			} else if(entity_type[i] <= LAST_ENEMY) {
 				// Stomp
 				if(player_ydir == DOWN && player_y < entity_y[i]-2U) {
@@ -216,12 +220,17 @@ void updatePlayer() {
 		frame = 4;
 	}
 
+	// Blink
+	if(blink & 1U) palette = OBJ_PAL0;
+	else palette = OBJ_PAL1;
+	if(blink != 0U && (time & 1U)) blink--;
+
 	if(player_xdir == LEFT) {
-		setSprite(player_x, player_y, frame, OBJ_PAL1);
-		setSprite(player_x+8U, player_y, frame+2U, OBJ_PAL1);
+		setSprite(player_x, player_y, frame, palette);
+		setSprite(player_x+8U, player_y, frame+2U, palette);
 	} else {
-		setSprite(player_x+8U, player_y, frame, FLIP_X | OBJ_PAL1);
-		setSprite(player_x, player_y, frame+2U, FLIP_X | OBJ_PAL1);
+		setSprite(player_x+8U, player_y, frame, FLIP_X | palette);
+		setSprite(player_x, player_y, frame+2U, FLIP_X | palette);
 	}
 
 	// Update scroll
@@ -236,8 +245,8 @@ void updatePlayer() {
 		frame = entity_sprites[E_CLOUD] + (cloud_frame << 2U);
 
 		cloud_y += scrolly;
-		setSprite(cloud_x, cloud_y, frame, 0U);
-		setSprite(cloud_x+8U, cloud_y, frame+2U, 0U);
+		setSprite(cloud_x, cloud_y, frame, OBJ_PAL1);
+		setSprite(cloud_x+8U, cloud_y, frame+2U, OBJ_PAL1);
 
 		if((time & 3U) == 3U) cloud_frame++;
 	}
@@ -255,6 +264,7 @@ void setCloud(UBYTE x, UBYTE y) {
 
 void updateEntities() {
 	UBYTE i, frame, type;
+	UBYTE xdist, ydist;
 
 	if((time & 7U) == 7U) entity_frame++;
 
@@ -277,11 +287,34 @@ void updateEntities() {
 					}
 				}
 				break;
+
+			case E_BLIP:
+				if(player_x < entity_x[i]) xdist = entity_x[i] - player_x;
+				else xdist = player_x - entity_x[i];
+				if(player_y < entity_y[i]) ydist = entity_y[i] - player_y;
+				else ydist = player_y - entity_y[i];
+
+				if(xdist < 24U && ydist < 24U && xdist+ydist < 30U) {
+					entity_dir[i] = RIGHT;
+				}
+
+				if(entity_dir[i] == RIGHT) {
+					if(xdist > 2U) {
+						if(player_x < entity_x[i]) entity_x[i] -= 2U;
+						else entity_x[i] += 2U;
+					}
+					if(ydist > 2U) {
+						if(player_y < entity_y[i]) entity_y[i] -= 2U;
+						else entity_y[i] += 2U;
+					}
+				}
+
+				break;
 		}
 
 		// Scroll entitites
 		entity_y[i] += scrolly;
-		if(entity_y[i] > 136U) {
+		if(entity_y[i] > 136U && entity_y[i] < 200U) {
 			entity_type[i] = E_NONE;
 			entity_y[i] = 0U;
 			continue;
@@ -360,7 +393,7 @@ void initSpawns() {
 }
 
 void updateSpawns() {
-	UBYTE x, type;
+	UBYTE x, y, type;
 	next_spawn += scrolly;
 	if(next_spawn > 36U) {
 		next_spawn -= 36U;
@@ -391,6 +424,12 @@ void updateSpawns() {
 				spawnEntity(E_BAT, x, 1U, NONE);
 				break;
 		}
+
+		if(progress & 1U) {
+			x = 16U + ((UBYTE)rand() & 127U);
+			y = 232U + ((UBYTE)rand() & 15U);
+			spawnEntity(E_BLIP, x, y, NONE);
+		}
 	}
 }
 
@@ -415,7 +454,6 @@ void enterGame() {
 			scrolled -= 32U;
 			progress++;
 			progressbar = progress * 2U / 3U;
-			//scroll_bkg(0U, -1);
 			move_bkg(0U, 112U-progress);
 		}
 
