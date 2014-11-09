@@ -269,11 +269,11 @@ void updateEntities() {
 				if(time & 1U) {
 					if(entity_dir[i] == RIGHT) {
 						entity_x[i]++;
-						if(entity_x[i] == 168U) entity_x[i] = 248U;
+						if(entity_x[i] == 144U) entity_dir[i] = LEFT;
 					}
 					else {
 						entity_x[i]--;
-						if(entity_x[i] == 248U) entity_x[i] = 168U;
+						if(entity_x[i] == 16U) entity_dir[i] = RIGHT;
 					}
 				}
 				break;
