@@ -17,7 +17,7 @@
 UBYTE time, dead, blink;
 UBYTE progress, progressbar;
 UBYTE next_sprite, sprites_used;
-UBYTE next_spawn, last_spawn_x, skip_spawns;
+UBYTE next_spawn, last_spawn_x, last_spawn_type, skip_spawns;
 UBYTE scrolly, scrolled;
 
 UBYTE player_x, player_y;
@@ -116,6 +116,7 @@ void initGame() {
 	next_sprite = 0U;
 	time = 0U;
 	next_spawn = 0U;
+	last_spawn_type = E_NONE;
 	last_spawn_x = 80U;
 	skip_spawns = 0U;
 	progress = 0U;
@@ -415,13 +416,22 @@ void updateSpawns() {
 				} else {
 					spawnEntity(E_BIRD, x, 1U, LEFT);
 				}
+				last_spawn_type = E_BIRD;
 				break;
 			case 2:
 				spawnEntity(E_JUMPPAD, x, 1U, NONE);
 				skip_spawns = 2U;
+				last_spawn_type = E_JUMPPAD;
 				break;
+			case 3:
+				if(last_spawn_type != E_SPIKES && last_spawn_type != E_JUMPPAD) {
+					spawnEntity(E_SPIKES, x, 1U, NONE);
+					last_spawn_type = E_SPIKES;
+					break;
+				}
 			default:
 				spawnEntity(E_BAT, x, 1U, NONE);
+				last_spawn_type = E_BAT;
 				break;
 		}
 
