@@ -401,45 +401,46 @@ void updateSpawns() {
 
 		if(skip_spawns != 0) {
 			skip_spawns--;
-			return;
-		}
+		} else {
+			last_spawn_x = (last_spawn_x + 32U + ((UBYTE)rand() & 63U)) & 127U;
+			x = last_spawn_x + 16U;
 
-		last_spawn_x = (last_spawn_x + 32U + ((UBYTE)rand() & 63U)) & 127U;
-		x = last_spawn_x + 16U;
-
-		type = (UBYTE)rand() & 7U;
-		switch(type) {
-			case 0:
-			case 1:
-				if(x < 80U) {
-					spawnEntity(E_BIRD, x, 1U, RIGHT);
-				} else {
-					spawnEntity(E_BIRD, x, 1U, LEFT);
-				}
-				last_spawn_type = E_BIRD;
-				break;
-			case 2:
-				spawnEntity(E_JUMPPAD, x, 1U, NONE);
-				skip_spawns = 2U;
-				last_spawn_type = E_JUMPPAD;
-				break;
-			case 3:
-				if(last_spawn_type != E_SPIKES && last_spawn_type != E_JUMPPAD) {
-					spawnEntity(E_SPIKES, x, 1U, NONE);
-					last_spawn_type = E_SPIKES;
+			type = (UBYTE)rand() & 7U;
+			switch(type) {
+				case 0: // E_BIRD
+				case 1:
+					if(x < 80U) {
+						spawnEntity(E_BIRD, x, 1U, RIGHT);
+					} else {
+						spawnEntity(E_BIRD, x, 1U, LEFT);
+					}
+					last_spawn_type = E_BIRD;
 					break;
-				}
-			default:
-				spawnEntity(E_BAT, x, 1U, NONE);
-				last_spawn_type = E_BAT;
-				break;
+				case 2: // E_JUMPPAD
+					if(last_spawn_type != E_SPIKES) {
+						spawnEntity(E_JUMPPAD, x, 1U, NONE);
+						skip_spawns = 2U;
+						last_spawn_type = E_JUMPPAD;
+						break;
+					}
+				case 3: // E_SPIKES
+					if(last_spawn_type != E_SPIKES && last_spawn_type != E_JUMPPAD) {
+						spawnEntity(E_SPIKES, x, 1U, NONE);
+						last_spawn_type = E_SPIKES;
+						break;
+					}
+				default: // E_BAT
+					spawnEntity(E_BAT, x, 1U, NONE);
+					last_spawn_type = E_BAT;
+					break;
+			}
 		}
 
-		if(progress & 1U) {
+		//if((progress & 3U) == 3U) {
 			x = 16U + ((UBYTE)rand() & 127U);
 			y = 232U + ((UBYTE)rand() & 15U);
 			spawnEntity(E_BLIP, x, y, NONE);
-		}
+		//}
 	}
 }
 
@@ -464,7 +465,7 @@ void enterGame() {
 			scrolled -= 32U;
 			progress++;
 			progressbar = progress * 2U / 3U;
-			move_bkg(0U, 112U-progress);
+			move_bkg(0U, 115U-progress);
 		}
 
 		setSprite(24U+progressbar, 145U, 16U, OBJ_PAL1);
