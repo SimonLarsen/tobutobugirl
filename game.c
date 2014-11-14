@@ -32,6 +32,11 @@ UBYTE entity_type[MAX_ENTITIES];
 UBYTE entity_dir[MAX_ENTITIES];
 UBYTE entity_frame;
 
+const UBYTE cosx32[32] = {
+	0U, 0U, 1U, 1U, 2U, 4U, 5U, 6U, 8U, 10U, 11U, 12U, 14U, 15U, 15U, 16U,
+	16U, 16U, 15U, 15U, 14U, 12U, 11U, 10U, 8U, 6U, 5U, 4U, 2U, 1U, 1U, 0U
+};
+
 const UBYTE entity_sprites[] = {
 	0,		// E_NONE
 	 // Hazards
@@ -40,10 +45,11 @@ const UBYTE entity_sprites[] = {
 	7*4,	// E_BIRD
 	9*4,	// E_BAT
 	11*4,	// E_GHOST
+	13*4,	// E_ALIEN
 	// Jumppad
-	21*4,	// E_JUMPPAD
+	22*4,	// E_JUMPPAD
 	// Powerups
-	23*4,	// E_BLIP
+	24*4,	// E_BLIP
 	0,		// E_ROCKET
 	0,		// E_DRILL
 	0,		// E_BALLOON
@@ -63,6 +69,7 @@ const UBYTE entity_palette[] = {
 	OBJ_PAL1,	// E_BIRD
 	OBJ_PAL1,	// E_BAT
 	OBJ_PAL1,	// E_GHOST
+	OBJ_PAL1,	// E_ALIEN
 	// Jumppad
 	OBJ_PAL1,	// E_JUMPPAD
 	// Powerups,
@@ -276,19 +283,6 @@ void updateEntities() {
 		switch(type) {
 			case E_NONE: continue;
 
-			case E_BIRD:
-				if(time & 1U) {
-					if(entity_dir[i] == RIGHT) {
-						entity_x[i]++;
-						if(entity_x[i] == 144U) entity_dir[i] = LEFT;
-					}
-					else {
-						entity_x[i]--;
-						if(entity_x[i] == 16U) entity_dir[i] = RIGHT;
-					}
-				}
-				break;
-
 			case E_BLIP:
 				if(player_x < entity_x[i]) xdist = entity_x[i] - player_x;
 				else xdist = player_x - entity_x[i];
@@ -309,7 +303,24 @@ void updateEntities() {
 						else entity_y[i] += 2U;
 					}
 				}
+				break;
 
+			case E_BIRD:
+				if(time & 1U) {
+					if(entity_dir[i] == RIGHT) {
+						entity_x[i]++;
+						if(entity_x[i] == 144U) entity_dir[i] = LEFT;
+					}
+					else {
+						entity_x[i]--;
+						if(entity_x[i] == 16U) entity_dir[i] = RIGHT;
+					}
+				}
+				break;
+
+			case E_ALIEN:
+				entity_x[i] -= cosx32[time & 31U];
+				entity_x[i] += cosx32[(time+1U) & 31U];
 				break;
 		}
 
@@ -323,14 +334,20 @@ void updateEntities() {
 
 		// Draw entities on screen
 		frame = entity_sprites[type];
-		if(type < FIRST_FRUIT && entity_frame & 1U) frame += 4U;
-			
-		if(entity_dir[i] == LEFT) {
-			setSprite(entity_x[i], entity_y[i], frame, entity_palette[type]);
-			setSprite(entity_x[i]+8U, entity_y[i], frame+2U, entity_palette[type]);
+
+		if(type == E_BLIP) {
+			frame += (entity_frame & 1U) << 1;
+			setSprite(entity_x[i]+4U, entity_y[i], frame, entity_palette[type]);
 		} else {
-			setSprite(entity_x[i]+8U, entity_y[i], frame, entity_palette[type] | FLIP_X);
-			setSprite(entity_x[i], entity_y[i], frame+2U, entity_palette[type] | FLIP_X);
+			if(type < FIRST_FRUIT && entity_frame & 1U) frame += 4U;
+				
+			if(entity_dir[i] == LEFT) {
+				setSprite(entity_x[i], entity_y[i], frame, entity_palette[type]);
+				setSprite(entity_x[i]+8U, entity_y[i], frame+2U, entity_palette[type]);
+			} else {
+				setSprite(entity_x[i]+8U, entity_y[i], frame, entity_palette[type] | FLIP_X);
+				setSprite(entity_x[i], entity_y[i], frame+2U, entity_palette[type] | FLIP_X);
+			}
 		}
 	}
 }
@@ -416,14 +433,18 @@ void updateSpawns() {
 					}
 					last_spawn_type = E_BIRD;
 					break;
-				case 2: // E_JUMPPAD
+				case 2: // E_ALIEN
+					spawnEntity(E_ALIEN, x, 1U, LEFT);
+					last_spawn_type = E_ALIEN;
+					break;
+				case 3: // E_JUMPPAD
 					if(last_spawn_type != E_SPIKES) {
 						spawnEntity(E_JUMPPAD, x, 1U, NONE);
 						skip_spawns = 2U;
 						last_spawn_type = E_JUMPPAD;
 						break;
 					}
-				case 3: // E_SPIKES
+				case 4: // E_SPIKES
 					if(last_spawn_type != E_SPIKES && last_spawn_type != E_JUMPPAD) {
 						spawnEntity(E_SPIKES, x, 1U, NONE);
 						last_spawn_type = E_SPIKES;
@@ -436,11 +457,10 @@ void updateSpawns() {
 			}
 		}
 
-		//if((progress & 3U) == 3U) {
-			x = 16U + ((UBYTE)rand() & 127U);
-			y = 232U + ((UBYTE)rand() & 15U);
-			spawnEntity(E_BLIP, x, y, NONE);
-		//}
+		// Spawn blips
+		x = 16U + ((UBYTE)rand() & 127U);
+		y = 232U + ((UBYTE)rand() & 15U);
+		spawnEntity(E_BLIP, x, y, NONE);
 	}
 }
 
