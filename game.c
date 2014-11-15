@@ -33,8 +33,7 @@ UBYTE entity_dir[MAX_ENTITIES];
 UBYTE entity_frame;
 
 const UBYTE cosx32[32] = {
-	0U, 0U, 1U, 1U, 2U, 4U, 5U, 6U, 8U, 10U, 11U, 12U, 14U, 15U, 15U, 16U,
-	16U, 16U, 15U, 15U, 14U, 12U, 11U, 10U, 8U, 6U, 5U, 4U, 2U, 1U, 1U, 0U
+	0U, 0U, 2U, 4U, 7U, 11U, 15U, 19U, 24U, 29U, 33U, 37U, 41U, 44U, 46U, 48U, 48U, 48U, 46U, 44U, 41U, 37U, 33U, 29U, 24U, 19U, 15U, 11U, 7U, 4U, 2U, 0U
 };
 
 const UBYTE entity_sprites[] = {
@@ -319,8 +318,10 @@ void updateEntities() {
 				break;
 
 			case E_ALIEN:
-				entity_x[i] -= cosx32[time & 31U];
-				entity_x[i] += cosx32[(time+1U) & 31U];
+				if(time & 1U) {
+					entity_x[i] -= cosx32[time & 31U];
+					entity_x[i] += cosx32[(time+1U) & 31U];
+				}
 				break;
 		}
 
