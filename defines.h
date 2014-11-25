@@ -31,7 +31,7 @@
 
 #define E_CLOUD		14U
 
-#define FIRST_ENEMY E_SEAL
+#define FIRST_ENEMY E_SPIKES
 #define LAST_ENEMY E_ALIEN
 
 #define FIRST_FRUIT E_GRAPES
@@ -47,5 +47,16 @@
 
 #define OBJ_PAL0 0U
 #define OBJ_PAL1 16U
+
+// Powerups
+#define	P_NONE		0U
+#define P_ROCKET	1U
+#define P_PADDLE	2U
+#define P_UMBRELLA	3U
+#define P_BALLOON	4U
+#define P_BATS		5U
+
+#define FIRST_POWERUP	P_ROCKET
+#define LAST_POWERUP	P_BATS
 
 #endif

@@ -4,6 +4,7 @@
 void initGame();
 void updateInput();
 void updatePlayer();
+void updateHUD();
 void killPlayer();
 void setCloud(UBYTE x, UBYTE y);
 void updateEntities();
