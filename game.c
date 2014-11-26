@@ -35,13 +35,11 @@ UBYTE entity_dir[MAX_ENTITIES];
 UBYTE entity_frame, enemy_blink;
 
 #define IS_ENEMY(x) (x >= FIRST_ENEMY && x <= LAST_ENEMY)
-#define SET_POWERUP_HUD(x) (set_win_tiles(15U, 0U, 2U, 2U, &numbers[x << 2U]))
+#define SET_POWERUP_HUD(x) (set_win_tiles(15U, 0U, 2U, 2U, &powerups_tiles[x << 2U]))
 
 const UBYTE cosx32[64] = {
 	0U, 0U, 0U, 1U, 1U, 2U, 3U, 4U, 5U, 6U, 7U, 8U, 10U, 11U, 13U, 14U, 16U, 18U, 19U, 21U, 22U, 24U, 25U, 26U, 27U, 28U, 29U, 30U, 31U, 31U, 32U, 32U, 32U, 32U, 32U, 31U, 31U, 30U, 29U, 28U, 27U, 26U, 25U, 24U, 22U, 21U, 19U, 18U, 16U, 14U, 13U, 11U, 10U, 8U, 7U, 6U, 5U, 4U, 3U, 2U, 1U, 1U, 0U, 0U
 };
-
-const UBYTE numbers[] = { 0U, 1U, 2U, 3U, 4U, 5U, 6U, 7U, 8U, 9U, 10U, 11U, 12U, 13U, 14U, 15U, 16U, 17U, 18U, 19U, 20U, 21U, 22U, 23U };
 
 const UBYTE entity_sprites[] = {
 	0,		// E_NONE
