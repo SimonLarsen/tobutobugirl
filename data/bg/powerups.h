@@ -1,8 +1,12 @@
 #ifndef __powerups_tiles__
 #define __powerups_tiles__
 
-#define powerups_data_length 20
+#define powerups_data_length 24
 const unsigned char powerups_data[] = {
+	255, 255,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 
+	255, 255,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 
+	  0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 
+	  0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 
 	255, 255,   2,   2,   4,   4,   4,   4,   8,   8,  13,  12,  11,  11,   9,   8, 
 	255, 255,  64, 192, 160,  96, 160,  96, 144, 112, 176, 112, 208, 240, 144, 112, 
 	  8,   8,  24,  24,  57,  40,  57,  40, 105,  88,  93, 124,  58,  59,   1,   1, 
@@ -26,7 +30,7 @@ const unsigned char powerups_data[] = {
 };
 
 #define powerups_tiles_width 2
-#define powerups_tiles_height 10
+#define powerups_tiles_height 12
 #define powerups_offset 0
 const unsigned char powerups_tiles[] = {
 	  0,   1, 
@@ -39,6 +43,8 @@ const unsigned char powerups_tiles[] = {
 	 14,  15, 
 	 16,  17, 
 	 18,  19, 
+	 20,  21, 
+	 22,  23, 
 };
 
 #endif
