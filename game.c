@@ -357,16 +357,8 @@ void updateEntities() {
 
 			case E_PADDLE:
 				entity_y[i] = 132U-scrolly;
-				if(time & 1U) {
-					if(entity_dir[i] == RIGHT) {
-						entity_x[i]++;
-						if(entity_x[i] == 144U) entity_dir[i] = LEFT;
-					}
-					else {
-						entity_x[i]--;
-						if(entity_x[i] == 16U) entity_dir[i] = RIGHT;
-					}
-				}
+				if(player_x < entity_x[i]) entity_x[i]--;
+				else if(player_x > entity_x[i]) entity_x[i]++;
 				break;
 
 			case E_BIRD:
