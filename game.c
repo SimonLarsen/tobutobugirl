@@ -50,9 +50,11 @@ const UBYTE entity_sprites[] = {
 	9*4,	// E_BAT
 	11*4,	// E_GHOST
 	13*4,	// E_ALIEN
-	// Jumppad
+
 	21*4,	// E_JUMPPAD
+
 	// Powerups
+	94,		// E_PADDLE
 	24*4,	// E_BLIP
 	0,		// E_ROCKET
 	0,		// E_DRILL
@@ -146,13 +148,21 @@ void updateInput() {
 		}
 		else if(powerup != 0U) {
 			switch(powerup) {
+				case P_PADDLE:
+					for(i = 0U; i != MAX_ENTITIES; ++i) {
+						if(entity_type[i] == E_PADDLE) {
+							killEntity(i);
+						}
+					}
+					spawnEntity(E_PADDLE, 80U, 132U, RIGHT);
+					break;
 				case P_BATS:
 					for(i = 0U; i != MAX_ENTITIES; ++i) {
 						if(IS_ENEMY(entity_type[i])) {
 							entity_type[i] = E_BAT;
 						}
 					}
-					enemy_blink = 13U;
+					//enemy_blink = 13U;
 					flash = 6U;
 					break;
 			}
@@ -180,6 +190,12 @@ void updatePlayer() {
 				player_yspeed = JUMPPAD_SPEED;
 				player_jumped = 0U;
 				player_bounce = 16U;
+			} else if(entity_type[i] == E_PADDLE) {
+				player_ydir = UP;
+				player_yspeed = JUMPPAD_SPEED;
+				player_jumped = 0U;
+				player_bounce = 16U;
+				killEntity(i);
 			} else if(entity_type[i] == E_BLIP) {
 				killEntity(i);
 				blink = 13U;
@@ -339,6 +355,20 @@ void updateEntities() {
 				}
 				break;
 
+			case E_PADDLE:
+				entity_y[i] = 132U-scrolly;
+				if(time & 1U) {
+					if(entity_dir[i] == RIGHT) {
+						entity_x[i]++;
+						if(entity_x[i] == 144U) entity_dir[i] = LEFT;
+					}
+					else {
+						entity_x[i]--;
+						if(entity_x[i] == 16U) entity_dir[i] = RIGHT;
+					}
+				}
+				break;
+
 			case E_BIRD:
 				if(time & 1U) {
 					if(entity_dir[i] == RIGHT) {
@@ -375,19 +405,28 @@ void updateEntities() {
 		}
 		frame = entity_sprites[type];
 
-		if(type == E_BLIP) {
-			frame += (entity_frame & 1U) << 1;
-			setSprite(entity_x[i]+4U, entity_y[i], frame, palette);
-		} else {
-			if(type < FIRST_FRUIT && entity_frame & 1U) frame += 4U;
-				
-			if(entity_dir[i] == LEFT) {
+		switch(type) {
+			case E_BLIP:
+				frame += (entity_frame & 1U) << 1;
+				setSprite(entity_x[i]+4U, entity_y[i], frame, palette);
+				break;
+
+			case E_PADDLE:
 				setSprite(entity_x[i], entity_y[i], frame, palette);
-				setSprite(entity_x[i]+8U, entity_y[i], frame+2U, palette);
-			} else {
-				setSprite(entity_x[i]+8U, entity_y[i], frame, palette | FLIP_X);
-				setSprite(entity_x[i], entity_y[i], frame+2U, palette | FLIP_X);
-			}
+				setSprite(entity_x[i]+8U, entity_y[i], frame, palette);
+				break;
+				
+			default:
+				if(type < FIRST_FRUIT && entity_frame & 1U) frame += 4U;
+					
+				if(entity_dir[i] == LEFT) {
+					setSprite(entity_x[i], entity_y[i], frame, palette);
+					setSprite(entity_x[i]+8U, entity_y[i], frame+2U, palette);
+				} else {
+					setSprite(entity_x[i]+8U, entity_y[i], frame, palette | FLIP_X);
+					setSprite(entity_x[i], entity_y[i], frame+2U, palette | FLIP_X);
+				}
+				break;
 		}
 	}
 }
