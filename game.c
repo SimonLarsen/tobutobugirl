@@ -162,7 +162,7 @@ void updateInput() {
 							entity_type[i] = E_BAT;
 						}
 					}
-					//enemy_blink = 13U;
+					enemy_blink = 13U;
 					flash = 6U;
 					break;
 			}
