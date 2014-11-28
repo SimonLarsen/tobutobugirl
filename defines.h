@@ -22,15 +22,11 @@
 
 #define E_PADDLE	7U
 #define E_BLIP		8U
-#define E_ROCKET	9U
-#define E_DRILL		10U
-#define E_BALLOON	11U
-#define E_UMBRELLA	12U
 
-#define E_GRAPES	13U
-#define E_PEACH		14U
+#define E_GRAPES	9U
+#define E_PEACH		10U
 
-#define E_CLOUD		15U
+#define E_CLOUD		11U
 
 #define FIRST_ENEMY E_SPIKES
 #define LAST_ENEMY E_ALIEN

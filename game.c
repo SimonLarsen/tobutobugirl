@@ -48,16 +48,11 @@ const UBYTE entity_sprites[] = {
 	9*4,	// E_BAT
 	11*4,	// E_GHOST
 	13*4,	// E_ALIEN
-
+	// Misc
 	21*4,	// E_JUMPPAD
-
 	// Powerups
 	94,		// E_PADDLE
 	24*4,	// E_BLIP
-	0,		// E_ROCKET
-	0,		// E_DRILL
-	0,		// E_BALLOON
-	0,		// E_UMBRELLA
 	// Fruits
 	25*4,	// E_GRAPES
 	26*4,	// E_PEACH
