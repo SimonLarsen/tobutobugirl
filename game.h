@@ -6,7 +6,6 @@ void updateInput();
 void updatePlayer();
 void updateHUD();
 void killPlayer();
-void setCloud(UBYTE x, UBYTE y);
 void updateEntities();
 void spawnEntity(UBYTE type, UBYTE x, UBYTE y, UBYTE dir);
 void killEntity(UBYTE i);

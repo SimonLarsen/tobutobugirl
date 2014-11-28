@@ -26,13 +26,11 @@ UBYTE player_x, player_y;
 UBYTE player_xdir, player_ydir;
 UBYTE player_yspeed, player_jumped, player_bounce;
 
-UBYTE cloud_x, cloud_y, cloud_frame;
-
 UBYTE entity_x[MAX_ENTITIES];
 UBYTE entity_y[MAX_ENTITIES];
 UBYTE entity_type[MAX_ENTITIES];
 UBYTE entity_dir[MAX_ENTITIES];
-UBYTE entity_frame, enemy_blink;
+UBYTE entity_frame;
 
 #define IS_ENEMY(x) (x >= FIRST_ENEMY && x <= LAST_ENEMY)
 #define SET_POWERUP_HUD(x) (set_win_tiles(15U, 0U, 2U, 2U, &powerups_tiles[x << 2U]))
@@ -98,11 +96,9 @@ void initGame() {
 	dead = 0U;
 	blink = 0U;
 	flash = 0U;
-	enemy_blink = 0U;
 	blips = 0U;
 	powerup = 0U;
 
-	cloud_frame = 5U;
 	entity_frame = 0U;
 
 	next_sprite = 0U;
@@ -139,7 +135,7 @@ void updateInput() {
 		player_ydir = UP;
 		player_yspeed = DJUMP_SPEED;
 		player_jumped = 1U;
-		setCloud(player_x, player_y+5U);
+		spawnEntity(E_CLOUD, player_x, player_y+5U, 0U);
 	}
 
 	if(CLICKED(J_B)) {
@@ -162,7 +158,6 @@ void updateInput() {
 							entity_type[i] = E_BAT;
 						}
 					}
-					enemy_blink = 13U;
 					flash = 6U;
 					break;
 			}
@@ -210,7 +205,7 @@ void updatePlayer() {
 					player_jumped = 0U;
 					player_bounce = 16U;
 					killEntity(i);
-					setCloud(player_x, player_y+5U);
+					spawnEntity(E_CLOUD, player_x, player_y+5U, 0U);
 				}
 				// Hit
 				else {
@@ -271,17 +266,6 @@ void updatePlayer() {
 		scrolly = SCRLMGN - player_y;
 		player_y = SCRLMGN;
 	}
-
-	// Update cloud
-	if(cloud_frame != 5U) {
-		frame = entity_sprites[E_CLOUD] + (cloud_frame << 2U);
-
-		cloud_y += scrolly;
-		setSprite(cloud_x, cloud_y, frame, OBJ_PAL1);
-		setSprite(cloud_x+8U, cloud_y, frame+2U, OBJ_PAL1);
-
-		if((time & 3U) == 3U) cloud_frame++;
-	}
 }
 
 void updateHUD() {
@@ -313,18 +297,11 @@ void killPlayer() {
 	dead = 1U;
 }
 
-void setCloud(UBYTE x, UBYTE y) {
-	cloud_x = x;
-	cloud_y = y;
-	cloud_frame = 0U;
-}
-
 void updateEntities() {
 	UBYTE i, frame, type;
-	UBYTE xdist, ydist, palette;
+	UBYTE xdist, ydist;
 
 	if((time & 7U) == 7U) entity_frame++;
-	if(enemy_blink != 0 && (time & 1U)) enemy_blink--;
 
 	for(i = 0U; i != MAX_ENTITIES; ++i) {
 		type = entity_type[i];
@@ -380,6 +357,14 @@ void updateEntities() {
 					entity_x[i] += cosx32[(time+1U) & 63U];
 				}
 				break;
+
+			case E_CLOUD:
+				if((time & 3U) == 3U) entity_dir[i]++;
+				if(entity_dir[i] == 5U) {
+					entity_type[i] = E_NONE;
+					entity_y[i] = 0U;
+					continue;
+				}
 		}
 
 		// Scroll entitites
@@ -391,32 +376,34 @@ void updateEntities() {
 		}
 
 		// Draw entities on screen
-		palette = OBJ_PAL0;
-		if((enemy_blink & 2U) == 2U && IS_ENEMY(type)) {
-			palette = OBJ_PAL1;
-		}
 		frame = entity_sprites[type];
 
 		switch(type) {
 			case E_BLIP:
-				frame += (entity_frame & 1U) << 1;
-				setSprite(entity_x[i]+4U, entity_y[i], frame, palette);
+				frame += (entity_frame & 1U) << 1U;
+				setSprite(entity_x[i]+4U, entity_y[i], frame, OBJ_PAL0);
 				break;
 
 			case E_PADDLE:
-				setSprite(entity_x[i], entity_y[i], frame, palette);
-				setSprite(entity_x[i]+8U, entity_y[i], frame, palette);
+				setSprite(entity_x[i], entity_y[i], frame, OBJ_PAL0);
+				setSprite(entity_x[i]+8U, entity_y[i], frame, OBJ_PAL0);
+				break;
+
+			case E_CLOUD:
+				frame += entity_dir[i] << 2U;
+				setSprite(entity_x[i], entity_y[i], frame, OBJ_PAL0);
+				setSprite(entity_x[i]+8U, entity_y[i], frame+2U, OBJ_PAL0);
 				break;
 				
 			default:
 				if(type < FIRST_FRUIT && entity_frame & 1U) frame += 4U;
 					
 				if(entity_dir[i] == LEFT) {
-					setSprite(entity_x[i], entity_y[i], frame, palette);
-					setSprite(entity_x[i]+8U, entity_y[i], frame+2U, palette);
+					setSprite(entity_x[i], entity_y[i], frame, OBJ_PAL0);
+					setSprite(entity_x[i]+8U, entity_y[i], frame+2U, OBJ_PAL0);
 				} else {
-					setSprite(entity_x[i]+8U, entity_y[i], frame, palette | FLIP_X);
-					setSprite(entity_x[i], entity_y[i], frame+2U, palette | FLIP_X);
+					setSprite(entity_x[i]+8U, entity_y[i], frame, OBJ_PAL0 | FLIP_X);
+					setSprite(entity_x[i], entity_y[i], frame+2U, OBJ_PAL0 | FLIP_X);
 				}
 				break;
 		}
