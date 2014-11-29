@@ -16,7 +16,8 @@
 #include "data/sprite/sprites.h"
 
 UBYTE time, dead;
-UBYTE blink, flash, blips, powerup;
+UBYTE blink, flash, blips;
+UBYTE powerup, active_powerup, powerup_time;
 UBYTE progress, progressbar;
 UBYTE next_sprite, sprites_used;
 UBYTE next_spawn, last_spawn_x, last_spawn_type, skip_spawns;
@@ -93,6 +94,7 @@ void initGame() {
 	flash = 0U;
 	blips = 0U;
 	powerup = 0U;
+	active_powerup = 0U;
 
 	entity_frame = 0U;
 
@@ -155,6 +157,11 @@ void updateInput() {
 					}
 					flash = 6U;
 					break;
+
+				case P_BALLOON:
+					active_powerup = P_BALLOON;
+					powerup_time = P_BALLOON_TIME;
+					break;
 			}
 			powerup = 0U;
 			SET_POWERUP_HUD(powerup);
@@ -167,6 +174,11 @@ void updatePlayer() {
 	// Left and right borders
 	if(player_x < 8U) player_x = 8U;
 	else if(player_x > 152U) player_x = 152U;
+
+	if((time & 3U) == 3U) {
+		powerup_time--;
+		if(powerup_time == 0U) active_powerup = 0U;
+	}
 
 	// Check entity collisions
 	for(i = 0U; i != MAX_ENTITIES; ++i) {
@@ -213,6 +225,16 @@ void updatePlayer() {
 	// Check bounds
 	if(player_y > SCREENHEIGHT-12U) {
 		killPlayer();
+	}
+
+	// Apply powerups
+	if(active_powerup == P_BALLOON) {
+		player_yspeed = 14U;
+		player_ydir = UP;
+		if(powerup_time > 20U || powerup_time & 1U) {
+			setSprite(player_x, player_y-16U, 80U, OBJ_PAL0);
+			setSprite(player_x+8U, player_y-16U, 82U, OBJ_PAL0);
+		}
 	}
 
 	// Flying UP
@@ -276,6 +298,7 @@ void updateHUD() {
 				if(powerup > LAST_POWERUP) {
 					powerup = FIRST_POWERUP;
 				}
+				powerup = P_BALLOON;
 				SET_POWERUP_HUD(powerup);
 			}
 		}
