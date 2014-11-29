@@ -133,6 +133,7 @@ void updateInput() {
 		player_yspeed = DJUMP_SPEED;
 		player_jumped = 1U;
 		spawnEntity(E_CLOUD, player_x, player_y+5U, 0U);
+		if(active_powerup == P_BALLOON) active_powerup = 0U;
 	}
 
 	if(CLICKED(J_B)) {
@@ -161,6 +162,7 @@ void updateInput() {
 				case P_BALLOON:
 					active_powerup = P_BALLOON;
 					powerup_time = P_BALLOON_TIME;
+					player_jumped = 0U;
 					break;
 			}
 			powerup = 0U;
