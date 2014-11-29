@@ -47,13 +47,13 @@
 
 // Powerups
 #define	P_NONE		0U
-#define P_ROCKET	1U
-#define P_PADDLE	2U
-#define P_UMBRELLA	3U
-#define P_BALLOON	4U
-#define P_BATS		5U
+#define P_PADDLE	1U
+#define P_BALLOON	2U
+#define P_BATS		3U
+#define P_ROCKET	4U
+#define P_UMBRELLA	5U
 
-#define FIRST_POWERUP	P_ROCKET
+#define FIRST_POWERUP	P_PADDLE
 #define LAST_POWERUP	P_BATS
 
 #define P_BALLOON_TIME	100U

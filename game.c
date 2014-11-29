@@ -148,7 +148,7 @@ void updateInput() {
 							killEntity(i);
 						}
 					}
-					spawnEntity(E_PADDLE, 80U, 132U, RIGHT);
+					spawnEntity(E_PADDLE, 80U, 136U, RIGHT);
 					break;
 				case P_BATS:
 					for(i = 0U; i != MAX_ENTITIES; ++i) {
@@ -300,7 +300,6 @@ void updateHUD() {
 				if(powerup > LAST_POWERUP) {
 					powerup = FIRST_POWERUP;
 				}
-				powerup = P_BALLOON;
 				SET_POWERUP_HUD(powerup);
 			}
 		}
@@ -353,7 +352,7 @@ void updateEntities() {
 				break;
 
 			case E_PADDLE:
-				entity_y[i] = 132U-scrolly;
+				entity_y[i] = 136U-scrolly;
 				if(player_x < entity_x[i]) entity_x[i]--;
 				else if(player_x > entity_x[i]) entity_x[i]++;
 				break;
