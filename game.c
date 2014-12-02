@@ -141,6 +141,7 @@ void updateInput() {
 		player_jumped = 1U;
 		spawnEntity(E_CLOUD, player_x, player_y+5U, 0U);
 		if(active_powerup == P_BALLOON) active_powerup = 0U;
+		else if(active_powerup == P_ROCKET) active_powerup = 0U;
 	}
 
 	if(CLICKED(J_B)) {
@@ -198,7 +199,11 @@ void updatePlayer() {
 		if(entity_type[i] != E_NONE && entity_type[i] <= LAST_COLLIDABLE
 		&& player_y > entity_y[i]-16U && player_y < entity_y[i]+11U
 		&& player_x > entity_x[i]-12U && player_x < entity_x[i]+12U) {
-			if(entity_type[i] == E_SPIKES) {
+			if(active_powerup == P_ROCKET
+			&& entity_type[i] != E_BLIP && entity_type[i] != E_JUMPPAD) {
+				killEntity(i);
+				spawnEntity(E_CLOUD, player_x, player_y+5U, 0U);
+			} else if(entity_type[i] == E_SPIKES) {
 				killPlayer();
 			} else if(entity_type[i] == E_JUMPPAD) { 
 				player_ydir = UP;
@@ -218,17 +223,14 @@ void updatePlayer() {
 					blips += 2U;
 				}
 			} else if(entity_type[i] <= LAST_ENEMY) {
-				// Stomp
-				if(player_ydir == DOWN && player_y < entity_y[i]-2U) {
+				if((player_ydir == DOWN && player_y < entity_y[i]-2U)) {
 					player_ydir = UP;
 					player_yspeed = JUMP_SPEED;
 					player_jumped = 0U;
 					player_bounce = 16U;
 					killEntity(i);
 					spawnEntity(E_CLOUD, player_x, player_y+5U, 0U);
-				}
-				// Hit
-				else {
+				} else {
 					killPlayer();
 				}
 			} 
@@ -248,6 +250,10 @@ void updatePlayer() {
 			setSprite(player_x, player_y-16U, 80U, OBJ_PAL0);
 			setSprite(player_x+8U, player_y-16U, 82U, OBJ_PAL0);
 		}
+	}
+	else if(active_powerup == P_ROCKET) {
+		player_yspeed = 32U;
+		player_ydir = UP;
 	}
 
 	// Flying UP
@@ -276,6 +282,9 @@ void updatePlayer() {
 	else if(player_ydir == DOWN) {
 		frame = 4;
 	}
+
+	// Rocket powerup
+	if(active_powerup == P_ROCKET) frame = 16U;
 
 	// Blink
 	if((blink & 2U) == 2U) palette = OBJ_PAL1;
@@ -319,8 +328,8 @@ void updateHUD() {
 		setSprite(136U, 160U-blips, 92U, OBJ_PAL0);
 	}
 
-	setSprite(24U+progressbar, 145U, 20U, OBJ_PAL0);
-	setSprite(32U+progressbar, 145U, 22U, OBJ_PAL0);
+	setSprite(24U+progressbar, 145U, 24U, OBJ_PAL0);
+	setSprite(32U+progressbar, 145U, 26U, OBJ_PAL0);
 }
 
 void killPlayer() {
@@ -504,12 +513,16 @@ void updateSpawns() {
 	if(next_spawn > 36U) {
 		next_spawn -= 36U;
 
+		last_spawn_x = (last_spawn_x + 32U + ((UBYTE)rand() & 63U)) & 127U;
+		x = last_spawn_x + 16U;
+
 		if(skip_spawns != 0) {
 			skip_spawns--;
+		} else if(active_powerup == P_ROCKET && powerup_time < 4U) {
+			spawnEntity(E_JUMPPAD, x, 1U, NONE);
+			skip_spawns = 1U;
+			last_spawn_type = E_JUMPPAD;
 		} else {
-			last_spawn_x = (last_spawn_x + 32U + ((UBYTE)rand() & 63U)) & 127U;
-			x = last_spawn_x + 16U;
-
 			type = (UBYTE)rand() & 7U;
 			switch(type) {
 				case 0: // E_BIRD
