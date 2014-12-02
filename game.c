@@ -513,16 +513,19 @@ void updateSpawns() {
 	if(next_spawn > 36U) {
 		next_spawn -= 36U;
 
-		last_spawn_x = (last_spawn_x + 32U + ((UBYTE)rand() & 63U)) & 127U;
-		x = last_spawn_x + 16U;
-
 		if(skip_spawns != 0) {
 			skip_spawns--;
 		} else if(active_powerup == P_ROCKET && powerup_time < 4U) {
+			last_spawn_x = (player_x + 32U + ((UBYTE)rand() & 63U)) & 127U;
+			x = last_spawn_x + 16U;
+
 			spawnEntity(E_JUMPPAD, x, 1U, NONE);
 			skip_spawns = 1U;
 			last_spawn_type = E_JUMPPAD;
 		} else {
+			last_spawn_x = (last_spawn_x + 32U + ((UBYTE)rand() & 63U)) & 127U;
+			x = last_spawn_x + 16U;
+
 			type = (UBYTE)rand() & 7U;
 			switch(type) {
 				case 0: // E_BIRD
