@@ -15,7 +15,7 @@
 // Sprites
 #include "data/sprite/sprites.h"
 
-UBYTE time, dead;
+UBYTE time, paused, dead;
 UBYTE blink, flash, blips;
 UBYTE powerup, active_powerup, powerup_time;
 UBYTE progress, progressbar;
@@ -43,12 +43,12 @@ const UBYTE cosx32[64] = {
 const UBYTE entity_sprites[] = {
 	0,		// E_NONE
 	 // Hazards
-	5*4,	// E_SPIKES
+	7*4,	// E_SPIKES
 	 // Enemies
-	7*4,	// E_BIRD
-	9*4,	// E_BAT
-	11*4,	// E_GHOST
-	13*4,	// E_ALIEN
+	9*4,	// E_BIRD
+	11*4,	// E_BAT
+	13*4,	// E_GHOST
+	15*4,	// E_ALIEN
 	// Misc
 	21*4,	// E_JUMPPAD
 	// Powerups
@@ -120,6 +120,13 @@ void updateInput() {
 	UBYTE i;
 	updateJoystate();
 
+	if(CLICKED(J_START)) {
+		paused = paused ^ 1U;
+		BGP_REG = B8(11111001);
+	}
+
+	if(paused) return;
+
 	if(ISDOWN(J_LEFT)) {
 		player_x -= MOVE_SPEED;
 		player_xdir = LEFT;
@@ -158,10 +165,14 @@ void updateInput() {
 					}
 					flash = 6U;
 					break;
-
 				case P_BALLOON:
 					active_powerup = P_BALLOON;
 					powerup_time = P_BALLOON_TIME;
+					player_jumped = 0U;
+					break;
+				case P_ROCKET:
+					active_powerup = P_ROCKET;
+					powerup_time = P_ROCKET_TIME;
 					player_jumped = 0U;
 					break;
 			}
@@ -308,8 +319,8 @@ void updateHUD() {
 		setSprite(136U, 160U-blips, 92U, OBJ_PAL0);
 	}
 
-	setSprite(24U+progressbar, 145U, 16U, OBJ_PAL0);
-	setSprite(32U+progressbar, 145U, 18U, OBJ_PAL0);
+	setSprite(24U+progressbar, 145U, 20U, OBJ_PAL0);
+	setSprite(32U+progressbar, 145U, 22U, OBJ_PAL0);
 }
 
 void killPlayer() {
@@ -546,33 +557,37 @@ void enterGame() {
 	initSpawns();
 
 	while(!dead) {
-		time++;
 
-		// Flash background
-		if(flash != 0) {
-			flash--;
-			BGP_REG = B8(00011011);
-		} else BGP_REG = B8(11100100);
-
-		sprites_used = 0U;
-
-		updatePlayer();
-		updateHUD();
-
-		updateEntities();
 		updateInput();
 
-		updateSpawns();
+		if(!paused) {
+			time++;
 
-		scrolled += scrolly;
-		if(scrolled > 32U) {
-			scrolled -= 32U;
-			progress++;
-			progressbar = progress * 2U / 3U;
-			move_bkg(0U, 115U-progress);
+			// Flash background
+			if(flash != 0) {
+				flash--;
+				BGP_REG = B8(00011011);
+			} else BGP_REG = B8(11100100);
+
+			sprites_used = 0U;
+
+			updatePlayer();
+			updateHUD();
+
+			updateEntities();
+
+			updateSpawns();
+
+			scrolled += scrolly;
+			if(scrolled > 32U) {
+				scrolled -= 32U;
+				progress++;
+				progressbar = progress * 2U / 3U;
+				move_bkg(0U, 115U-progress);
+			}
+
+			clearRemainingSprites();
 		}
-
-		clearRemainingSprites();
 
 		wait_vbl_done();
 	}
