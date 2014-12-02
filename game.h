@@ -22,9 +22,14 @@ void enterGame();
 #define SCRLMGN 68U
 
 #define MOVE_SPEED 2U
+#define DASH_SPEED 6U
 #define JUMP_SPEED 29U
 #define DJUMP_SPEED 26U
 #define JUMPPAD_SPEED 39U
 #define MAX_YSPEED 24U
+
+#define DASH_TIME 	6U
+#define P_BALLOON_TIME	100U
+#define P_ROCKET_TIME	40U
 
 #endif

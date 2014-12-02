@@ -15,10 +15,9 @@
 // Sprites
 #include "data/sprite/sprites.h"
 
-UBYTE time, paused, dead;
-UBYTE blink, flash, blips;
-UBYTE powerup, active_powerup, powerup_time;
-UBYTE progress, progressbar;
+UBYTE time, paused, dead, dashing;
+UBYTE blink, flash;
+UBYTE blips, powerup, active_powerup, powerup_time, progress;
 UBYTE next_sprite, sprites_used;
 UBYTE next_spawn, last_spawn_x, last_spawn_type, skip_spawns;
 UBYTE scrolly, scrolled;
@@ -89,6 +88,7 @@ void initGame() {
 	player_yspeed = 0U;
 	player_jumped = 0U;
 	player_bounce = 0U;
+	dashing = 0U;
 	dead = 0U;
 	blink = 0U;
 	flash = 0U;
@@ -127,13 +127,16 @@ void updateInput() {
 
 	if(paused) return;
 
-	if(ISDOWN(J_LEFT)) {
+	if(ISDOWN(J_LEFT) && !dashing) {
 		player_x -= MOVE_SPEED;
 		player_xdir = LEFT;
 	}
-	if(ISDOWN(J_RIGHT)) {
+	if(ISDOWN(J_RIGHT) && !dashing) {
 		player_x += MOVE_SPEED;
 		player_xdir = RIGHT;
+	}
+	if(CLICKED(J_UP) && !dashing) {
+		dashing = DASH_TIME;
 	}
 	if(CLICKED(J_A) && player_jumped == 0U) {
 		player_ydir = UP;
@@ -185,9 +188,6 @@ void updateInput() {
 
 void updatePlayer() {
 	UBYTE i, frame, palette;
-	// Left and right borders
-	if(player_x < 8U) player_x = 8U;
-	else if(player_x > 152U) player_x = 152U;
 
 	if((time & 3U) == 3U) {
 		powerup_time--;
@@ -210,11 +210,13 @@ void updatePlayer() {
 				player_yspeed = JUMPPAD_SPEED;
 				player_jumped = 0U;
 				player_bounce = 16U;
+				dashing = 0;
 			} else if(entity_type[i] == E_PADDLE) {
 				player_ydir = UP;
 				player_yspeed = JUMPPAD_SPEED;
 				player_jumped = 0U;
 				player_bounce = 16U;
+				dashing = 0;
 				killEntity(i);
 			} else if(entity_type[i] == E_BLIP) {
 				killEntity(i);
@@ -228,6 +230,7 @@ void updatePlayer() {
 					player_yspeed = JUMP_SPEED;
 					player_jumped = 0U;
 					player_bounce = 16U;
+					dashing = 0;
 					killEntity(i);
 					spawnEntity(E_CLOUD, player_x, player_y+5U, 0U);
 				} else {
@@ -237,9 +240,16 @@ void updatePlayer() {
 		}
 	}
 
-	// Check bounds
-	if(player_y > SCREENHEIGHT-12U) {
-		killPlayer();
+	// Dashing
+	if(dashing) {
+		dashing--;
+		if(player_xdir == LEFT) {
+			player_x -= DASH_SPEED;
+		} else {
+			player_x += DASH_SPEED;
+		}
+		player_yspeed = 0U;
+		player_ydir = DOWN;
 	}
 
 	// Apply powerups
@@ -273,6 +283,15 @@ void updatePlayer() {
 		}
 	}
 
+	// Left and right borders
+	if(player_x < 8U) player_x = 8U;
+	else if(player_x > 152U) player_x = 152U;
+
+	// Check bounds
+	if(player_y > SCREENHEIGHT-12U) {
+		killPlayer();
+	}
+
 	// Update sprite
 	frame = 0U;
 	if(player_bounce != 0U) {
@@ -285,6 +304,7 @@ void updatePlayer() {
 
 	// Rocket powerup
 	if(active_powerup == P_ROCKET) frame = 16U;
+	else if(dashing) frame = 20U;
 
 	// Blink
 	if((blink & 2U) == 2U) palette = OBJ_PAL1;
@@ -308,6 +328,8 @@ void updatePlayer() {
 }
 
 void updateHUD() {
+	UBYTE progressbar;
+
 	// Blips
 	if(blips == 16U) {
 		if(powerup == 0U) {
@@ -328,6 +350,7 @@ void updateHUD() {
 		setSprite(136U, 160U-blips, 92U, OBJ_PAL0);
 	}
 
+	progressbar = (progress << 1U) / 3U;
 	setSprite(24U+progressbar, 145U, 24U, OBJ_PAL0);
 	setSprite(32U+progressbar, 145U, 26U, OBJ_PAL0);
 }
@@ -598,7 +621,6 @@ void enterGame() {
 			if(scrolled > 32U) {
 				scrolled -= 32U;
 				progress++;
-				progressbar = progress * 2U / 3U;
 				move_bkg(0U, 115U-progress);
 			}
 

@@ -56,7 +56,4 @@
 #define FIRST_POWERUP	P_PADDLE
 #define LAST_POWERUP	P_ROCKET
 
-#define P_BALLOON_TIME	100U
-#define P_ROCKET_TIME	40U
-
 #endif
