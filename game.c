@@ -154,10 +154,11 @@ void updateInput() {
 		}
 		else if(powerup != 0U) {
 			switch(powerup) {
+				powerup = P_ROCKET;
 				case P_PADDLE:
 					for(i = 0U; i != MAX_ENTITIES; ++i) {
 						if(entity_type[i] == E_PADDLE) {
-							killEntity(i);
+							break;
 						}
 					}
 					spawnEntity(E_PADDLE, 80U, 136U, RIGHT);
@@ -200,10 +201,9 @@ void updatePlayer() {
 		if(entity_type[i] != E_NONE && entity_type[i] <= LAST_COLLIDABLE
 		&& player_y > entity_y[i]-16U && player_y < entity_y[i]+11U
 		&& player_x > entity_x[i]-12U && player_x < entity_x[i]+12U) {
-			if(active_powerup == P_ROCKET
-			&& entity_type[i] != E_BLIP && entity_type[i] != E_JUMPPAD) {
+			if(active_powerup == P_ROCKET && entity_type[i] != E_JUMPPAD) {
 				killEntity(i);
-				spawnEntity(E_CLOUD, player_x, player_y+5U, 0U);
+				spawnEntity(E_CLOUD, player_x, player_y-6U, 0U);
 			} else if(entity_type[i] == E_SPIKES) {
 				killPlayer();
 			} else if(entity_type[i] == E_JUMPPAD) { 
@@ -265,6 +265,9 @@ void updatePlayer() {
 	else if(active_powerup == P_ROCKET) {
 		player_yspeed = 32U;
 		player_ydir = UP;
+		if((time & 15U) == 15U) {
+			spawnEntity(E_CLOUD, player_x, player_y+2U, 0U);
+		}
 	}
 
 	// Flying UP
