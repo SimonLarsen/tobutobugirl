@@ -113,6 +113,7 @@ void initGame() {
 	SHOW_WIN;
 	SHOW_SPRITES;
 	DISPLAY_ON;
+
 	enable_interrupts();
 }
 
@@ -135,7 +136,7 @@ void updateInput() {
 		player_x += MOVE_SPEED;
 		player_xdir = RIGHT;
 	}
-	if(CLICKED(J_UP) && !dashing) {
+	if(CLICKED(J_UP) && !dashing && !active_powerup) {
 		dashing = DASH_TIME;
 	}
 	if(CLICKED(J_A) && player_jumped == 0U) {
@@ -538,7 +539,7 @@ void updateSpawns() {
 
 		if(skip_spawns != 0) {
 			skip_spawns--;
-		} else if(active_powerup == P_ROCKET && powerup_time < 4U) {
+		} else if(active_powerup == P_ROCKET && powerup_time < 6U) {
 			last_spawn_x = (player_x + 32U + ((UBYTE)rand() & 63U)) & 127U;
 			x = last_spawn_x + 16U;
 
@@ -596,9 +597,7 @@ void enterGame() {
 	initSpawns();
 
 	while(!dead) {
-
 		updateInput();
-
 		if(!paused) {
 			time++;
 
