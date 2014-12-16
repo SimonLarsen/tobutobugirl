@@ -51,9 +51,9 @@
 #define P_BALLOON	2U
 #define P_BATS		3U
 #define P_ROCKET	4U
-#define P_UMBRELLA	5U
+#define P_SHIELD	5U
 
 #define FIRST_POWERUP	P_PADDLE
-#define LAST_POWERUP	P_ROCKET
+#define LAST_POWERUP	P_SHIELD
 
 #endif

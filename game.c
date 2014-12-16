@@ -17,7 +17,7 @@
 
 UBYTE time, paused, dead, dashing;
 UBYTE blink, flash;
-UBYTE blips, powerup, active_powerup, powerup_time, progress;
+UBYTE blips, powerup, active_powerup, powerup_time, has_shield, progress;
 UBYTE next_sprite, sprites_used;
 UBYTE next_spawn, last_spawn_x, last_spawn_type, skip_spawns;
 UBYTE scrolly, scrolled;
@@ -95,6 +95,7 @@ void initGame() {
 	blips = 0U;
 	powerup = 0U;
 	active_powerup = 0U;
+	has_shield = 0U;
 
 	entity_frame = 0U;
 
@@ -136,7 +137,7 @@ void updateInput() {
 		player_x += MOVE_SPEED;
 		player_xdir = RIGHT;
 	}
-	if(CLICKED(J_UP) && !dashing && !active_powerup) {
+	if(CLICKED(J_B) && !dashing && !active_powerup) {
 		dashing = DASH_TIME;
 	}
 	if(CLICKED(J_A) && player_jumped == 0U) {
@@ -148,13 +149,13 @@ void updateInput() {
 		else if(active_powerup == P_ROCKET) active_powerup = 0U;
 	}
 
-	if(CLICKED(J_B)) {
+	if(CLICKED(J_UP)) {
 		if(blips == 16U) {
 			blips = 0U;
 		}
 		else if(powerup != 0U) {
+			powerup = P_SHIELD;
 			switch(powerup) {
-				powerup = P_ROCKET;
 				case P_PADDLE:
 					for(i = 0U; i != MAX_ENTITIES; ++i) {
 						if(entity_type[i] == E_PADDLE) {
@@ -180,6 +181,9 @@ void updateInput() {
 					active_powerup = P_ROCKET;
 					powerup_time = P_ROCKET_TIME;
 					player_jumped = 0U;
+					break;
+				case P_SHIELD:
+					has_shield = 1U;
 					break;
 			}
 			powerup = 0U;
@@ -226,12 +230,21 @@ void updatePlayer() {
 					blips += 2U;
 				}
 			} else if(entity_type[i] <= LAST_ENEMY) {
-				if((player_ydir == DOWN && player_y < entity_y[i]-2U)) {
+				if(player_ydir == DOWN && player_y < entity_y[i]-2U) {
 					player_ydir = UP;
 					player_yspeed = JUMP_SPEED;
 					player_jumped = 0U;
 					player_bounce = 16U;
 					dashing = 0;
+					killEntity(i);
+					spawnEntity(E_CLOUD, player_x, player_y+5U, 0U);
+				} else if(has_shield) {
+					player_ydir = UP;
+					player_yspeed = SHIELD_JUMP_SPEED;
+					player_jumped = 0U;
+					player_bounce = 16U;
+					dashing = 0;
+					has_shield = 0U;
 					killEntity(i);
 					spawnEntity(E_CLOUD, player_x, player_y+5U, 0U);
 				} else {
@@ -268,6 +281,9 @@ void updatePlayer() {
 		if((time & 15U) == 15U) {
 			spawnEntity(E_CLOUD, player_x, player_y+2U, 0U);
 		}
+	}
+	if(has_shield) {
+		setSprite(player_x, player_y+9U, 76U, OBJ_PAL0);
 	}
 
 	// Flying UP
