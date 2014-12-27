@@ -34,4 +34,8 @@ void enterGame();
 #define P_ROCKET_TIME	40U
 #define P_SHIELD_TIME	100U
 
+#define KEY_JUMP	J_A
+#define KEY_DASH	J_UP
+#define KEY_USE		J_B
+
 #endif

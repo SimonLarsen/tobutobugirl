@@ -137,10 +137,10 @@ void updateInput() {
 		player_x += MOVE_SPEED;
 		player_xdir = RIGHT;
 	}
-	if(CLICKED(J_B) && !dashing && !active_powerup) {
+	if(CLICKED(KEY_DASH) && !dashing && !active_powerup) {
 		dashing = DASH_TIME;
 	}
-	if(CLICKED(J_A) && player_jumped == 0U) {
+	if(CLICKED(KEY_JUMP) && player_jumped == 0U) {
 		player_ydir = UP;
 		player_yspeed = DJUMP_SPEED;
 		player_jumped = 1U;
@@ -149,12 +149,11 @@ void updateInput() {
 		else if(active_powerup == P_ROCKET) active_powerup = 0U;
 	}
 
-	if(CLICKED(J_UP)) {
+	if(CLICKED(KEY_USE)) {
 		if(blips == 16U) {
 			blips = 0U;
 		}
 		else if(powerup != 0U) {
-			powerup = P_SHIELD;
 			switch(powerup) {
 				case P_PADDLE:
 					for(i = 0U; i != MAX_ENTITIES; ++i) {
