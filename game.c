@@ -16,16 +16,18 @@
 #include "data/sprite/sprites.h"
 
 UBYTE time, paused, dead;
+UBYTE next_sprite, sprites_used;
 UBYTE blink, flash;
 UBYTE blips, powerup, active_powerup, powerup_time, has_shield, progress;
-UBYTE next_sprite, sprites_used;
-UBYTE next_spawn, last_spawn_x, last_spawn_type, skip_spawns;
+
 UBYTE scrolly, scrolled;
+UBYTE next_spawn, last_spawn_x, last_spawn_type, skip_spawns;
 
 UBYTE player_x, player_y;
 UBYTE player_xdir, player_ydir;
 UBYTE player_yspeed, player_bounce;
 UBYTE dashing, dashes, dash_xdir, dash_ydir;
+UBYTE reticule_offset;
 
 UBYTE entity_x[MAX_ENTITIES];
 UBYTE entity_y[MAX_ENTITIES];
@@ -101,6 +103,7 @@ void initGame() {
 	powerup = 0U;
 	active_powerup = 0U;
 	has_shield = 0U;
+	reticule_offset = 0U;
 
 	entity_frame = 0U;
 
@@ -145,14 +148,17 @@ void updateInput() {
 	}
 
 	if(CLICKED(KEY_DASH) && dashes && !active_powerup) {
-		dashing = dash_time[dashes];
-		dashes--;
-
 		dash_xdir = dash_ydir = NONE;
 		if(ISDOWN(J_LEFT)) dash_xdir = LEFT;
 		else if(ISDOWN(J_RIGHT)) dash_xdir = RIGHT;
 		if(ISDOWN(J_UP)) dash_ydir = UP;
 		else if(ISDOWN(J_DOWN)) dash_ydir = DOWN;
+
+		if(dash_xdir != NONE || dash_ydir != NONE) {
+			dashing = dash_time[dashes];
+			dashes--;
+			spawnEntity(E_CLOUD, player_x, player_y-6U, 0U);
+		}
 	}
 
 	if(CLICKED(KEY_USE)) {
@@ -164,6 +170,7 @@ void updateInput() {
 				case P_PADDLE:
 					for(i = 0U; i != MAX_ENTITIES; ++i) {
 						if(entity_type[i] == E_PADDLE) {
+							killEntity(i);
 							break;
 						}
 					}
@@ -223,7 +230,6 @@ void updatePlayer() {
 				killEntity(i);
 			} else if(entity_type[i] == E_BLIP) {
 				killEntity(i);
-				blink = 13U;
 				if(powerup == 0U) {
 					blips += 2U;
 				}
@@ -328,9 +334,8 @@ void updatePlayer() {
 	else if(dashing) frame = 20U;
 
 	// Blink
-	if((blink & 2U) == 2U) palette = OBJ_PAL1;
+	if(!dashes && (time & 4U)) palette = OBJ_PAL1;
 	else palette = OBJ_PAL0;
-	if(blink != 0U && (time & 1U)) blink--;
 
 	if(player_xdir == LEFT) {
 		setSprite(player_x, player_y, frame, palette);
@@ -343,12 +348,21 @@ void updatePlayer() {
 	// Draw reticule
 	tmpx = player_x;
 	tmpy = player_y;
-	if(ISDOWN(J_LEFT)) tmpx -= 30U;
-	if(ISDOWN(J_RIGHT)) tmpx += 30U;
-	if(ISDOWN(J_UP)) tmpy -= 30U;
-	if(ISDOWN(J_DOWN)) tmpy += 30U;
 
-	if(tmpx || tmpy) {
+	if(ISDOWN(J_LEFT | J_RIGHT | J_UP | J_DOWN)) {
+		if(reticule_offset != RETICULE_MAX_OFFSET) {
+			reticule_offset += 2U;
+		}
+	} else {
+		reticule_offset = 0U;
+	}
+
+	if(ISDOWN(J_LEFT)) tmpx -= reticule_offset;
+	if(ISDOWN(J_RIGHT)) tmpx += reticule_offset;
+	if(ISDOWN(J_UP)) tmpy -= reticule_offset;
+	if(ISDOWN(J_DOWN)) tmpy += reticule_offset;
+
+	if((tmpx || tmpy) && dashes) {
 		if((time & 8U) == 8U) {
 			setSprite(tmpx, tmpy, 104U, OBJ_PAL0);
 			setSprite(tmpx+8U, tmpy, 106U, OBJ_PAL0);

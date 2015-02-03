@@ -24,13 +24,14 @@ void enterGame();
 
 #define MOVE_SPEED			2U
 #define DASH_SPEED			4U
+#define DASH_TIME	6U
 #define JUMP_SPEED			29U
 #define SHIELD_JUMP_SPEED	33U
 #define DJUMP_SPEED			26U
 #define JUMPPAD_SPEED		39U
 #define MAX_YSPEED			24U
 
-#define DASH_TIME	6U
+#define RETICULE_MAX_OFFSET	30U
 
 #define P_BALLOON_TIME	100U
 #define P_ROCKET_TIME	40U
