@@ -3,10 +3,10 @@
 
 #define NONE	0U
 
-#define UP		0U
-#define RIGHT	1U
-#define DOWN	2U
-#define LEFT	3U
+#define UP		1U
+#define RIGHT	2U
+#define DOWN	3U
+#define LEFT	4U
 
 // Entities
 #define E_NONE 		0U

@@ -15,7 +15,7 @@
 // Sprites
 #include "data/sprite/sprites.h"
 
-UBYTE time, paused, dead, dashing;
+UBYTE time, paused, dead;
 UBYTE blink, flash;
 UBYTE blips, powerup, active_powerup, powerup_time, has_shield, progress;
 UBYTE next_sprite, sprites_used;
@@ -24,7 +24,8 @@ UBYTE scrolly, scrolled;
 
 UBYTE player_x, player_y;
 UBYTE player_xdir, player_ydir;
-UBYTE player_yspeed, player_jumped, player_bounce;
+UBYTE player_yspeed, player_bounce;
+UBYTE dashing, dashes, dash_xdir, dash_ydir;
 
 UBYTE entity_x[MAX_ENTITIES];
 UBYTE entity_y[MAX_ENTITIES];
@@ -38,6 +39,8 @@ UBYTE entity_frame;
 const UBYTE cosx32[64] = {
 	0U, 0U, 0U, 1U, 1U, 2U, 3U, 4U, 5U, 6U, 7U, 8U, 10U, 11U, 13U, 14U, 16U, 18U, 19U, 21U, 22U, 24U, 25U, 26U, 27U, 28U, 29U, 30U, 31U, 31U, 32U, 32U, 32U, 32U, 32U, 31U, 31U, 30U, 29U, 28U, 27U, 26U, 25U, 24U, 22U, 21U, 19U, 18U, 16U, 14U, 13U, 11U, 10U, 8U, 7U, 6U, 5U, 4U, 3U, 2U, 1U, 1U, 0U, 0U
 };
+
+const UBYTE dash_time[4] = { 0U, 10U, 10U, 10U };
 
 const UBYTE entity_sprites[] = {
 	0,		// E_NONE
@@ -86,9 +89,11 @@ void initGame() {
 	player_xdir = RIGHT;
 	player_ydir = DOWN;
 	player_yspeed = 0U;
-	player_jumped = 0U;
 	player_bounce = 0U;
 	dashing = 0U;
+	dashes = 3U;
+	dash_xdir, dash_ydir = 0U;
+
 	dead = 0U;
 	blink = 0U;
 	flash = 0U;
@@ -133,20 +138,21 @@ void updateInput() {
 		player_x -= MOVE_SPEED;
 		player_xdir = LEFT;
 	}
+
 	if(ISDOWN(J_RIGHT) && !dashing) {
 		player_x += MOVE_SPEED;
 		player_xdir = RIGHT;
 	}
-	if(CLICKED(KEY_DASH) && !dashing && !active_powerup) {
-		dashing = DASH_TIME;
-	}
-	if(CLICKED(KEY_JUMP) && player_jumped == 0U) {
-		player_ydir = UP;
-		player_yspeed = DJUMP_SPEED;
-		player_jumped = 1U;
-		spawnEntity(E_CLOUD, player_x, player_y+5U, 0U);
-		if(active_powerup == P_BALLOON) active_powerup = 0U;
-		else if(active_powerup == P_ROCKET) active_powerup = 0U;
+
+	if(CLICKED(KEY_DASH) && dashes && !active_powerup) {
+		dashing = dash_time[dashes];
+		dashes--;
+
+		dash_xdir = dash_ydir = NONE;
+		if(ISDOWN(J_LEFT)) dash_xdir = LEFT;
+		else if(ISDOWN(J_RIGHT)) dash_xdir = RIGHT;
+		if(ISDOWN(J_UP)) dash_ydir = UP;
+		else if(ISDOWN(J_DOWN)) dash_ydir = DOWN;
 	}
 
 	if(CLICKED(KEY_USE)) {
@@ -174,12 +180,10 @@ void updateInput() {
 				case P_BALLOON:
 					active_powerup = P_BALLOON;
 					powerup_time = P_BALLOON_TIME;
-					player_jumped = 0U;
 					break;
 				case P_ROCKET:
 					active_powerup = P_ROCKET;
 					powerup_time = P_ROCKET_TIME;
-					player_jumped = 0U;
 					break;
 				case P_SHIELD:
 					has_shield = 1U;
@@ -193,6 +197,7 @@ void updateInput() {
 
 void updatePlayer() {
 	UBYTE i, frame, palette;
+	UBYTE tmpx, tmpy;
 
 	if((time & 3U) == 3U) {
 		powerup_time--;
@@ -210,17 +215,11 @@ void updatePlayer() {
 			} else if(entity_type[i] == E_SPIKES) {
 				killPlayer();
 			} else if(entity_type[i] == E_JUMPPAD) { 
-				player_ydir = UP;
+				bounce();
 				player_yspeed = JUMPPAD_SPEED;
-				player_jumped = 0U;
-				player_bounce = 16U;
-				dashing = 0;
 			} else if(entity_type[i] == E_PADDLE) {
-				player_ydir = UP;
+				bounce();
 				player_yspeed = JUMPPAD_SPEED;
-				player_jumped = 0U;
-				player_bounce = 16U;
-				dashing = 0;
 				killEntity(i);
 			} else if(entity_type[i] == E_BLIP) {
 				killEntity(i);
@@ -230,21 +229,15 @@ void updatePlayer() {
 				}
 			} else if(entity_type[i] <= LAST_ENEMY) {
 				if(player_ydir == DOWN && player_y < entity_y[i]-2U) {
-					player_ydir = UP;
+					bounce();
 					player_yspeed = JUMP_SPEED;
-					player_jumped = 0U;
-					player_bounce = 16U;
-					dashing = 0;
 					killEntity(i);
 					spawnEntity(E_CLOUD, player_x, player_y+5U, 0U);
 				} else if(has_shield) {
-					player_ydir = UP;
+					bounce();
 					player_yspeed = SHIELD_JUMP_SPEED;
-					player_jumped = 0U;
-					player_bounce = 16U;
-					dashing = 0;
-					has_shield = 0U;
 					killEntity(i);
+					has_shield = 0U;
 					spawnEntity(E_CLOUD, player_x, player_y+5U, 0U);
 				} else {
 					killPlayer();
@@ -256,13 +249,22 @@ void updatePlayer() {
 	// Dashing
 	if(dashing) {
 		dashing--;
-		if(player_xdir == LEFT) {
-			player_x -= DASH_SPEED;
-		} else {
-			player_x += DASH_SPEED;
-		}
 		player_yspeed = 0U;
 		player_ydir = DOWN;
+		if(dash_xdir == LEFT) {
+			player_x -= DASH_SPEED;
+		}
+		else if(dash_xdir == RIGHT) {
+			player_x += DASH_SPEED;
+		}
+		if(dash_ydir == UP) {
+			player_y -= DASH_SPEED-2U;
+			player_yspeed = 14U;
+			player_ydir = UP;
+		}
+		else if(dash_ydir == DOWN) {
+			player_y += DASH_SPEED;
+		}
 	}
 
 	// Apply powerups
@@ -338,6 +340,24 @@ void updatePlayer() {
 		setSprite(player_x, player_y, frame+2U, FLIP_X | palette);
 	}
 
+	// Draw reticule
+	tmpx = player_x;
+	tmpy = player_y;
+	if(ISDOWN(J_LEFT)) tmpx -= 30U;
+	if(ISDOWN(J_RIGHT)) tmpx += 30U;
+	if(ISDOWN(J_UP)) tmpy -= 30U;
+	if(ISDOWN(J_DOWN)) tmpy += 30U;
+
+	if(tmpx || tmpy) {
+		if((time & 8U) == 8U) {
+			setSprite(tmpx, tmpy, 104U, OBJ_PAL0);
+			setSprite(tmpx+8U, tmpy, 106U, OBJ_PAL0);
+		} else {
+			setSprite(tmpx+8U, tmpy, 104U, FLIP_X | OBJ_PAL0);
+			setSprite(tmpx, tmpy, 106U, FLIP_X | OBJ_PAL0);
+		}
+	}
+
 	// Update scroll
 	scrolly = 0U;
 	if(player_y < SCRLMGN) {
@@ -372,6 +392,13 @@ void updateHUD() {
 	progressbar = (progress << 1U) / 3U;
 	setSprite(24U+progressbar, 145U, 24U, OBJ_PAL0);
 	setSprite(32U+progressbar, 145U, 26U, OBJ_PAL0);
+}
+
+void bounce() {
+	player_ydir = UP;
+	player_bounce = 16U;
+	dashes = 3U;
+	dashing = 0;
 }
 
 void killPlayer() {
