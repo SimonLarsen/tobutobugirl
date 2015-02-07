@@ -42,8 +42,6 @@ const UBYTE cosx32[64] = {
 	0U, 0U, 0U, 1U, 1U, 2U, 3U, 4U, 5U, 6U, 7U, 8U, 10U, 11U, 13U, 14U, 16U, 18U, 19U, 21U, 22U, 24U, 25U, 26U, 27U, 28U, 29U, 30U, 31U, 31U, 32U, 32U, 32U, 32U, 32U, 31U, 31U, 30U, 29U, 28U, 27U, 26U, 25U, 24U, 22U, 21U, 19U, 18U, 16U, 14U, 13U, 11U, 10U, 8U, 7U, 6U, 5U, 4U, 3U, 2U, 1U, 1U, 0U, 0U
 };
 
-const UBYTE dash_time[4] = { 0U, 10U, 10U, 10U };
-
 const UBYTE entity_sprites[] = {
 	0,		// E_NONE
 	 // Hazards
@@ -155,7 +153,7 @@ void updateInput() {
 		else if(ISDOWN(J_DOWN)) dash_ydir = DOWN;
 
 		if(dash_xdir != NONE || dash_ydir != NONE) {
-			dashing = dash_time[dashes];
+			dashing = DASH_TIME;
 			dashes--;
 			spawnEntity(E_CLOUD, player_x, player_y-6U, 0U);
 		}
@@ -187,10 +185,12 @@ void updateInput() {
 				case P_BALLOON:
 					active_powerup = P_BALLOON;
 					powerup_time = P_BALLOON_TIME;
+					dashes = 3U;
 					break;
 				case P_ROCKET:
 					active_powerup = P_ROCKET;
 					powerup_time = P_ROCKET_TIME;
+					dashes = 3U;
 					break;
 				case P_SHIELD:
 					has_shield = 1U;
@@ -214,32 +214,32 @@ void updatePlayer() {
 	// Check entity collisions
 	for(i = 0U; i != MAX_ENTITIES; ++i) {
 		if(entity_type[i] != E_NONE && entity_type[i] <= LAST_COLLIDABLE
-		&& player_y > entity_y[i]-16U && player_y < entity_y[i]+11U
+		&& player_y > entity_y[i]-14U && player_y < entity_y[i]+11U
 		&& player_x > entity_x[i]-12U && player_x < entity_x[i]+12U) {
 			if(active_powerup == P_ROCKET) {
 				killEntity(i);
 				spawnEntity(E_CLOUD, player_x, player_y-6U, 0U);
 			} else if(entity_type[i] == E_SPIKES) {
 				killPlayer();
-			} else if(entity_type[i] == E_PADDLE) {
-				bounce();
-				player_yspeed = JUMPPAD_SPEED;
-				killEntity(i);
 			} else if(entity_type[i] == E_BLIP) {
 				killEntity(i);
 				if(powerup == 0U) {
 					blips += 2U;
 				}
+			} else if(entity_type[i] == E_PADDLE) {
+				bounce();
+				player_yspeed = JUMPPAD_SPEED;
+				killEntity(i);
 			} else if(entity_type[i] <= LAST_ENEMY) {
 				if(player_ydir == DOWN && player_y < entity_y[i]-2U) {
 					if(dashing) {
 						spawnEntity(E_BLIP, player_x-16U, player_y-8U, 0U);
 						spawnEntity(E_BLIP, player_x+16U, player_y-8U, 0U);
+						killEntity(i);
+						spawnEntity(E_CLOUD, player_x, player_y+5U, 0U);
 					}
 					bounce();
 					player_yspeed = JUMP_SPEED;
-					killEntity(i);
-					spawnEntity(E_CLOUD, player_x, player_y+5U, 0U);
 				} else if(has_shield) {
 					killEntity(i);
 					has_shield = 0U;
@@ -247,7 +247,7 @@ void updatePlayer() {
 				} else {
 					killPlayer();
 				}
-			} 
+			}
 		}
 	}
 
@@ -270,10 +270,13 @@ void updatePlayer() {
 		else if(dash_ydir == DOWN) {
 			player_y += DASH_SPEED;
 		}
-	}
 
+		if(!ISDOWN(KEY_DASH)) {
+			dashing = 0U;
+		}
+	}
 	// Apply powerups
-	if(active_powerup == P_BALLOON) {
+	else if(active_powerup == P_BALLOON) {
 		player_yspeed = 14U;
 		player_ydir = UP;
 		if(powerup_time > 20U || powerup_time & 1U) {
@@ -284,11 +287,12 @@ void updatePlayer() {
 	else if(active_powerup == P_ROCKET) {
 		player_yspeed = 32U;
 		player_ydir = UP;
-		if((time & 15U) == 15U) {
+		if((time & 31U) == 31U) {
 			spawnEntity(E_CLOUD, player_x, player_y+2U, 0U);
 		}
 	}
 
+	// Draw shield
 	if(has_shield) {
 		setSprite(player_x, player_y+9U, 76U, OBJ_PAL0);
 	}
@@ -361,7 +365,7 @@ void updatePlayer() {
 	if(ISDOWN(J_UP)) tmpy -= reticule_offset;
 	if(ISDOWN(J_DOWN)) tmpy += reticule_offset;
 
-	if((tmpx || tmpy) && dashes) {
+	if(dashes && reticule_offset) {
 		if((time & 8U) == 8U) {
 			setSprite(tmpx, tmpy, 104U, OBJ_PAL0);
 			setSprite(tmpx+8U, tmpy, 106U, OBJ_PAL0);
@@ -386,7 +390,6 @@ void updateHUD() {
 	if(blips >= 32U) {
 		if(powerup == 0U) {
 			powerup = FIRST_POWERUP;
-
 			SET_POWERUP_HUD(powerup);
 		} else {
 			if((time & 7U) == 7U) {
@@ -437,7 +440,7 @@ void updateEntities() {
 				if(player_y < entity_y[i]) ydist = entity_y[i] - player_y;
 				else ydist = player_y - entity_y[i];
 
-				if(xdist < 24U && ydist < 24U && xdist+ydist < 30U) {
+				if(xdist < 24U && ydist < 24U) {
 					entity_dir[i] = RIGHT;
 				}
 
@@ -583,11 +586,12 @@ void clearEntities() {
 }
 
 void initSpawns() {
-	spawnEntity(E_BAT, 32U, 1U, NONE);
-	spawnEntity(E_BAT, 128U, 1U, NONE);
-
 	spawnEntity(E_BAT, 80U, 78U, NONE);
+	spawnEntity(E_BAT, 32U, 42U, NONE);
+	spawnEntity(E_BAT, 128U, 6U, NONE);
+	last_spawn_x = 128U;
 }
+
 
 void updateSpawns() {
 	UBYTE x, y, type;
@@ -598,6 +602,8 @@ void updateSpawns() {
 		if(skip_spawns != 0) {
 			skip_spawns--;
 		} else {
+			if(active_powerup == P_ROCKET && powerup_time < 5U) return;
+
 			last_spawn_x = (last_spawn_x + 32U + ((UBYTE)rand() & 63U)) & 127U;
 			x = last_spawn_x + 16U;
 
