@@ -28,7 +28,6 @@ UBYTE player_x, player_y;
 UBYTE player_xdir, player_ydir;
 UBYTE player_yspeed, player_bounce;
 UBYTE dashing, dashes, dash_xdir, dash_ydir;
-UBYTE reticule_offset;
 UBYTE remaining_time, elapsed_seconds, elapsed_minutes;
 
 UBYTE entity_x[MAX_ENTITIES];
@@ -109,7 +108,6 @@ void initGame() {
 	powerup = 0U;
 	active_powerup = 0U;
 	has_shield = 0U;
-	reticule_offset = 0U;
 
 	entity_frame = 0U;
 	next_sprite = 0U;
@@ -219,7 +217,6 @@ void updateInput() {
 
 void updatePlayer() {
 	UBYTE i, frame, palette;
-	UBYTE tmpx, tmpy;
 
 	if((time & 3U) == 3U) {
 		powerup_time--;
@@ -363,33 +360,6 @@ void updatePlayer() {
 		setSprite(player_x, player_y, frame+2U, FLIP_X | palette);
 	}
 
-	// Draw reticule
-	tmpx = player_x;
-	tmpy = player_y;
-
-	if(ISDOWN(J_LEFT | J_RIGHT | J_UP | J_DOWN)) {
-		if(reticule_offset != RETICULE_MAX_OFFSET) {
-			reticule_offset += 2U;
-		}
-	} else {
-		reticule_offset = 0U;
-	}
-
-	if(ISDOWN(J_LEFT)) tmpx -= reticule_offset;
-	if(ISDOWN(J_RIGHT)) tmpx += reticule_offset;
-	if(ISDOWN(J_UP)) tmpy -= reticule_offset;
-	if(ISDOWN(J_DOWN)) tmpy += reticule_offset;
-
-	if(dashes && reticule_offset) {
-		if((time & 8U) == 8U) {
-			setSprite(tmpx, tmpy, 104U, OBJ_PAL0);
-			setSprite(tmpx+8U, tmpy, 106U, OBJ_PAL0);
-		} else {
-			setSprite(tmpx+8U, tmpy, 104U, FLIP_X | OBJ_PAL0);
-			setSprite(tmpx, tmpy, 106U, FLIP_X | OBJ_PAL0);
-		}
-	}
-
 	// Update scroll
 	scrolly = 0U;
 	if(player_y < SCRLMGN) {
@@ -499,10 +469,15 @@ void updateEntities() {
 				}
 				break;
 
-			case E_ALIEN:
+			case E_GHOST:
 				if(time & 1U) {
 					entity_x[i] -= cosx32[time & 63U];
 					entity_x[i] += cosx32[(time+1U) & 63U];
+					if(time & 32U) {
+						entity_dir[i] = LEFT;
+					} else {
+						entity_dir[i] = RIGHT;
+					}
 				}
 				break;
 
@@ -642,9 +617,13 @@ void updateSpawns() {
 					}
 					last_spawn_type = E_BIRD;
 					break;
-				case 2: // E_ALIEN
-					spawnEntity(E_ALIEN, x, 1U, LEFT);
-					last_spawn_type = E_ALIEN;
+				case 2: // E_GHOST
+					spawnEntity(E_GHOST, x, 1U, LEFT);
+					last_spawn_type = E_GHOST;
+					break;
+				case 3: // E_ALIEN
+					spawnEntity(E_ALIEN, x, 1U, NONE);
+					last_spawn_type == E_ALIEN;
 					break;
 				case 4: // E_SPIKES
 					if(last_spawn_type != E_SPIKES) {
