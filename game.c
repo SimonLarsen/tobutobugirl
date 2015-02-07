@@ -11,6 +11,7 @@
 // Maps
 #include "data/bg/powerups.h"
 #include "data/bg/hud.h"
+#include "data/bg/clock.h"
 #include "data/bg/background.h"
 // Sprites
 #include "data/sprite/sprites.h"
@@ -28,6 +29,7 @@ UBYTE player_xdir, player_ydir;
 UBYTE player_yspeed, player_bounce;
 UBYTE dashing, dashes, dash_xdir, dash_ydir;
 UBYTE reticule_offset;
+UBYTE remaining_time, elapsed_seconds, elapsed_minutes;
 
 UBYTE entity_x[MAX_ENTITIES];
 UBYTE entity_y[MAX_ENTITIES];
@@ -35,11 +37,14 @@ UBYTE entity_type[MAX_ENTITIES];
 UBYTE entity_dir[MAX_ENTITIES];
 UBYTE entity_frame;
 
-#define IS_ENEMY(x) (x >= FIRST_ENEMY && x <= LAST_ENEMY)
-#define SET_POWERUP_HUD(x) (set_win_tiles(15U, 0U, 2U, 2U, &powerups_tiles[x << 2U]))
+#define IS_ENEMY(x) ((x) >= FIRST_ENEMY && (x) <= LAST_ENEMY)
+#define SET_POWERUP_HUD(x) (set_win_tiles(16U, 0U, 2U, 2U, &powerups_tiles[(x) << 2]))
 
 const UBYTE cosx32[64] = {
-	0U, 0U, 0U, 1U, 1U, 2U, 3U, 4U, 5U, 6U, 7U, 8U, 10U, 11U, 13U, 14U, 16U, 18U, 19U, 21U, 22U, 24U, 25U, 26U, 27U, 28U, 29U, 30U, 31U, 31U, 32U, 32U, 32U, 32U, 32U, 31U, 31U, 30U, 29U, 28U, 27U, 26U, 25U, 24U, 22U, 21U, 19U, 18U, 16U, 14U, 13U, 11U, 10U, 8U, 7U, 6U, 5U, 4U, 3U, 2U, 1U, 1U, 0U, 0U
+	0U, 0U, 0U, 1U, 1U, 2U, 3U, 4U, 5U, 6U, 7U, 8U, 10U, 11U, 13U, 14U, 16U,
+	18U, 19U, 21U, 22U, 24U, 25U, 26U, 27U, 28U, 29U, 30U, 31U, 31U, 32U, 32U,
+	32U, 32U, 32U, 31U, 31U, 30U, 29U, 28U, 27U, 26U, 25U, 24U, 22U, 21U, 19U,
+	18U, 16U, 14U, 13U, 11U, 10U, 8U, 7U, 6U, 5U, 4U, 3U, 2U, 1U, 1U, 0U, 0U
 };
 
 const UBYTE entity_sprites[] = {
@@ -72,8 +77,10 @@ void initGame() {
 	OBP1_REG = B8(01010000);
 	BGP_REG = B8(11100100);
 
+	// Load tile data
 	set_bkg_data(0U, powerups_data_length, powerups_data);
 	set_bkg_data(hud_offset, hud_data_length, hud_data);
+	set_bkg_data(clock_offset, clock_data_length, clock_data);
 	set_bkg_data(background_offset, background_data_length, background_data);
 
 	set_bkg_tiles(0U, 0U, background_tiles_width, background_tiles_height, background_tiles);
@@ -84,6 +91,7 @@ void initGame() {
 	clearSprites();
 	clearEntities();
 
+	// Init variables
 	player_x = 80U;
 	player_y = 40U;
 	player_xdir = RIGHT;
@@ -104,7 +112,6 @@ void initGame() {
 	reticule_offset = 0U;
 
 	entity_frame = 0U;
-
 	next_sprite = 0U;
 	time = 0U;
 	next_spawn = 0U;
@@ -113,8 +120,16 @@ void initGame() {
 	skip_spawns = 0U;
 	progress = 0U;
 
+	remaining_time = 64U;
+	elapsed_seconds = 0U;
+	elapsed_minutes = 0U;
+
 	move_bkg(0U, 112U);
 	move_win(7U, 128U);
+
+	// Clear HUD
+	SET_POWERUP_HUD(0U);
+	updateHUDTime();
 
 	SHOW_BKG;
 	SHOW_WIN;
@@ -401,13 +416,22 @@ void updateHUD() {
 			}
 		}
 	} else {
-		setSprite(128U, 160U-(blips >> 1), 92U, OBJ_PAL0);
 		setSprite(136U, 160U-(blips >> 1), 92U, OBJ_PAL0);
+		setSprite(144U, 160U-(blips >> 1), 92U, OBJ_PAL0);
 	}
 
 	progressbar = (progress << 1U) / 3U;
-	setSprite(24U+progressbar, 145U, 24U, OBJ_PAL0);
-	setSprite(32U+progressbar, 145U, 26U, OBJ_PAL0);
+	setSprite(40U+progressbar, 145U, 24U, OBJ_PAL0);
+	setSprite(48U+progressbar, 145U, 26U, OBJ_PAL0);
+}
+
+void updateHUDTime() {
+	UBYTE index;
+
+	index = (remaining_time+4U) >> 3;
+	index = index << 2;
+
+	set_win_tiles(2U, 0U, 2U, 2U, &clock_tiles[index]);
 }
 
 void bounce() {
@@ -650,6 +674,17 @@ void enterGame() {
 		updateInput();
 		if(!paused) {
 			time++;
+			// Update timing
+			if((time & 31U) == 31U) {
+				elapsed_seconds++;
+				remaining_time--;
+				updateHUDTime();
+
+				if(elapsed_seconds == 60U) {
+					elapsed_seconds = 0U;
+					elapsed_minutes++;
+				}
+			}
 
 			// Flash background
 			if(flash != 0) {

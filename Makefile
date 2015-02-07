@@ -3,7 +3,8 @@ default: backgrounds sprites tobu.gb
 backgrounds:
 	imgtogb --map data/bg/powerups.png -o data/bg/powerups.h
 	imgtogb --map data/bg/hud.png -o data/bg/hud.h -O 22
-	imgtogb --map data/bg/background.png -o data/bg/background.h -O 44
+	imgtogb --map data/bg/clock.png -o data/bg/clock.h -O 40
+	imgtogb --map data/bg/background.png -o data/bg/background.h -O 54
 
 sprites:
 	imgtogb --sprite --8x16 data/sprite/sprites.png -o data/sprite/sprites.h

@@ -5,6 +5,7 @@ void initGame();
 void updateInput();
 void updatePlayer();
 void updateHUD();
+void updateHUDTime();
 void killPlayer();
 void updateEntities();
 void spawnEntity(UBYTE type, UBYTE x, UBYTE y, UBYTE dir);
