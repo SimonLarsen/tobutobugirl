@@ -229,16 +229,16 @@ void updatePlayer() {
 		if(entity_type[i] != E_NONE && entity_type[i] <= LAST_COLLIDABLE
 		&& player_y > entity_y[i]-14U && player_y < entity_y[i]+11U
 		&& player_x > entity_x[i]-12U && player_x < entity_x[i]+12U) {
-			if(active_powerup == P_ROCKET) {
-				killEntity(i);
-				spawnEntity(E_CLOUD, player_x, player_y-6U, 0U);
-			} else if(entity_type[i] == E_SPIKES) {
-				killPlayer();
-			} else if(entity_type[i] == E_BLIP) {
+			if(entity_type[i] == E_BLIP) {
 				killEntity(i);
 				if(powerup == 0U) {
 					blips += 2U;
 				}
+			} else if(active_powerup == P_ROCKET) {
+				killEntity(i);
+				spawnEntity(E_CLOUD, player_x, player_y-6U, 0U);
+			} else if(entity_type[i] == E_SPIKES) {
+				killPlayer();
 			} else if(entity_type[i] == E_PADDLE) {
 				bounce();
 				player_yspeed = JUMPPAD_SPEED;
@@ -430,6 +430,8 @@ void updateEntities() {
 			case E_NONE: continue;
 
 			case E_BLIP:
+				if(active_powerup == P_ROCKET) break;
+
 				if(player_x < entity_x[i]) xdist = entity_x[i] - player_x;
 				else xdist = player_x - entity_x[i];
 				if(player_y < entity_y[i]) ydist = entity_y[i] - player_y;
@@ -440,11 +442,11 @@ void updateEntities() {
 				}
 
 				if(entity_dir[i] == RIGHT) {
-					if(xdist > 2U) {
+					if(xdist > 3U) {
 						if(player_x < entity_x[i]) entity_x[i] -= 2U;
 						else entity_x[i] += 2U;
 					}
-					if(ydist > 2U) {
+					if(ydist > 3U) {
 						if(player_y < entity_y[i]) entity_y[i] -= 2U;
 						else entity_y[i] += 2U;
 					}
@@ -586,9 +588,9 @@ void clearEntities() {
 }
 
 void initSpawns() {
-	spawnEntity(E_BAT, 80U, 78U, NONE);
-	spawnEntity(E_BAT, 32U, 42U, NONE);
-	spawnEntity(E_BAT, 128U, 6U, NONE);
+	spawnEntity(E_BAT, 80U, 74U, NONE);
+	spawnEntity(E_BAT, 32U, 38U, NONE);
+	spawnEntity(E_BAT, 128U, 2U, NONE);
 	last_spawn_x = 128U;
 }
 
