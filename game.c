@@ -16,7 +16,7 @@
 // Sprites
 #include "data/sprite/sprites.h"
 
-UBYTE time, paused, dead;
+UBYTE ticks, paused, dead;
 UBYTE next_sprite, sprites_used;
 UBYTE blink, flash;
 UBYTE blips, powerup, active_powerup, powerup_time, has_shield, progress;
@@ -28,7 +28,7 @@ UBYTE player_x, player_y;
 UBYTE player_xdir, player_ydir;
 UBYTE player_yspeed, player_bounce;
 UBYTE dashing, dashes, dash_xdir, dash_ydir;
-UBYTE remaining_time, elapsed_seconds, elapsed_minutes;
+UBYTE timer, remaining_time, elapsed_seconds, elapsed_minutes;
 
 UBYTE entity_x[MAX_ENTITIES];
 UBYTE entity_y[MAX_ENTITIES];
@@ -58,13 +58,13 @@ const UBYTE entity_sprites[] = {
 	// Misc
 	21*4,	// E_JUMPPAD
 	// Powerups
-	94,		// E_PADDLE
-	24*4,	// E_BLIP
+	106,	// E_PADDLE
+	27*4,	// E_BLIP
 	// Fruits
 	25*4,	// E_GRAPES
 	26*4,	// E_PEACH
 	// Special
-	27*4,	// E_CLOUD
+	28*4,	// E_CLOUD
 };
 
 void initGame() {
@@ -111,13 +111,14 @@ void initGame() {
 
 	entity_frame = 0U;
 	next_sprite = 0U;
-	time = 0U;
+	ticks = 0U;
 	next_spawn = 0U;
 	last_spawn_type = E_NONE;
 	last_spawn_x = 80U;
 	skip_spawns = 0U;
 	progress = 0U;
 
+	timer = 0U;
 	remaining_time = 64U;
 	elapsed_seconds = 0U;
 	elapsed_minutes = 0U;
@@ -218,7 +219,7 @@ void updateInput() {
 void updatePlayer() {
 	UBYTE i, frame, palette;
 
-	if((time & 3U) == 3U) {
+	if((ticks & 3U) == 3U) {
 		powerup_time--;
 		if(powerup_time == 0U) active_powerup = 0U;
 	}
@@ -292,14 +293,14 @@ void updatePlayer() {
 		player_yspeed = 14U;
 		player_ydir = UP;
 		if(powerup_time > 20U || powerup_time & 1U) {
-			setSprite(player_x, player_y-16U, 80U, OBJ_PAL0);
-			setSprite(player_x+8U, player_y-16U, 82U, OBJ_PAL0);
+			setSprite(player_x, player_y-16U, 100U, OBJ_PAL0);
+			setSprite(player_x+8U, player_y-16U, 102U, OBJ_PAL0);
 		}
 	}
 	else if(active_powerup == P_ROCKET) {
 		player_yspeed = 32U;
 		player_ydir = UP;
-		if((time & 31U) == 31U) {
+		if((ticks & 31U) == 31U) {
 			spawnEntity(E_CLOUD, player_x, player_y+2U, 0U);
 		}
 	}
@@ -349,7 +350,7 @@ void updatePlayer() {
 	else if(dashing) frame = 20U;
 
 	// Blink
-	if(!dashes && (time & 4U)) palette = OBJ_PAL1;
+	if(!dashes && (ticks & 4U)) palette = OBJ_PAL1;
 	else palette = OBJ_PAL0;
 
 	if(player_xdir == LEFT) {
@@ -377,7 +378,7 @@ void updateHUD() {
 			powerup = FIRST_POWERUP;
 			SET_POWERUP_HUD(powerup);
 		} else {
-			if((time & 7U) == 7U) {
+			if((ticks & 7U) == 7U) {
 				powerup++;
 				if(powerup > LAST_POWERUP) {
 					powerup = FIRST_POWERUP;
@@ -386,8 +387,8 @@ void updateHUD() {
 			}
 		}
 	} else {
-		setSprite(136U, 160U-(blips >> 1), 92U, OBJ_PAL0);
-		setSprite(144U, 160U-(blips >> 1), 92U, OBJ_PAL0);
+		setSprite(136U, 160U-(blips >> 1), 104U, OBJ_PAL0);
+		setSprite(144U, 160U-(blips >> 1), 104U, OBJ_PAL0);
 	}
 
 	progressbar = (progress << 1U) / 3U;
@@ -419,7 +420,7 @@ void updateEntities() {
 	UBYTE i, frame, type;
 	UBYTE xdist, ydist;
 
-	if((time & 7U) == 7U) entity_frame++;
+	if((ticks & 7U) == 7U) entity_frame++;
 
 	for(i = 0U; i != MAX_ENTITIES; ++i) {
 		type = entity_type[i];
@@ -457,7 +458,7 @@ void updateEntities() {
 				break;
 
 			case E_BIRD:
-				if(time & 1U) {
+				if(ticks & 1U) {
 					if(entity_dir[i] == RIGHT) {
 						entity_x[i]++;
 						if(entity_x[i] == 144U) entity_dir[i] = LEFT;
@@ -470,10 +471,10 @@ void updateEntities() {
 				break;
 
 			case E_GHOST:
-				if(time & 1U) {
-					entity_x[i] -= cosx32[time & 63U];
-					entity_x[i] += cosx32[(time+1U) & 63U];
-					if(time & 32U) {
+				if(ticks & 1U) {
+					entity_x[i] -= cosx32[ticks & 63U];
+					entity_x[i] += cosx32[(ticks+1U) & 63U];
+					if(ticks & 32U) {
 						entity_dir[i] = LEFT;
 					} else {
 						entity_dir[i] = RIGHT;
@@ -482,7 +483,7 @@ void updateEntities() {
 				break;
 
 			case E_CLOUD:
-				if((time & 3U) == 3U) entity_dir[i]++;
+				if((ticks & 3U) == 3U) entity_dir[i]++;
 				if(entity_dir[i] == 4U) {
 					entity_type[i] = E_NONE;
 					entity_y[i] = 0U;
@@ -652,9 +653,11 @@ void enterGame() {
 	while(!dead) {
 		updateInput();
 		if(!paused) {
-			time++;
+			ticks++;
+			timer++;
 			// Update timing
-			if((time & 31U) == 31U) {
+			if(timer == 60U) {
+				timer = 0U;
 				elapsed_seconds++;
 				remaining_time--;
 				updateHUDTime();
