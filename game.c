@@ -50,6 +50,7 @@ const UBYTE entity_sprites[] = {
 	0,		// E_NONE
 	 // Hazards
 	7*4,	// E_SPIKES
+	24*4, 	// E_FIREBALL
 	 // Enemies
 	9*4,	// E_BIRD
 	11*4,	// E_BAT
@@ -491,13 +492,43 @@ void updateEntities() {
 					entity_y[i] = 0U;
 					continue;
 				}
+				break;
+
+			case E_ALIEN:
+				if((ticks & 63U) == 63U) {
+					frame = UPLEFT;
+					if(player_y > entity_y[i]) frame = DOWNLEFT;
+					if(player_x > entity_x[i]) frame++;
+					spawnEntity(E_FIREBALL, entity_x[i], entity_y[i], frame);
+				}
+				break;
+
+			case E_FIREBALL:
+				switch(entity_dir[i]) {
+					case UPLEFT:
+						entity_x[i]--;
+						entity_y[i]--;
+						break;
+					case UPRIGHT:
+						entity_x[i]++;
+						entity_y[i]--;
+						break;
+					case DOWNLEFT:
+						entity_x[i]--;
+						entity_y[i]++;
+						break;
+					case DOWNRIGHT:
+						entity_x[i]++;
+						entity_y[i]++;
+						break;
+				}
+				break;
 		}
 
 		// Scroll entitites
 		entity_y[i] += scrolly;
-		if(entity_y[i] > 136U && entity_y[i] < 200U) {
+		if(entity_y[i] > 136U || entity_x[i] > 180U) {
 			entity_type[i] = E_NONE;
-			entity_y[i] = 0U;
 			continue;
 		}
 
@@ -507,6 +538,10 @@ void updateEntities() {
 		switch(type) {
 			case E_BLIP:
 				frame += (entity_frame & 1U) << 1U;
+				setSprite(entity_x[i]+4U, entity_y[i], frame, OBJ_PAL0);
+				break;
+
+			case E_FIREBALL:
 				setSprite(entity_x[i]+4U, entity_y[i], frame, OBJ_PAL0);
 				break;
 
@@ -522,8 +557,7 @@ void updateEntities() {
 				break;
 				
 			default:
-				if(type < FIRST_FRUIT && entity_frame & 1U) frame += 4U;
-					
+				if(entity_frame & 1U) frame += 4U;
 				if(entity_dir[i] == LEFT) {
 					setSprite(entity_x[i], entity_y[i], frame, OBJ_PAL0);
 					setSprite(entity_x[i]+8U, entity_y[i], frame+2U, OBJ_PAL0);
@@ -671,7 +705,7 @@ void enterGame() {
 			}
 
 			// Flash background
-			if(flash != 0) {
+			if(flash) {
 				flash--;
 				BGP_REG = B8(00011011);
 			} else BGP_REG = B8(11100100);

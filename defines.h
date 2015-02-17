@@ -8,4 +8,9 @@
 #define DOWN	3U
 #define LEFT	4U
 
+#define UPLEFT		5U
+#define UPRIGHT		6U
+#define DOWNLEFT	7U
+#define DOWNRIGHT	8U
+
 #endif
