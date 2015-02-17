@@ -5,7 +5,6 @@
 #include "fade.h"
 #include "input.h"
 #include "gamestate.h"
-
 #include "game.h"
 
 // Maps
@@ -92,7 +91,7 @@ void initGame() {
 	clearEntities();
 
 	// Init variables
-	player_x = 80U;
+	player_x = 96U;
 	player_y = 40U;
 	player_xdir = RIGHT;
 	player_ydir = DOWN;
@@ -115,7 +114,7 @@ void initGame() {
 	ticks = 0U;
 	next_spawn = 0U;
 	last_spawn_type = E_NONE;
-	last_spawn_x = 80U;
+	last_spawn_x = 96U;
 	skip_spawns = 0U;
 	progress = 0U;
 
@@ -294,8 +293,8 @@ void updatePlayer() {
 		player_yspeed = 14U;
 		player_ydir = UP;
 		if(powerup_time > 20U || powerup_time & 1U) {
-			setSprite(player_x, player_y-16U, 100U, OBJ_PAL0);
-			setSprite(player_x+8U, player_y-16U, 102U, OBJ_PAL0);
+			setSprite(player_x-16U, player_y-16U, 100U, OBJ_PAL0);
+			setSprite(player_x-8U, player_y-16U, 102U, OBJ_PAL0);
 		}
 	}
 	else if(active_powerup == P_ROCKET) {
@@ -308,7 +307,7 @@ void updatePlayer() {
 
 	// Draw shield
 	if(has_shield) {
-		setSprite(player_x, player_y+9U, 76U, OBJ_PAL0);
+		setSprite(player_x-16U, player_y+9U, 76U, OBJ_PAL0);
 	}
 
 	// Flying UP
@@ -329,8 +328,8 @@ void updatePlayer() {
 	}
 
 	// Left and right borders
-	if(player_x < 8U) player_x = 8U;
-	else if(player_x > 152U) player_x = 152U;
+	if(player_x < 24U) player_x = 24U;
+	else if(player_x > 168U) player_x = 168U;
 
 	// Check bounds
 	if(player_y > SCREENHEIGHT-12U) {
@@ -355,11 +354,11 @@ void updatePlayer() {
 	else palette = OBJ_PAL0;
 
 	if(player_xdir == LEFT) {
-		setSprite(player_x, player_y, frame, palette);
-		setSprite(player_x+8U, player_y, frame+2U, palette);
+		setSprite(player_x-16U, player_y, frame, palette);
+		setSprite(player_x-8U, player_y, frame+2U, palette);
 	} else {
-		setSprite(player_x+8U, player_y, frame, FLIP_X | palette);
-		setSprite(player_x, player_y, frame+2U, FLIP_X | palette);
+		setSprite(player_x-8U, player_y, frame, FLIP_X | palette);
+		setSprite(player_x-16U, player_y, frame+2U, FLIP_X | palette);
 	}
 
 	// Update scroll
@@ -388,8 +387,8 @@ void updateHUD() {
 			}
 		}
 	} else {
-		setSprite(136U, 160U-(blips >> 1), 104U, OBJ_PAL0);
-		setSprite(144U, 160U-(blips >> 1), 104U, OBJ_PAL0);
+		setSprite(120U, 160U-(blips >> 1), 104U, OBJ_PAL0);
+		setSprite(128U, 160U-(blips >> 1), 104U, OBJ_PAL0);
 	}
 
 	progressbar = (progress << 1U) / 3U;
@@ -464,11 +463,11 @@ void updateEntities() {
 				if(ticks & 1U) {
 					if(entity_dir[i] == RIGHT) {
 						entity_x[i]++;
-						if(entity_x[i] == 144U) entity_dir[i] = LEFT;
+						if(entity_x[i] == 160U) entity_dir[i] = LEFT;
 					}
 					else {
 						entity_x[i]--;
-						if(entity_x[i] == 16U) entity_dir[i] = RIGHT;
+						if(entity_x[i] == 32U) entity_dir[i] = RIGHT;
 					}
 				}
 				break;
@@ -497,9 +496,13 @@ void updateEntities() {
 			case E_ALIEN:
 				if((ticks & 63U) == 63U) {
 					frame = UPLEFT;
+					xdist = entity_x[i]-8U;
 					if(player_y > entity_y[i]) frame = DOWNLEFT;
-					if(player_x > entity_x[i]) frame++;
-					spawnEntity(E_FIREBALL, entity_x[i], entity_y[i], frame);
+					if(player_x > entity_x[i]) {
+						frame++;
+						xdist += 16U;
+					}
+					spawnEntity(E_FIREBALL, xdist, entity_y[i]+4U, frame);
 				}
 				break;
 
@@ -527,7 +530,7 @@ void updateEntities() {
 
 		// Scroll entitites
 		entity_y[i] += scrolly;
-		if(entity_y[i] > 136U || entity_x[i] > 180U) {
+		if(entity_y[i] > 136U || entity_x[i] > 196U) {
 			entity_type[i] = E_NONE;
 			continue;
 		}
@@ -538,32 +541,32 @@ void updateEntities() {
 		switch(type) {
 			case E_BLIP:
 				frame += (entity_frame & 1U) << 1U;
-				setSprite(entity_x[i]+4U, entity_y[i], frame, OBJ_PAL0);
+				setSprite(entity_x[i]-12U, entity_y[i], frame, OBJ_PAL0);
 				break;
 
 			case E_FIREBALL:
-				setSprite(entity_x[i]+4U, entity_y[i], frame, OBJ_PAL0);
+				setSprite(entity_x[i]-12U, entity_y[i], frame, OBJ_PAL0);
 				break;
 
 			case E_PADDLE:
-				setSprite(entity_x[i], entity_y[i], frame, OBJ_PAL0);
-				setSprite(entity_x[i]+8U, entity_y[i], frame, OBJ_PAL0);
+				setSprite(entity_x[i]-16U, entity_y[i], frame, OBJ_PAL0);
+				setSprite(entity_x[i]-8U, entity_y[i], frame, OBJ_PAL0);
 				break;
 
 			case E_CLOUD:
 				frame += entity_dir[i] << 2U;
-				setSprite(entity_x[i], entity_y[i], frame, OBJ_PAL0);
-				setSprite(entity_x[i]+8U, entity_y[i], frame+2U, OBJ_PAL0);
+				setSprite(entity_x[i]-16U, entity_y[i], frame, OBJ_PAL0);
+				setSprite(entity_x[i]-8U, entity_y[i], frame+2U, OBJ_PAL0);
 				break;
 				
 			default:
 				if(entity_frame & 1U) frame += 4U;
 				if(entity_dir[i] == LEFT) {
-					setSprite(entity_x[i], entity_y[i], frame, OBJ_PAL0);
-					setSprite(entity_x[i]+8U, entity_y[i], frame+2U, OBJ_PAL0);
+					setSprite(entity_x[i]-16U, entity_y[i], frame, OBJ_PAL0);
+					setSprite(entity_x[i]-8U, entity_y[i], frame+2U, OBJ_PAL0);
 				} else {
-					setSprite(entity_x[i]+8U, entity_y[i], frame, OBJ_PAL0 | FLIP_X);
-					setSprite(entity_x[i], entity_y[i], frame+2U, OBJ_PAL0 | FLIP_X);
+					setSprite(entity_x[i]-8U, entity_y[i], frame, OBJ_PAL0 | FLIP_X);
+					setSprite(entity_x[i]-16U, entity_y[i], frame+2U, OBJ_PAL0 | FLIP_X);
 				}
 				break;
 		}
@@ -608,10 +611,10 @@ void clearEntities() {
 }
 
 void initSpawns() {
-	spawnEntity(E_BAT, 80U, 74U, NONE);
-	spawnEntity(E_BAT, 32U, 38U, NONE);
-	spawnEntity(E_BAT, 128U, 2U, NONE);
-	last_spawn_x = 128U;
+	spawnEntity(E_BAT, 96U, 74U, NONE);
+	spawnEntity(E_BAT, 48U, 38U, NONE);
+	spawnEntity(E_BAT, 144U, 2U, NONE);
+	last_spawn_x = 144U;
 }
 
 
@@ -627,7 +630,7 @@ void updateSpawns() {
 			if(active_powerup == P_ROCKET && powerup_time < 5U) return;
 
 			last_spawn_x = (last_spawn_x + 32U + ((UBYTE)rand() & 63U)) & 127U;
-			x = last_spawn_x + 16U;
+			x = last_spawn_x + 32U;
 
 			type = (UBYTE)rand() & 7U;
 			switch(type) {
@@ -662,7 +665,7 @@ void updateSpawns() {
 		}
 
 		// Spawn blips
-		x = 16U + ((UBYTE)rand() & 127U);
+		x = 32U + ((UBYTE)rand() & 127U);
 		y = 232U + ((UBYTE)rand() & 15U);
 		spawnEntity(E_BLIP, x, y, NONE);
 	}
