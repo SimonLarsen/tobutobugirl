@@ -387,8 +387,8 @@ void updateHUD() {
 			}
 		}
 	} else {
-		setSprite(120U, 160U-(blips >> 1), 104U, OBJ_PAL0);
-		setSprite(128U, 160U-(blips >> 1), 104U, OBJ_PAL0);
+		setSprite(136U, 160U-(blips >> 1), 104U, OBJ_PAL0);
+		setSprite(144U, 160U-(blips >> 1), 104U, OBJ_PAL0);
 	}
 
 	progressbar = (progress << 1U) / 3U;
