@@ -494,7 +494,7 @@ void updateEntities() {
 				break;
 
 			case E_ALIEN:
-				if((ticks & 63U) == 63U) {
+				if((ticks & 63U) == 63U && entity_y[i] > 32U) {
 					frame = UPLEFT;
 					xdist = entity_x[i]-8U;
 					if(player_y > entity_y[i]) frame = DOWNLEFT;
