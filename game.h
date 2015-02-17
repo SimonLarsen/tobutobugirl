@@ -10,7 +10,6 @@ void killPlayer();
 void updateEntities();
 void spawnEntity(UBYTE type, UBYTE x, UBYTE y, UBYTE dir);
 void bounce();
-void killEntity(UBYTE i);
 void setSprite(UBYTE x, UBYTE y, UBYTE tile, UBYTE prop);
 void clearRemainingSprites();
 void clearEntities();

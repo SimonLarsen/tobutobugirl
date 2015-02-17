@@ -183,7 +183,7 @@ void updateInput() {
 				case P_PADDLE:
 					for(i = 0U; i != MAX_ENTITIES; ++i) {
 						if(entity_type[i] == E_PADDLE) {
-							killEntity(i);
+							entity_type[i] = E_NONE;
 							break;
 						}
 					}
@@ -231,31 +231,31 @@ void updatePlayer() {
 		&& player_y > entity_y[i]-14U && player_y < entity_y[i]+11U
 		&& player_x > entity_x[i]-12U && player_x < entity_x[i]+12U) {
 			if(entity_type[i] == E_BLIP) {
-				killEntity(i);
+				entity_type[i] = E_NONE;
 				if(powerup == 0U) {
 					blips += 2U;
 				}
 			} else if(active_powerup == P_ROCKET) {
-				killEntity(i);
+				entity_type[i] = E_NONE;
 				spawnEntity(E_CLOUD, player_x, player_y-6U, 0U);
-			} else if(entity_type[i] == E_SPIKES) {
+			} else if(entity_type[i] <= E_FIREBALL) {
 				killPlayer();
 			} else if(entity_type[i] == E_PADDLE) {
 				bounce();
 				player_yspeed = JUMPPAD_SPEED;
-				killEntity(i);
+				entity_type[i] = E_NONE;
 			} else if(entity_type[i] <= LAST_ENEMY) {
 				if(player_ydir == DOWN && player_y < entity_y[i]-2U) {
 					if(dashing) {
 						spawnEntity(E_BLIP, player_x-16U, player_y-8U, 0U);
 						spawnEntity(E_BLIP, player_x+16U, player_y-8U, 0U);
-						killEntity(i);
+						entity_type[i] = E_NONE;
 						spawnEntity(E_CLOUD, player_x, player_y+5U, 0U);
 					}
 					bounce();
 					player_yspeed = JUMP_SPEED;
 				} else if(has_shield) {
-					killEntity(i);
+					entity_type[i] = E_NONE;
 					has_shield = 0U;
 					spawnEntity(E_CLOUD, player_x, player_y+5U, 0U);
 				} else {
@@ -581,20 +581,6 @@ void spawnEntity(UBYTE type, UBYTE x, UBYTE y, UBYTE dir) {
 	entity_y[i] = y;
 	entity_type[i] = type;
 	entity_dir[i] = dir;
-}
-
-void killEntity(UBYTE i) {
-	if(entity_type[i] == E_GHOST) {
-		if(entity_dir[i] == LEFT) {
-			entity_x[i] -= 32U;
-		} else {
-			entity_x[i] += 32U;
-		}
-	}
-
-	entity_type[i] = E_NONE;
-	entity_x[i] = 168U;
-	entity_y[i] = 0U;
 }
 
 void setSprite(UBYTE x, UBYTE y, UBYTE tile, UBYTE prop) {
