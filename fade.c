@@ -7,25 +7,25 @@ const UINT8 fadePals[] = {
 	B8(01000000), B8(00000000),
 };
 
-void fadeToWhite() {
+void fadeToWhite(UBYTE delay) {
 	UINT8 i, j;
-	for(i = 1; i != 4; ++i) {
+	for(i = 1U; i != 4U; ++i) {
 		BGP_REG = fadePals[i];
-		for(j = 0; j != 10; ++j) {
+		for(j = 0U; j != delay; ++j) {
 			wait_vbl_done();
 		}
 	}
 }
 
-void fadeFromWhite() {
+void fadeFromWhite(UBYTE delay) {
 	UINT8 i, j;
 
-	for(i = 3; i != 0; --i) {
+	for(i = 3U; i != 0U; --i) {
 		BGP_REG = fadePals[i];
-		for(j = 0; j != 10; ++j) {
+		for(j = 0U; j != delay; ++j) {
 			wait_vbl_done();
 		}
 	}
 
-	BGP_REG = fadePals[0];
+	BGP_REG = fadePals[0U];
 }

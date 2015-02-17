@@ -16,15 +16,15 @@ void initTitle() {
 	HIDE_SPRITES;
 	HIDE_WIN;
 	SHOW_BKG;
-	DISPLAY_ON;
 
+	DISPLAY_ON;
 	enable_interrupts();
 }
 
 void enterTitle() {
 	initTitle();
 
-	fadeFromWhite();
+	fadeFromWhite(10U);
 
 	while(1) {
 		updateJoystate();
@@ -32,5 +32,5 @@ void enterTitle() {
 		wait_vbl_done();
 	}
 
-	fadeToWhite();
+	fadeToWhite(10U);
 }

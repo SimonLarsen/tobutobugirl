@@ -722,5 +722,5 @@ void enterGame() {
 	}
 
 	HIDE_SPRITES;
-	fadeToWhite();
+	fadeToWhite(10U);
 }
