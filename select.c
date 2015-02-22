@@ -1,11 +1,12 @@
 #include <gb/gb.h>
 #include "select.h"
 #include "fade.h"
+#include "gamestate.h"
 
 #include "data/bg/circles.h"
 #include "data/bg/select.h"
 
-UBYTE ticks;
+UBYTE selection;
 UBYTE select_circle_index;
 
 void initSelect() {
@@ -34,11 +35,18 @@ void enterSelect() {
 	fadeFromWhite(10U);
 
 	while(1) {
+		updateJoystate();
+
 		ticks++;
-		if((ticks & 15U) == 15U) {
+		if((ticks & 3U) == 3U) {
 			select_circle_index = (select_circle_index+1U) & 7U;
 			set_bkg_data(33U, 1U, &circles_data[(select_circle_index << 4)]);
 		}
+
+		if(CLICKED(J_START)) {
+			break;
+		}
+
 		wait_vbl_done();
 	}
 

@@ -1,6 +1,5 @@
 #include <gb/gb.h>
 
-#include "input.h"
 #include "gamestate.h"
 
 #include "main.h"

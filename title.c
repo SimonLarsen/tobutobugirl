@@ -1,7 +1,7 @@
 #include <gb/gb.h>
 #include "title.h"
 #include "fade.h"
-#include "input.h"
+#include "gamestate.h"
 
 #include "data/bg/title.h"
 

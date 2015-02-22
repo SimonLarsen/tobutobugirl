@@ -19,9 +19,8 @@ tobu.gb:
 	lcc -c select.c
 	lcc -c game.c
 	lcc -c fade.c
-	lcc -c input.c
 	lcc -c gamestate.c
-	lcc main.o title.o select.o game.o fade.o input.o gamestate.o -o $@
+	lcc main.o title.o select.o game.o fade.o gamestate.o -o $@
 
 .PHONY: run
 run:

@@ -3,7 +3,6 @@
 #include "binconst.h"
 #include "defines.h"
 #include "fade.h"
-#include "input.h"
 #include "gamestate.h"
 #include "game.h"
 
@@ -15,7 +14,7 @@
 // Sprites
 #include "data/sprite/sprites.h"
 
-UBYTE ticks, paused, dead;
+UBYTE paused, dead;
 UBYTE next_sprite, sprites_used;
 UBYTE blink, flash;
 UBYTE blips, powerup, active_powerup, powerup_time, has_shield, progress;
@@ -92,7 +91,7 @@ void initGame() {
 
 	// Init variables
 	player_x = 96U;
-	player_y = 40U;
+	player_y = SCRLMGN;
 	player_xdir = RIGHT;
 	player_ydir = DOWN;
 	player_yspeed = 0U;
@@ -123,7 +122,7 @@ void initGame() {
 	elapsed_seconds = 0U;
 	elapsed_minutes = 0U;
 
-	move_bkg(0U, 112U);
+	move_bkg(0U, 115U);
 	move_win(7U, 128U);
 
 	// Clear HUD
@@ -494,7 +493,7 @@ void updateEntities() {
 				break;
 
 			case E_ALIEN:
-				if((ticks & 63U) == 63U && entity_y[i] > 32U) {
+				if((ticks & 63U) == 63U && entity_y[i] > 48U) {
 					frame = UPLEFT;
 					xdist = entity_x[i]-8U;
 					if(player_y > entity_y[i]) frame = DOWNLEFT;
@@ -611,9 +610,9 @@ void clearEntities() {
 }
 
 void initSpawns() {
-	spawnEntity(E_BAT, 96U, 74U, NONE);
-	spawnEntity(E_BAT, 48U, 38U, NONE);
-	spawnEntity(E_BAT, 144U, 2U, NONE);
+	spawnEntity(E_BAT,  96U, 92U, NONE);
+	spawnEntity(E_BAT,  48U, 56U, NONE);
+	spawnEntity(E_BAT, 144U, 20U, NONE);
 	last_spawn_x = 144U;
 }
 
@@ -674,6 +673,8 @@ void updateSpawns() {
 void enterGame() {
 	initGame();
 	initSpawns();
+
+	fadeFromWhite(10U);
 
 	while(!dead) {
 		updateInput();
