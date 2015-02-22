@@ -1,8 +1,8 @@
-#ifndef __background_tiles__
-#define __background_tiles__
+#ifndef __background2_tiles__
+#define __background2_tiles__
 
-#define background_data_length 82
-const unsigned char background_data[] = {
+#define background2_data_length 82
+const unsigned char background2_data[] = {
 	255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 
 	255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 255, 
 	255, 255, 239, 255, 255, 255, 187, 255, 255, 255, 170, 255, 255, 255, 170, 255, 
@@ -87,10 +87,10 @@ const unsigned char background_data[] = {
 	224,   0, 192,   0, 192,   0, 192,   0, 192,   0, 192,   0, 192,   0,   0,   0, 
 };
 
-#define background_tiles_width 20
-#define background_tiles_height 32
-#define background_offset 54
-const unsigned char background_tiles[] = {
+#define background2_tiles_width 20
+#define background2_tiles_height 32
+#define background2_offset 54
+const unsigned char background2_tiles[] = {
 	 54,  54,  54,  54,  54,  54,  55,  54,  54,  54,  54,  54,  54,  54,  54,  54,  54,  54,  54,  54, 
 	 56,  56,  56,  56,  56,  56,  56,  56,  56,  56,  56,  56,  56,  56,  56,  56,  56,  56,  56,  56, 
 	 57,  57,  57,  58,  57,  57,  57,  58,  57,  57,  57,  58,  57,  57,  57,  57,  57,  57,  57,  58, 

@@ -10,7 +10,9 @@
 #include "data/bg/powerups.h"
 #include "data/bg/hud.h"
 #include "data/bg/clock.h"
-#include "data/bg/background.h"
+#include "data/bg/background1.h"
+#include "data/bg/background2.h"
+#include "data/bg/background3.h"
 // Sprites
 #include "data/sprite/sprites.h"
 
@@ -79,12 +81,19 @@ void initGame() {
 	set_bkg_data(0U, powerups_data_length, powerups_data);
 	set_bkg_data(hud_offset, hud_data_length, hud_data);
 	set_bkg_data(clock_offset, clock_data_length, clock_data);
-	set_bkg_data(background_offset, background_data_length, background_data);
-
-	set_bkg_tiles(0U, 0U, background_tiles_width, background_tiles_height, background_tiles);
 	set_win_tiles(0U, 0U, hud_tiles_width, hud_tiles_height, hud_tiles);
-
 	set_sprite_data(0U, sprites_data_length, sprites_data);
+
+	if(level == 1U) {
+		set_bkg_tiles(0U, 0U, background1_tiles_width, background1_tiles_height, background1_tiles);
+		set_bkg_data(background1_offset, background1_data_length, background1_data);
+	} else if(level == 2U) {
+		set_bkg_tiles(0U, 0U, background2_tiles_width, background2_tiles_height, background2_tiles);
+		set_bkg_data(background2_offset, background2_data_length, background2_data);
+	} else if(level == 3U) {
+		set_bkg_tiles(0U, 0U, background3_tiles_width, background3_tiles_height, background3_tiles);
+		set_bkg_data(background3_offset, background3_data_length, background3_data);
+	}
 
 	clearSprites();
 	clearEntities();
@@ -493,7 +502,7 @@ void updateEntities() {
 				break;
 
 			case E_ALIEN:
-				if((ticks & 63U) == 63U && entity_y[i] > 48U) {
+				if((ticks & 63U) == 63U && entity_y[i] > 64U) {
 					frame = UPLEFT;
 					xdist = entity_x[i]-8U;
 					if(player_y > entity_y[i]) frame = DOWNLEFT;

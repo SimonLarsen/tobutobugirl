@@ -4,10 +4,12 @@ backgrounds:
 	imgtogb --map data/bg/powerups.png -o data/bg/powerups.h
 	imgtogb --map data/bg/hud.png -o data/bg/hud.h -O 22
 	imgtogb --map data/bg/clock.png -o data/bg/clock.h -O 40
-	imgtogb --map data/bg/background.png -o data/bg/background.h -O 54
 	imgtogb --map data/bg/title.png -o data/bg/title.h
 	imgtogb --map data/bg/circles.png -o data/bg/circles.h
 	imgtogb --map data/bg/select.png -o data/bg/select.h -O 8
+	imgtogb --map data/bg/background1.png -o data/bg/background1.h -O 54
+	imgtogb --map data/bg/background2.png -o data/bg/background2.h -O 54
+	imgtogb --map data/bg/background3.png -o data/bg/background3.h -O 54
 
 sprites:
 	imgtogb --sprite --8x16 data/sprite/sprites.png -o data/sprite/sprites.h

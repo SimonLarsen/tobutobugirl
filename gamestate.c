@@ -4,6 +4,7 @@
 #include "gamestate.h"
 
 UBYTE ticks;
+UBYTE level;
 UBYTE joystate, oldjoystate;
 
 void clearSprites() {

@@ -5,6 +5,7 @@ void clearSprites();
 void updateJoystate();
 
 extern UBYTE ticks;
+extern UBYTE level;
 extern UBYTE joystate, oldjoystate;
 
 #define CLICKED(x) ((joystate & x) && (joystate & x) != (oldjoystate & x))
