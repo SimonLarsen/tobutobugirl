@@ -43,6 +43,14 @@ void enterSelect() {
 			set_bkg_data(33U, 1U, &circles_data[(select_circle_index << 4)]);
 		}
 
+		if(CLICKED(J_RIGHT)) {
+			level++;
+			if(level == 4U) level = 1U;
+		}
+		if(CLICKED(J_LEFT)) {
+			level--;
+			if(level == 0U) level = 3U;
+		}
 		if(CLICKED(J_START)) {
 			break;
 		}

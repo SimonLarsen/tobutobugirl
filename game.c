@@ -315,7 +315,7 @@ void updatePlayer() {
 
 	// Draw shield
 	if(has_shield) {
-		setSprite(player_x-16U, player_y+9U, 76U, OBJ_PAL0);
+		setSprite(player_x-16U, player_y+9U, 98U, OBJ_PAL0);
 	}
 
 	// Flying UP
@@ -538,7 +538,8 @@ void updateEntities() {
 
 		// Scroll entitites
 		entity_y[i] += scrolly;
-		if(entity_y[i] > 136U || entity_x[i] > 196U) {
+		if((entity_y[i] > 136U && entity_y[i] < 232U)
+		|| entity_x[i] > 196U) {
 			entity_type[i] = E_NONE;
 			continue;
 		}
