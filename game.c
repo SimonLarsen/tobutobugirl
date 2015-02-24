@@ -16,7 +16,7 @@
 // Sprites
 #include "data/sprite/sprites.h"
 
-UBYTE paused, dead;
+UBYTE paused, ingame_state;
 UBYTE next_sprite, sprites_used;
 UBYTE blink, flash;
 UBYTE blips, powerup, active_powerup, powerup_time, has_shield, progress;
@@ -61,10 +61,8 @@ const UBYTE entity_sprites[] = {
 	// Powerups
 	106,	// E_PADDLE
 	27*4,	// E_BLIP
-	// Fruits
-	25*4,	// E_GRAPES
-	26*4,	// E_PEACH
 	// Special
+	22*4,	// E_PORTAL
 	28*4,	// E_CLOUD
 };
 
@@ -109,7 +107,7 @@ void initGame() {
 	dashes = 3U;
 	dash_xdir, dash_ydir = 0U;
 
-	dead = 0U;
+	ingame_state = INGAME_ACTIVE;
 	blink = 0U;
 	flash = 0U;
 	blips = 0U;
@@ -421,7 +419,7 @@ void bounce() {
 }
 
 void killPlayer() {
-	dead = 1U;
+	ingame_state = INGAME_DEAD;
 }
 
 void updateEntities() {
@@ -623,6 +621,7 @@ void initSpawns() {
 	spawnEntity(E_BAT,  96U, 92U, NONE);
 	spawnEntity(E_BAT,  48U, 56U, NONE);
 	spawnEntity(E_BAT, 144U, 20U, NONE);
+
 	last_spawn_x = 144U;
 }
 
@@ -630,7 +629,7 @@ void initSpawns() {
 void updateSpawns() {
 	UBYTE x, y, type;
 	next_spawn += scrolly;
-	if(next_spawn > 36U) {
+	if(next_spawn > 36U && progress < 114U) {
 		next_spawn -= 36U;
 
 		if(skip_spawns != 0) {
@@ -656,11 +655,7 @@ void updateSpawns() {
 					spawnEntity(E_GHOST, x, 1U, LEFT);
 					last_spawn_type = E_GHOST;
 					break;
-				case 3: // E_ALIEN
-					spawnEntity(E_ALIEN, x, 1U, NONE);
-					last_spawn_type == E_ALIEN;
-					break;
-				case 4: // E_SPIKES
+				case 3: // E_SPIKES
 					if(last_spawn_type != E_SPIKES) {
 						spawnEntity(E_SPIKES, x, 1U, NONE);
 						last_spawn_type = E_SPIKES;
@@ -678,6 +673,10 @@ void updateSpawns() {
 		y = 232U + ((UBYTE)rand() & 15U);
 		spawnEntity(E_BLIP, x, y, NONE);
 	}
+	else if(next_spawn > 40U && progress == 114U) {
+		spawnEntity(E_PORTAL, 96U, 1U, NONE);
+		next_spawn = 0U;
+	}
 }
 
 void enterGame() {
@@ -685,8 +684,9 @@ void enterGame() {
 	initSpawns();
 
 	fadeFromWhite(10U);
+	progress = 100U;
 
-	while(!dead) {
+	while(ingame_state == INGAME_ACTIVE) {
 		updateInput();
 		if(!paused) {
 			ticks++;
@@ -722,7 +722,7 @@ void enterGame() {
 			scrolled += scrolly;
 			if(scrolled > 32U) {
 				scrolled -= 32U;
-				progress++;
+				if(progress < 115U) progress++;
 				move_bkg(0U, 115U-progress);
 			}
 

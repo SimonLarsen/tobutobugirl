@@ -11,8 +11,8 @@ void main() {
 	joystate = oldjoystate = 0U;
 	level = 1U;
 
-	enterTitle();
-	enterSelect();
+	//enterTitle();
+	//enterSelect();
 	while(1) {
 		enterGame();
 	}
