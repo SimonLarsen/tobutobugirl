@@ -22,13 +22,13 @@ UBYTE blink, flash;
 UBYTE blips, powerup, active_powerup, powerup_time, has_shield, progress;
 
 UBYTE scrolly, scrolled;
-UBYTE next_spawn, last_spawn_x, last_spawn_type, skip_spawns;
+UBYTE next_spawn, last_spawn_x, last_spawn_type;
 
 UBYTE player_x, player_y;
 UBYTE player_xdir, player_ydir;
 UBYTE player_yspeed, player_bounce;
 UBYTE dashing, dashes, dash_xdir, dash_ydir;
-UBYTE timer, remaining_time, elapsed_seconds, elapsed_minutes;
+UBYTE timer, remaining_time, elapsed_seconds, elapsed_minutes, portal_spawned;
 
 UBYTE entity_x[MAX_ENTITIES];
 UBYTE entity_y[MAX_ENTITIES];
@@ -121,8 +121,8 @@ void initGame() {
 	next_spawn = 0U;
 	last_spawn_type = E_NONE;
 	last_spawn_x = 96U;
-	skip_spawns = 0U;
 	progress = 0U;
+	portal_spawned = 0U;
 
 	timer = 0U;
 	remaining_time = 64U;
@@ -223,7 +223,7 @@ void updateInput() {
 }
 
 void updatePlayer() {
-	UBYTE i, frame, palette;
+	UBYTE i, frame, palette, type;
 
 	if((ticks & 3U) == 3U) {
 		powerup_time--;
@@ -235,21 +235,24 @@ void updatePlayer() {
 		if(entity_type[i] != E_NONE && entity_type[i] <= LAST_COLLIDABLE
 		&& player_y > entity_y[i]-14U && player_y < entity_y[i]+11U
 		&& player_x > entity_x[i]-12U && player_x < entity_x[i]+12U) {
-			if(entity_type[i] == E_BLIP) {
+			type = entity_type[i];
+			if(type == E_BLIP) {
 				entity_type[i] = E_NONE;
 				if(powerup == 0U) {
 					blips += 2U;
 				}
+			} else if(type == E_PORTAL) {
+				ingame_state = INGAME_COMPLETED;
 			} else if(active_powerup == P_ROCKET) {
 				entity_type[i] = E_NONE;
 				spawnEntity(E_CLOUD, player_x, player_y-6U, 0U);
-			} else if(entity_type[i] <= E_FIREBALL) {
+			} else if(type <= E_FIREBALL) {
 				killPlayer();
-			} else if(entity_type[i] == E_PADDLE) {
+			} else if(type == E_PADDLE) {
 				bounce();
 				player_yspeed = JUMPPAD_SPEED;
 				entity_type[i] = E_NONE;
-			} else if(entity_type[i] <= LAST_ENEMY) {
+			} else if(type <= LAST_ENEMY) {
 				if(player_ydir == DOWN && player_y < entity_y[i]-2U) {
 					if(dashing) {
 						spawnEntity(E_BLIP, player_x-16U, player_y-8U, 0U);
@@ -629,43 +632,42 @@ void initSpawns() {
 void updateSpawns() {
 	UBYTE x, y, type;
 	next_spawn += scrolly;
-	if(next_spawn > 36U && progress < 114U) {
+
+	if(next_spawn < 36U) return;
+
+	if(progress < 114U) {
 		next_spawn -= 36U;
 
-		if(skip_spawns != 0) {
-			skip_spawns--;
-		} else {
-			if(active_powerup == P_ROCKET && powerup_time < 5U) return;
+		if(active_powerup == P_ROCKET && powerup_time < 5U) return;
 
-			last_spawn_x = (last_spawn_x + 32U + ((UBYTE)rand() & 63U)) & 127U;
-			x = last_spawn_x + 32U;
+		last_spawn_x = (last_spawn_x + 32U + ((UBYTE)rand() & 63U)) & 127U;
+		x = last_spawn_x + 32U;
 
-			type = (UBYTE)rand() & 7U;
-			switch(type) {
-				case 0: // E_BIRD
-				case 1:
-					if(x < 80U) {
-						spawnEntity(E_BIRD, x, 1U, RIGHT);
-					} else {
-						spawnEntity(E_BIRD, x, 1U, LEFT);
-					}
-					last_spawn_type = E_BIRD;
+		type = (UBYTE)rand() & 7U;
+		switch(type) {
+			case 0: // E_BIRD
+			case 1:
+				if(x < 80U) {
+					spawnEntity(E_BIRD, x, 1U, RIGHT);
+				} else {
+					spawnEntity(E_BIRD, x, 1U, LEFT);
+				}
+				last_spawn_type = E_BIRD;
+				break;
+			case 2: // E_GHOST
+				spawnEntity(E_GHOST, x, 1U, LEFT);
+				last_spawn_type = E_GHOST;
+				break;
+			case 3: // E_SPIKES
+				if(last_spawn_type != E_SPIKES) {
+					spawnEntity(E_SPIKES, x, 1U, NONE);
+					last_spawn_type = E_SPIKES;
 					break;
-				case 2: // E_GHOST
-					spawnEntity(E_GHOST, x, 1U, LEFT);
-					last_spawn_type = E_GHOST;
-					break;
-				case 3: // E_SPIKES
-					if(last_spawn_type != E_SPIKES) {
-						spawnEntity(E_SPIKES, x, 1U, NONE);
-						last_spawn_type = E_SPIKES;
-						break;
-					}
-				default: // E_BAT
-					spawnEntity(E_BAT, x, 1U, NONE);
-					last_spawn_type = E_BAT;
-					break;
-			}
+				}
+			default: // E_BAT
+				spawnEntity(E_BAT, x, 1U, NONE);
+				last_spawn_type = E_BAT;
+				break;
 		}
 
 		// Spawn blips
@@ -673,9 +675,10 @@ void updateSpawns() {
 		y = 232U + ((UBYTE)rand() & 15U);
 		spawnEntity(E_BLIP, x, y, NONE);
 	}
-	else if(next_spawn > 40U && progress == 114U) {
+	else if(progress == 115U && !portal_spawned) {
 		spawnEntity(E_PORTAL, 96U, 1U, NONE);
 		next_spawn = 0U;
+		portal_spawned = 1U;
 	}
 }
 
@@ -684,7 +687,7 @@ void enterGame() {
 	initSpawns();
 
 	fadeFromWhite(10U);
-	progress = 100U;
+	progress = 110U;
 
 	while(ingame_state == INGAME_ACTIVE) {
 		updateInput();
@@ -730,6 +733,12 @@ void enterGame() {
 		}
 
 		wait_vbl_done();
+	}
+
+	if(ingame_state == INGAME_DEAD) {
+		for(ticks = 0U; ticks != 32U; ++ticks) {
+			wait_vbl_done();
+		}
 	}
 
 	HIDE_SPRITES;
