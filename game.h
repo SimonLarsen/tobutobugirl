@@ -16,6 +16,7 @@ void clearEntities();
 void initSpawns();
 void updateSpawns();
 void enterGame();
+void deadAnimation();
 
 #define MAPW 10U
 #define MAPH 16U

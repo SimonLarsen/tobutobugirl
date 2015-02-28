@@ -469,7 +469,7 @@ void updateEntities() {
 				break;
 
 			case E_BIRD:
-				if(ticks & 1U) {
+				if(ticks & 1U && ingame_state == INGAME_ACTIVE) {
 					if(entity_dir[i] == RIGHT) {
 						entity_x[i]++;
 						if(entity_x[i] == 160U) entity_dir[i] = LEFT;
@@ -482,7 +482,7 @@ void updateEntities() {
 				break;
 
 			case E_GHOST:
-				if(ticks & 1U) {
+				if(ticks & 1U && ingame_state == INGAME_ACTIVE) {
 					entity_x[i] -= cosx32[ticks & 63U];
 					entity_x[i] += cosx32[(ticks+1U) & 63U];
 					if(ticks & 32U) {
@@ -611,6 +611,7 @@ void clearRemainingSprites() {
 		move_sprite(next_sprite++, 0, 0);
 		if(next_sprite == 40U) next_sprite = 0U;
 	}
+	sprites_used = 0U;
 }
 
 void clearEntities() {
@@ -627,7 +628,6 @@ void initSpawns() {
 
 	last_spawn_x = 144U;
 }
-
 
 void updateSpawns() {
 	UBYTE x, y, type;
@@ -673,7 +673,7 @@ void updateSpawns() {
 		// Spawn blips
 		x = 32U + ((UBYTE)rand() & 127U);
 		y = 232U + ((UBYTE)rand() & 15U);
-		spawnEntity(E_BLIP, x, y, NONE);
+		//spawnEntity(E_BLIP, x, y, NONE);
 	}
 	else if(progress == 115U && !portal_spawned) {
 		spawnEntity(E_PORTAL, 96U, 1U, NONE);
@@ -682,12 +682,41 @@ void updateSpawns() {
 	}
 }
 
+void deathAnimation() {
+	UBYTE offset, frame;
+	scrolly = 0U;
+	for(ticks = 0U; ticks != 48U; ++ticks) {
+		if(ticks < 16U) {
+			setSprite(player_x-16U, player_y, 76U, OBJ_PAL0);
+			setSprite(player_x-8U, player_y, 78U, OBJ_PAL0);
+		} else if(ticks < 20U) {
+			setSprite(player_x-16U, player_y, 80U, OBJ_PAL0);
+			setSprite(player_x-8U, player_y, 82U, OBJ_PAL0);
+		} else if(ticks < 24U) {
+			setSprite(player_x-16U, player_y, 84U, OBJ_PAL0);
+			setSprite(player_x-8U, player_y, 86U, OBJ_PAL0);
+		} else {
+			offset = ((ticks-16U) >> 1);
+			frame = 108U + ((ticks & 4U) >> 1);
+			setSprite(player_x-8U-offset, player_y-offset, frame, OBJ_PAL0);
+			setSprite(player_x-8U+offset, player_y-offset, frame, OBJ_PAL0);
+			setSprite(player_x-8U-offset, player_y+offset, frame, OBJ_PAL0);
+			setSprite(player_x-8U+offset, player_y+offset, frame, OBJ_PAL0);
+		}
+
+		updateEntities();
+		updateHUD();
+
+		clearRemainingSprites();
+		wait_vbl_done();
+	}
+}
+
 void enterGame() {
 	initGame();
 	initSpawns();
 
 	fadeFromWhite(10U);
-	progress = 110U;
 
 	while(ingame_state == INGAME_ACTIVE) {
 		updateInput();
@@ -705,6 +734,10 @@ void enterGame() {
 					elapsed_seconds = 0U;
 					elapsed_minutes++;
 				}
+
+				if(remaining_time == 0U) {
+					ingame_state = INGAME_DEAD;
+				}
 			}
 
 			// Flash background
@@ -712,8 +745,6 @@ void enterGame() {
 				flash--;
 				BGP_REG = B8(00011011);
 			} else BGP_REG = B8(11100100);
-
-			sprites_used = 0U;
 
 			updatePlayer();
 			updateHUD();
@@ -736,9 +767,7 @@ void enterGame() {
 	}
 
 	if(ingame_state == INGAME_DEAD) {
-		for(ticks = 0U; ticks != 32U; ++ticks) {
-			wait_vbl_done();
-		}
+		deathAnimation();
 	}
 
 	HIDE_SPRITES;
