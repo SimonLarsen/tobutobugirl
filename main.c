@@ -12,7 +12,7 @@ void main() {
 	level = 1U;
 
 	//enterTitle();
-	//enterSelect();
+	enterSelect();
 	while(1) {
 		enterGame();
 	}
