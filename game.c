@@ -17,7 +17,6 @@
 #include "data/sprite/sprites.h"
 
 UBYTE paused, ingame_state;
-UBYTE next_sprite, sprites_used;
 UBYTE blink, flash;
 UBYTE blips, powerup, active_powerup, powerup_time, has_shield, progress;
 
@@ -105,7 +104,8 @@ void initGame() {
 	player_bounce = 0U;
 	dashing = 0U;
 	dashes = 3U;
-	dash_xdir, dash_ydir = 0U;
+	dash_xdir = 0U;
+	dash_ydir = 0U;
 
 	ingame_state = INGAME_ACTIVE;
 	blink = 0U;
@@ -116,7 +116,6 @@ void initGame() {
 	has_shield = 0U;
 
 	entity_frame = 0U;
-	next_sprite = 0U;
 	ticks = 0U;
 	next_spawn = 0U;
 	last_spawn_type = E_NONE;
@@ -596,24 +595,6 @@ void spawnEntity(UBYTE type, UBYTE x, UBYTE y, UBYTE dir) {
 	entity_dir[i] = dir;
 }
 
-void setSprite(UBYTE x, UBYTE y, UBYTE tile, UBYTE prop) {
-	move_sprite(next_sprite, x, y);
-	set_sprite_tile(next_sprite, tile);
-	set_sprite_prop(next_sprite, prop);
-
-	sprites_used++;
-	next_sprite++;
-	if(next_sprite == 40U) next_sprite = 0U;
-}
-
-void clearRemainingSprites() {
-	for(; sprites_used != 40U; ++sprites_used) {
-		move_sprite(next_sprite++, 0, 0);
-		if(next_sprite == 40U) next_sprite = 0U;
-	}
-	sprites_used = 0U;
-}
-
 void clearEntities() {
 	UBYTE i;
 	for(i = 0U; i != MAX_ENTITIES; ++i) {
@@ -768,6 +749,9 @@ void enterGame() {
 
 	if(ingame_state == INGAME_DEAD) {
 		deathAnimation();
+	}
+	else if(ingame_state == INGAME_COMPLETED) {
+		gamestate = GAMESTATE_SELECT;
 	}
 
 	HIDE_SPRITES;

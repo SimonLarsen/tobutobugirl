@@ -11,9 +11,19 @@ void main() {
 	joystate = oldjoystate = 0U;
 	level = 1U;
 
-	//enterTitle();
-	enterSelect();
-	while(1) {
-		enterGame();
+	gamestate = GAMESTATE_TITLE;
+
+	while(1U) {
+		switch(gamestate) {
+			case GAMESTATE_TITLE:
+				enterTitle();
+				break;
+			case GAMESTATE_SELECT:
+				enterSelect();
+				break;
+			case GAMESTATE_INGAME:
+				enterGame();
+				break;
+		}
 	}
 }

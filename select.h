@@ -9,4 +9,8 @@ void updateSelectScreen();
 void scrollCircles();
 void enterSelect();
 
+#define SELECT_IDLE		0U
+#define SELECT_FADEOUT	1U
+#define SELECT_FADEIN	2U
+
 #endif

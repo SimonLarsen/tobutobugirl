@@ -23,8 +23,10 @@ ingame_backgrounds:
 
 backgrounds: title_backgrounds select_backgrounds ingame_backgrounds
 
+.PHONY: sprites
 sprites:
 	imgtogb --sprite --8x16 data/sprite/sprites.png -o data/sprite/sprites.h
+	imgtogb --sprite data/sprite/characters.png -o data/sprite/characters.h
 
 .PHONY: tobu.gb
 tobu.gb: 

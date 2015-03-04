@@ -3,6 +3,8 @@
 #include "fade.h"
 #include "gamestate.h"
 
+#include "data/sprite/characters.h"
+
 #include "data/bg/circles.h"
 #include "data/bg/select.h"
 
@@ -44,6 +46,17 @@ void setTile(UBYTE x, UBYTE y, UBYTE *tile) {
 	delay(3U);
 }
 
+void setCharacter(UBYTE x, UBYTE y, UBYTE c) {
+	set_bkg_tiles(x, y, 1U, 1U, &c);
+	/*
+	if(c <= 10U) {
+		set_bkg_tiles(x, y, 1U, 1U, &c);
+	} else {
+		set_bkg_tiles(x, y, 1U, 1U, &c);
+	}
+	*/
+}
+
 void selectTransitionOut() {
 	UBYTE tile = 8U;
 	UBYTE ix, iy;
@@ -52,6 +65,12 @@ void selectTransitionOut() {
 	bottom = 15U;
 	left = 0U;
 	right = 19U;
+
+	/*
+	for(ix = 0U; ix != 8U; ++ix) {
+		setCharacter(ix+6U, 6U, select_names[level][ix]);
+	}
+	*/
 
 	do {
 		ix = left;
@@ -166,15 +185,20 @@ void enterSelect() {
 			level++;
 			if(level == 4U) level = 1U;
 			selectTransitionOut();
-			//updateSelectScreen();
 			selectTransitionIn();
 		}
 		if(CLICKED(J_LEFT)) {
 			level--;
 			if(level == 0U) level = 3U;
-			updateSelectScreen();
+			selectTransitionOut();
+			selectTransitionIn();
 		}
-		if(CLICKED(J_START)) {
+		if(CLICKED(J_START) || CLICKED(J_A)) {
+			gamestate = GAMESTATE_INGAME;
+			break;
+		}
+		if(CLICKED(J_B)) {
+			gamestate = GAMESTATE_TITLE;
 			break;
 		}
 

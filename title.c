@@ -28,7 +28,10 @@ void enterTitle() {
 
 	while(1) {
 		updateJoystate();
-		if(CLICKED(J_START)) break;
+		if(CLICKED(J_START)) {
+			gamestate = GAMESTATE_SELECT;
+			break;
+		}
 		wait_vbl_done();
 	}
 
