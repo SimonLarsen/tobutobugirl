@@ -38,6 +38,8 @@ UBYTE entity_frame;
 #define IS_ENEMY(x) ((x) >= FIRST_ENEMY && (x) <= LAST_ENEMY)
 #define SET_POWERUP_HUD(x) (set_win_tiles(16U, 0U, 2U, 2U, &powerups_tiles[(x) << 2]))
 
+const UBYTE scrolled_length[4] = { 0U, 16U, 24U, 32U };
+
 const UBYTE cosx32[64] = {
 	0U, 0U, 0U, 1U, 1U, 2U, 3U, 4U, 5U, 6U, 7U, 8U, 10U, 11U, 13U, 14U, 16U,
 	18U, 19U, 21U, 22U, 24U, 25U, 26U, 27U, 28U, 29U, 30U, 31U, 31U, 32U, 32U,
@@ -49,7 +51,7 @@ const UBYTE entity_sprites[] = {
 	0,		// E_NONE
 	 // Hazards
 	7*4,	// E_SPIKES
-	24*4, 	// E_FIREBALL
+	17*4, 	// E_FIREBALL
 	 // Enemies
 	9*4,	// E_BIRD
 	11*4,	// E_BAT
@@ -515,24 +517,32 @@ void updateEntities() {
 				break;
 
 			case E_FIREBALL:
-				switch(entity_dir[i]) {
-					case UPLEFT:
-						entity_x[i]--;
-						entity_y[i]--;
-						break;
-					case UPRIGHT:
+				if(ticks & 1U && ingame_state == INGAME_ACTIVE) {
+					if(entity_dir[i] == RIGHT) {
 						entity_x[i]++;
-						entity_y[i]--;
-						break;
-					case DOWNLEFT:
+						if(entity_x[i] == 168U) entity_dir[i] = LEFT;
+					}
+					else {
 						entity_x[i]--;
-						entity_y[i]++;
-						break;
-					case DOWNRIGHT:
-						entity_x[i]++;
-						entity_y[i]++;
-						break;
+						if(entity_x[i] == 24U) entity_dir[i] = RIGHT;
+					}
 				}
+				break;
+
+			case E_PORTAL:
+				if(player_x < entity_x[i]) xdist = entity_x[i] - player_x;
+				else xdist = player_x - entity_x[i];
+				if(player_y < entity_y[i]) ydist = entity_y[i] - player_y;
+				else ydist = player_y - entity_y[i];
+
+				if(xdist < 48U && ydist < 48U) {
+					if(player_x < entity_x[i]) player_x += 1U;
+					else player_x -= 2U;
+
+					if(player_y < entity_y[i]) player_y += 1U;
+					else player_y -= 2U;
+				}
+
 				break;
 		}
 
@@ -550,10 +560,6 @@ void updateEntities() {
 		switch(type) {
 			case E_BLIP:
 				frame += (entity_frame & 1U) << 1U;
-				setSprite(entity_x[i]-12U, entity_y[i], frame, OBJ_PAL0);
-				break;
-
-			case E_FIREBALL:
 				setSprite(entity_x[i]-12U, entity_y[i], frame, OBJ_PAL0);
 				break;
 
@@ -616,7 +622,7 @@ void updateSpawns() {
 
 	if(next_spawn < 36U) return;
 
-	if(progress < 114U) {
+	if(progress < 111U) {
 		next_spawn -= 36U;
 
 		if(active_powerup == P_ROCKET && powerup_time < 5U) return;
@@ -735,8 +741,8 @@ void enterGame() {
 			updateSpawns();
 
 			scrolled += scrolly;
-			if(scrolled > 32U) {
-				scrolled -= 32U;
+			if(scrolled > scrolled_length[level]) {
+				scrolled -= scrolled_length[level];
 				if(progress < 115U) progress++;
 				move_bkg(0U, 115U-progress);
 			}
