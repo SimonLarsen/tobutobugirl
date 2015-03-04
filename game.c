@@ -261,6 +261,10 @@ void updatePlayer() {
 						entity_type[i] = E_NONE;
 						spawnEntity(E_CLOUD, player_x, player_y+5U, 0U);
 					}
+					else if(type == E_GHOST) {
+						entity_type[i] = E_NONE;
+						spawnEntity(E_CLOUD, player_x, player_y+5U, 0U);
+					}
 					bounce();
 					player_yspeed = JUMP_SPEED;
 				} else if(has_shield) {
@@ -482,6 +486,7 @@ void updateEntities() {
 				}
 				break;
 
+			case E_ALIEN:
 			case E_GHOST:
 				if(ticks & 1U && ingame_state == INGAME_ACTIVE) {
 					entity_x[i] -= cosx32[ticks & 63U];
@@ -500,19 +505,6 @@ void updateEntities() {
 					entity_type[i] = E_NONE;
 					entity_y[i] = 0U;
 					continue;
-				}
-				break;
-
-			case E_ALIEN:
-				if((ticks & 63U) == 63U && entity_y[i] > 64U) {
-					frame = UPLEFT;
-					xdist = entity_x[i]-8U;
-					if(player_y > entity_y[i]) frame = DOWNLEFT;
-					if(player_x > entity_x[i]) {
-						frame++;
-						xdist += 16U;
-					}
-					spawnEntity(E_FIREBALL, xdist, entity_y[i]+4U, frame);
 				}
 				break;
 
@@ -642,10 +634,14 @@ void updateSpawns() {
 				last_spawn_type = E_BIRD;
 				break;
 			case 2: // E_GHOST
-				spawnEntity(E_GHOST, x, 1U, LEFT);
+				spawnEntity(E_GHOST, x, 1U, NONE);
 				last_spawn_type = E_GHOST;
 				break;
-			case 3: // E_SPIKES
+			case 3: // E_ALIEN
+				spawnEntity(E_ALIEN, x, 1U, LEFT);
+				last_spawn_type = E_ALIEN;
+				break;
+			case 4: // E_SPIKES
 				if(last_spawn_type != E_SPIKES) {
 					spawnEntity(E_SPIKES, x, 1U, NONE);
 					last_spawn_type = E_SPIKES;
