@@ -533,6 +533,9 @@ void updateEntities() {
 
 					if(player_y < entity_y[i]) player_y += 1U;
 					else player_y -= 2U;
+
+					player_yspeed = 0U;
+					player_ydir = DOWN;
 				}
 
 				break;
