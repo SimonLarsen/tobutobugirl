@@ -27,6 +27,7 @@ backgrounds: title_backgrounds select_backgrounds ingame_backgrounds
 sprites:
 	imgtogb --sprite --8x16 data/sprite/sprites.png -o data/sprite/sprites.h
 	imgtogb --sprite data/sprite/characters.png -o data/sprite/characters.h
+	imgtogb --sprite data/sprite/arrow.png -o data/sprite/arrow.h
 
 .PHONY: tobu.gb
 tobu.gb: 
@@ -36,7 +37,8 @@ tobu.gb:
 	lcc -c game.c
 	lcc -c fade.c
 	lcc -c gamestate.c
-	lcc main.o title.o select.o game.o fade.o gamestate.o -o $@
+	lcc -c cos.c
+	lcc main.o title.o select.o game.o fade.o gamestate.o cos.o -o $@
 
 .PHONY: run
 run:

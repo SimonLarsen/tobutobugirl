@@ -5,6 +5,7 @@
 #include "fade.h"
 #include "gamestate.h"
 #include "game.h"
+#include "cos.h"
 
 // Maps
 #include "data/bg/powerups.h"
@@ -39,13 +40,6 @@ UBYTE entity_frame;
 #define SET_POWERUP_HUD(x) (set_win_tiles(16U, 0U, 2U, 2U, &powerups_tiles[(x) << 2]))
 
 const UBYTE scrolled_length[4] = { 0U, 16U, 24U, 32U };
-
-const UBYTE cosx32[64] = {
-	0U, 0U, 0U, 1U, 1U, 2U, 3U, 4U, 5U, 6U, 7U, 8U, 10U, 11U, 13U, 14U, 16U,
-	18U, 19U, 21U, 22U, 24U, 25U, 26U, 27U, 28U, 29U, 30U, 31U, 31U, 32U, 32U,
-	32U, 32U, 32U, 31U, 31U, 30U, 29U, 28U, 27U, 26U, 25U, 24U, 22U, 21U, 19U,
-	18U, 16U, 14U, 13U, 11U, 10U, 8U, 7U, 6U, 5U, 4U, 3U, 2U, 1U, 1U, 0U, 0U
-};
 
 const UBYTE entity_sprites[] = {
 	0,		// E_NONE

@@ -61,13 +61,6 @@ void deadAnimation();
 
 #define MAX_ENTITIES 18U
 
-// Entity properties
-#define FLIP_X 32U
-#define FLIP_Y 64U
-
-#define OBJ_PAL0 0U
-#define OBJ_PAL1 16U
-
 // Powerups
 #define	P_NONE		0U
 #define P_PADDLE	1U
