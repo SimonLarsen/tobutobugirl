@@ -204,8 +204,12 @@ void enterSelect() {
 			gamestate = GAMESTATE_TITLE;
 		}
 
+		offset = 64U;
+		if(level == 3U) {
+			offset += 4U;
+		}
 		for(i = 0U; i != 6; ++i) {
-			setSprite(64U+(i << 3), 64U, level_names[level-1U][i], OBJ_PAL0);
+			setSprite(offset+(i << 3), 64U, level_names[level-1U][i], OBJ_PAL0);
 		}
 
 		offset = cosx32[(ticks & 63U)] >> 3;
