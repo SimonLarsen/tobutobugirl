@@ -537,8 +537,9 @@ void updateEntities() {
 
 		// Scroll entitites
 		entity_y[i] += scrolly;
-		if((entity_y[i] > 136U && entity_y[i] < 232U)
-		|| entity_x[i] > 196U) {
+		// Note: Not relevant without blips
+		//if((entity_y[i] > 136U && entity_y[i] < 232U)
+		if(entity_y[i] > 136U || entity_x[i] > 196U) {
 			entity_type[i] = E_NONE;
 			continue;
 		}
@@ -649,13 +650,6 @@ void updateSpawns() {
 				last_spawn_type = E_BAT;
 				break;
 		}
-
-		/*
-		// Spawn blips
-		x = 32U + ((UBYTE)rand() & 127U);
-		y = 232U + ((UBYTE)rand() & 15U);
-		spawnEntity(E_BLIP, x, y, NONE);
-		*/
 	}
 	else if(progress == 115U && !portal_spawned) {
 		spawnEntity(E_PORTAL, 96U, 1U, NONE);

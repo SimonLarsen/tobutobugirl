@@ -38,7 +38,8 @@ tobu.gb:
 	lcc -c fade.c
 	lcc -c gamestate.c
 	lcc -c cos.c
-	lcc main.o title.o select.o game.o fade.o gamestate.o cos.o -o $@
+	lcc -Wf-ba0 -c bank0.c
+	lcc -Wl-yt3 -Wl-yo4 -Wl-ya4 main.o title.o select.o game.o fade.o gamestate.o cos.o bank0.o -o $@
 
 .PHONY: run
 run:

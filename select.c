@@ -225,5 +225,6 @@ void enterSelect() {
 		wait_vbl_done();
 	}
 
+	clearRemainingSprites(); // Remove all sprites
 	fadeToWhite(10U);
 }
