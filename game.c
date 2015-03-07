@@ -483,8 +483,8 @@ void updateEntities() {
 			case E_ALIEN:
 			case E_GHOST:
 				if(ticks & 1U && ingame_state == INGAME_ACTIVE) {
-					entity_x[i] -= cosx32[ticks & 63U];
-					entity_x[i] += cosx32[(ticks+1U) & 63U];
+					entity_x[i] -= cos32_64[ticks & 63U];
+					entity_x[i] += cos32_64[(ticks+1U) & 63U];
 					if(ticks & 32U) {
 						entity_dir[i] = LEFT;
 					} else {

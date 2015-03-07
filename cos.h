@@ -3,6 +3,9 @@
 
 #include <gb/gb.h>
 
-extern const UBYTE cosx32[];
+extern const UBYTE cos32_64[];
+extern const UBYTE cos4_8[];
+extern const UBYTE cos4_16[];
+extern const UBYTE cos8_16[];
 
 #endif

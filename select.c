@@ -210,11 +210,11 @@ void enterSelect() {
 			offset += 4U;
 		}
 		for(i = 0U; i != 6; ++i) {
-			setSprite(offset+(i << 3), 64U, level_names[level-1U][i], OBJ_PAL0);
+			setSprite(offset+(i << 3), 61U+cos4_16[(i+(ticks >> 1)) & 15U], level_names[level-1U][i], OBJ_PAL0);
 		}
 
 		// Draw arrows
-		offset = cosx32[(ticks & 63U)] >> 3;
+		offset = cos32_64[(ticks & 63U)] >> 3;
 
 		setSprite(24U-offset, 60U, 37U, OBJ_PAL0);
 		setSprite(32U-offset, 60U, 38U, OBJ_PAL0);

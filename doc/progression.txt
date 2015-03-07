@@ -23,6 +23,7 @@ Level progression
 	- Spikes
 
 ## Clouds ##
+
 00-37:
 	- Bats
 	- Birds
@@ -31,16 +32,27 @@ Level progression
 	- Bats
 	- Birds
 	- Aliens
+	- Spikes
 
 75-111:
+	- Bats
+	- Birds
+	- Ghosts
+	- Spikes
 
 ## Space ##
 
 00-37:
+	- Bats
+	- Birds
+	- Ghosts
+	- Spikes
 
 38-74:
+	- Birds
+	- Ghosts
+	- Fireballs
 
 75-111:
-	- Bats
-	- Fireballs
 	- Ghosts
+	- Fireballs
