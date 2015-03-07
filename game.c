@@ -606,7 +606,7 @@ void initSpawns() {
 }
 
 void updateSpawns() {
-	UBYTE x, y, type;
+	UBYTE x, type;
 	next_spawn += scrolly;
 
 	if(next_spawn < 36U) return;
@@ -650,10 +650,12 @@ void updateSpawns() {
 				break;
 		}
 
+		/*
 		// Spawn blips
 		x = 32U + ((UBYTE)rand() & 127U);
 		y = 232U + ((UBYTE)rand() & 15U);
-		//spawnEntity(E_BLIP, x, y, NONE);
+		spawnEntity(E_BLIP, x, y, NONE);
+		*/
 	}
 	else if(progress == 115U && !portal_spawned) {
 		spawnEntity(E_PORTAL, 96U, 1U, NONE);

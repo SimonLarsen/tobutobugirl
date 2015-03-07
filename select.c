@@ -175,7 +175,7 @@ void enterSelect() {
 
 	fadeFromWhite(10U);
 
-	while(1) {
+	while(gamestate == GAMESTATE_SELECT) {
 		updateJoystate();
 
 		ticks++;
@@ -199,11 +199,9 @@ void enterSelect() {
 		}
 		if(CLICKED(J_START) || CLICKED(J_A)) {
 			gamestate = GAMESTATE_INGAME;
-			break;
 		}
 		if(CLICKED(J_B)) {
 			gamestate = GAMESTATE_TITLE;
-			break;
 		}
 
 		for(i = 0U; i != 6; ++i) {

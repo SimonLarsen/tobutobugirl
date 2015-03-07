@@ -33,7 +33,7 @@ void deadAnimation();
 #define RETICULE_MAX_OFFSET	30U
 
 #define P_BALLOON_TIME	100U
-#define P_ROCKET_TIME	40U
+#define P_ROCKET_TIME	25U
 #define P_SHIELD_TIME	100U
 
 #define KEY_DASH	J_A
