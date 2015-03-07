@@ -204,6 +204,7 @@ void enterSelect() {
 			gamestate = GAMESTATE_TITLE;
 		}
 
+		// Draw level name
 		offset = 64U;
 		if(level == 3U) {
 			offset += 4U;
@@ -212,6 +213,7 @@ void enterSelect() {
 			setSprite(offset+(i << 3), 64U, level_names[level-1U][i], OBJ_PAL0);
 		}
 
+		// Draw arrows
 		offset = cosx32[(ticks & 63U)] >> 3;
 
 		setSprite(24U-offset, 60U, 37U, OBJ_PAL0);
@@ -225,7 +227,6 @@ void enterSelect() {
 		setSprite(144U+offset, 68U, 39U, OBJ_PAL0 | FLIP_X);
 
 		clearRemainingSprites();
-
 		wait_vbl_done();
 	}
 

@@ -21,26 +21,26 @@ const unsigned char clock_data[] = {
 
 #define clock_tiles_width 2
 #define clock_tiles_height 18
-#define clock_offset 40
+#define clock_offset 42
 const unsigned char clock_tiles[] = {
-	 40,  41, 
 	 42,  43, 
-	 44,  41, 
-	 42,  43, 
-	 45,  41, 
+	 44,  45, 
 	 46,  43, 
-	 45,  41, 
+	 44,  45, 
 	 47,  43, 
-	 45,  41, 
-	 48,  49, 
-	 45,  41, 
-	 48,  50, 
-	 45,  41, 
-	 48,  51, 
-	 45,  52, 
-	 48,  51, 
-	 45,  53, 
-	 48,  51, 
+	 48,  45, 
+	 47,  43, 
+	 49,  45, 
+	 47,  43, 
+	 50,  51, 
+	 47,  43, 
+	 50,  52, 
+	 47,  43, 
+	 50,  53, 
+	 47,  54, 
+	 50,  53, 
+	 47,  55, 
+	 50,  53, 
 };
 
 #endif

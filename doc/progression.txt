@@ -1,6 +1,15 @@
 Level progression
 =================
 
+## Enemy types ##
+
+- Bats
+- Spikes
+- Birds
+- Aliens
+- Ghosts
+- Fireballs
+
 ## Plains ##
 
 00-37:
@@ -14,5 +23,24 @@ Level progression
 	- Spikes
 
 ## Clouds ##
+00-37:
+	- Bats
+	- Birds
+	- Spikes
+37-74:
+	- Bats
+	- Birds
+	- Aliens
+
+75-111:
 
 ## Space ##
+
+00-37:
+
+38-74:
+
+75-111:
+	- Bats
+	- Fireballs
+	- Ghosts

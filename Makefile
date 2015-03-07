@@ -16,10 +16,10 @@ select_backgrounds:
 ingame_backgrounds:
 	imgtogb --map data/bg/powerups.png -o data/bg/powerups.h
 	imgtogb --map data/bg/hud.png -o data/bg/hud.h -O 22
-	imgtogb --map data/bg/clock.png -o data/bg/clock.h -O 40
-	imgtogb --map data/bg/background1.png -o data/bg/background1.h -O 54
-	imgtogb --map data/bg/background2.png -o data/bg/background2.h -O 54
-	imgtogb --map data/bg/background3.png -o data/bg/background3.h -O 54
+	imgtogb --map data/bg/clock.png -o data/bg/clock.h -O 42
+	imgtogb --map data/bg/background1.png -o data/bg/background1.h -O 56
+	imgtogb --map data/bg/background2.png -o data/bg/background2.h -O 56
+	imgtogb --map data/bg/background3.png -o data/bg/background3.h -O 56
 
 backgrounds: title_backgrounds select_backgrounds ingame_backgrounds
 

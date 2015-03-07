@@ -250,8 +250,8 @@ void updatePlayer() {
 			} else if(type <= LAST_ENEMY) {
 				if(player_ydir == DOWN && player_y < entity_y[i]-2U) {
 					if(dashing) {
-						spawnEntity(E_BLIP, player_x-16U, player_y-8U, 0U);
-						spawnEntity(E_BLIP, player_x+16U, player_y-8U, 0U);
+						spawnEntity(E_BLIP, player_x-20U, player_y-8U, 0U);
+						spawnEntity(E_BLIP, player_x+20U, player_y-8U, 0U);
 						entity_type[i] = E_NONE;
 						spawnEntity(E_CLOUD, player_x, player_y+5U, 0U);
 					}
@@ -400,8 +400,8 @@ void updateHUD() {
 	}
 
 	progressbar = (progress << 1U) / 3U;
-	setSprite(40U+progressbar, 145U, 24U, OBJ_PAL0);
-	setSprite(48U+progressbar, 145U, 26U, OBJ_PAL0);
+	setSprite(43U+progressbar, 145U, 24U, OBJ_PAL0);
+	setSprite(51U+progressbar, 145U, 26U, OBJ_PAL0);
 }
 
 void updateHUDTime() {
@@ -599,11 +599,19 @@ void clearEntities() {
 }
 
 void initSpawns() {
-	spawnEntity(E_BAT,  96U, 92U, NONE);
-	spawnEntity(E_BAT,  48U, 56U, NONE);
-	spawnEntity(E_BAT, 144U, 20U, NONE);
+	UBYTE i, x, y;
 
-	last_spawn_x = 144U;
+	last_spawn_x = 64;
+	x = last_spawn_x + 32U;
+	y = 112U;
+	spawnEntity(E_BAT, x, y, NONE);
+
+	for(i = 0U; i != 4U; ++i) {
+		last_spawn_x = (last_spawn_x + 32U + ((UBYTE)rand() & 63U)) & 127U;
+		x = last_spawn_x + 32U;
+		y -= 36U;
+		spawnEntity(E_BAT,  x, y, NONE);
+	}
 }
 
 void updateSpawns() {
@@ -617,7 +625,7 @@ void updateSpawns() {
 
 		if(active_powerup == P_ROCKET && powerup_time < 5U) return;
 
-		last_spawn_x = (last_spawn_x + 32U + ((UBYTE)rand() & 63U)) & 127U;
+		last_spawn_x = (last_spawn_x + 16U + ((UBYTE)rand() & 63U)) & 127U;
 		x = last_spawn_x + 32U;
 
 		type = (UBYTE)rand() & 7U;
