@@ -61,6 +61,27 @@ const UBYTE entity_sprites[] = {
 	28*4,	// E_CLOUD
 };
 
+const UBYTE spawn_levels[3][3][8] = {
+	// Plains
+	{
+		{E_BIRD, E_BIRD, E_BAT, E_BAT, E_BAT, E_BAT, E_BAT, E_BAT},
+		{E_SPIKES, E_SPIKES, E_BIRD, E_BIRD, E_BAT, E_BAT, E_BAT, E_BAT},
+		{E_SPIKES, E_SPIKES, E_SPIKES, E_BIRD, E_BIRD, E_BIRD, E_BAT, E_BAT}
+	},
+	// Clouds
+	{
+		{E_SPIKES, E_SPIKES, E_SPIKES, E_BIRD, E_BIRD, E_BAT, E_BAT, E_BAT},
+		{E_SPIKES, E_SPIKES, E_ALIEN, E_ALIEN, E_BIRD, E_BIRD, E_BAT, E_BAT},
+		{E_SPIKES, E_SPIKES, E_GHOST, E_GHOST, E_BIRD, E_BIRD, E_BAT, E_BAT}
+	},
+	// Space
+	{
+		{E_SPIKES, E_SPIKES, E_GHOST, E_GHOST, E_BIRD, E_BIRD, E_BAT, E_BAT},
+		{E_FIREBALL, E_FIREBALL, E_GHOST, E_GHOST, E_GHOST, E_BIRD, E_BIRD, E_BIRD},
+		{E_FIREBALL, E_FIREBALL, E_FIREBALL, E_FIREBALL, E_GHOST, E_GHOST, E_GHOST, E_GHOST}
+	}
+};
+
 void initGame() {
 	disable_interrupts();
 	DISPLAY_OFF;
@@ -228,7 +249,7 @@ void updatePlayer() {
 	// Check entity collisions
 	for(i = 0U; i != MAX_ENTITIES; ++i) {
 		if(entity_type[i] != E_NONE && entity_type[i] <= LAST_COLLIDABLE
-		&& player_y > entity_y[i]-14U && player_y < entity_y[i]+11U
+		&& player_y > entity_y[i]-12U && player_y < entity_y[i]+11U
 		&& player_x > entity_x[i]-12U && player_x < entity_x[i]+12U) {
 			type = entity_type[i];
 			if(type == E_BLIP) {
@@ -521,12 +542,16 @@ void updateEntities() {
 				if(player_y < entity_y[i]) ydist = entity_y[i] - player_y;
 				else ydist = player_y - entity_y[i];
 
-				if(xdist < 48U && ydist < 48U) {
-					if(player_x < entity_x[i]) player_x += 1U;
-					else player_x -= 2U;
+				if(xdist < 38U && ydist < 38U) {
+					if(xdist > 2U) {
+						if(player_x < entity_x[i]) player_x += 1U;
+						else player_x -= 2U;
+					}
 
-					if(player_y < entity_y[i]) player_y += 1U;
-					else player_y -= 2U;
+					if(ydist > 2U) {
+						if(player_y < entity_y[i]) player_y += 1U;
+						else player_y -= 2U;
+					}
 
 					player_yspeed = 0U;
 					player_ydir = DOWN;
@@ -615,7 +640,7 @@ void initSpawns() {
 }
 
 void updateSpawns() {
-	UBYTE x, type;
+	UBYTE x, dice, type, step;
 	next_spawn += scrolly;
 
 	if(next_spawn < 36U) return;
@@ -628,35 +653,55 @@ void updateSpawns() {
 		last_spawn_x = (last_spawn_x + 16U + ((UBYTE)rand() & 63U)) & 127U;
 		x = last_spawn_x + 32U;
 
-		type = (UBYTE)rand() & 7U;
-		switch(type) {
-			case 0: // E_BIRD
-			case 1:
-				if(x < 80U) {
-					spawnEntity(E_BIRD, x, 1U, RIGHT);
-				} else {
-					spawnEntity(E_BIRD, x, 1U, LEFT);
-				}
-				last_spawn_type = E_BIRD;
-				break;
-			case 2: // E_GHOST
-				spawnEntity(E_GHOST, x, 1U, NONE);
-				last_spawn_type = E_GHOST;
-				break;
-			case 3: // E_ALIEN
-				spawnEntity(E_ALIEN, x, 1U, LEFT);
-				last_spawn_type = E_ALIEN;
-				break;
-			case 4: // E_SPIKES
-				if(last_spawn_type != E_SPIKES) {
-					spawnEntity(E_SPIKES, x, 1U, NONE);
-					last_spawn_type = E_SPIKES;
+		dice = (UBYTE)rand() & 7U;
+		step = progress / 39U; // TODO: Optimize?
+
+		while(dice != 8U) {
+			type = spawn_levels[level-1][step][dice];
+			switch(type) {
+				case E_FIREBALL:
+					if(last_spawn_type != E_SPIKES && last_spawn_type != E_FIREBALL) {
+						spawnEntity(E_FIREBALL, x, 1U, NONE);
+						last_spawn_type = E_FIREBALL;
+						dice = 8U;
+						break;
+					}
+					dice++;
 					break;
-				}
-			default: // E_BAT
-				spawnEntity(E_BAT, x, 1U, NONE);
-				last_spawn_type = E_BAT;
-				break;
+				case E_SPIKES:
+					if(last_spawn_type != E_SPIKES && last_spawn_type != E_FIREBALL) {
+						spawnEntity(E_SPIKES, x, 1U, NONE);
+						last_spawn_type = E_SPIKES;
+						dice = 8U;
+						break;
+					}
+					dice++;
+					break;
+				case E_GHOST:
+					spawnEntity(E_GHOST, x, 1U, NONE);
+					last_spawn_type = E_GHOST;
+					dice = 8U;
+					break;
+				case E_ALIEN:
+					spawnEntity(E_ALIEN, x, 1U, LEFT);
+					last_spawn_type = E_ALIEN;
+					dice = 8U;
+					break;
+				case E_BIRD:
+					if(x < 80U) {
+						spawnEntity(E_BIRD, x, 1U, RIGHT);
+					} else {
+						spawnEntity(E_BIRD, x, 1U, LEFT);
+					}
+					last_spawn_type = E_BIRD;
+					dice = 8U;
+					break;
+				case E_BAT:
+					spawnEntity(E_BAT, x, 1U, NONE);
+					last_spawn_type = E_BAT;
+					dice = 8U;
+					break;
+			}
 		}
 	}
 	else if(progress == 115U && !portal_spawned) {
