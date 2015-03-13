@@ -135,8 +135,6 @@ void initGame() {
 	entity_frame = 0U;
 	ticks = 0U;
 	next_spawn = 0U;
-	last_spawn_type = E_NONE;
-	last_spawn_x = 96U;
 	progress = 0U;
 	portal_spawned = 0U;
 
@@ -631,12 +629,13 @@ void initSpawns() {
 	y = 112U;
 	spawnEntity(E_BAT, x, y, NONE);
 
-	for(i = 0U; i != 4U; ++i) {
+	for(i = 0U; i != 3U; ++i) {
 		last_spawn_x = (last_spawn_x + 32U + ((UBYTE)rand() & 63U)) & 127U;
 		x = last_spawn_x + 32U;
 		y -= 36U;
-		spawnEntity(E_BAT,  x, y, NONE);
+		spawnEntity(E_BAT, x, y, NONE);
 	}
+	last_spawn_type = E_BAT;
 }
 
 void updateSpawns() {
@@ -650,11 +649,11 @@ void updateSpawns() {
 
 		if(active_powerup == P_ROCKET && powerup_time < 5U) return;
 
-		last_spawn_x = (last_spawn_x + 16U + ((UBYTE)rand() & 63U)) & 127U;
+		last_spawn_x = (last_spawn_x + 32U + ((UBYTE)rand() & 63U)) & 127U;
 		x = last_spawn_x + 32U;
 
-		dice = (UBYTE)rand() & 7U;
 		step = progress / 39U; // TODO: Optimize?
+		dice = (UBYTE)rand() & 7U;
 
 		while(dice != 8U) {
 			type = spawn_levels[level-1][step][dice];
