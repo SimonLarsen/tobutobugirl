@@ -180,17 +180,23 @@ void updateInput() {
 		player_xdir = RIGHT;
 	}
 
-	if(CLICKED(KEY_DASH) && dashes && !active_powerup) {
-		dash_xdir = dash_ydir = NONE;
-		if(ISDOWN(J_LEFT)) dash_xdir = LEFT;
-		else if(ISDOWN(J_RIGHT)) dash_xdir = RIGHT;
-		if(ISDOWN(J_UP)) dash_ydir = UP;
-		else if(ISDOWN(J_DOWN)) dash_ydir = DOWN;
+	if(CLICKED(KEY_DASH)) {
+		if(active_powerup == P_BALLOON) {
+			active_powerup = P_NONE;
+			powerup_time = 0U;
+		}
+		if(dashes && !active_powerup) {
+			dash_xdir = dash_ydir = NONE;
+			if(ISDOWN(J_LEFT)) dash_xdir = LEFT;
+			else if(ISDOWN(J_RIGHT)) dash_xdir = RIGHT;
+			if(ISDOWN(J_UP)) dash_ydir = UP;
+			else if(ISDOWN(J_DOWN)) dash_ydir = DOWN;
 
-		if(dash_xdir != NONE || dash_ydir != NONE) {
-			dashing = DASH_TIME;
-			dashes--;
-			spawnEntity(E_CLOUD, player_x, player_y-6U, 0U);
+			if(dash_xdir != NONE || dash_ydir != NONE) {
+				dashing = DASH_TIME;
+				dashes--;
+				spawnEntity(E_CLOUD, player_x, player_y-6U, 0U);
+			}
 		}
 	}
 
