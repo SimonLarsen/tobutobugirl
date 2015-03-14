@@ -9,16 +9,16 @@
 #include "winscreen.h"
 #include "highscore.h"
 
-extern UBYTE test;
-
-void main() {
+void initRAM() {
 	ENABLE_RAM_MBC1;
 	SWITCH_4_32_MODE_MBC1;
 
 	SWITCH_RAM_MBC1(0);
 
 	DISABLE_RAM_MBC1;
+}
 
+void main() {
 	joystate = oldjoystate = 0U;
 	level = 1U;
 

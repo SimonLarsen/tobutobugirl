@@ -15,7 +15,7 @@ Memory:
 
 	80-126	Unused
 
-	127		First boot flaflag
+	127		First boot flag
  */
 
 UBYTE ram_data[128];

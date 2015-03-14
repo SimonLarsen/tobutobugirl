@@ -51,6 +51,7 @@ void highscoreScrollCircles() {
 }
 
 void highscoreUpdateScreen() {
+	clearRemainingSprites();
 	fadeToWhite(4U);
 	DISPLAY_OFF;
 	_highscoreUpdateScreen();
