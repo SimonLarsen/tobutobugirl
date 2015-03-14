@@ -18,5 +18,7 @@ extern UBYTE next_sprite, sprites_used;
 #define GAMESTATE_TITLE		0U
 #define GAMESTATE_SELECT	1U
 #define GAMESTATE_INGAME	2U
+#define GAMESTATE_WINSCREEN	3U
+#define GAMESTATE_HIGHSCORE	4U
 
 #endif

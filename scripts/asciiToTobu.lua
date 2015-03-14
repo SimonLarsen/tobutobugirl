@@ -1,4 +1,4 @@
-local input = arg[1]
+local input = arg[1]:upper()
 local chars = { string.byte(input, 1, input:len()) }
 
 local output = {}

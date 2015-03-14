@@ -6,11 +6,10 @@ title_backgrounds:
 
 .PHONY: select_backgrounds
 select_backgrounds:
-	imgtogb --map data/bg/circles.png -o data/bg/circles.h
 	imgtogb --map data/bg/select.png -o data/bg/select.h -O 9
-	imgtogb --map data/bg/selection1.png -o data/bg/selection1.h -O 44
-	imgtogb --map data/bg/selection2.png -o data/bg/selection2.h -O 44
-	imgtogb --map data/bg/selection3.png -o data/bg/selection3.h -O 44
+	imgtogb --map data/bg/selection1.png -o data/bg/selection1.h -O 40
+	imgtogb --map data/bg/selection2.png -o data/bg/selection2.h -O 40
+	imgtogb --map data/bg/selection3.png -o data/bg/selection3.h -O 40
 
 .PHONY: ingame_backgrounds
 ingame_backgrounds:
@@ -21,13 +20,22 @@ ingame_backgrounds:
 	imgtogb --map data/bg/background2.png -o data/bg/background2.h -O 56
 	imgtogb --map data/bg/background3.png -o data/bg/background3.h -O 56
 
-backgrounds: title_backgrounds select_backgrounds ingame_backgrounds
+.PHONY: winscreen_backgrounds
+winscreen_backgrounds:
+	imgtogb --map data/bg/winscreen.png -o data/bg/winscreen.h
+
+.PHONY: highscore_backgrounds
+highscore_backgrounds:
+	imgtogb --map data/bg/highscore.png -o data/bg/highscore.h -O 46
+
+backgrounds: title_backgrounds select_backgrounds ingame_backgrounds winscreen_backgrounds highscore_backgrounds
+	#imgtogb --map data/bg/circles.png -o data/bg/circles.h # 9 tiles
 
 .PHONY: sprites
 sprites:
 	imgtogb --sprite --8x16 data/sprite/sprites.png -o data/sprite/sprites.h
-	imgtogb --sprite data/sprite/characters.png -o data/sprite/characters.h
-	imgtogb --sprite data/sprite/arrow.png -o data/sprite/arrow.h
+	#imgtogb --sprite data/sprite/characters.png -o data/sprite/characters.h # 37 tiles
+	#imgtogb --sprite data/sprite/arrow.png -o data/sprite/arrow.h
 
 .PHONY: tobu.gb
 tobu.gb: 
@@ -35,11 +43,17 @@ tobu.gb:
 	lcc -c title.c
 	lcc -c select.c
 	lcc -c game.c
+	lcc -c winscreen.c
+	lcc -c highscore.c
 	lcc -c fade.c
 	lcc -c gamestate.c
 	lcc -c cos.c
 	lcc -Wf-ba0 -c bank0.c
-	lcc -Wl-yt3 -Wl-yo2 -Wl-ya4 main.o title.o select.o game.o fade.o gamestate.o cos.o bank0.o -o $@
+	lcc -c data/bg/circles.c -o circles.o
+	lcc -c data/sprite/arrow.c -o arrow.o
+	lcc -c data/sprite/characters.c -o characters.o
+	lcc -Wl-yt3 -Wl-yo2 -Wl-ya4 *.o -o $@
+	#lcc -Wl-yt3 -Wl-yo2 -Wl-ya4 main.o title.o select.o winscreen.o highscore.o game.o fade.o gamestate.o cos.o bank0.o -o $@
 
 .PHONY: run
 run:

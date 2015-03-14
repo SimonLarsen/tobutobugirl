@@ -798,7 +798,7 @@ void enterGame() {
 		deathAnimation();
 	}
 	else if(ingame_state == INGAME_COMPLETED) {
-		gamestate = GAMESTATE_SELECT;
+		gamestate = GAMESTATE_WINSCREEN;
 	}
 
 	HIDE_SPRITES;

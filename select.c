@@ -18,7 +18,8 @@
 
 UBYTE select_circle_index;
 
-const UBYTE level_names[3][6] = {
+const UBYTE level_names[4][6] = {
+	{29U, 13U, 25U, 28U, 15U, 29U},
 	{26U, 22U, 11U, 19U, 24U, 29U},
 	{13U, 22U, 25U, 31U, 14U, 29U},
 	{29U, 26U, 11U, 13U, 15U, 10U}
@@ -59,7 +60,7 @@ void setTile(UBYTE x, UBYTE y, UBYTE *tile) {
 	ticks++;
 	if((ticks & 14U) == 14U) {
 		ticks = 0U;
-		scrollCircles();
+		selectScrollCircles();
 	}
 	delay(3U);
 }
@@ -164,9 +165,9 @@ void updateSelectScreen() {
 	}
 }
 
-void scrollCircles() {
+void selectScrollCircles() {
 	select_circle_index = (select_circle_index+1U) & 7U;
-	set_bkg_data(34U, 1U, &circles_data[(select_circle_index << 4)]);
+	set_bkg_data(30U, 1U, &circles_data[(select_circle_index << 4)]);
 }
 
 void enterSelect() {
@@ -180,25 +181,29 @@ void enterSelect() {
 
 		ticks++;
 		if((ticks & 3U) == 3U) {
-			scrollCircles();
+			selectScrollCircles();
 		}
 
 		if(CLICKED(J_RIGHT)) {
-			level++;
-			if(level == 4U) level = 1U;
+			if(level == 3U) level = 0U;
+			else level++;
 			clearRemainingSprites();
 			selectTransitionOut();
 			selectTransitionIn();
 		}
 		if(CLICKED(J_LEFT)) {
-			level--;
 			if(level == 0U) level = 3U;
+			else level--;
 			clearRemainingSprites();
 			selectTransitionOut();
 			selectTransitionIn();
 		}
 		if(CLICKED(J_START) || CLICKED(J_A)) {
-			gamestate = GAMESTATE_INGAME;
+			if(level == 0U) {
+				gamestate = GAMESTATE_HIGHSCORE;
+			} else {
+				gamestate = GAMESTATE_INGAME;
+			}
 		}
 		if(CLICKED(J_B)) {
 			gamestate = GAMESTATE_TITLE;
@@ -210,7 +215,7 @@ void enterSelect() {
 			offset += 4U;
 		}
 		for(i = 0U; i != 6; ++i) {
-			setSprite(offset+(i << 3), 61U+cos4_16[(i+(ticks >> 1)) & 15U], level_names[level-1U][i], OBJ_PAL0);
+			setSprite(offset+(i << 3), 61U+cos4_16[(i+(ticks >> 1)) & 15U], level_names[level][i], OBJ_PAL0);
 		}
 
 		// Draw arrows

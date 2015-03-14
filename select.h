@@ -6,7 +6,7 @@ void setTile(UBYTE x, UBYTE y, UBYTE *tile);
 void selectTransitionIn();
 void selectTransitionOut();
 void updateSelectScreen();
-void scrollCircles();
+void selectScrollCircles();
 void enterSelect();
 
 #define SELECT_IDLE		0U

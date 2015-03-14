@@ -6,6 +6,8 @@
 #include "title.h"
 #include "select.h"
 #include "game.h"
+#include "winscreen.h"
+#include "highscore.h"
 
 extern UBYTE test;
 
@@ -32,6 +34,12 @@ void main() {
 				break;
 			case GAMESTATE_INGAME:
 				enterGame();
+				break;
+			case GAMESTATE_WINSCREEN:
+				enterWinscreen();
+				break;
+			case GAMESTATE_HIGHSCORE:
+				enterHighscore();
 				break;
 		}
 	}
