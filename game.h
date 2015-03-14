@@ -76,5 +76,6 @@ void deadAnimation();
 #define INGAME_ACTIVE		0U
 #define INGAME_DEAD			1U
 #define INGAME_COMPLETED	2U
+#define INGAME_QUIT			3U
 
 #endif

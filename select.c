@@ -12,18 +12,12 @@
 #include "data/bg/circles.h"
 #include "data/bg/select.h"
 
+#include "data/bg/selection0.h"
 #include "data/bg/selection1.h"
 #include "data/bg/selection2.h"
 #include "data/bg/selection3.h"
 
 UBYTE select_circle_index;
-
-const UBYTE level_names[4][6] = {
-	{29U, 13U, 25U, 28U, 15U, 29U},
-	{26U, 22U, 11U, 19U, 24U, 29U},
-	{13U, 22U, 25U, 31U, 14U, 29U},
-	{29U, 26U, 11U, 13U, 15U, 10U}
-};
 
 void initSelect() {
 	disable_interrupts();
@@ -109,13 +103,16 @@ void selectTransitionIn() {
 	left = 0U;
 	right = 19U;
 
-	if(level == 1U) {
+	if(selection == 0U) {
+		set_bkg_data(selection0_offset, selection0_data_length, selection0_data);
+		data = selection0_tiles;
+	} else if(selection == 1U) {
 		set_bkg_data(selection1_offset, selection1_data_length, selection1_data);
 		data = selection1_tiles;
-	} else if(level == 2U) {
+	} else if(selection == 2U) {
 		set_bkg_data(selection2_offset, selection2_data_length, selection2_data);
 		data = selection2_tiles;
-	} else if(level == 3U) {
+	} else if(selection == 3U) {
 		set_bkg_data(selection3_offset, selection3_data_length, selection3_data);
 		data = selection3_tiles;
 	}
@@ -153,13 +150,13 @@ void selectTransitionIn() {
 }
 
 void updateSelectScreen() {
-	if(level == 1U) {
+	if(selection == 1U) {
 		set_bkg_data(selection1_offset, selection1_data_length, selection1_data);
 		set_bkg_tiles(0U, 10U, 20U, 6U, selection1_tiles);
-	} else if(level == 2U) {
+	} else if(selection == 2U) {
 		set_bkg_data(selection2_offset, selection2_data_length, selection2_data);
 		set_bkg_tiles(0U, 10U, 20U, 6U, selection2_tiles);
-	} else if(level == 3U) {
+	} else if(selection == 3U) {
 		set_bkg_data(selection3_offset, selection3_data_length, selection3_data);
 		set_bkg_tiles(0U, 10U, 20U, 6U, selection3_tiles);
 	}
@@ -185,23 +182,24 @@ void enterSelect() {
 		}
 
 		if(CLICKED(J_RIGHT)) {
-			if(level == 3U) level = 0U;
-			else level++;
+			if(selection == 3U) selection = 0U;
+			else selection++;
 			clearRemainingSprites();
 			selectTransitionOut();
 			selectTransitionIn();
 		}
 		if(CLICKED(J_LEFT)) {
-			if(level == 0U) level = 3U;
-			else level--;
+			if(selection == 0U) selection = 3U;
+			else selection--;
 			clearRemainingSprites();
 			selectTransitionOut();
 			selectTransitionIn();
 		}
 		if(CLICKED(J_START) || CLICKED(J_A)) {
-			if(level == 0U) {
+			if(selection == 0U) {
 				gamestate = GAMESTATE_HIGHSCORE;
 			} else {
+				level = selection;
 				gamestate = GAMESTATE_INGAME;
 			}
 		}
@@ -211,11 +209,11 @@ void enterSelect() {
 
 		// Draw level name
 		offset = 64U;
-		if(level == 3U) {
+		if(selection == 3U) {
 			offset += 4U;
 		}
 		for(i = 0U; i != 6; ++i) {
-			setSprite(offset+(i << 3), 61U+cos4_16[(i+(ticks >> 1)) & 15U], level_names[level][i], OBJ_PAL0);
+			setSprite(offset+(i << 3), 61U+cos4_16[(i+(ticks >> 1)) & 15U], level_names[selection][i], OBJ_PAL0);
 		}
 
 		// Draw arrows

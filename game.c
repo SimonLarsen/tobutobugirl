@@ -123,6 +123,7 @@ void initGame() {
 	dashes = 3U;
 	dash_xdir = 0U;
 	dash_ydir = 0U;
+	paused = 0U;
 
 	ingame_state = INGAME_ACTIVE;
 	blink = 0U;
@@ -748,7 +749,11 @@ void enterGame() {
 
 	while(ingame_state == INGAME_ACTIVE) {
 		updateInput();
-		if(!paused) {
+		if(paused) {
+			if(CLICKED(J_SELECT)) {
+				ingame_state = INGAME_QUIT;
+			}
+		} else {
 			ticks++;
 			timer++;
 			// Update timing
@@ -799,6 +804,9 @@ void enterGame() {
 	}
 	else if(ingame_state == INGAME_COMPLETED) {
 		gamestate = GAMESTATE_WINSCREEN;
+	}
+	else if(ingame_state == INGAME_QUIT) {
+		gamestate = GAMESTATE_SELECT;
 	}
 
 	HIDE_SPRITES;

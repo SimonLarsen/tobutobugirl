@@ -7,6 +7,7 @@ title_backgrounds:
 .PHONY: select_backgrounds
 select_backgrounds:
 	imgtogb --map data/bg/select.png -o data/bg/select.h -O 9
+	imgtogb --map data/bg/selection0.png -o data/bg/selection0.h -O 40
 	imgtogb --map data/bg/selection1.png -o data/bg/selection1.h -O 40
 	imgtogb --map data/bg/selection2.png -o data/bg/selection2.h -O 40
 	imgtogb --map data/bg/selection3.png -o data/bg/selection3.h -O 40
@@ -52,7 +53,7 @@ tobu.gb:
 	lcc -c data/bg/circles.c -o circles.o
 	lcc -c data/sprite/arrow.c -o arrow.o
 	lcc -c data/sprite/characters.c -o characters.o
-	lcc -Wl-yt3 -Wl-yo2 -Wl-ya4 *.o -o $@
+	lcc -Wl-yt3 -Wl-yo2 -Wl-ya1 *.o -o $@
 	#lcc -Wl-yt3 -Wl-yo2 -Wl-ya4 main.o title.o select.o winscreen.o highscore.o game.o fade.o gamestate.o cos.o bank0.o -o $@
 
 .PHONY: run

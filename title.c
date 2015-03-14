@@ -26,6 +26,8 @@ void enterTitle() {
 
 	fadeFromWhite(10U);
 
+	selection = level = 1U;
+
 	while(1) {
 		updateJoystate();
 		if(CLICKED(J_START)) {

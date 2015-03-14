@@ -7,7 +7,7 @@ void setSprite(UBYTE x, UBYTE y, UBYTE tile, UBYTE prop);
 void clearRemainingSprites();
 
 extern UBYTE ticks;
-extern UBYTE gamestate, level;
+extern UBYTE gamestate, level, selection;
 extern UBYTE joystate, oldjoystate;
 extern UBYTE next_sprite, sprites_used;
 
@@ -20,5 +20,7 @@ extern UBYTE next_sprite, sprites_used;
 #define GAMESTATE_INGAME	2U
 #define GAMESTATE_WINSCREEN	3U
 #define GAMESTATE_HIGHSCORE	4U
+
+extern const UBYTE level_names[4][6];
 
 #endif
