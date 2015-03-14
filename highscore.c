@@ -125,5 +125,6 @@ void enterHighscore() {
 		wait_vbl_done();
 	}
 
+	clearRemainingSprites();
 	fadeToWhite(10U);
 }
