@@ -150,7 +150,10 @@ void selectTransitionIn() {
 }
 
 void updateSelectScreen() {
-	if(selection == 1U) {
+	if(selection == 0U) {
+		set_bkg_data(selection0_offset, selection0_data_length, selection0_data);
+		set_bkg_tiles(0U, 10U, 20U, 6U, selection0_tiles);
+	} else if(selection == 1U) {
 		set_bkg_data(selection1_offset, selection1_data_length, selection1_data);
 		set_bkg_tiles(0U, 10U, 20U, 6U, selection1_tiles);
 	} else if(selection == 2U) {

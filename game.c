@@ -6,6 +6,7 @@
 #include "gamestate.h"
 #include "game.h"
 #include "cos.h"
+#include "bank0.h"
 
 // Maps
 #include "data/bg/powerups.h"
@@ -28,7 +29,7 @@ UBYTE player_x, player_y;
 UBYTE player_xdir, player_ydir;
 UBYTE player_yspeed, player_bounce;
 UBYTE dashing, dashes, dash_xdir, dash_ydir;
-UBYTE timer, remaining_time, elapsed_seconds, elapsed_minutes, portal_spawned;
+UBYTE timer, remaining_time, elapsed_seconds, portal_spawned;
 
 UBYTE entity_x[MAX_ENTITIES];
 UBYTE entity_y[MAX_ENTITIES];
@@ -81,6 +82,31 @@ const UBYTE spawn_levels[3][3][8] = {
 		{E_FIREBALL, E_FIREBALL, E_FIREBALL, E_FIREBALL, E_GHOST, E_GHOST, E_GHOST, E_GHOST}
 	}
 };
+
+void saveScore() {
+	UBYTE i, j;
+	UBYTE *data;
+
+	ENABLE_RAM_MBC1;
+	SWITCH_4_32_MODE_MBC1;
+	SWITCH_RAM_MBC1(0);
+
+	data = &ram_data[(level - 1U) << 4];
+	for(i = 0U; i != 5U; ++i) {
+		if(elapsed_seconds < data[i << 1]) {
+			break;
+		}
+	}
+	
+	if(i != 5U) {
+		for(j = 4U; j != i; --j) {
+			data[(j-1U) << 1] = data[j << 1];
+		}
+		data[i << 1] = elapsed_seconds;
+	}
+
+	DISABLE_RAM_MBC1;
+}
 
 void initGame() {
 	disable_interrupts();
@@ -142,7 +168,6 @@ void initGame() {
 	timer = 0U;
 	remaining_time = 64U;
 	elapsed_seconds = 0U;
-	elapsed_minutes = 0U;
 
 	move_bkg(0U, 115U);
 	move_win(7U, 128U);
@@ -260,7 +285,7 @@ void updatePlayer() {
 			if(type == E_BLIP) {
 				entity_type[i] = E_NONE;
 				if(powerup == 0U) {
-					blips += 2U;
+					blips += 3U;
 				}
 			} else if(type == E_PORTAL) {
 				ingame_state = INGAME_COMPLETED;
@@ -769,11 +794,6 @@ void enterGame() {
 				remaining_time--;
 				updateHUDTime();
 
-				if(elapsed_seconds == 60U) {
-					elapsed_seconds = 0U;
-					elapsed_minutes++;
-				}
-
 				if(remaining_time == 0U) {
 					ingame_state = INGAME_DEAD;
 				}
@@ -809,6 +829,7 @@ void enterGame() {
 		deathAnimation();
 	}
 	else if(ingame_state == INGAME_COMPLETED) {
+		saveScore();
 		gamestate = GAMESTATE_WINSCREEN;
 	}
 	else if(ingame_state == INGAME_QUIT) {

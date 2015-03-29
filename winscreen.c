@@ -27,7 +27,7 @@ void enterWinscreen() {
 
 	while(1) {
 		updateJoystate();
-		if(CLICKED(J_START)) {
+		if(CLICKED(J_START) || CLICKED(J_A)) {
 			gamestate = GAMESTATE_HIGHSCORE;
 			break;
 		}

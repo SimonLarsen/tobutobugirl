@@ -54,7 +54,6 @@ tobu.gb:
 	lcc -c data/sprite/arrow.c -o arrow.o
 	lcc -c data/sprite/characters.c -o characters.o
 	lcc -Wl-yt3 -Wl-yo2 -Wl-ya1 *.o -o $@
-	#lcc -Wl-yt3 -Wl-yo2 -Wl-ya4 main.o title.o select.o winscreen.o highscore.o game.o fade.o gamestate.o cos.o bank0.o -o $@
 
 .PHONY: run
 run:

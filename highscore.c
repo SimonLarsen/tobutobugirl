@@ -5,6 +5,7 @@
 #include "fade.h"
 #include "cos.h"
 #include "highscore.h"
+#include "bank0.h"
 
 #include "data/sprite/characters.h"
 #include "data/sprite/arrow.h"
@@ -54,28 +55,49 @@ void highscoreUpdateScreen() {
 	clearRemainingSprites();
 	fadeToWhite(4U);
 	DISPLAY_OFF;
+
 	_highscoreUpdateScreen();
+
 	DISPLAY_ON;
 	fadeFromWhite(4U);
 }
 
 void _highscoreUpdateScreen() {
-	UBYTE x, y;
-	UBYTE tile;
-	UBYTE *data = level_names[highscore_selection];
+	UBYTE i, tile;
+	UBYTE *data;
+
+	ENABLE_RAM_MBC1;
+	SWITCH_4_32_MODE_MBC1;
+	SWITCH_RAM_MBC1(0);
+
 	// Set name
-	for(x = 7U; x != 13U; ++x) {
-		set_bkg_tiles(x, 6U, 1U, 1U, data);
+	data = level_names[highscore_selection];
+	for(i = 7U; i != 13U; ++i) {
+		set_bkg_tiles(i, 6U, 1U, 1U, data);
 		data++;
 	}
 
-	tile = 1U;
-	for(y = 8U; y != 13U; ++y) {
-		set_bkg_tiles(3U, y, 1U, 1U, &tile);
-		tile++;
+	for(i = 0U; i != 5U; ++i) {
+		tile = i+1U;
+		set_bkg_tiles(3U, i+11U, 1U, 1U, &tile);
 	}
-	tile = 22U; // 'L'
-	set_bkg_tiles(3U, 14U, 1U, 1U, &tile);
+
+	data = ram_data + ((highscore_selection-1U) << 4);
+	for(i = 0U; i != 5U; ++i) {
+		if(*data != 0xFFU) {
+			tile = *data / 60U;
+			set_bkg_tiles(5U, i+11U, 1U, 1U, &tile);
+
+			tile = (*data % 60U) / 10U;
+			set_bkg_tiles(7U, i+11U, 1U, 1U, &tile);
+
+			tile = (*data % 60U) % 10U;
+			set_bkg_tiles(8U, i+11U, 1U, 1U, &tile);
+		}
+		data += 2U;
+	}
+
+	DISABLE_RAM_MBC1;
 }
 
 void enterHighscore() {
