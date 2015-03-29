@@ -9,7 +9,6 @@
 #include "bank0.h"
 
 // Maps
-#include "data/bg/powerups.h"
 #include "data/bg/hud.h"
 #include "data/bg/clock.h"
 #include "data/bg/background1.h"
@@ -38,7 +37,6 @@ UBYTE entity_dir[MAX_ENTITIES];
 UBYTE entity_frame;
 
 #define IS_ENEMY(x) ((x) >= FIRST_ENEMY && (x) <= LAST_ENEMY)
-#define SET_POWERUP_HUD(x) (set_win_tiles(16U, 0U, 2U, 2U, &powerups_tiles[(x) << 2]))
 
 const UBYTE scrolled_length[4] = { 0U, 16U, 24U, 32U };
 
@@ -118,7 +116,6 @@ void initGame() {
 	BGP_REG = B8(11100100);
 
 	// Load tile data
-	set_bkg_data(0U, powerups_data_length, powerups_data);
 	set_bkg_data(hud_offset, hud_data_length, hud_data);
 	set_bkg_data(clock_offset, clock_data_length, clock_data);
 	set_win_tiles(0U, 0U, hud_tiles_width, hud_tiles_height, hud_tiles);
@@ -169,11 +166,10 @@ void initGame() {
 	remaining_time = 64U;
 	elapsed_seconds = 0U;
 
-	move_bkg(0U, 115U);
-	move_win(7U, 128U);
+	move_bkg(0U, 112U);
+	move_win(151U, 0U);
 
 	// Clear HUD
-	SET_POWERUP_HUD(0U);
 	updateHUDTime();
 
 	SHOW_BKG;
@@ -263,7 +259,6 @@ void updateInput() {
 					break;
 			}
 			powerup = 0U;
-			SET_POWERUP_HUD(powerup);
 		}
 	}
 }
@@ -287,7 +282,9 @@ void updatePlayer() {
 				if(powerup == 0U) {
 					blips += 3U;
 				}
-			} else if(type == E_PORTAL) {
+			} else if(type == E_PORTAL
+			&& player_y > entity_y[i]-4U && player_y < entity_y[i]+4U
+			&& player_x > entity_x[i]-4U && player_x < entity_x[i]+4U) {
 				ingame_state = INGAME_COMPLETED;
 			} else if(active_powerup == P_ROCKET) {
 				entity_type[i] = E_NONE;
@@ -388,10 +385,10 @@ void updatePlayer() {
 
 	// Left and right borders
 	if(player_x < 24U) player_x = 24U;
-	else if(player_x > 168U) player_x = 168U;
+	else if(player_x > 152U) player_x = 152U;
 
 	// Check bounds
-	if(player_y > SCREENHEIGHT-12U) {
+	if(player_y > SCREENHEIGHT) {
 		killPlayer();
 	}
 
@@ -432,27 +429,13 @@ void updateHUD() {
 	UBYTE progressbar;
 
 	// Blips
-	if(blips >= 32U) {
-		if(powerup == 0U) {
-			powerup = FIRST_POWERUP;
-			SET_POWERUP_HUD(powerup);
-		} else {
-			if((ticks & 7U) == 7U) {
-				powerup++;
-				if(powerup > LAST_POWERUP) {
-					powerup = FIRST_POWERUP;
-				}
-				SET_POWERUP_HUD(powerup);
-			}
-		}
-	} else {
-		setSprite(136U, 160U-(blips >> 1), 104U, OBJ_PAL0);
-		setSprite(144U, 160U-(blips >> 1), 104U, OBJ_PAL0);
-	}
+	setSprite(168U-(blips >> 1), 136U, 104U, OBJ_PAL0);
+	setSprite(176U-(blips >> 1), 136U, 104U, OBJ_PAL0);
 
-	progressbar = (progress << 1U) / 3U;
-	setSprite(43U+progressbar, 145U, 24U, OBJ_PAL0);
-	setSprite(51U+progressbar, 145U, 26U, OBJ_PAL0);
+	// Progress bar
+	progressbar = 118U - (progress << 1U) / 3U;
+	setSprite(152U, progressbar, 24U, OBJ_PAL0);
+	setSprite(160U, progressbar, 26U, OBJ_PAL0);
 }
 
 void updateHUDTime() {
@@ -461,7 +444,7 @@ void updateHUDTime() {
 	index = (remaining_time+4U) >> 3;
 	index = index << 2;
 
-	set_win_tiles(2U, 0U, 2U, 2U, &clock_tiles[index]);
+	set_win_tiles(0U, 1U, 2U, 2U, &clock_tiles[index]);
 }
 
 void bounce() {
@@ -522,7 +505,7 @@ void updateEntities() {
 				if(ticks & 1U && ingame_state == INGAME_ACTIVE) {
 					if(entity_dir[i] == RIGHT) {
 						entity_x[i]++;
-						if(entity_x[i] == 168U) entity_dir[i] = LEFT;
+						if(entity_x[i] == 152U) entity_dir[i] = LEFT;
 					}
 					else {
 						entity_x[i]--;
@@ -557,7 +540,7 @@ void updateEntities() {
 				if(ticks & 1U && ingame_state == INGAME_ACTIVE) {
 					if(entity_dir[i] == RIGHT) {
 						entity_x[i]++;
-						if(entity_x[i] == 168U) entity_dir[i] = LEFT;
+						if(entity_x[i] == 152U) entity_dir[i] = LEFT;
 					}
 					else {
 						entity_x[i]--;
@@ -574,17 +557,25 @@ void updateEntities() {
 
 				if(xdist < 38U && ydist < 38U) {
 					if(xdist > 2U) {
-						if(player_x < entity_x[i]) player_x += 1U;
+						if(player_x < entity_x[i]) player_x += 2U;
 						else player_x -= 2U;
 					}
 
 					if(ydist > 2U) {
-						if(player_y < entity_y[i]) player_y += 1U;
+						if(player_y < entity_y[i]) player_y += 2U;
 						else player_y -= 2U;
 					}
 
-					player_yspeed = 0U;
-					player_ydir = DOWN;
+					player_yspeed = 1U;
+					player_ydir = UP;
+				}
+
+				if((ticks & 7U) == 7U) {
+					if(entity_dir[i] == RIGHT) {
+						entity_dir[i] = LEFT;
+					} else {
+						entity_dir[i] = RIGHT;
+					}
 				}
 
 				break;
@@ -592,9 +583,7 @@ void updateEntities() {
 
 		// Scroll entitites
 		entity_y[i] += scrolly;
-		// Note: Not relevant without blips
-		//if((entity_y[i] > 136U && entity_y[i] < 232U)
-		if(entity_y[i] > 136U || entity_x[i] > 196U) {
+		if(entity_y[i] > SCREENHEIGHT+16U) {
 			entity_type[i] = E_NONE;
 			continue;
 		}
@@ -617,6 +606,16 @@ void updateEntities() {
 				frame += entity_dir[i] << 2U;
 				setSprite(entity_x[i]-16U, entity_y[i], frame, OBJ_PAL0);
 				setSprite(entity_x[i]-8U, entity_y[i], frame+2U, OBJ_PAL0);
+				break;
+
+			case E_PORTAL:
+				if(entity_dir[i] == LEFT) {
+					setSprite(entity_x[i]-16U, entity_y[i], frame, OBJ_PAL0);
+					setSprite(entity_x[i]-8U, entity_y[i], frame+2U, OBJ_PAL0);
+				} else {
+					setSprite(entity_x[i]-8U, entity_y[i], frame, OBJ_PAL0 | FLIP_X);
+					setSprite(entity_x[i]-16U, entity_y[i], frame+2U, OBJ_PAL0 | FLIP_X);
+				}
 				break;
 				
 			default:
@@ -663,7 +662,7 @@ void initSpawns() {
 
 	for(i = 0U; i != 3U; ++i) {
 		last_spawn_x = (last_spawn_x + 32U + ((UBYTE)rand() & 63U)) & 127U;
-		x = last_spawn_x + 32U;
+		x = last_spawn_x + 24U;
 		y -= 36U;
 		spawnEntity(E_BAT, x, y, NONE);
 	}
@@ -682,7 +681,7 @@ void updateSpawns() {
 		if(active_powerup == P_ROCKET && powerup_time < 5U) return;
 
 		last_spawn_x = (last_spawn_x + 32U + ((UBYTE)rand() & 63U)) & 127U;
-		x = last_spawn_x + 32U;
+		x = last_spawn_x + 24U;
 
 		step = progress / 39U; // TODO: Optimize?
 		dice = (UBYTE)rand() & 7U;
@@ -816,7 +815,7 @@ void enterGame() {
 			if(scrolled > scrolled_length[level]) {
 				scrolled -= scrolled_length[level];
 				if(progress < 115U) progress++;
-				move_bkg(0U, 115U-progress);
+				move_bkg(0U, 112U-progress);
 			}
 
 			clearRemainingSprites();

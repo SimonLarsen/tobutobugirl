@@ -20,7 +20,7 @@ void deadAnimation();
 #define MAPW 10U
 #define MAPH 16U
 
-#define SCRLMGN 68U
+#define SCRLMGN 84U
 
 #define MOVE_SPEED			2U
 #define DASH_SPEED			4U
