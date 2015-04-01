@@ -5,7 +5,7 @@
 #include "fade.h"
 #include "cos.h"
 #include "highscore.h"
-#include "bank0.h"
+#include "ram.h"
 
 #include "data/sprite/characters.h"
 #include "data/sprite/arrow.h"

@@ -6,7 +6,7 @@
 #include "gamestate.h"
 #include "game.h"
 #include "cos.h"
-#include "bank0.h"
+#include "ram.h"
 
 // Maps
 #include "data/bg/hud.h"
@@ -19,11 +19,11 @@
 
 UBYTE paused, ingame_state;
 UBYTE blink, flash;
-UBYTE blips, powerup, active_powerup, powerup_time, has_shield, progress;
 
 UBYTE scrolly, scrolled;
 UBYTE next_spawn, last_spawn_x, last_spawn_type;
 
+UBYTE blips, progress;
 UBYTE player_x, player_y;
 UBYTE player_xdir, player_ydir;
 UBYTE player_yspeed, player_bounce;
@@ -152,9 +152,6 @@ void initGame() {
 	blink = 0U;
 	flash = 0U;
 	blips = 0U;
-	powerup = 0U;
-	active_powerup = 0U;
-	has_shield = 0U;
 
 	entity_frame = 0U;
 	ticks = 0U;
@@ -181,7 +178,6 @@ void initGame() {
 }
 
 void updateInput() {
-	UBYTE i;
 	updateJoystate();
 
 	if(CLICKED(J_START)) {
@@ -202,11 +198,7 @@ void updateInput() {
 	}
 
 	if(CLICKED(KEY_DASH)) {
-		if(active_powerup == P_BALLOON) {
-			active_powerup = P_NONE;
-			powerup_time = 0U;
-		}
-		if(dashes && !active_powerup) {
+		if(dashes > 0U) {
 			dash_xdir = dash_ydir = NONE;
 			if(ISDOWN(J_LEFT)) dash_xdir = LEFT;
 			else if(ISDOWN(J_RIGHT)) dash_xdir = RIGHT;
@@ -220,56 +212,10 @@ void updateInput() {
 			}
 		}
 	}
-
-	if(CLICKED(KEY_USE)) {
-		if(blips >= 32U) {
-			blips = 0U;
-		}
-		else if(powerup != 0U) {
-			switch(powerup) {
-				case P_PADDLE:
-					for(i = 0U; i != MAX_ENTITIES; ++i) {
-						if(entity_type[i] == E_PADDLE) {
-							entity_type[i] = E_NONE;
-							break;
-						}
-					}
-					spawnEntity(E_PADDLE, 80U, 136U, RIGHT);
-					break;
-				case P_BATS:
-					for(i = 0U; i != MAX_ENTITIES; ++i) {
-						if(IS_ENEMY(entity_type[i])) {
-							entity_type[i] = E_BAT;
-						}
-					}
-					flash = 6U;
-					break;
-				case P_BALLOON:
-					active_powerup = P_BALLOON;
-					powerup_time = P_BALLOON_TIME;
-					dashes = 3U;
-					break;
-				case P_ROCKET:
-					active_powerup = P_ROCKET;
-					powerup_time = P_ROCKET_TIME;
-					dashes = 3U;
-					break;
-				case P_SHIELD:
-					has_shield = 1U;
-					break;
-			}
-			powerup = 0U;
-		}
-	}
 }
 
 void updatePlayer() {
 	UBYTE i, frame, palette, type;
-
-	if((ticks & 3U) == 3U) {
-		powerup_time--;
-		if(powerup_time == 0U) active_powerup = 0U;
-	}
 
 	// Check entity collisions
 	for(i = 0U; i != MAX_ENTITIES; ++i) {
@@ -279,16 +225,12 @@ void updatePlayer() {
 			type = entity_type[i];
 			if(type == E_BLIP) {
 				entity_type[i] = E_NONE;
-				if(powerup == 0U) {
-					blips += 3U;
-				}
+				blips += 16U;
+				if(blips > 127U) blips = 127U;
 			} else if(type == E_PORTAL
 			&& player_y > entity_y[i]-4U && player_y < entity_y[i]+4U
 			&& player_x > entity_x[i]-4U && player_x < entity_x[i]+4U) {
 				ingame_state = INGAME_COMPLETED;
-			} else if(active_powerup == P_ROCKET) {
-				entity_type[i] = E_NONE;
-				spawnEntity(E_CLOUD, player_x, player_y-6U, 0U);
 			} else if(type <= E_FIREBALL) {
 				killPlayer();
 			} else if(type == E_PADDLE) {
@@ -309,10 +251,6 @@ void updatePlayer() {
 					}
 					bounce();
 					player_yspeed = JUMP_SPEED;
-				} else if(has_shield) {
-					entity_type[i] = E_NONE;
-					has_shield = 0U;
-					spawnEntity(E_CLOUD, player_x, player_y+5U, 0U);
 				} else {
 					killPlayer();
 				}
@@ -344,26 +282,20 @@ void updatePlayer() {
 			dashing = 0U;
 		}
 	}
-	// Apply powerups
-	else if(active_powerup == P_BALLOON) {
-		player_yspeed = 14U;
-		player_ydir = UP;
-		if(powerup_time > 20U || powerup_time & 1U) {
-			setSprite(player_x-16U, player_y-16U, 100U, OBJ_PAL0);
-			setSprite(player_x-8U, player_y-16U, 102U, OBJ_PAL0);
-		}
-	}
-	else if(active_powerup == P_ROCKET) {
-		player_yspeed = 32U;
-		player_ydir = UP;
-		if((ticks & 31U) == 31U) {
-			spawnEntity(E_CLOUD, player_x, player_y+2U, 0U);
-		}
-	}
 
-	// Draw shield
-	if(has_shield) {
-		setSprite(player_x-16U, player_y+9U, 98U, OBJ_PAL0);
+	if(ISDOWN(KEY_USE) && blips) {
+		blips--;
+		if(player_ydir == UP && player_yspeed < MAX_FLY_SPEED) {
+			player_yspeed += 2U;
+		}
+		else {
+			if(player_yspeed <= 2U) {
+				player_yspeed = 2U;
+				player_ydir = UP;
+			} else {
+				player_yspeed -= 2U;
+			}
+		}
 	}
 
 	// Flying UP
@@ -402,8 +334,7 @@ void updatePlayer() {
 		frame = 4;
 	}
 
-	if(active_powerup == P_ROCKET) frame = 16U;
-	else if(dashing) frame = 20U;
+	if(dashing) frame = 20U;
 
 	// Blink
 	if(!dashes && (ticks & 4U)) palette = OBJ_PAL1;
@@ -429,8 +360,8 @@ void updateHUD() {
 	UBYTE progressbar;
 
 	// Blips
-	setSprite(168U-(blips >> 1), 136U, 104U, OBJ_PAL0);
-	setSprite(176U-(blips >> 1), 136U, 104U, OBJ_PAL0);
+	setSprite(168U-(blips >> 3), 136U, 104U, OBJ_PAL0);
+	setSprite(176U-(blips >> 3), 136U, 104U, OBJ_PAL0);
 
 	// Progress bar
 	progressbar = 118U - (progress << 1U) / 3U;
@@ -472,8 +403,6 @@ void updateEntities() {
 			case E_NONE: continue;
 
 			case E_BLIP:
-				if(active_powerup == P_ROCKET) break;
-
 				if(player_x < entity_x[i]) xdist = entity_x[i] - player_x;
 				else xdist = player_x - entity_x[i];
 				if(player_y < entity_y[i]) ydist = entity_y[i] - player_y;
@@ -678,8 +607,6 @@ void updateSpawns() {
 	if(progress < 111U) {
 		next_spawn -= 36U;
 
-		if(active_powerup == P_ROCKET && powerup_time < 5U) return;
-
 		last_spawn_x = (last_spawn_x + 32U + ((UBYTE)rand() & 63U)) & 127U;
 		x = last_spawn_x + 24U;
 
@@ -786,6 +713,7 @@ void enterGame() {
 		} else {
 			ticks++;
 			timer++;
+
 			// Update timing
 			if(timer == 60U) {
 				timer = 0U;
@@ -808,7 +736,6 @@ void enterGame() {
 			updateHUD();
 
 			updateEntities();
-
 			updateSpawns();
 
 			scrolled += scrolly;

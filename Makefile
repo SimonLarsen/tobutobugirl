@@ -48,9 +48,9 @@ tobu.gb:
 	lcc -c fade.c
 	lcc -c gamestate.c
 	lcc -c cos.c
-	lcc -Wf-ba0 -c bank0.c
-	lcc -c data/bg/circles.c -o circles.o
-	lcc -c data/sprite/arrow.c -o arrow.o
+	lcc -Wf-ba0 -c ram.c
+	lcc -c data/bg/circles.c
+	lcc -c data/sprite/arrow.c
 	lcc -c data/sprite/characters.c -o characters.o
 	lcc -Wl-yt3 -Wl-yo2 -Wl-ya1 *.o -o $@
 

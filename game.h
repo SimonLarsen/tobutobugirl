@@ -30,6 +30,7 @@ void deadAnimation();
 #define DJUMP_SPEED			26U
 #define JUMPPAD_SPEED		39U
 #define MAX_YSPEED			24U
+#define MAX_FLY_SPEED		24U
 
 #define RETICULE_MAX_OFFSET	30U
 
