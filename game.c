@@ -226,7 +226,7 @@ void updatePlayer() {
 			if(type == E_BLIP) {
 				entity_type[i] = E_NONE;
 				blips += 16U;
-				if(blips > 127U) blips = 127U;
+				if(blips > 128U) blips = 128U;
 			} else if(type == E_PORTAL
 			&& player_y > entity_y[i]-4U && player_y < entity_y[i]+4U
 			&& player_x > entity_x[i]-4U && player_x < entity_x[i]+4U) {
@@ -283,6 +283,7 @@ void updatePlayer() {
 		}
 	}
 
+	// Using jetpack
 	if(ISDOWN(KEY_USE) && blips) {
 		blips--;
 		if(player_ydir == UP && player_yspeed < MAX_FLY_SPEED) {
@@ -334,7 +335,12 @@ void updatePlayer() {
 		frame = 4;
 	}
 
-	if(dashing) frame = 20U;
+	if(dashing) {
+		frame = 20U;
+	}
+	else if(ISDOWN(KEY_USE) && blips && (ticks & 8U)) {
+		frame = 16U;
+	}
 
 	// Blink
 	if(!dashes && (ticks & 4U)) palette = OBJ_PAL1;
@@ -361,7 +367,7 @@ void updateHUD() {
 
 	// Blips
 	setSprite(168U-(blips >> 3), 136U, 104U, OBJ_PAL0);
-	setSprite(176U-(blips >> 3), 136U, 104U, OBJ_PAL0);
+	setSprite(176U-(blips >> 3), 136U, 106U, OBJ_PAL0);
 
 	// Progress bar
 	progressbar = 118U - (progress << 1U) / 3U;
