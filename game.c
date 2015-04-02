@@ -18,7 +18,7 @@
 #include "data/sprite/sprites.h"
 
 UBYTE paused, ingame_state;
-UBYTE blink, flash;
+UBYTE blink;
 
 UBYTE scrolly, scrolled;
 UBYTE next_spawn, last_spawn_x, last_spawn_type;
@@ -150,7 +150,6 @@ void initGame() {
 
 	ingame_state = INGAME_ACTIVE;
 	blink = 0U;
-	flash = 0U;
 	blips = 0U;
 
 	entity_frame = 0U;
@@ -166,7 +165,6 @@ void initGame() {
 	move_bkg(0U, 112U);
 	move_win(151U, 0U);
 
-	// Clear HUD
 	updateHUDTime();
 
 	SHOW_BKG;
@@ -670,7 +668,7 @@ void updateSpawns() {
 			}
 		}
 	}
-	else if(progress == 115U && !portal_spawned) {
+	else if(progress == 112U && !portal_spawned) {
 		spawnEntity(E_PORTAL, 96U, 1U, NONE);
 		next_spawn = 0U;
 		portal_spawned = 1U;
@@ -735,22 +733,17 @@ void enterGame() {
 				}
 			}
 
-			// Flash background
-			if(flash) {
-				flash--;
-				BGP_REG = B8(00011011);
-			} else BGP_REG = B8(11100100);
-
 			updatePlayer();
 			updateHUD();
 
 			updateEntities();
 			updateSpawns();
 
+			// Scroll screen
 			scrolled += scrolly;
 			if(scrolled > scrolled_length[level]) {
 				scrolled -= scrolled_length[level];
-				if(progress < 115U) progress++;
+				if(progress < 112U) progress++;
 				move_bkg(0U, 112U-progress);
 			}
 
