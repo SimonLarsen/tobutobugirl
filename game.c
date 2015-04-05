@@ -147,6 +147,8 @@ void initGame() {
 	dash_xdir = 0U;
 	dash_ydir = 0U;
 	paused = 0U;
+	scrolled = 0U;
+	scrolly = 0U;
 
 	ingame_state = INGAME_ACTIVE;
 	blink = 0U;
@@ -233,6 +235,8 @@ void updatePlayer() {
 			&& player_y > entity_y[i]-4U && player_y < entity_y[i]+4U
 			&& player_x > entity_x[i]-4U && player_x < entity_x[i]+4U) {
 				ingame_state = INGAME_COMPLETED;
+				player_x = entity_x[i];
+				player_y = entity_y[i];
 			} else if(type <= E_FIREBALL) {
 				killPlayer();
 			} else if(type == E_PADDLE) {
@@ -433,12 +437,6 @@ void updateEntities() {
 						else entity_y[i] += 2U;
 					}
 				}
-				break;
-
-			case E_PADDLE:
-				entity_y[i] = 136U-scrolly;
-				if(player_x < entity_x[i]) entity_x[i]--;
-				else if(player_x > entity_x[i]) entity_x[i]++;
 				break;
 
 			case E_BIRD:
@@ -679,6 +677,73 @@ void updateSpawns() {
 	}
 }
 
+void introAnimation() {
+	UBYTE frame;
+	for(ticks = 0U; ticks != 64U; ++ticks) {
+		frame = 100U - ((ticks >> 4) << 2);
+		if(ticks & 8U) {
+			setSprite(player_x-16U, player_y, frame, OBJ_PAL0);
+			setSprite(player_x-8U, player_y, frame+2U, OBJ_PAL0);
+		} else {
+			setSprite(player_x-8U, player_y, frame, FLIP_X | OBJ_PAL0);
+			setSprite(player_x-16U, player_y, frame+2U, FLIP_X | OBJ_PAL0);
+		}
+
+		updateEntities();
+
+		clearRemainingSprites();
+		wait_vbl_done();
+	}
+
+	for(ticks = 0U; ticks != 32U; ++ticks) {
+		if(ticks & 4U) {
+			BGP_REG = B8(11100100);
+		} else {
+			BGP_REG = B8(00011011);
+		}
+
+		setSprite(player_x-8U, player_y, 0U, FLIP_X | OBJ_PAL0);
+		setSprite(player_x-16U, player_y, 2U, FLIP_X | OBJ_PAL0);
+
+		updateEntities();
+
+		clearRemainingSprites();
+		wait_vbl_done();
+	}
+}
+
+void intoPortalAnimation() {
+	UBYTE frame;
+
+	for(ticks = 0U; ticks != 32U; ++ticks) {
+		if(ticks & 4U) {
+			BGP_REG = B8(11100100);
+		} else {
+			BGP_REG = B8(00011011);
+		}
+
+		setSprite(player_x-16U, player_y, 88U, OBJ_PAL0);
+		setSprite(player_x-8U, player_y, 90U, OBJ_PAL0);
+
+		clearRemainingSprites();
+		wait_vbl_done();
+	}
+
+	for(ticks = 0U; ticks != 64U; ++ticks) {
+		frame = 88U + ((ticks >> 4) << 2);
+		if(ticks & 8U) {
+			setSprite(player_x-16U, player_y, frame, OBJ_PAL0);
+			setSprite(player_x-8U, player_y, frame+2U, OBJ_PAL0);
+		} else {
+			setSprite(player_x-8U, player_y, frame, FLIP_X | OBJ_PAL0);
+			setSprite(player_x-16U, player_y, frame+2U, FLIP_X | OBJ_PAL0);
+		}
+
+		clearRemainingSprites();
+		wait_vbl_done();
+	}
+}
+
 void deathAnimation() {
 	UBYTE offset, frame;
 	scrolly = 0U;
@@ -714,6 +779,8 @@ void enterGame() {
 	initSpawns();
 
 	fadeFromWhite(10U);
+
+	introAnimation();
 
 	while(ingame_state == INGAME_ACTIVE) {
 		updateInput();
@@ -761,6 +828,7 @@ void enterGame() {
 		deathAnimation();
 	}
 	else if(ingame_state == INGAME_COMPLETED) {
+		intoPortalAnimation();
 		saveScore();
 		gamestate = GAMESTATE_WINSCREEN;
 	}

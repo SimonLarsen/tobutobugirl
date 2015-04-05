@@ -15,7 +15,9 @@ void clearEntities();
 void initSpawns();
 void updateSpawns();
 void enterGame();
-void deadAnimation();
+void introAnimation();
+void intoPortalAnimation();
+void deathAnimation();
 
 #define MAPW 10U
 #define MAPH 16U
