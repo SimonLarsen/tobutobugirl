@@ -180,7 +180,11 @@ void updateInput() {
 
 	if(CLICKED(J_START)) {
 		paused = paused ^ 1U;
-		BGP_REG = B8(11111001);
+		if(paused) {
+			BGP_REG = B8(11111001);
+		} else {
+			BGP_REG = B8(11100100);
+		}
 	}
 
 	if(paused) return;
