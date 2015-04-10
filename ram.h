@@ -1,7 +1,7 @@
-#ifndef BANK0_H
-#define BANK0_H
+#ifndef RAM_H
+#define RAM_H
 
-#define BANK0_BOOT_ADDR		127U
+#define SIG_ADDR	120U
 
 extern UBYTE ram_data[];
 

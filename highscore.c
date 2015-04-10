@@ -82,7 +82,7 @@ void _highscoreUpdateScreen() {
 		set_bkg_tiles(3U, i+11U, 1U, 1U, &tile);
 	}
 
-	data = ram_data + ((highscore_selection-1U) << 4);
+	data = &ram_data[(highscore_selection-1U) << 4];
 	for(i = 0U; i != 5U; ++i) {
 		if(*data != 0xFFU) {
 			tile = *data / 60U;
@@ -92,6 +92,12 @@ void _highscoreUpdateScreen() {
 			set_bkg_tiles(7U, i+11U, 1U, 1U, &tile);
 
 			tile = (*data % 60U) % 10U;
+			set_bkg_tiles(8U, i+11U, 1U, 1U, &tile);
+		}
+		else {
+			tile = 10U;
+			set_bkg_tiles(5U, i+11U, 1U, 1U, &tile);
+			set_bkg_tiles(7U, i+11U, 1U, 1U, &tile);
 			set_bkg_tiles(8U, i+11U, 1U, 1U, &tile);
 		}
 		data += 2U;
