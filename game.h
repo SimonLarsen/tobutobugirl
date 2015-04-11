@@ -52,11 +52,9 @@ void deathAnimation();
 #define E_BAT		4U
 #define E_GHOST		5U
 #define E_ALIEN		6U
-#define E_JUMPPAD	7U
-#define E_PADDLE	8U
-#define E_BLIP		9U
-#define E_PORTAL	10U
-#define E_CLOUD		11U
+#define E_BLIP		7U
+#define E_PORTAL	8U
+#define E_CLOUD		9U
 
 #define FIRST_ENEMY E_SPIKES
 #define LAST_ENEMY E_ALIEN

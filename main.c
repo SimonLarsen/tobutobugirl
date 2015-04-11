@@ -29,7 +29,7 @@ void initRAM() {
 
 	if(initialized == 0U) {
 		for(i = 0U; i != 42U; ++i) {
-			ram_data[i] = 0xFFU;
+			ram_data[i] = 0U;
 		}
 
 		for(i = 0U; i != 8U; ++i) {

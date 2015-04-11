@@ -5,7 +5,7 @@ void initHighscore();
 void highscoreUpdateScreen();
 void _highscoreUpdateScreen();
 void highscoreScrollCircles();
-void addScore(UBYTE elapsed_seconds);
+void addScore(UBYTE elapsed_seconds, UBYTE score);
 void enterHighscore();
 
 #endif

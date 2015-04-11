@@ -104,24 +104,45 @@ void _highscoreUpdateScreen() {
 	// Set scores
 	data = &ram_data[(highscore_selection-1U) << 4];
 	for(i = 0U; i != 5U; ++i) {
-		if(*data != 0xFFU) {
-			tile = *data / 60U;
+		tile = 10U;
+		for(j = 6U; j != 10U; ++j) {
+			set_bkg_tiles(j, i+11U, 1U, 1U, &tile);
+		}
+		for(j = 13U; j != 17U; ++j) {
+			set_bkg_tiles(j, i+11U, 1U, 1U, &tile);
+		}
+
+		if(data[0] != 0U) {
+			// Draw time
+			tile = data[0] / 60U;
 			set_bkg_tiles(13U, i+11U, 1U, 1U, &tile);
 
 			tile = 37U;
 			set_bkg_tiles(14U, i+11U, 1U, 1U, &tile);
 
-			tile = (*data % 60U) / 10U;
+			tile = (data[0] % 60U) / 10U;
 			set_bkg_tiles(15U, i+11U, 1U, 1U, &tile);
 
-			tile = (*data % 60U) % 10U;
+			tile = (data[0] % 60U) % 10U;
 			set_bkg_tiles(16U, i+11U, 1U, 1U, &tile);
-		}
-		else {
-			tile = 10U;
-			for(j = 13U; j != 17U; ++j) {
-				set_bkg_tiles(j, i+11U, 1U, 1U, &tile);
+
+			// Draw score
+			if(data[1] >= 100U) {
+				tile = data[1] / 100U;
+				set_bkg_tiles(6U, i+11U, 1U, 1U, &tile);
 			}
+
+			if(data[1] >= 10U) {
+				tile = (data[1] / 10U) % 10U;
+				set_bkg_tiles(7U, i+11U, 1U, 1U, &tile);
+			}
+
+			tile = data[1] % 10U;
+			set_bkg_tiles(8U, i+11U, 1U, 1U, &tile);
+
+			tile = 0U;
+			set_bkg_tiles(9U, i+11U, 1U, 1U, &tile);
+			set_bkg_tiles(10U, i+11U, 1U, 1U, &tile);
 		}
 		data += 2U;
 	}
@@ -129,7 +150,7 @@ void _highscoreUpdateScreen() {
 	DISABLE_RAM_MBC1;
 }
 
-void addScore(UBYTE elapsed_seconds) {
+void addScore(UBYTE elapsed_seconds, UBYTE score) {
 	UBYTE i, j;
 	UBYTE *data;
 
@@ -139,7 +160,8 @@ void addScore(UBYTE elapsed_seconds) {
 
 	data = &ram_data[(level - 1U) << 4];
 	for(i = 0U; i != 5U; ++i) {
-		if(elapsed_seconds < data[i << 1]) {
+		if(score > data[(i << 1) + 1U]
+		|| (score == data[(i << 1) + 1U] && elapsed_seconds < data[i << 1])) {
 			break;
 		}
 	}
@@ -147,8 +169,10 @@ void addScore(UBYTE elapsed_seconds) {
 	if(i < 5U) {
 		for(j = 4U; j != i; --j) {
 			data[j << 1] = data[(j - 1U) << 1];
+			data[(j << 1) + 1U] = data[((j - 1U) << 1) + 1U];
 		}
 		data[i << 1] = elapsed_seconds;
+		data[(i << 1) + 1U] = score;
 	}
 
 	DISABLE_RAM_MBC1;

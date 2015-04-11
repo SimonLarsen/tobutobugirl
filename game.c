@@ -24,12 +24,12 @@ UBYTE blink;
 UBYTE scrolly, scrolled;
 UBYTE next_spawn, last_spawn_x, last_spawn_type;
 
-UBYTE blips, progress;
+UBYTE blips, progress, portal_spawned;
 UBYTE player_x, player_y;
 UBYTE player_xdir, player_ydir;
 UBYTE player_yspeed, player_bounce;
 UBYTE dashing, dashes, dash_xdir, dash_ydir;
-UBYTE timer, remaining_time, elapsed_seconds, portal_spawned;
+UBYTE timer, remaining_time, elapsed_seconds, kills;
 
 UBYTE entity_x[MAX_ENTITIES];
 UBYTE entity_y[MAX_ENTITIES];
@@ -51,10 +51,7 @@ const UBYTE entity_sprites[] = {
 	10*4,	// E_BAT
 	12*4,	// E_GHOST
 	14*4,	// E_ALIEN
-	// Misc
-	21*4,	// E_JUMPPAD
 	// Powerups
-	106,	// E_PADDLE
 	27*4,	// E_BLIP
 	// Special
 	21*4,	// E_PORTAL
@@ -129,6 +126,7 @@ void initGame() {
 	ingame_state = INGAME_ACTIVE;
 	blink = 0U;
 	blips = 0U;
+	kills = 0U;
 
 	entity_frame = 0U;
 	ticks = 0U;
@@ -215,10 +213,6 @@ void updatePlayer() {
 				player_y = entity_y[i];
 			} else if(type <= E_FIREBALL) {
 				killPlayer();
-			} else if(type == E_PADDLE) {
-				bounce();
-				player_yspeed = JUMPPAD_SPEED;
-				entity_type[i] = E_NONE;
 			} else if(type <= LAST_ENEMY) {
 				if(player_ydir == DOWN && player_y < entity_y[i]-2U) {
 					if(dashing) {
@@ -226,6 +220,7 @@ void updatePlayer() {
 						spawnEntity(E_BLIP, player_x+20U, player_y-8U, 0U);
 						entity_type[i] = E_NONE;
 						spawnEntity(E_CLOUD, player_x, player_y+5U, 0U);
+						kills++;
 					}
 					else if(type == E_GHOST) {
 						entity_type[i] = E_NONE;
@@ -509,11 +504,6 @@ void updateEntities() {
 			case E_BLIP:
 				frame += (entity_frame & 1U) << 1U;
 				setSprite(entity_x[i]-12U, entity_y[i], frame, OBJ_PAL0);
-				break;
-
-			case E_PADDLE:
-				setSprite(entity_x[i]-16U, entity_y[i], frame, OBJ_PAL0);
-				setSprite(entity_x[i]-8U, entity_y[i], frame, OBJ_PAL0);
 				break;
 
 			case E_CLOUD:
@@ -805,7 +795,7 @@ void enterGame() {
 	}
 	else if(ingame_state == INGAME_COMPLETED) {
 		intoPortalAnimation();
-		addScore(elapsed_seconds);
+		addScore(elapsed_seconds, remaining_time + 2U*kills);
 		gamestate = GAMESTATE_WINSCREEN;
 	}
 	else if(ingame_state == INGAME_QUIT) {
