@@ -6,6 +6,7 @@ void setTile(UBYTE x, UBYTE y, UBYTE *tile);
 void selectTransitionIn();
 void selectTransitionOut();
 void updateSelectScreen();
+void selectUpdateSprites();
 void selectScrollCircles();
 void enterSelect();
 

@@ -7,10 +7,6 @@ title_backgrounds:
 .PHONY: select_backgrounds
 select_backgrounds:
 	imgtogb --map data/bg/select.png -o data/bg/select.h -O 9
-	imgtogb --map data/bg/selection0.png -o data/bg/selection0.h -O 40
-	imgtogb --map data/bg/selection1.png -o data/bg/selection1.h -O 40
-	imgtogb --map data/bg/selection2.png -o data/bg/selection2.h -O 40
-	imgtogb --map data/bg/selection3.png -o data/bg/selection3.h -O 40
 
 .PHONY: ingame_backgrounds
 ingame_backgrounds:
@@ -26,7 +22,7 @@ winscreen_backgrounds:
 
 .PHONY: highscore_backgrounds
 highscore_backgrounds:
-	imgtogb --map data/bg/highscore.png -o data/bg/highscore.h -O 46
+	imgtogb --map data/bg/highscore.png -o data/bg/highscore.h -O 109
 
 backgrounds: title_backgrounds select_backgrounds ingame_backgrounds winscreen_backgrounds highscore_backgrounds
 	#imgtogb --map data/bg/circles.png -o data/bg/circles.h # 9 tiles
@@ -34,24 +30,19 @@ backgrounds: title_backgrounds select_backgrounds ingame_backgrounds winscreen_b
 .PHONY: sprites
 sprites:
 	imgtogb --sprite --8x16 data/sprite/sprites.png -o data/sprite/sprites.h
-	#imgtogb --sprite data/sprite/characters.png -o data/sprite/characters.h # 37 tiles
+	#imgtogb --sprite data/sprite/characters.png -o data/sprite/characters.h # 38 tiles
 	#imgtogb --sprite data/sprite/arrow.png -o data/sprite/arrow.h
+	#imgtogb --map data/bg/selection0.png -o data/bg/selection0.h -O 40
+	#imgtogb --map data/bg/selection1.png -o data/bg/selection1.h -O 40 # 54 tiles
+	#imgtogb --map data/bg/selection2.png -o data/bg/selection2.h -O 40 # 62 tiles
+	#imgtogb --map data/bg/selection3.png -o data/bg/selection3.h -O 40 # 40 tiles
 
 .PHONY: tobu.gb
 tobu.gb: 
-	lcc -c main.c 
-	lcc -c title.c
-	lcc -c select.c
-	lcc -c game.c
-	lcc -c winscreen.c
-	lcc -c highscore.c
-	lcc -c fade.c
-	lcc -c gamestate.c
-	lcc -c cos.c
+	lcc -c *.c
+	lcc -c data/sprite/*.c
+	lcc -c data/bg/*.c
 	lcc -Wf-ba0 -c ram.c
-	lcc -c data/bg/circles.c
-	lcc -c data/sprite/arrow.c
-	lcc -c data/sprite/characters.c -o characters.o
 	lcc -Wl-yt3 -Wl-yo2 -Wl-ya1 *.o -o $@
 
 .PHONY: run

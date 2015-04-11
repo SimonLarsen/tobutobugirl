@@ -12,6 +12,9 @@
 
 #include "data/bg/circles.h"
 #include "data/bg/highscore.h"
+#include "data/bg/selection1.h"
+#include "data/bg/selection2.h"
+#include "data/bg/selection3.h"
 
 UBYTE highscore_circle_index;
 UBYTE highscore_selection;
@@ -21,8 +24,8 @@ void initHighscore() {
 	DISPLAY_OFF;
 
 	move_bkg(0U, 0U);
-	set_bkg_data(0U, characters_data_length, characters_data);
-	set_bkg_data(37U, circles_data_length, circles_data);
+	set_bkg_data(0U, 38U, characters_data);
+	set_bkg_data(38U, circles_data_length, circles_data);
 	set_bkg_data(highscore_offset, highscore_data_length, highscore_data);
 
 	set_bkg_tiles(0U, 0U, highscore_tiles_width, highscore_tiles_height, highscore_tiles);
@@ -48,7 +51,7 @@ void initHighscore() {
 
 void highscoreScrollCircles() {
 	highscore_circle_index = (highscore_circle_index+1U) & 7U;
-	set_bkg_data(72U, 1U, &circles_data[(highscore_circle_index << 4)]);
+	set_bkg_data(142U, 1U, &circles_data[(highscore_circle_index << 4)]);
 }
 
 void highscoreUpdateScreen() {
@@ -63,42 +66,62 @@ void highscoreUpdateScreen() {
 }
 
 void _highscoreUpdateScreen() {
-	UBYTE i, tile;
+	UBYTE i, j, tile;
 	UBYTE *data;
 
-	ENABLE_RAM_MBC1;
-	SWITCH_4_32_MODE_MBC1;
-	SWITCH_RAM_MBC1(0);
+	// Select level images
+	if(highscore_selection == 1U) {
+		set_bkg_data(selection1_offset, selection1_data_length, selection1_data);
+		data = selection1_tiles;
+	} else if(highscore_selection == 2U) {
+		set_bkg_data(selection2_offset, selection2_data_length, selection2_data);
+		data = selection2_tiles;
+	} else if(highscore_selection == 3U) {
+		set_bkg_data(selection3_offset, selection3_data_length, selection3_data);
+		data = selection3_tiles;
+	}
+	set_bkg_tiles(0U, 4U, 20U, 6U, data);
+	set_bkg_tiles(5U, 8U, 10U, 1U, highscore_tiles+165U);
+	set_bkg_tiles(5U, 9U, 10U, 1U, highscore_tiles+185U);
 
-	// Set name
+	// Set level name
 	data = level_names[highscore_selection];
 	for(i = 7U; i != 13U; ++i) {
-		set_bkg_tiles(i, 6U, 1U, 1U, data);
+		set_bkg_tiles(i, 9U, 1U, 1U, data);
 		data++;
 	}
 
+	// Set numbers
 	for(i = 0U; i != 5U; ++i) {
 		tile = i+1U;
 		set_bkg_tiles(3U, i+11U, 1U, 1U, &tile);
 	}
 
+	ENABLE_RAM_MBC1;
+	SWITCH_4_32_MODE_MBC1;
+	SWITCH_RAM_MBC1(0);
+
+	// Set scores
 	data = &ram_data[(highscore_selection-1U) << 4];
 	for(i = 0U; i != 5U; ++i) {
 		if(*data != 0xFFU) {
 			tile = *data / 60U;
-			set_bkg_tiles(5U, i+11U, 1U, 1U, &tile);
+			set_bkg_tiles(13U, i+11U, 1U, 1U, &tile);
+
+			tile = 37U;
+			set_bkg_tiles(14U, i+11U, 1U, 1U, &tile);
 
 			tile = (*data % 60U) / 10U;
-			set_bkg_tiles(7U, i+11U, 1U, 1U, &tile);
+			set_bkg_tiles(15U, i+11U, 1U, 1U, &tile);
 
 			tile = (*data % 60U) % 10U;
-			set_bkg_tiles(8U, i+11U, 1U, 1U, &tile);
+			set_bkg_tiles(16U, i+11U, 1U, 1U, &tile);
 		}
 		else {
 			tile = 10U;
-			set_bkg_tiles(5U, i+11U, 1U, 1U, &tile);
-			set_bkg_tiles(7U, i+11U, 1U, 1U, &tile);
-			set_bkg_tiles(8U, i+11U, 1U, 1U, &tile);
+			for(j = 13U; j != 17U; ++j) {
+				set_bkg_tiles(j, i+11U, 1U, 1U, &tile);
+			}
 		}
 		data += 2U;
 	}
@@ -164,15 +187,15 @@ void enterHighscore() {
 
 		offset = cos32_64[(ticks & 63U)] >> 3;
 
-		setSprite(12U-offset, 96U, 0U, OBJ_PAL0);
-		setSprite(20U-offset, 96U, 1U, OBJ_PAL0);
-		setSprite(12U-offset, 104U, 2U, OBJ_PAL0);
-		setSprite(20U-offset, 104U, 3U, OBJ_PAL0);
+		setSprite(20U-offset, 64U, 0U, OBJ_PAL0);
+		setSprite(28U-offset, 64U, 1U, OBJ_PAL0);
+		setSprite(20U-offset, 72U, 2U, OBJ_PAL0);
+		setSprite(28U-offset, 72U, 3U, OBJ_PAL0);
 
-		setSprite(148U+offset, 96U, 1U, OBJ_PAL0 | FLIP_X);
-		setSprite(156U+offset, 96U, 0U, OBJ_PAL0 | FLIP_X);
-		setSprite(148U+offset, 104U, 3U, OBJ_PAL0 | FLIP_X);
-		setSprite(156U+offset, 104U, 2U, OBJ_PAL0 | FLIP_X);
+		setSprite(140U+offset, 64U, 1U, OBJ_PAL0 | FLIP_X);
+		setSprite(148U+offset, 64U, 0U, OBJ_PAL0 | FLIP_X);
+		setSprite(140U+offset, 72U, 3U, OBJ_PAL0 | FLIP_X);
+		setSprite(148U+offset, 72U, 2U, OBJ_PAL0 | FLIP_X);
 
 		clearRemainingSprites();
 		wait_vbl_done();

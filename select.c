@@ -18,13 +18,14 @@
 #include "data/bg/selection3.h"
 
 UBYTE select_circle_index;
+UBYTE select_ticks;
 
 void initSelect() {
 	disable_interrupts();
 	DISPLAY_OFF;
 
 	move_bkg(0U, 0U);
-	set_sprite_data(0U, characters_data_length, characters_data);
+	set_sprite_data(0U, 37U, characters_data);
 	set_sprite_data(37U, arrow_data_length, arrow_data);
 	set_bkg_data(0U, circles_data_length, circles_data);
 	set_bkg_data(select_offset, select_data_length, select_data);
@@ -51,10 +52,12 @@ void initSelect() {
 
 void setTile(UBYTE x, UBYTE y, UBYTE *tile) {
 	set_bkg_tiles(x, y, 1U, 1U, tile);
-	ticks++;
-	if((ticks & 14U) == 14U) {
-		ticks = 0U;
+	select_ticks++;
+	if((select_ticks & 14U) == 14U) {
+		select_ticks = 0U;
 		selectScrollCircles();
+		selectUpdateSprites();
+		clearRemainingSprites();
 	}
 	delay(3U);
 }
@@ -165,6 +168,22 @@ void updateSelectScreen() {
 	}
 }
 
+void selectUpdateSprites() {
+	UBYTE offset;
+
+	offset = cos32_64[(ticks & 63U)] >> 3;
+
+	setSprite(24U-offset, 60U, 37U, OBJ_PAL0);
+	setSprite(32U-offset, 60U, 38U, OBJ_PAL0);
+	setSprite(24U-offset, 68U, 39U, OBJ_PAL0);
+	setSprite(32U-offset, 68U, 40U, OBJ_PAL0);
+
+	setSprite(136U+offset, 60U, 38U, OBJ_PAL0 | FLIP_X);
+	setSprite(144U+offset, 60U, 37U, OBJ_PAL0 | FLIP_X);
+	setSprite(136U+offset, 68U, 40U, OBJ_PAL0 | FLIP_X);
+	setSprite(144U+offset, 68U, 39U, OBJ_PAL0 | FLIP_X);
+}
+
 void selectScrollCircles() {
 	select_circle_index = (select_circle_index+1U) & 7U;
 	set_bkg_data(30U, 1U, &circles_data[(select_circle_index << 4)]);
@@ -187,16 +206,16 @@ void enterSelect() {
 		if(CLICKED(J_RIGHT)) {
 			if(selection == 3U) selection = 0U;
 			else selection++;
-			clearRemainingSprites();
 			selectTransitionOut();
 			selectTransitionIn();
+			selectUpdateSprites();
 		}
 		if(CLICKED(J_LEFT)) {
 			if(selection == 0U) selection = 3U;
 			else selection--;
-			clearRemainingSprites();
 			selectTransitionOut();
 			selectTransitionIn();
+			selectUpdateSprites();
 		}
 		if(CLICKED(J_START) || CLICKED(J_A)) {
 			if(selection == 0U) {
@@ -219,19 +238,7 @@ void enterSelect() {
 			setSprite(offset+(i << 3), 61U+cos4_16[(i+(ticks >> 1)) & 15U], level_names[selection][i], OBJ_PAL0);
 		}
 
-		// Draw arrows
-		offset = cos32_64[(ticks & 63U)] >> 3;
-
-		setSprite(24U-offset, 60U, 37U, OBJ_PAL0);
-		setSprite(32U-offset, 60U, 38U, OBJ_PAL0);
-		setSprite(24U-offset, 68U, 39U, OBJ_PAL0);
-		setSprite(32U-offset, 68U, 40U, OBJ_PAL0);
-
-		setSprite(136U+offset, 60U, 38U, OBJ_PAL0 | FLIP_X);
-		setSprite(144U+offset, 60U, 37U, OBJ_PAL0 | FLIP_X);
-		setSprite(136U+offset, 68U, 40U, OBJ_PAL0 | FLIP_X);
-		setSprite(144U+offset, 68U, 39U, OBJ_PAL0 | FLIP_X);
-
+		selectUpdateSprites();
 		clearRemainingSprites();
 		wait_vbl_done();
 	}

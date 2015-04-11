@@ -1,5 +1,5 @@
-#ifndef __DEFINES_H
-#define __DEFINES_H
+#ifndef DEFINES_H
+#define DEFINES_H
 
 #define NONE	0U
 
