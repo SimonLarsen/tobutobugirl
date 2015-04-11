@@ -105,7 +105,7 @@ void _highscoreUpdateScreen() {
 	data = &ram_data[(highscore_selection-1U) << 4];
 	for(i = 0U; i != 5U; ++i) {
 		tile = 10U;
-		for(j = 6U; j != 10U; ++j) {
+		for(j = 6U; j != 11U; ++j) {
 			set_bkg_tiles(j, i+11U, 1U, 1U, &tile);
 		}
 		for(j = 13U; j != 17U; ++j) {
