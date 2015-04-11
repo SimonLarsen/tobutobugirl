@@ -44,20 +44,20 @@ const UBYTE scrolled_length[4] = { 0U, 16U, 24U, 32U };
 const UBYTE entity_sprites[] = {
 	0,		// E_NONE
 	 // Hazards
-	7*4,	// E_SPIKES
-	17*4, 	// E_FIREBALL
+	6*4,	// E_SPIKES
+	16*4, 	// E_FIREBALL
 	 // Enemies
-	9*4,	// E_BIRD
-	11*4,	// E_BAT
-	13*4,	// E_GHOST
-	15*4,	// E_ALIEN
+	8*4,	// E_BIRD
+	10*4,	// E_BAT
+	12*4,	// E_GHOST
+	14*4,	// E_ALIEN
 	// Misc
 	21*4,	// E_JUMPPAD
 	// Powerups
 	106,	// E_PADDLE
 	27*4,	// E_BLIP
 	// Special
-	22*4,	// E_PORTAL
+	21*4,	// E_PORTAL
 	28*4,	// E_CLOUD
 };
 
@@ -321,10 +321,10 @@ void updatePlayer() {
 	}
 
 	if(dashing) {
-		frame = 20U;
+		frame = 16U;
 	}
 	else if(ISDOWN(KEY_USE) && blips && (ticks & 8U)) {
-		frame = 16U;
+		frame = 12U;
 	}
 
 	// Blink
@@ -356,8 +356,8 @@ void updateHUD() {
 
 	// Progress bar
 	progressbar = 118U - (progress << 1U) / 3U;
-	setSprite(152U, progressbar, 24U, OBJ_PAL0);
-	setSprite(160U, progressbar, 26U, OBJ_PAL0);
+	setSprite(152U, progressbar, 20U, OBJ_PAL0);
+	setSprite(160U, progressbar, 22U, OBJ_PAL0);
 }
 
 void updateHUDTime() {
@@ -656,7 +656,7 @@ void updateSpawns() {
 void introAnimation() {
 	UBYTE frame;
 	for(ticks = 0U; ticks != 64U; ++ticks) {
-		frame = 100U - ((ticks >> 4) << 2);
+		frame = 96U - ((ticks >> 4) << 2);
 		if(ticks & 8U) {
 			setSprite(player_x-16U, player_y, frame, OBJ_PAL0);
 			setSprite(player_x-8U, player_y, frame+2U, OBJ_PAL0);
@@ -698,15 +698,15 @@ void intoPortalAnimation() {
 			BGP_REG = B8(00011011);
 		}
 
-		setSprite(player_x-16U, player_y, 88U, OBJ_PAL0);
-		setSprite(player_x-8U, player_y, 90U, OBJ_PAL0);
+		setSprite(player_x-16U, player_y, 84U, OBJ_PAL0);
+		setSprite(player_x-8U, player_y, 86U, OBJ_PAL0);
 
 		clearRemainingSprites();
 		wait_vbl_done();
 	}
 
 	for(ticks = 0U; ticks != 64U; ++ticks) {
-		frame = 88U + ((ticks >> 4) << 2);
+		frame = 84U + ((ticks >> 4) << 2);
 		if(ticks & 8U) {
 			setSprite(player_x-16U, player_y, frame, OBJ_PAL0);
 			setSprite(player_x-8U, player_y, frame+2U, OBJ_PAL0);
@@ -725,14 +725,14 @@ void deathAnimation() {
 	scrolly = 0U;
 	for(ticks = 0U; ticks != 48U; ++ticks) {
 		if(ticks < 16U) {
+			setSprite(player_x-16U, player_y, 72U, OBJ_PAL0);
+			setSprite(player_x-8U, player_y, 74U, OBJ_PAL0);
+		} else if(ticks < 20U) {
 			setSprite(player_x-16U, player_y, 76U, OBJ_PAL0);
 			setSprite(player_x-8U, player_y, 78U, OBJ_PAL0);
-		} else if(ticks < 20U) {
+		} else if(ticks < 24U) {
 			setSprite(player_x-16U, player_y, 80U, OBJ_PAL0);
 			setSprite(player_x-8U, player_y, 82U, OBJ_PAL0);
-		} else if(ticks < 24U) {
-			setSprite(player_x-16U, player_y, 84U, OBJ_PAL0);
-			setSprite(player_x-8U, player_y, 86U, OBJ_PAL0);
 		} else {
 			offset = ((ticks-16U) >> 1);
 			frame = 108U + ((ticks & 4U) >> 1);
