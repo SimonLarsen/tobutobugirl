@@ -7,6 +7,7 @@
 #include "game.h"
 #include "cos.h"
 #include "ram.h"
+#include "highscore.h"
 
 // Maps
 #include "data/bg/hud.h"
@@ -80,31 +81,6 @@ const UBYTE spawn_levels[3][3][8] = {
 		{E_FIREBALL, E_FIREBALL, E_FIREBALL, E_FIREBALL, E_GHOST, E_GHOST, E_GHOST, E_GHOST}
 	}
 };
-
-void saveScore() {
-	UBYTE i, j;
-	UBYTE *data;
-
-	ENABLE_RAM_MBC1;
-	SWITCH_4_32_MODE_MBC1;
-	SWITCH_RAM_MBC1(0);
-
-	data = &ram_data[(level - 1U) << 4];
-	for(i = 0U; i != 5U; ++i) {
-		if(elapsed_seconds < data[i << 1]) {
-			break;
-		}
-	}
-	
-	if(i != 5U) {
-		for(j = 4U; j != i; --j) {
-			data[(j-1U) << 1] = data[j << 1];
-		}
-		data[i << 1] = elapsed_seconds;
-	}
-
-	DISABLE_RAM_MBC1;
-}
 
 void initGame() {
 	disable_interrupts();
@@ -829,7 +805,7 @@ void enterGame() {
 	}
 	else if(ingame_state == INGAME_COMPLETED) {
 		intoPortalAnimation();
-		saveScore();
+		addScore(elapsed_seconds);
 		gamestate = GAMESTATE_WINSCREEN;
 	}
 	else if(ingame_state == INGAME_QUIT) {
