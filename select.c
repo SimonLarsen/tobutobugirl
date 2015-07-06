@@ -28,6 +28,7 @@ void initSelect() {
 	set_sprite_data(0U, 37U, characters_data);
 	set_sprite_data(37U, arrow_data_length, arrow_data);
 	set_bkg_data(0U, circles_data_length, circles_data);
+
 	set_bkg_data(select_offset, select_data_length, select_data);
 	set_bkg_tiles(0U, 0U, select_tiles_width, select_tiles_height, select_tiles);
 
@@ -173,15 +174,15 @@ void selectUpdateSprites() {
 
 	offset = cos32_64[(ticks & 63U)] >> 3;
 
-	setSprite(24U-offset, 60U, 37U, OBJ_PAL0);
-	setSprite(32U-offset, 60U, 38U, OBJ_PAL0);
-	setSprite(24U-offset, 68U, 39U, OBJ_PAL0);
-	setSprite(32U-offset, 68U, 40U, OBJ_PAL0);
+	setSprite(24U-offset, 61U, 37U, OBJ_PAL0);
+	setSprite(32U-offset, 61U, 38U, OBJ_PAL0);
+	setSprite(24U-offset, 69U, 39U, OBJ_PAL0);
+	setSprite(32U-offset, 69U, 40U, OBJ_PAL0);
 
-	setSprite(136U+offset, 60U, 38U, OBJ_PAL0 | FLIP_X);
-	setSprite(144U+offset, 60U, 37U, OBJ_PAL0 | FLIP_X);
-	setSprite(136U+offset, 68U, 40U, OBJ_PAL0 | FLIP_X);
-	setSprite(144U+offset, 68U, 39U, OBJ_PAL0 | FLIP_X);
+	setSprite(136U+offset, 61U, 38U, OBJ_PAL0 | FLIP_X);
+	setSprite(144U+offset, 61U, 37U, OBJ_PAL0 | FLIP_X);
+	setSprite(136U+offset, 69U, 40U, OBJ_PAL0 | FLIP_X);
+	setSprite(144U+offset, 69U, 39U, OBJ_PAL0 | FLIP_X);
 }
 
 void selectScrollCircles() {

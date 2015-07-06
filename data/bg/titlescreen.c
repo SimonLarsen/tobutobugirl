@@ -1,8 +1,6 @@
-#ifndef __title_tiles__
-#define __title_tiles__
+#include "titlescreen.h"
 
-#define title_data_length 146
-const unsigned char title_data[] = {
+const unsigned char titlescreen_data[] = {
 	255,   0, 255,   0, 255,   0, 255,   0, 255,   0, 255,   0, 255,   0, 255,   0, 
 	255,   0, 255,   0, 255,   0, 255,   0, 255,   0, 255,   7, 249,  15, 254,  17, 
 	255,   0, 255,   0, 255,   0, 255, 112, 143, 248,  39, 188, 255,  63, 108, 240, 
@@ -151,10 +149,7 @@ const unsigned char title_data[] = {
 	 64,   0,  64,   0,  32,   0,  32,   0,  16,   0,  16,   0,  16,   0,   0,   0, 
 };
 
-#define title_tiles_width 20
-#define title_tiles_height 18
-#define title_offset 0
-const unsigned char title_tiles[] = {
+const unsigned char titlescreen_tiles[] = {
 	  0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 
 	  0,   0,   0,   0,   0,   0,   0,   0,   1,   2,   3,   4,   0,   0,   0,   0,   0,   0,   0,   0, 
 	  0,   0,   0,   0,   0,   0,   0,   0,   5,   6,   7,   8,   0,   0,   0,   0,   0,   0,   0,   0, 
@@ -174,5 +169,3 @@ const unsigned char title_tiles[] = {
 	 42,  42,  42,  42,  42,  42,  42,  42,  42,  42,  42,  42,  42,  42,  42,  42,  42,  42,  42,  42, 
 	 42,  42,  42,  42,  42,  42,  42,  42,  42,  42,  42,  42,  42,  42,  42,  42,  42,  42,  42,  42, 
 };
-
-#endif

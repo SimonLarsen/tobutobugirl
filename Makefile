@@ -2,7 +2,7 @@ default: backgrounds sprites tobu.gb
 
 .PHONY: title_backgrounds
 title_backgrounds:
-	imgtogb --map data/bg/title.png -o data/bg/title.h
+	#imgtogb --map data/bg/titlescreen.png -o data/bg/titlescreen.h
 
 .PHONY: select_backgrounds
 select_backgrounds:
@@ -18,7 +18,9 @@ ingame_backgrounds:
 
 .PHONY: winscreen_backgrounds
 winscreen_backgrounds:
-	imgtogb --map data/bg/winscreen.png -o data/bg/winscreen.h
+	#imgtogb --map data/bg/win1.png -o data/bg/win1.h -O 40
+	#imgtogb --map data/bg/win2.png -o data/bg/win2.h -O 40
+	#imgtogb --map data/bg/win3.png -o data/bg/win3.h -O 40
 
 .PHONY: highscore_backgrounds
 highscore_backgrounds:
@@ -30,7 +32,7 @@ backgrounds: title_backgrounds select_backgrounds ingame_backgrounds winscreen_b
 .PHONY: sprites
 sprites:
 	imgtogb --sprite --8x16 data/sprite/sprites.png -o data/sprite/sprites.h
-	#imgtogb --sprite data/sprite/characters.png -o data/sprite/characters.h # 38 tiles
+	#imgtogb --sprite data/sprite/characters.png -o data/sprite/characters.h # 40 tiles
 	#imgtogb --sprite data/sprite/arrow.png -o data/sprite/arrow.h
 	#imgtogb --map data/bg/selection0.png -o data/bg/selection0.h -O 40
 	#imgtogb --map data/bg/selection1.png -o data/bg/selection1.h -O 40 # 54 tiles
@@ -39,11 +41,30 @@ sprites:
 
 .PHONY: tobu.gb
 tobu.gb: 
-	lcc -c *.c
-	lcc -c data/sprite/*.c
-	lcc -c data/bg/*.c
+	lcc -c main.c
+	lcc -c title.c
+	lcc -c cos.c
+	lcc -c fade.c
+	lcc -c game.c
+	lcc -c gamestate.c
+	lcc -c highscore.c
+	lcc -c ram.c
+	lcc -c select.c
+	lcc -c winscreen.c
+	lcc -c data/bg/circles.c
+	lcc -c data/bg/selection0.c
+	lcc -c data/bg/selection1.c
+	lcc -c data/bg/selection2.c
+	lcc -c data/bg/selection3.c
+	lcc -c data/sprite/arrow.c
+	lcc -c data/sprite/characters.c
 	lcc -Wf-ba0 -c ram.c
-	lcc -Wl-yt3 -Wl-yo2 -Wl-ya1 *.o -o $@
+	lcc -c screen.c
+	lcc -c data/bg/titlescreen.c -Wf-bo2
+	lcc -c data/bg/win1.c -Wf-bo2
+	lcc -c data/bg/win2.c -Wf-bo2
+	lcc -c data/bg/win3.c -Wf-bo2
+	lcc -Wl-yt3 -Wl-yo4 -Wl-ya1 *.o -o $@
 
 .PHONY: run
 run:

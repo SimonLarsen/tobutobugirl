@@ -4,9 +4,10 @@
 #include "title.h"
 #include "fade.h"
 #include "gamestate.h"
+#include "screen.h"
 
+#include "data/bg/titlescreen.h"
 #include "data/sprite/characters.h"
-#include "data/bg/title.h"
 
 const UBYTE title_message[11] = {
 	26U, 28U, 15U, 29U,
@@ -19,11 +20,9 @@ void initTitle() {
 	DISPLAY_OFF;
 
 	move_bkg(0U, 0U);
+
 	set_sprite_data(0U, 37U, characters_data);
 
-	set_bkg_data(0U, title_data_length, title_data);
-	set_bkg_tiles(0U, 0U, title_tiles_width, title_tiles_height, title_tiles);
-	
 	OBP0_REG = B8(11010000);
 	BGP_REG = B8(11100100);
 

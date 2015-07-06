@@ -16,7 +16,6 @@ void initRAM() {
 	UBYTE initialized, i;
 
 	ENABLE_RAM_MBC1;
-	SWITCH_4_32_MODE_MBC1;
 	SWITCH_RAM_MBC1(0);
 
 	initialized = 1U;

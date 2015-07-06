@@ -98,7 +98,6 @@ void _highscoreUpdateScreen() {
 	}
 
 	ENABLE_RAM_MBC1;
-	SWITCH_4_32_MODE_MBC1;
 	SWITCH_RAM_MBC1(0);
 
 	// Set scores
@@ -155,7 +154,6 @@ void addScore(UBYTE elapsed_seconds, UBYTE score) {
 	UBYTE *data;
 
 	ENABLE_RAM_MBC1;
-	SWITCH_4_32_MODE_MBC1;
 	SWITCH_RAM_MBC1(0);
 
 	data = &ram_data[(level - 1U) << 4];
