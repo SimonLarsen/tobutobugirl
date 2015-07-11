@@ -1,4 +1,4 @@
-#include "arrow.h"
+#include "data/sprite/arrow.h"
 
 const unsigned char arrow_data[] = {
 	  1,   1,   3,   2,   6,   5,  12,  11,  24,  23,  48,  47,  96,  95, 192, 191, 

@@ -1,4 +1,4 @@
-#include "circles.h"
+#include "data/bg/circles.h"
 
 const unsigned char circles_data[] = {
 	255,   0, 231,   0, 195,   0, 129,   0, 129,   0, 195,   0, 231,   0, 255,   0, 

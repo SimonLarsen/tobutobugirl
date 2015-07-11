@@ -1,4 +1,4 @@
-#include "selection1.h"
+#include "data/bg/selection1.h"
 
 const unsigned char selection1_data[] = {
 	255, 255,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 

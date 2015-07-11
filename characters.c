@@ -1,4 +1,4 @@
-#include "characters.h"
+#include "data/sprite/characters.h"
 
 const unsigned char characters_data[] = {
 	  0,   0,  60,  60, 102, 102, 102, 102, 102, 102, 102, 102,  60,  60,   0,   0, 

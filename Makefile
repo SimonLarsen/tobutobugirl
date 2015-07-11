@@ -2,7 +2,7 @@ default: backgrounds sprites tobu.gb
 
 .PHONY: title_backgrounds
 title_backgrounds:
-	#imgtogb --map data/bg/titlescreen.png -o data/bg/titlescreen.h
+	imgtogb --map data/bg/titlescreen.png -o data/bg/titlescreen.h
 
 .PHONY: select_backgrounds
 select_backgrounds:
@@ -51,20 +51,19 @@ tobu.gb:
 	lcc -c ram.c
 	lcc -c select.c
 	lcc -c winscreen.c
-	lcc -c data/bg/circles.c
-	lcc -c data/bg/selection0.c
-	lcc -c data/bg/selection1.c
-	lcc -c data/bg/selection2.c
-	lcc -c data/bg/selection3.c
-	lcc -c data/sprite/arrow.c
-	lcc -c data/sprite/characters.c
-	lcc -Wf-ba0 -c ram.c
+	lcc -c circles.c
+	lcc -c selection0.c
+	lcc -c selection1.c
+	lcc -c selection2.c
+	lcc -c selection3.c
+	#lcc -c data/bg/win1.c -Wf-bo2
+	#lcc -c data/bg/win2.c -Wf-bo2
+	#lcc -c data/bg/win3.c -Wf-bo2
+	lcc -c arrow.c
+	lcc -c characters.c
 	lcc -c screen.c
-	lcc -c data/bg/titlescreen.c -Wf-bo2
-	lcc -c data/bg/win1.c -Wf-bo2
-	lcc -c data/bg/win2.c -Wf-bo2
-	lcc -c data/bg/win3.c -Wf-bo2
-	lcc -Wl-yt3 -Wl-yo4 -Wl-ya1 *.o -o $@
+	lcc -Wf-ba0 -c ram.c
+	lcc -Wl-yt1 -Wl-yo4 -Wl-ya1 *.o -o $@
 
 .PHONY: run
 run:
