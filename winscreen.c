@@ -3,15 +3,29 @@
 #include "fade.h"
 #include "winscreen.h"
 
-// #include "data/bg/winscreen.h"
+#include "data/bg/win1.h"
+#include "data/bg/win2.h"
+#include "data/bg/win3.h"
 
 void initWinscreen() {
 	disable_interrupts();
 	DISPLAY_OFF;
 
 	move_bkg(0U, 0U);
-	//set_bkg_data(0U, winscreen_data_length, winscreen_data);
-	//set_bkg_tiles(0U, 0U, winscreen_tiles_width, winscreen_tiles_height, winscreen_tiles);
+	switch(level) {
+		case 1:
+			set_bkg_data(0U, win1_data_length, win1_data);
+			set_bkg_tiles(0U, 0U, win1_tiles_width, win1_tiles_height, win1_tiles);
+			break;
+		case 2:
+			set_bkg_data(0U, win2_data_length, win2_data);
+			set_bkg_tiles(0U, 0U, win2_tiles_width, win2_tiles_height, win2_tiles);
+			break;
+		case 3:
+			set_bkg_data(0U, win3_data_length, win3_data);
+			set_bkg_tiles(0U, 0U, win3_tiles_width, win3_tiles_height, win3_tiles);
+			break;
+	}
 
 	HIDE_SPRITES;
 	HIDE_WIN;

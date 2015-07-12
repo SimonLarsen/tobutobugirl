@@ -1,6 +1,5 @@
 #include <gb/gb.h>
 #include "defines.h"
-#include "binconst.h"
 #include "select.h"
 #include "fade.h"
 #include "gamestate.h"
@@ -35,9 +34,9 @@ void initSelect() {
 	select_circle_index = 0U;
 	ticks = 0U;
 
-	OBP0_REG = B8(11010000);
-	OBP1_REG = B8(11100100);
-	BGP_REG = B8(11100100);
+	OBP0_REG = 0xD0U; // 11010000
+	OBP1_REG = 0xB4U; // 11100100
+	BGP_REG = 0xB4U; // 11100100
 
 	clearSprites();
 	updateSelectScreen();

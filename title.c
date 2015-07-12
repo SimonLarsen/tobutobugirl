@@ -1,10 +1,8 @@
 #include <gb/gb.h>
 #include "defines.h"
-#include "binconst.h"
 #include "title.h"
 #include "fade.h"
 #include "gamestate.h"
-#include "screen.h"
 
 #include "data/bg/titlescreen.h"
 #include "data/sprite/characters.h"
@@ -25,8 +23,8 @@ void initTitle() {
 	set_bkg_tiles(0U, 0U, titlescreen_tiles_width, titlescreen_tiles_height, titlescreen_tiles);
 	set_sprite_data(0U, 37U, characters_data);
 
-	OBP0_REG = B8(11010000);
-	BGP_REG = B8(11100100);
+	OBP0_REG = 0xD0U; // 11010000
+	BGP_REG = 0xE4U; // 11100100
 
 	clearSprites();
 

@@ -18,6 +18,7 @@ void enterGame();
 void introAnimation();
 void intoPortalAnimation();
 void deathAnimation();
+void addScore(UBYTE elapsed_seconds, UBYTE score);
 
 #define MAPW 10U
 #define MAPH 16U

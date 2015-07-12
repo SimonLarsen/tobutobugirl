@@ -1,6 +1,5 @@
 #include <gb/gb.h>
 #include <rand.h>
-#include "binconst.h"
 #include "defines.h"
 #include "fade.h"
 #include "gamestate.h"
@@ -84,9 +83,9 @@ void initGame() {
 	DISPLAY_OFF;
 	SPRITES_8x16;
 
-	OBP0_REG = B8(11010000);
-	OBP1_REG = B8(01010000);
-	BGP_REG = B8(11100100);
+	OBP0_REG = 0xD0U; // 11010000
+	OBP1_REG = 0x40U; // 01010000
+	BGP_REG = 0xE4U; // 11100100
 
 	// Load tile data
 	set_bkg_data(hud_offset, hud_data_length, hud_data);
@@ -157,9 +156,9 @@ void updateInput() {
 	if(CLICKED(J_START)) {
 		paused = paused ^ 1U;
 		if(paused) {
-			BGP_REG = B8(11111001);
+			BGP_REG = 0xF9U; // 11111001
 		} else {
-			BGP_REG = B8(11100100);
+			BGP_REG = 0xE4U; // 11100100
 		}
 	}
 
@@ -521,7 +520,7 @@ void updateEntities() {
 					setSprite(entity_x[i]-16U, entity_y[i], frame+2U, OBJ_PAL0 | FLIP_X);
 				}
 				break;
-				
+
 			default:
 				if(entity_frame & 1U) frame += 4U;
 				if(entity_dir[i] == LEFT) {
@@ -568,7 +567,7 @@ void initSpawns() {
 		last_spawn_x = (last_spawn_x + 32U + ((UBYTE)rand() & 63U)) & 127U;
 		x = last_spawn_x + 24U;
 		y -= 36U;
-		spawnEntity(E_BAT, x, y, NONE);
+		spawnEntity(E_BAT, x, y, RIGHT);
 	}
 	last_spawn_type = E_BAT;
 }
@@ -663,9 +662,10 @@ void introAnimation() {
 
 	for(ticks = 0U; ticks != 32U; ++ticks) {
 		if(ticks & 4U) {
-			BGP_REG = B8(11100100);
+			BGP_REG = 0xE4U; // 11100100
 		} else {
-			BGP_REG = B8(00011011);
+
+			BGP_REG = 0x1BU; // 00011011
 		}
 
 		setSprite(player_x-8U, player_y, 0U, FLIP_X | OBJ_PAL0);
@@ -683,9 +683,9 @@ void intoPortalAnimation() {
 
 	for(ticks = 0U; ticks != 32U; ++ticks) {
 		if(ticks & 4U) {
-			BGP_REG = B8(11100100);
+			BGP_REG = 0xE4U; // 11100100
 		} else {
-			BGP_REG = B8(00011011);
+			BGP_REG = 0x1BU; // 00011011
 		}
 
 		setSprite(player_x-16U, player_y, 84U, OBJ_PAL0);
@@ -805,3 +805,31 @@ void enterGame() {
 	HIDE_SPRITES;
 	fadeToWhite(10U);
 }
+
+void addScore(UBYTE elapsed_seconds, UBYTE score) {
+	UBYTE i, j;
+	UBYTE *data;
+
+	ENABLE_RAM_MBC1;
+	SWITCH_RAM_MBC1(0);
+
+	data = &ram_data[(level - 1U) << 4];
+	for(i = 0U; i != 5U; ++i) {
+		if(score > data[(i << 1) + 1U]
+		|| (score == data[(i << 1) + 1U] && elapsed_seconds < data[i << 1])) {
+			break;
+		}
+	}
+	
+	if(i < 5U) {
+		for(j = 4U; j != i; --j) {
+			data[j << 1] = data[(j - 1U) << 1];
+			data[(j << 1) + 1U] = data[((j - 1U) << 1) + 1U];
+		}
+		data[i << 1] = elapsed_seconds;
+		data[(i << 1) + 1U] = score;
+	}
+
+	DISABLE_RAM_MBC1;
+}
+

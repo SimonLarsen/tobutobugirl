@@ -1,6 +1,5 @@
 #include <gb/gb.h>
 #include "defines.h"
-#include "binconst.h"
 #include "gamestate.h"
 #include "fade.h"
 #include "cos.h"
@@ -35,8 +34,8 @@ void initHighscore() {
 	highscore_circle_index = 0U;;
 	highscore_selection = level;
 
-	OBP0_REG = B8(11010000);
-	BGP_REG = B8(11100100);
+	OBP0_REG = 0xD0U; // 11010000
+	BGP_REG = 0xE4U; // 11100100
 
 	clearSprites();
 	_highscoreUpdateScreen();
@@ -144,33 +143,6 @@ void _highscoreUpdateScreen() {
 			set_bkg_tiles(10U, i+11U, 1U, 1U, &tile);
 		}
 		data += 2U;
-	}
-
-	DISABLE_RAM_MBC1;
-}
-
-void addScore(UBYTE elapsed_seconds, UBYTE score) {
-	UBYTE i, j;
-	UBYTE *data;
-
-	ENABLE_RAM_MBC1;
-	SWITCH_RAM_MBC1(0);
-
-	data = &ram_data[(level - 1U) << 4];
-	for(i = 0U; i != 5U; ++i) {
-		if(score > data[(i << 1) + 1U]
-		|| (score == data[(i << 1) + 1U] && elapsed_seconds < data[i << 1])) {
-			break;
-		}
-	}
-	
-	if(i < 5U) {
-		for(j = 4U; j != i; --j) {
-			data[j << 1] = data[(j - 1U) << 1];
-			data[(j << 1) + 1U] = data[((j - 1U) << 1) + 1U];
-		}
-		data[i << 1] = elapsed_seconds;
-		data[(i << 1) + 1U] = score;
 	}
 
 	DISABLE_RAM_MBC1;

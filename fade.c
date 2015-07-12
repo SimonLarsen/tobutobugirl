@@ -1,10 +1,11 @@
 #include <gb/gb.h>
-#include "binconst.h"
 #include "fade.h"
 
 const UINT8 fadePals[] = {
-	B8(11100100), B8(10010000),
-	B8(01000000), B8(00000000),
+	0xE4U, // 11100100
+	0x90U, // 10010000
+	0x40U, // 01000000
+	0x00U  // 00000000
 };
 
 void fadeToWhite(UBYTE delay) {

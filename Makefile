@@ -1,3 +1,6 @@
+CC=lcc
+CFLAGS=-Wa-l
+
 default: backgrounds sprites tobu.gb
 
 .PHONY: title_backgrounds
@@ -18,9 +21,9 @@ ingame_backgrounds:
 
 .PHONY: winscreen_backgrounds
 winscreen_backgrounds:
-	#imgtogb --map data/bg/win1.png -o data/bg/win1.h -O 40
-	#imgtogb --map data/bg/win2.png -o data/bg/win2.h -O 40
-	#imgtogb --map data/bg/win3.png -o data/bg/win3.h -O 40
+	imgtogb --map data/bg/win1.png -o data/bg/win1.h -O 40
+	imgtogb --map data/bg/win2.png -o data/bg/win2.h -O 40
+	imgtogb --map data/bg/win3.png -o data/bg/win3.h -O 40
 
 .PHONY: highscore_backgrounds
 highscore_backgrounds:
@@ -41,29 +44,24 @@ sprites:
 
 .PHONY: tobu.gb
 tobu.gb: 
-	lcc -c main.c
-	lcc -c title.c
-	lcc -c cos.c
-	lcc -c fade.c
-	lcc -c game.c
-	lcc -c gamestate.c
-	lcc -c highscore.c
-	lcc -c ram.c
-	lcc -c select.c
-	lcc -c winscreen.c
-	lcc -c circles.c
-	lcc -c selection0.c
-	lcc -c selection1.c
-	lcc -c selection2.c
-	lcc -c selection3.c
-	#lcc -c data/bg/win1.c -Wf-bo2
-	#lcc -c data/bg/win2.c -Wf-bo2
-	#lcc -c data/bg/win3.c -Wf-bo2
-	lcc -c arrow.c
-	lcc -c characters.c
-	lcc -c screen.c
-	lcc -Wf-ba0 -c ram.c
-	lcc -Wl-yt1 -Wl-yo4 -Wl-ya1 *.o -o $@
+	$(CC) $(CFLAGS) -c main.c
+	$(CC) $(CFLAGS) -c fade.c
+	$(CC) $(CFLAGS) -c gamestate.c
+	$(CC) $(CFLAGS) -c cos.c
+	$(CC) $(CFLAGS) -c circles.c
+	$(CC) $(CFLAGS) -c title.c -Wf-bo2
+	$(CC) $(CFLAGS) -c select.c -Wf-bo2
+	$(CC) $(CFLAGS) -c highscore.c -Wf-bo2
+	$(CC) $(CFLAGS) -c arrow.c -Wf-bo2
+	$(CC) $(CFLAGS) -c characters.c -Wf-bo2
+	$(CC) $(CFLAGS) -c selection0.c -Wf-bo2
+	$(CC) $(CFLAGS) -c selection1.c -Wf-bo2
+	$(CC) $(CFLAGS) -c selection2.c -Wf-bo2
+	$(CC) $(CFLAGS) -c selection3.c -Wf-bo2
+	$(CC) $(CFLAGS) -c winscreen.c -Wf-bo3
+	$(CC) $(CFLAGS) -c game.c -Wf-bo4
+	$(CC) $(CFLAGS) -c -Wf-ba0 -c ram.c
+	$(CC) $(CFLAGS) -Wl-yt1 -Wl-yo8 *.o -o $@
 
 .PHONY: run
 run:
