@@ -59,9 +59,9 @@ tobu.gb:
 	$(CC) $(CFLAGS) -c selection2.c -Wf-bo2
 	$(CC) $(CFLAGS) -c selection3.c -Wf-bo2
 	$(CC) $(CFLAGS) -c winscreen.c -Wf-bo3
-	$(CC) $(CFLAGS) -c game.c -Wf-bo4
+	$(CC) $(CFLAGS) -c game.c -Wf-bo1
 	$(CC) $(CFLAGS) -c -Wf-ba0 -c ram.c
-	$(CC) $(CFLAGS) -Wl-yt1 -Wl-yo8 *.o -o $@
+	$(CC) $(CFLAGS) -Wl-yt1 -Wl-yo4 -Wl-ya1 *.o -o $@
 
 .PHONY: run
 run:

@@ -58,7 +58,7 @@ void main() {
 				enterSelect();
 				break;
 			case GAMESTATE_INGAME:
-				SWITCH_ROM_MBC1(4);
+				SWITCH_ROM_MBC1(1);
 				enterGame();
 				break;
 			case GAMESTATE_WINSCREEN:

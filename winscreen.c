@@ -12,17 +12,20 @@ void initWinscreen() {
 	DISPLAY_OFF;
 
 	move_bkg(0U, 0U);
+	clearSprites();
+	BGP_REG = 0xE4U; // 11100100
+
 	switch(level) {
 		case 1:
-			set_bkg_data(0U, win1_data_length, win1_data);
+			set_bkg_data(40U, win1_data_length, win1_data);
 			set_bkg_tiles(0U, 0U, win1_tiles_width, win1_tiles_height, win1_tiles);
 			break;
 		case 2:
-			set_bkg_data(0U, win2_data_length, win2_data);
+			set_bkg_data(40U, win2_data_length, win2_data);
 			set_bkg_tiles(0U, 0U, win2_tiles_width, win2_tiles_height, win2_tiles);
 			break;
 		case 3:
-			set_bkg_data(0U, win3_data_length, win3_data);
+			set_bkg_data(40U, win3_data_length, win3_data);
 			set_bkg_tiles(0U, 0U, win3_tiles_width, win3_tiles_height, win3_tiles);
 			break;
 	}
