@@ -7,6 +7,7 @@ UBYTE ticks;
 UBYTE gamestate, level, selection;
 UBYTE joystate, oldjoystate;
 UBYTE next_sprite, sprites_used;
+UBYTE elapsed_time, remaining_time, kills;
 
 const UBYTE level_names[4][6] = {
 	{29U, 13U, 25U, 28U, 15U, 29U},

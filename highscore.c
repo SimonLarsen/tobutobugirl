@@ -85,10 +85,7 @@ void _highscoreUpdateScreen() {
 
 	// Set level name
 	data = level_names[highscore_selection];
-	for(i = 7U; i != 13U; ++i) {
-		set_bkg_tiles(i, 9U, 1U, 1U, data);
-		data++;
-	}
+	set_bkg_tiles(7U, 9U, 6U, 1U, data);
 
 	// Set numbers
 	for(i = 0U; i != 5U; ++i) {

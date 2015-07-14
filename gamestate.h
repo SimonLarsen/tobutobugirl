@@ -9,6 +9,7 @@ void clearRemainingSprites();
 extern UBYTE ticks;
 extern UBYTE gamestate, level, selection;
 extern UBYTE joystate, oldjoystate;
+extern UBYTE elapsed_time, remaining_time, kills;
 
 #define CLICKED(x) ((joystate & x) && (joystate & x) != (oldjoystate & x))
 #define RELEASED(x) (!(joystate & x) && (joystate & x) != (oldjoystate & x))

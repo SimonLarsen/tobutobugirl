@@ -23,12 +23,11 @@ UBYTE blink;
 UBYTE scrolly, scrolled;
 UBYTE next_spawn, last_spawn_x, last_spawn_type;
 
-UBYTE blips, progress, portal_spawned;
+UBYTE timer, blips, progress, portal_spawned;
 UBYTE player_x, player_y;
 UBYTE player_xdir, player_ydir;
 UBYTE player_yspeed, player_bounce;
 UBYTE dashing, dashes, dash_xdir, dash_ydir;
-UBYTE timer, remaining_time, elapsed_seconds, kills;
 
 UBYTE entity_x[MAX_ENTITIES];
 UBYTE entity_y[MAX_ENTITIES];
@@ -135,7 +134,7 @@ void initGame() {
 
 	timer = 0U;
 	remaining_time = 64U;
-	elapsed_seconds = 0U;
+	elapsed_time = 0U;
 
 	move_bkg(0U, 112U);
 	move_win(151U, 0U);
@@ -761,7 +760,7 @@ void enterGame() {
 			// Update timing
 			if(timer == 60U) {
 				timer = 0U;
-				elapsed_seconds++;
+				elapsed_time++;
 				remaining_time--;
 				updateHUDTime();
 
@@ -795,7 +794,7 @@ void enterGame() {
 	}
 	else if(ingame_state == INGAME_COMPLETED) {
 		intoPortalAnimation();
-		addScore(elapsed_seconds, remaining_time + 2U*kills);
+		addScore(elapsed_time, remaining_time + 2U*kills);
 		gamestate = GAMESTATE_WINSCREEN;
 	}
 	else if(ingame_state == INGAME_QUIT) {
@@ -806,7 +805,7 @@ void enterGame() {
 	fadeToWhite(10U);
 }
 
-void addScore(UBYTE elapsed_seconds, UBYTE score) {
+void addScore(UBYTE elapsed_time, UBYTE score) {
 	UBYTE i, j;
 	UBYTE *data;
 
@@ -816,7 +815,7 @@ void addScore(UBYTE elapsed_seconds, UBYTE score) {
 	data = &ram_data[(level - 1U) << 4];
 	for(i = 0U; i != 5U; ++i) {
 		if(score > data[(i << 1) + 1U]
-		|| (score == data[(i << 1) + 1U] && elapsed_seconds < data[i << 1])) {
+		|| (score == data[(i << 1) + 1U] && elapsed_time < data[i << 1])) {
 			break;
 		}
 	}
@@ -826,7 +825,7 @@ void addScore(UBYTE elapsed_seconds, UBYTE score) {
 			data[j << 1] = data[(j - 1U) << 1];
 			data[(j << 1) + 1U] = data[((j - 1U) << 1) + 1U];
 		}
-		data[i << 1] = elapsed_seconds;
+		data[i << 1] = elapsed_time;
 		data[(i << 1) + 1U] = score;
 	}
 
