@@ -22,9 +22,9 @@ ingame_backgrounds:
 .PHONY: winscreen_backgrounds
 winscreen_backgrounds:
 	imgtogb --map data/bg/win_base.png -o data/bg/win_base.h -O 40
-	imgtogb --map data/bg/win1.png -o data/bg/win1.h -O 54
-	imgtogb --map data/bg/win2.png -o data/bg/win2.h -O 54
-	imgtogb --map data/bg/win3.png -o data/bg/win3.h -O 54
+	imgtogb --map data/bg/win1.png -o data/bg/win1.h -O 55
+	imgtogb --map data/bg/win2.png -o data/bg/win2.h -O 55
+	imgtogb --map data/bg/win3.png -o data/bg/win3.h -O 55
 
 .PHONY: highscore_backgrounds
 highscore_backgrounds:
@@ -51,6 +51,7 @@ tobu.gb:
 	$(CC) $(CFLAGS) -c cos.c
 	$(CC) $(CFLAGS) -c circles.c
 	$(CC) $(CFLAGS) -c characters.c
+	$(CC) $(CFLAGS) -c game.c -Wf-bo1
 	$(CC) $(CFLAGS) -c title.c -Wf-bo2
 	$(CC) $(CFLAGS) -c select.c -Wf-bo2
 	$(CC) $(CFLAGS) -c highscore.c -Wf-bo2
@@ -60,7 +61,6 @@ tobu.gb:
 	$(CC) $(CFLAGS) -c selection2.c -Wf-bo2
 	$(CC) $(CFLAGS) -c selection3.c -Wf-bo2
 	$(CC) $(CFLAGS) -c winscreen.c -Wf-bo3
-	$(CC) $(CFLAGS) -c game.c -Wf-bo1
 	$(CC) $(CFLAGS) -c -Wf-ba0 -c ram.c
 	$(CC) $(CFLAGS) -Wl-yt3 -Wl-yo4 -Wl-ya1 *.o -o $@
 

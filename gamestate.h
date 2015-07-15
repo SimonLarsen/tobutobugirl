@@ -5,6 +5,7 @@ void clearSprites();
 void updateJoystate();
 void setSprite(UBYTE x, UBYTE y, UBYTE tile, UBYTE prop);
 void clearRemainingSprites();
+void set_bkg_tiles_rle(UBYTE x, UBYTE y, UBYTE width, UBYTE height, UBYTE *tiles);
 
 extern UBYTE ticks;
 extern UBYTE gamestate, level, selection;

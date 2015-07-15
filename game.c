@@ -18,7 +18,6 @@
 #include "data/sprite/sprites.h"
 
 UBYTE paused, ingame_state;
-UBYTE blink;
 
 UBYTE scrolly, scrolled;
 UBYTE next_spawn, last_spawn_x, last_spawn_type;
@@ -34,8 +33,6 @@ UBYTE entity_y[MAX_ENTITIES];
 UBYTE entity_type[MAX_ENTITIES];
 UBYTE entity_dir[MAX_ENTITIES];
 UBYTE entity_frame;
-
-#define IS_ENEMY(x) ((x) >= FIRST_ENEMY && (x) <= LAST_ENEMY)
 
 const UBYTE scrolled_length[4] = { 0U, 16U, 24U, 32U };
 
@@ -93,14 +90,14 @@ void initGame() {
 	set_sprite_data(0U, sprites_data_length, sprites_data);
 
 	if(level == 1U) {
-		set_bkg_tiles(0U, 0U, background1_tiles_width, background1_tiles_height, background1_tiles);
 		set_bkg_data(background1_offset, background1_data_length, background1_data);
+		set_bkg_tiles(0U, 0U, background1_tiles_width, background1_tiles_height, background1_tiles);
 	} else if(level == 2U) {
-		set_bkg_tiles(0U, 0U, background2_tiles_width, background2_tiles_height, background2_tiles);
 		set_bkg_data(background2_offset, background2_data_length, background2_data);
+		set_bkg_tiles(0U, 0U, background2_tiles_width, background2_tiles_height, background2_tiles);
 	} else if(level == 3U) {
-		set_bkg_tiles(0U, 0U, background3_tiles_width, background3_tiles_height, background3_tiles);
 		set_bkg_data(background3_offset, background3_data_length, background3_data);
+		set_bkg_tiles(0U, 0U, background3_tiles_width, background3_tiles_height, background3_tiles);
 	}
 
 	clearSprites();
@@ -122,7 +119,6 @@ void initGame() {
 	scrolly = 0U;
 
 	ingame_state = INGAME_ACTIVE;
-	blink = 0U;
 	blips = 0U;
 	kills = 0U;
 

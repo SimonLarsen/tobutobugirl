@@ -1,7 +1,6 @@
 #include <gb/gb.h>
 
 #include "gamestate.h"
-
 #include "main.h"
 #include "title.h"
 #include "select.h"

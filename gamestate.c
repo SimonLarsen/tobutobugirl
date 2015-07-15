@@ -45,3 +45,24 @@ void clearRemainingSprites() {
 	}
 	sprites_used = 0U;
 }
+
+void set_bkg_tiles_rle(UBYTE x, UBYTE y, UBYTE width, UBYTE height, UBYTE *tiles) {
+	UBYTE ix, iy, run, tile;
+	run = 0U;
+	for(iy = y; iy != y+height; ++iy) {
+		for(ix = x; ix != x+width; ++ix) {
+			if(run == 0U) {
+				tile = tiles[0];
+				if(tiles[0] == tiles[1]) {
+					run = tiles[2];
+					tiles += 3U;
+				} else {
+					run = 1U;
+					tiles++;
+				}
+			}
+			set_bkg_tiles(ix, iy, 1U, 1U, &tile);
+			run--;
+		}
+	}
+}
