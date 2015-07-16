@@ -19,8 +19,8 @@ void initTitle() {
 
 	move_bkg(0U, 0U);
 
-	set_bkg_data(0U, titlescreen_data_length, titlescreen_data);
-	set_bkg_tiles(0U, 0U, titlescreen_tiles_width, titlescreen_tiles_height, titlescreen_tiles);
+	set_bkg_data_rle(0U, titlescreen_data_length, titlescreen_data);
+	set_bkg_tiles_rle(0U, 0U, titlescreen_tiles_width, titlescreen_tiles_height, titlescreen_tiles);
 	set_sprite_data(0U, 37U, characters_data);
 
 	OBP0_REG = 0xD0U; // 11010000

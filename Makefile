@@ -5,7 +5,7 @@ default: backgrounds sprites tobu.gb
 
 .PHONY: title_backgrounds
 title_backgrounds:
-	imgtogb --map data/bg/titlescreen.png data/bg/titlescreen.h
+	imgtogb --map --rle data/bg/titlescreen.png data/bg/titlescreen.h
 
 .PHONY: select_backgrounds
 select_backgrounds:
@@ -22,9 +22,9 @@ ingame_backgrounds:
 .PHONY: winscreen_backgrounds
 winscreen_backgrounds:
 	imgtogb --map -O 40 data/bg/win_base.png data/bg/win_base.h
-	imgtogb --map -O 55 data/bg/win1.png data/bg/win1.h
-	imgtogb --map -O 55 data/bg/win2.png data/bg/win2.h
-	imgtogb --map -O 55 data/bg/win3.png data/bg/win3.h
+	imgtogb --map -O 55 --rle data/bg/win1.png data/bg/win1.h
+	imgtogb --map -O 55 --rle data/bg/win2.png data/bg/win2.h
+	imgtogb --map -O 55 --rle data/bg/win3.png data/bg/win3.h
 
 .PHONY: highscore_backgrounds
 highscore_backgrounds:
@@ -36,8 +36,8 @@ backgrounds: title_backgrounds select_backgrounds ingame_backgrounds winscreen_b
 .PHONY: sprites
 sprites:
 	imgtogb --sprite --8x16 data/sprite/sprites.png data/sprite/sprites.h
-	#imgtogb --sprite data/sprite/characters.png -o data/sprite/characters.h # 40 tiles
-	#imgtogb --sprite data/sprite/arrow.png -o data/sprite/arrow.h
+	#imgtogb --sprite data/sprite/characters.png data/sprite/characters.h # 40 tiles
+	#imgtogb --sprite data/sprite/arrow.png data/sprite/arrow.h
 	#imgtogb --map -O 40 data/bg/selection0.png data/bg/selection0.h
 	#imgtogb --map -O 40 data/bg/selection1.png data/bg/selection1.h # 54 tiles
 	#imgtogb --map -O 40 data/bg/selection2.png data/bg/selection2.h # 62 tiles
