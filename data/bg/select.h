@@ -1,5 +1,5 @@
-#ifndef __select_tiles__
-#define __select_tiles__
+#ifndef SELECT_MAP_H
+#define SELECT_MAP_H
 
 #define select_data_length 31
 const unsigned char select_data[] = {

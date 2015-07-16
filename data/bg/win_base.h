@@ -1,5 +1,5 @@
-#ifndef __win_base_tiles__
-#define __win_base_tiles__
+#ifndef WIN_BASE_MAP_H
+#define WIN_BASE_MAP_H
 
 #define win_base_data_length 15
 const unsigned char win_base_data[] = {

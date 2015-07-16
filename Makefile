@@ -5,43 +5,43 @@ default: backgrounds sprites tobu.gb
 
 .PHONY: title_backgrounds
 title_backgrounds:
-	imgtogb --map data/bg/titlescreen.png -o data/bg/titlescreen.h
+	imgtogb --map data/bg/titlescreen.png data/bg/titlescreen.h
 
 .PHONY: select_backgrounds
 select_backgrounds:
-	imgtogb --map data/bg/select.png -o data/bg/select.h -O 9
+	imgtogb --map -O 9 data/bg/select.png data/bg/select.h
 
 .PHONY: ingame_backgrounds
 ingame_backgrounds:
-	imgtogb --map data/bg/hud.png -o data/bg/hud.h -O 0
-	imgtogb --map data/bg/clock.png -o data/bg/clock.h -O 12
-	imgtogb --map data/bg/background1.png -o data/bg/background1.h -O 26
-	imgtogb --map data/bg/background2.png -o data/bg/background2.h -O 26
-	imgtogb --map data/bg/background3.png -o data/bg/background3.h -O 26
+	imgtogb --map data/bg/hud.png data/bg/hud.h
+	imgtogb --map -O 12 data/bg/clock.png data/bg/clock.h 
+	imgtogb --map -O 26 data/bg/background1.png data/bg/background1.h 
+	imgtogb --map -O 26 data/bg/background2.png data/bg/background2.h 
+	imgtogb --map -O 26 data/bg/background3.png data/bg/background3.h 
 
 .PHONY: winscreen_backgrounds
 winscreen_backgrounds:
-	imgtogb --map data/bg/win_base.png -o data/bg/win_base.h -O 40
-	imgtogb --map data/bg/win1.png -o data/bg/win1.h -O 55
-	imgtogb --map data/bg/win2.png -o data/bg/win2.h -O 55
-	imgtogb --map data/bg/win3.png -o data/bg/win3.h -O 55
+	imgtogb --map -O 40 data/bg/win_base.png data/bg/win_base.h
+	imgtogb --map -O 55 data/bg/win1.png data/bg/win1.h
+	imgtogb --map -O 55 data/bg/win2.png data/bg/win2.h
+	imgtogb --map -O 55 data/bg/win3.png data/bg/win3.h
 
 .PHONY: highscore_backgrounds
 highscore_backgrounds:
-	imgtogb --map data/bg/highscore.png -o data/bg/highscore.h -O 109
+	imgtogb --map -O 109 data/bg/highscore.png data/bg/highscore.h
 
 backgrounds: title_backgrounds select_backgrounds ingame_backgrounds winscreen_backgrounds highscore_backgrounds
-	#imgtogb --map data/bg/circles.png -o data/bg/circles.h # 9 tiles
+	#imgtogb --map data/bg/circles.png data/bg/circles.h # 9 tiles
 
 .PHONY: sprites
 sprites:
-	imgtogb --sprite --8x16 data/sprite/sprites.png -o data/sprite/sprites.h
+	imgtogb --sprite --8x16 data/sprite/sprites.png data/sprite/sprites.h
 	#imgtogb --sprite data/sprite/characters.png -o data/sprite/characters.h # 40 tiles
 	#imgtogb --sprite data/sprite/arrow.png -o data/sprite/arrow.h
-	#imgtogb --map data/bg/selection0.png -o data/bg/selection0.h -O 40
-	#imgtogb --map data/bg/selection1.png -o data/bg/selection1.h -O 40 # 54 tiles
-	#imgtogb --map data/bg/selection2.png -o data/bg/selection2.h -O 40 # 62 tiles
-	#imgtogb --map data/bg/selection3.png -o data/bg/selection3.h -O 40 # 40 tiles
+	#imgtogb --map -O 40 data/bg/selection0.png data/bg/selection0.h
+	#imgtogb --map -O 40 data/bg/selection1.png data/bg/selection1.h # 54 tiles
+	#imgtogb --map -O 40 data/bg/selection2.png data/bg/selection2.h # 62 tiles
+	#imgtogb --map -O 40 data/bg/selection3.png data/bg/selection3.h # 40 tiles
 
 .PHONY: tobu.gb
 tobu.gb: 

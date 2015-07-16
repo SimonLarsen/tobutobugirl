@@ -1,5 +1,5 @@
-#ifndef __win2_tiles__
-#define __win2_tiles__
+#ifndef WIN2_MAP_H
+#define WIN2_MAP_H
 
 #define win2_data_length 105
 const unsigned char win2_data[] = {

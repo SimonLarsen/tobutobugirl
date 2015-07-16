@@ -1,5 +1,5 @@
-#ifndef __titlescreen_tiles__
-#define __titlescreen_tiles__
+#ifndef TITLESCREEN_MAP_H
+#define TITLESCREEN_MAP_H
 
 #define titlescreen_data_length 146
 const unsigned char titlescreen_data[] = {

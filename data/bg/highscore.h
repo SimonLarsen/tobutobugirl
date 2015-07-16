@@ -1,5 +1,5 @@
-#ifndef __highscore_tiles__
-#define __highscore_tiles__
+#ifndef HIGHSCORE_MAP_H
+#define HIGHSCORE_MAP_H
 
 #define highscore_data_length 43
 const unsigned char highscore_data[] = {

@@ -1,5 +1,5 @@
-#ifndef __background3_tiles__
-#define __background3_tiles__
+#ifndef BACKGROUND3_MAP_H
+#define BACKGROUND3_MAP_H
 
 #define background3_data_length 88
 const unsigned char background3_data[] = {

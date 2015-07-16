@@ -1,5 +1,5 @@
-#ifndef __win3_tiles__
-#define __win3_tiles__
+#ifndef WIN3_MAP_H
+#define WIN3_MAP_H
 
 #define win3_data_length 105
 const unsigned char win3_data[] = {

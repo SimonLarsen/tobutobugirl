@@ -1,5 +1,5 @@
-#ifndef __hud_tiles__
-#define __hud_tiles__
+#ifndef HUD_MAP_H
+#define HUD_MAP_H
 
 #define hud_data_length 12
 const unsigned char hud_data[] = {

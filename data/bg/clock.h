@@ -1,5 +1,5 @@
-#ifndef __clock_tiles__
-#define __clock_tiles__
+#ifndef CLOCK_MAP_H
+#define CLOCK_MAP_H
 
 #define clock_data_length 14
 const unsigned char clock_data[] = {

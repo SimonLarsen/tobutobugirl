@@ -1,5 +1,5 @@
-#ifndef __sprites_sprites__
-#define __sprites_sprites__
+#ifndef SPRITES_SPRITES_H
+#define SPRITES_SPRITES_H
 
 #define sprites_data_length 128
 const unsigned char sprites_data[] = {
