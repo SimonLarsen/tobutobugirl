@@ -17,6 +17,7 @@
 // Sprites
 #include "data/sprite/sprites.h"
 
+UBYTE first_load;
 UBYTE paused, ingame_state;
 
 UBYTE scrolly, scrolled;
@@ -89,15 +90,19 @@ void initGame() {
 	set_win_tiles(0U, 0U, hud_tiles_width, hud_tiles_height, hud_tiles);
 	set_sprite_data(0U, sprites_data_length, sprites_data);
 
-	if(level == 1U) {
-		set_bkg_data(background1_offset, background1_data_length, background1_data);
-		set_bkg_tiles(0U, 0U, background1_tiles_width, background1_tiles_height, background1_tiles);
-	} else if(level == 2U) {
-		set_bkg_data(background2_offset, background2_data_length, background2_data);
-		set_bkg_tiles(0U, 0U, background2_tiles_width, background2_tiles_height, background2_tiles);
-	} else if(level == 3U) {
-		set_bkg_data(background3_offset, background3_data_length, background3_data);
-		set_bkg_tiles(0U, 0U, background3_tiles_width, background3_tiles_height, background3_tiles);
+	if(first_load) {
+		first_load = 0U;
+
+		if(level == 1U) {
+			set_bkg_data_rle(background1_offset, background1_data_length, background1_data);
+			set_bkg_tiles_rle(0U, 0U, background1_tiles_width, background1_tiles_height, background1_tiles);
+		} else if(level == 2U) {
+			set_bkg_data_rle(background2_offset, background2_data_length, background2_data);
+			set_bkg_tiles_rle(0U, 0U, background2_tiles_width, background2_tiles_height, background2_tiles);
+		} else if(level == 3U) {
+			set_bkg_data_rle(background3_offset, background3_data_length, background3_data);
+			set_bkg_tiles_rle(0U, 0U, background3_tiles_width, background3_tiles_height, background3_tiles);
+		}
 	}
 
 	clearSprites();
@@ -143,6 +148,9 @@ void initGame() {
 	DISPLAY_ON;
 
 	enable_interrupts();
+}
+
+void loadBackground() {
 }
 
 void updateInput() {
@@ -736,6 +744,8 @@ void deathAnimation() {
 }
 
 void enterGame() {
+	first_load = 1U;
+ingame_start:
 	initGame();
 	initSpawns();
 
@@ -799,6 +809,8 @@ void enterGame() {
 
 	HIDE_SPRITES;
 	fadeToWhite(10U);
+
+	if(gamestate == GAMESTATE_INGAME) goto ingame_start;
 }
 
 void addScore(UBYTE elapsed_time, UBYTE score) {

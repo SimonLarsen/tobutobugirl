@@ -1,7 +1,6 @@
 #ifndef GAME_H
 #define GAME_H
 
-void saveScore();
 void initGame();
 void updateInput();
 void updatePlayer();
