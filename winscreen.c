@@ -27,7 +27,7 @@ void initWinscreen() {
 	switch(level) {
 		case 1:
 			set_bkg_data_rle(win1_offset, win1_data_length, win1_data);
-			set_bkg_tiles_rle(8U, 3U, win1_tiles_width, win1_tiles_height, win1_tiles);
+			set_bkg_tiles_rle(10U, 5U, win1_tiles_width, win1_tiles_height, win1_tiles);
 			break;
 		case 2:
 			set_bkg_data_rle(win2_offset, win2_data_length, win2_data);
@@ -35,7 +35,7 @@ void initWinscreen() {
 			break;
 		case 3:
 			set_bkg_data_rle(win3_offset, win3_data_length, win3_data);
-			set_bkg_tiles_rle(8U, 3U, win3_tiles_width, win3_tiles_height, win3_tiles);
+			set_bkg_tiles_rle(10U, 3U, win3_tiles_width, win3_tiles_height, win3_tiles);
 			break;
 	}
 
