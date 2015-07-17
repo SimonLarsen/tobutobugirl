@@ -23,7 +23,8 @@ UBYTE paused, ingame_state;
 UBYTE scrolly, scrolled;
 UBYTE next_spawn, last_spawn_x, last_spawn_type;
 
-UBYTE timer, blips, progress, portal_spawned;
+UBYTE timer, progress, portal_spawned;
+UBYTE blips, blip_bar;
 UBYTE player_x, player_y;
 UBYTE player_xdir, player_ydir;
 UBYTE player_yspeed, player_bounce;
@@ -125,6 +126,7 @@ void initGame() {
 
 	ingame_state = INGAME_ACTIVE;
 	blips = 0U;
+	blip_bar = 0U;
 	kills = 0U;
 
 	entity_frame = 0U;
@@ -347,9 +349,14 @@ void updatePlayer() {
 void updateHUD() {
 	UBYTE progressbar;
 
+	if(blip_bar > blips) {
+		blip_bar = blips;
+	} else if(blip_bar < blips) {
+		blip_bar += 2U;
+	}
 	// Blips
-	setSprite(168U-(blips >> 3), 136U, 104U, OBJ_PAL0);
-	setSprite(176U-(blips >> 3), 136U, 106U, OBJ_PAL0);
+	setSprite(168U-(blip_bar >> 3), 136U, 104U, OBJ_PAL0);
+	setSprite(176U-(blip_bar >> 3), 136U, 106U, OBJ_PAL0);
 
 	// Progress bar
 	progressbar = 118U - (progress << 1U) / 3U;
