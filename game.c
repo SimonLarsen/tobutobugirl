@@ -807,7 +807,7 @@ ingame_start:
 	}
 	else if(ingame_state == INGAME_COMPLETED) {
 		intoPortalAnimation();
-		addScore(elapsed_time, remaining_time + 2U*kills);
+		addScore(elapsed_time, 2U*remaining_time + kills);
 		gamestate = GAMESTATE_WINSCREEN;
 	}
 	else if(ingame_state == INGAME_QUIT) {
