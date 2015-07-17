@@ -72,7 +72,7 @@ void enterWinscreen() {
 
 	fadeFromWhite(10U);
 
-	delay(255U); delay(255U);
+	delay(255U);
 
 	// Time
 	tile = elapsed_time / 60U;
@@ -84,15 +84,18 @@ void enterWinscreen() {
 	tile = (elapsed_time % 60U) % 10U;
 	set_bkg_tiles(4U, 5U, 1U, 1U, &tile);
 
-	delay(255U); delay(255U);
+	delay(512U);
 
 	// Count up time bonus
 	for(i = 0U; i != 2U*remaining_time+1U; ++i) {
+		updateJoystate();
+		if(CLICKED(J_A)) i = 2U*remaining_time;
+
 		drawScore(4U, 6U, i);
 		delay(80U);
 	}
 
-	delay(255U); delay(255U);
+	delay(512U);
 
 	// Kills
 	tmp = kills;
@@ -101,18 +104,24 @@ void enterWinscreen() {
 	tile = tmp % 10U;
 	set_bkg_tiles(2U, 10U, 1U, 1U, &tile);
 
-	delay(255U); delay(255U);
+	delay(512U);
 
 	// Count up kill bonus
 	for(i = 0U; i != kills+1U; ++i) {
+		updateJoystate();
+		if(CLICKED(J_A)) i = kills;
+
 		drawScore(4U, 11U, i);
 		delay(30U);
 	}
 
-	delay(255U); delay(255U);
+	delay(512U);
 
 	// Count up total score
 	for(i = 0U; i != 2U*remaining_time+kills+1U; ++i) {
+		updateJoystate();
+		if(CLICKED(J_A)) i = 2U*remaining_time+kills;
+
 		drawScore(4U, 15U, i);
 		delay(30U);
 	}
