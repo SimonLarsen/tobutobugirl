@@ -12,6 +12,7 @@ extern UBYTE ticks;
 extern UBYTE gamestate, level, selection;
 extern UBYTE joystate, oldjoystate;
 extern UBYTE elapsed_time, remaining_time, kills;
+extern UBYTE last_highscore_level, last_highscore_slot;
 
 #define CLICKED(x) ((joystate & x) && (joystate & x) != (oldjoystate & x))
 #define RELEASED(x) (!(joystate & x) && (joystate & x) != (oldjoystate & x))

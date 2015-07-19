@@ -29,6 +29,7 @@ winscreen_backgrounds:
 .PHONY: highscore_backgrounds
 highscore_backgrounds:
 	imgtogb --map -O 109 data/bg/highscore.png data/bg/highscore.h
+	imgtogb --sprite data/sprite/empty.png data/sprite/empty.h
 
 backgrounds: title_backgrounds select_backgrounds ingame_backgrounds winscreen_backgrounds highscore_backgrounds
 	#imgtogb --map data/bg/circles.png data/bg/circles.h # 9 tiles

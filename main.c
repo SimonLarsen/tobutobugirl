@@ -41,6 +41,9 @@ void initRAM() {
 void main() {
 	initRAM();
 
+	last_highscore_level = 0U;
+	last_highscore_slot = 5U;
+
 	joystate = oldjoystate = 0U;
 	level = 1U;
 	

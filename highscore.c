@@ -8,6 +8,7 @@
 
 #include "data/sprite/characters.h"
 #include "data/sprite/arrow.h"
+#include "data/sprite/empty.h"
 
 #include "data/bg/circles.h"
 #include "data/bg/highscore.h"
@@ -28,8 +29,8 @@ void initHighscore() {
 	set_bkg_data(highscore_offset, highscore_data_length, highscore_data);
 
 	set_bkg_tiles(0U, 0U, highscore_tiles_width, highscore_tiles_height, highscore_tiles);
-
 	set_sprite_data(0U, arrow_data_length, arrow_data);
+	set_sprite_data(arrow_data_length, 1U, empty_data);
 
 	highscore_circle_index = 0U;;
 	highscore_selection = level;
@@ -178,6 +179,7 @@ void enterHighscore() {
 
 		offset = cos32_64[(ticks & 63U)] >> 3;
 
+		// Draw arrows
 		setSprite(20U-offset, 64U, 0U, OBJ_PAL0);
 		setSprite(28U-offset, 64U, 1U, OBJ_PAL0);
 		setSprite(20U-offset, 72U, 2U, OBJ_PAL0);
@@ -187,6 +189,24 @@ void enterHighscore() {
 		setSprite(148U+offset, 64U, 0U, OBJ_PAL0 | FLIP_X);
 		setSprite(140U+offset, 72U, 3U, OBJ_PAL0 | FLIP_X);
 		setSprite(148U+offset, 72U, 2U, OBJ_PAL0 | FLIP_X);
+
+		if((ticks & 63U) < 16U
+		&& last_highscore_level == highscore_selection
+		&& last_highscore_slot < 5U) {
+			offset = 104U + (last_highscore_slot << 3);
+			setSprite(32U, offset, 4U, OBJ_PAL0);
+
+			setSprite(56U, offset, 4U, OBJ_PAL0);
+			setSprite(64U, offset, 4U, OBJ_PAL0);
+			setSprite(72U, offset, 4U, OBJ_PAL0);
+			setSprite(80U, offset, 4U, OBJ_PAL0);
+			setSprite(88U, offset, 4U, OBJ_PAL0);
+
+			setSprite(112U, offset, 4U, OBJ_PAL0);
+			setSprite(120U, offset, 4U, OBJ_PAL0);
+			setSprite(128U, offset, 4U, OBJ_PAL0);
+			setSprite(136U, offset, 4U, OBJ_PAL0);
+		}
 
 		clearRemainingSprites();
 		wait_vbl_done();

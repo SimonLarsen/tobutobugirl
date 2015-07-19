@@ -844,8 +844,10 @@ void addScore() {
 		}
 		data[i << 1] = elapsed_time;
 		data[(i << 1) + 1U] = score;
+
+		last_highscore_level = level;
+		last_highscore_slot = i;
 	}
 
 	DISABLE_RAM_MBC1;
 }
-
