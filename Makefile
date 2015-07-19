@@ -14,10 +14,10 @@ select_backgrounds:
 .PHONY: ingame_backgrounds
 ingame_backgrounds:
 	imgtogb --map data/bg/hud.png data/bg/hud.h
-	imgtogb --map -O 18 data/bg/clock.png data/bg/clock.h 
-	imgtogb --map -O 32 --rle data/bg/background1.png data/bg/background1.h 
-	imgtogb --map -O 32 --rle data/bg/background2.png data/bg/background2.h 
-	imgtogb --map -O 32 --rle data/bg/background3.png data/bg/background3.h 
+	imgtogb --map -O 20 data/bg/clock.png data/bg/clock.h 
+	imgtogb --map -O 34 --rle data/bg/background1.png data/bg/background1.h 
+	imgtogb --map -O 34 --rle data/bg/background2.png data/bg/background2.h 
+	imgtogb --map -O 34 --rle data/bg/background3.png data/bg/background3.h 
 
 .PHONY: winscreen_backgrounds
 winscreen_backgrounds:
