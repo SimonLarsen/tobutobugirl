@@ -53,8 +53,8 @@ void initWinscreen() {
 	BGP_REG = 0xE4U; // 11100100
 
 	set_bkg_data(0U, 40U, characters_data);
-	set_bkg_data(win_base_offset, win_base_data_length, win_base_data);
-	set_bkg_tiles(0U, 0U, win_base_tiles_width, win_base_tiles_height, win_base_tiles);
+	set_bkg_data_rle(win_base_offset, win_base_data_length, win_base_data);
+	set_bkg_tiles_rle(0U, 0U, win_base_tiles_width, win_base_tiles_height, win_base_tiles);
 
 	switch(level) {
 		case 1:

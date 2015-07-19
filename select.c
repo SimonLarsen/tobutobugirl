@@ -4,6 +4,7 @@
 #include "fade.h"
 #include "gamestate.h"
 #include "cos.h"
+#include "ram.h"
 
 #include "data/sprite/characters.h"
 #include "data/sprite/arrow.h"
@@ -18,6 +19,7 @@
 
 UBYTE select_circle_index;
 UBYTE select_ticks;
+UBYTE completed;
 
 void initSelect() {
 	disable_interrupts();
@@ -40,6 +42,15 @@ void initSelect() {
 
 	clearSprites();
 	updateSelectScreen();
+
+	ENABLE_RAM_MBC1;
+	SWITCH_RAM_MBC1(0);
+
+	for(completed = 0U; completed != 3U; ++completed) {
+		if(ram_data[completed << 4] == 0U) break;
+	}
+
+	DISABLE_RAM_MBC1;
 
 	HIDE_WIN;
 	SPRITES_8x8;
@@ -190,7 +201,7 @@ void selectScrollCircles() {
 }
 
 void enterSelect() {
-	UBYTE i, offset;
+	UBYTE i, offset, name_index;
 	initSelect();
 
 	fadeFromWhite(10U);
@@ -220,7 +231,7 @@ void enterSelect() {
 		if(CLICKED(J_START) || CLICKED(J_A)) {
 			if(selection == 0U) {
 				gamestate = GAMESTATE_HIGHSCORE;
-			} else {
+			} else if(selection <= completed+1U) {
 				level = selection;
 				gamestate = GAMESTATE_INGAME;
 			}
@@ -230,12 +241,17 @@ void enterSelect() {
 		}
 
 		// Draw level name
+		if(selection <= completed+1U) {
+			name_index = level;
+		} else {
+			name_index = 4U;
+		}
 		offset = 64U;
-		if(selection == 3U) {
+		if(name_index == 3U) {
 			offset += 4U;
 		}
 		for(i = 0U; i != 6; ++i) {
-			setSprite(offset+(i << 3), 61U+cos4_16[(i+(ticks >> 1)) & 15U], level_names[selection][i], OBJ_PAL0);
+			setSprite(offset+(i << 3), 61U+cos4_16[(i+(ticks >> 1)) & 15U], level_names[name_index][i], OBJ_PAL0);
 		}
 
 		selectUpdateSprites();

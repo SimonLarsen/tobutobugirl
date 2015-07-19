@@ -10,11 +10,12 @@ UBYTE next_sprite, sprites_used;
 UBYTE elapsed_time, remaining_time, kills;
 UBYTE last_highscore_level, last_highscore_slot;
 
-const UBYTE level_names[4][6] = {
+const UBYTE level_names[5][6] = {
 	{29U, 13U, 25U, 28U, 15U, 29U},
 	{26U, 22U, 11U, 19U, 24U, 29U},
 	{13U, 22U, 25U, 31U, 14U, 29U},
-	{29U, 26U, 11U, 13U, 15U, 10U}
+	{29U, 26U, 11U, 13U, 15U, 10U},
+	{22U, 25U, 13U, 21U, 15U, 14U}
 };
 
 void clearSprites() {
