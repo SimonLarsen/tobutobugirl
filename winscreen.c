@@ -12,18 +12,22 @@
 void drawScore(UBYTE x, UBYTE y, UBYTE value) {
 	UBYTE tile;
 
-	if(value) {
-		if(value >= 10U) {
-			tile = value / 10U;
-			set_bkg_tiles(x, y, 1U, 1U, &tile);
-		}
-		tile = value % 10U;
+	if(value >= 100U) {
+		tile = value / 100U;
+		set_bkg_tiles(x, y, 1U, 1U, &tile);
+	}
+	if(value >= 10U) {
+		tile = (value / 10U) % 10U;
 		set_bkg_tiles(x+1U, y, 1U, 1U, &tile);
-		tile = 0U;
+	}
+	if(value) {
+		tile = value % 10U;
 		set_bkg_tiles(x+2U, y, 1U, 1U, &tile);
+		tile = 0U;
+		set_bkg_tiles(x+3U, y, 1U, 1U, &tile);
 	}
 	tile = 0U;
-	set_bkg_tiles(x+3U, y, 1U, 1U, &tile);
+	set_bkg_tiles(x+4U, y, 1U, 1U, &tile);
 }
 
 void countUpScore(UBYTE x, UBYTE y, UBYTE value, UBYTE delay_time) {
@@ -99,7 +103,7 @@ void enterWinscreen() {
 	delay(512U);
 
 	// Count up time bonus
-	countUpScore(4, 6, 2U*remaining_time, 80U);
+	countUpScore(3, 6, 4U*remaining_time, 40U);
 
 	delay(512U);
 
@@ -113,12 +117,12 @@ void enterWinscreen() {
 	delay(512U);
 
 	// Count up kill bonus
-	countUpScore(4U, 11U, kills, 30U);
+	countUpScore(3U, 11U, kills, 40U);
 
 	delay(512U);
 
 	// Count up total score
-	countUpScore(4U, 15U, 2U*remaining_time+kills, 30U);
+	countUpScore(3U, 15U, 4U*remaining_time+kills, 40U);
 
 	while(1) {
 		updateJoystate();

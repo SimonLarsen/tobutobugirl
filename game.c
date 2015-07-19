@@ -807,7 +807,7 @@ ingame_start:
 	}
 	else if(ingame_state == INGAME_COMPLETED) {
 		intoPortalAnimation();
-		addScore(elapsed_time, 2U*remaining_time + kills);
+		addScore();
 		gamestate = GAMESTATE_WINSCREEN;
 	}
 	else if(ingame_state == INGAME_QUIT) {
@@ -820,12 +820,14 @@ ingame_start:
 	if(gamestate == GAMESTATE_INGAME) goto ingame_start;
 }
 
-void addScore(UBYTE elapsed_time, UBYTE score) {
-	UBYTE i, j;
+void addScore() {
+	UBYTE i, j, score;
 	UBYTE *data;
 
 	ENABLE_RAM_MBC1;
 	SWITCH_RAM_MBC1(0);
+
+	score = 4U*remaining_time + kills;
 
 	data = &ram_data[(level - 1U) << 4];
 	for(i = 0U; i != 5U; ++i) {
