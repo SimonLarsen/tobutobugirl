@@ -103,7 +103,7 @@ void enterWinscreen() {
 	delay(512U);
 
 	// Count up time bonus
-	countUpScore(3, 6, 4U*remaining_time, 40U);
+	countUpScore(3, 6, 4U*remaining_time, 30U);
 
 	delay(512U);
 
@@ -117,12 +117,12 @@ void enterWinscreen() {
 	delay(512U);
 
 	// Count up kill bonus
-	countUpScore(3U, 11U, kills, 40U);
+	countUpScore(3U, 11U, kills, 30U);
 
 	delay(512U);
 
 	// Count up total score
-	countUpScore(3U, 15U, 4U*remaining_time+kills, 40U);
+	countUpScore(3U, 15U, 4U*remaining_time+kills, 30U);
 
 	while(1) {
 		updateJoystate();

@@ -1,4 +1,5 @@
 #include <gb/gb.h>
+#include <rand.h>
 #include "defines.h"
 #include "title.h"
 #include "fade.h"
@@ -49,6 +50,7 @@ void enterTitle() {
 	while(1) {
 		updateJoystate();
 		if(CLICKED(J_START)) {
+			initrand(DIV_REG);
 			gamestate = GAMESTATE_SELECT;
 			break;
 		}
