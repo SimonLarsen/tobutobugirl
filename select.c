@@ -16,6 +16,7 @@
 #include "data/bg/selection1.h"
 #include "data/bg/selection2.h"
 #include "data/bg/selection3.h"
+#include "data/bg/selection4.h"
 
 UBYTE select_circle_index;
 UBYTE select_ticks;
@@ -117,7 +118,10 @@ void selectTransitionIn() {
 	left = 0U;
 	right = 19U;
 
-	if(selection == 0U) {
+	if(selection > completed+1U) {
+		set_bkg_data(selection4_offset, selection4_data_length, selection4_data);
+		data = selection4_tiles;
+	} else if(selection == 0U) {
 		set_bkg_data(selection0_offset, selection0_data_length, selection0_data);
 		data = selection0_tiles;
 	} else if(selection == 1U) {
@@ -167,6 +171,9 @@ void updateSelectScreen() {
 	if(selection == 0U) {
 		set_bkg_data(selection0_offset, selection0_data_length, selection0_data);
 		set_bkg_tiles(0U, 10U, 20U, 6U, selection0_tiles);
+	} else if(selection > completed+1U) {
+		set_bkg_data(selection4_offset, selection4_data_length, selection4_data);
+		set_bkg_tiles(0U, 10U, 20U, 6U, selection4_tiles);
 	} else if(selection == 1U) {
 		set_bkg_data(selection1_offset, selection1_data_length, selection1_data);
 		set_bkg_tiles(0U, 10U, 20U, 6U, selection1_tiles);

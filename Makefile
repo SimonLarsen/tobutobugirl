@@ -40,9 +40,10 @@ sprites:
 	#imgtogb --sprite data/sprite/characters.png data/sprite/characters.h # 40 tiles
 	#imgtogb --sprite data/sprite/arrow.png data/sprite/arrow.h
 	#imgtogb --map -O 40 data/bg/selection0.png data/bg/selection0.h
-	#imgtogb --map -O 40 data/bg/selection1.png data/bg/selection1.h # 54 tiles
-	#imgtogb --map -O 40 data/bg/selection2.png data/bg/selection2.h # 62 tiles
-	#imgtogb --map -O 40 data/bg/selection3.png data/bg/selection3.h # 40 tiles
+	#imgtogb --map -O 40 data/bg/selection1.png data/bg/selection1.h
+	#imgtogb --map -O 40 data/bg/selection2.png data/bg/selection2.h
+	#imgtogb --map -O 40 data/bg/selection3.png data/bg/selection3.h
+	#imgtogb --map -O 40 data/bg/selection4.png data/bg/selection4.h
 
 .PHONY: tobu.gb
 tobu.gb: 
@@ -61,6 +62,7 @@ tobu.gb:
 	$(CC) $(CFLAGS) -c selection1.c -Wf-bo2
 	$(CC) $(CFLAGS) -c selection2.c -Wf-bo2
 	$(CC) $(CFLAGS) -c selection3.c -Wf-bo2
+	$(CC) $(CFLAGS) -c selection4.c -Wf-bo2
 	$(CC) $(CFLAGS) -c winscreen.c -Wf-bo3
 	$(CC) $(CFLAGS) -c -Wf-ba0 -c ram.c
 	$(CC) $(CFLAGS) -Wl-yt3 -Wl-yo4 -Wl-ya1 *.o -o $@
