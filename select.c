@@ -249,7 +249,7 @@ void enterSelect() {
 
 		// Draw level name
 		if(selection <= completed+1U) {
-			name_index = level;
+			name_index = selection;
 		} else {
 			name_index = 4U;
 		}
