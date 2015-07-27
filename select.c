@@ -22,6 +22,8 @@ UBYTE select_circle_index;
 UBYTE select_ticks;
 UBYTE completed;
 
+extern UBYTE mainmenu_song_data;
+
 void initSelect() {
 	disable_interrupts();
 	DISPLAY_OFF;
@@ -52,6 +54,9 @@ void initSelect() {
 	}
 
 	DISABLE_RAM_MBC1;
+
+	setMusicBank(4U);
+	playMusic(&mainmenu_song_data);
 
 	HIDE_WIN;
 	SPRITES_8x8;

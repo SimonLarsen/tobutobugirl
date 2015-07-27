@@ -1,5 +1,5 @@
 CC=lcc
-CFLAGS=-Wa-l
+CFLAGS=
 
 default: backgrounds sprites tobu.gb
 
@@ -54,6 +54,7 @@ tobu.gb:
 	$(CC) $(CFLAGS) -c cos.c
 	$(CC) $(CFLAGS) -c circles.c
 	$(CC) $(CFLAGS) -c characters.c
+	$(CC) $(CFLAGS) -c music.c
 	$(CC) $(CFLAGS) -c game.c -Wf-bo1
 	$(CC) $(CFLAGS) -c title.c -Wf-bo2
 	$(CC) $(CFLAGS) -c select.c -Wf-bo2
@@ -65,12 +66,14 @@ tobu.gb:
 	$(CC) $(CFLAGS) -c selection3.c -Wf-bo2
 	$(CC) $(CFLAGS) -c selection4.c -Wf-bo2
 	$(CC) $(CFLAGS) -c winscreen.c -Wf-bo3
+	$(CC) $(CFLAGS) -c data/songs/title_song.asm # bank 4
+	$(CC) $(CFLAGS) -c data/songs/mainmenu_song.asm # bank 4
 	$(CC) $(CFLAGS) -c -Wf-ba0 -c ram.c
-	$(CC) $(CFLAGS) -Wl-yt3 -Wl-yo4 -Wl-ya1 *.o -o $@
+	$(CC) $(CFLAGS) -Wl-yt3 -Wl-yo8 -Wl-ya1 *.o -o $@
 
 .PHONY: run
 run:
-	gambatte -s 3 tobu.gb
+	gambatte-qt tobu.gb
 
 .PHONY: clean
 clean:

@@ -1,5 +1,6 @@
 #include <gb/gb.h>
 #include "defines.h"
+#include "music.h"
 
 #include "gamestate.h"
 
@@ -9,6 +10,7 @@ UBYTE joystate, oldjoystate;
 UBYTE next_sprite, sprites_used;
 UBYTE elapsed_time, remaining_time, kills;
 UBYTE last_highscore_level, last_highscore_slot;
+UBYTE game_bank, music_bank;
 
 const UBYTE level_names[5][6] = {
 	{29U, 13U, 25U, 28U, 15U, 29U},
@@ -17,6 +19,21 @@ const UBYTE level_names[5][6] = {
 	{29U, 26U, 11U, 13U, 15U, 10U},
 	{22U, 25U, 13U, 21U, 15U, 14U}
 };
+
+void setGameBank(UBYTE i) {
+	game_bank = i;
+	SWITCH_ROM_MBC1(i);
+}
+
+void setMusicBank(UBYTE i) {
+	music_bank = i;
+}
+
+void playMusic(UBYTE *data) {
+	SWITCH_ROM_MBC1(music_bank);
+	mus_init(data);
+	SWITCH_ROM_MBC1(game_bank);
+}
 
 void clearSprites() {
 	UBYTE i;

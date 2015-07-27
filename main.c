@@ -8,6 +8,7 @@
 #include "winscreen.h"
 #include "highscore.h"
 #include "ram.h"
+#include "music.h"
 
 const UBYTE RAM_SIG[8] = {'T','O','B','U','T','O','B','U'};
 
@@ -38,6 +39,12 @@ void initRAM() {
 	DISABLE_RAM_MBC1;
 }
 
+void updateMusic() {
+	SWITCH_ROM_MBC1(music_bank);
+	mus_update();
+	SWITCH_ROM_MBC1(game_bank);
+}
+
 void main() {
 	initRAM();
 
@@ -49,26 +56,30 @@ void main() {
 	
 	gamestate = GAMESTATE_TITLE;
 
+	SWITCH_16_8_MODE_MBC1;
+	add_TIM(updateMusic);
+	set_interrupts(TIM_IFLAG | VBL_IFLAG);
+
 	while(1U) {
 		switch(gamestate) {
 			case GAMESTATE_TITLE:
-				SWITCH_ROM_MBC1(2);
+				setGameBank(2);
 				enterTitle();
 				break;
 			case GAMESTATE_SELECT:
-				SWITCH_ROM_MBC1(2);
+				setGameBank(2);
 				enterSelect();
 				break;
 			case GAMESTATE_INGAME:
-				SWITCH_ROM_MBC1(1);
+				setGameBank(1);
 				enterGame();
 				break;
 			case GAMESTATE_WINSCREEN:
-				SWITCH_ROM_MBC1(3);
+				setGameBank(3);
 				enterWinscreen();
 				break;
 			case GAMESTATE_HIGHSCORE:
-				SWITCH_ROM_MBC1(2);
+				setGameBank(2);
 				enterHighscore();
 				break;
 		}

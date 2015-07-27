@@ -8,6 +8,8 @@
 #include "data/bg/titlescreen.h"
 #include "data/sprite/characters.h"
 
+extern UBYTE title_song_data;
+
 const UBYTE title_message[11] = {
 	26U, 28U, 15U, 29U,
 	29U, 10U, 29U, 30U,
@@ -29,6 +31,9 @@ void initTitle() {
 
 	clearSprites();
 
+	setMusicBank(4U);
+	playMusic(&title_song_data);
+
 	HIDE_WIN;
 	SHOW_SPRITES;
 	SHOW_BKG;
@@ -49,7 +54,7 @@ void enterTitle() {
 	ticks = 0U;
 	while(1) {
 		updateJoystate();
-		if(CLICKED(J_START)) {
+		if(CLICKED(J_START) || CLICKED(J_A)) {
 			initrand(DIV_REG);
 			gamestate = GAMESTATE_SELECT;
 			break;
