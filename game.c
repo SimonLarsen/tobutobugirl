@@ -37,6 +37,10 @@ UBYTE entity_type[MAX_ENTITIES];
 UBYTE entity_dir[MAX_ENTITIES];
 UBYTE entity_frame;
 
+extern UBYTE plains_song_data;
+extern UBYTE clouds_song_data;
+extern UBYTE space_song_data;
+
 const UBYTE scrolled_length[4] = { 0U, 16U, 24U, 32U };
 
 const UBYTE entity_sprites[] = {
@@ -145,6 +149,17 @@ void initGame() {
 	move_win(151U, 0U);
 
 	updateHUDTime();
+
+	setMusicBank(5U);
+	if(level == 1U) {
+		playMusic(&plains_song_data);
+	}
+	else if(level == 2U) {
+		playMusic(&clouds_song_data);
+	}
+	else if(level == 3U) {
+		playMusic(&space_song_data);
+	}
 
 	SHOW_BKG;
 	SHOW_WIN;

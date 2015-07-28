@@ -68,6 +68,9 @@ tobu.gb:
 	$(CC) $(CFLAGS) -c winscreen.c -Wf-bo3
 	$(CC) $(CFLAGS) -c data/songs/title_song.asm # bank 4
 	$(CC) $(CFLAGS) -c data/songs/mainmenu_song.asm # bank 4
+	$(CC) $(CFLAGS) -c data/songs/plains_song.asm # bank 5
+	$(CC) $(CFLAGS) -c data/songs/clouds_song.asm # bank 5
+	$(CC) $(CFLAGS) -c data/songs/space_song.asm # bank 5
 	$(CC) $(CFLAGS) -c -Wf-ba0 -c ram.c
 	$(CC) $(CFLAGS) -Wl-yt3 -Wl-yo8 -Wl-ya1 *.o -o $@
 
