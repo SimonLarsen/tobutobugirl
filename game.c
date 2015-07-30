@@ -369,13 +369,13 @@ void updateHUD() {
 		blip_bar += 2U;
 	}
 	// Blips
-	setSprite(168U-(blip_bar >> 3), 136U, 24U, OBJ_PAL0);
-	setSprite(176U-(blip_bar >> 3), 136U, 26U, OBJ_PAL0);
+	setSprite(168U-(blip_bar >> 3), 136U, 100U, OBJ_PAL0);
+	setSprite(176U-(blip_bar >> 3), 136U, 102U, OBJ_PAL0);
 
 	// Progress bar
 	progressbar = 118U - (progress << 1U) / 3U;
-	setSprite(152U, progressbar, 20U, OBJ_PAL0);
-	setSprite(160U, progressbar, 22U, OBJ_PAL0);
+	setSprite(152U, progressbar, 104U, OBJ_PAL0);
+	setSprite(160U, progressbar, 106U, OBJ_PAL0);
 }
 
 void updateHUDTime() {
@@ -762,6 +762,7 @@ void deathAnimation() {
 		}
 
 		updateEntities();
+		updateHUD();
 
 		clearRemainingSprites();
 		wait_vbl_done();
