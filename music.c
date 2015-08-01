@@ -9,6 +9,10 @@
 
 UBYTE mus_paused;
 UBYTE *mus_song;
+UWORD mus_freq1, mus_freq2, mus_freq3;
+UBYTE mus_freq4;
+UWORD mus_target1, mus_target2, mus_target4;
+UBYTE mus_slide1, mus_slide2, mus_slide4;
 UBYTE *mus_data1, *mus_data2, *mus_data3, *mus_data4;
 UBYTE *mus_loop1, *mus_loop2, *mus_loop3, *mus_loop4;
 UBYTE mus_octave1, mus_octave2, mus_octave3, mus_octave4;
@@ -55,6 +59,7 @@ void mus_init(UBYTE *song_data) {
 	mus_volume3 = 1U;
 	mus_env1 = mus_env2 = mus_env4 = 3U;
 	mus_rep_depth1 = mus_rep_depth2 = mus_rep_depth3 = mus_rep_depth4 = 255U;
+	mus_slide1 = mus_slide2 = 0U;
 	for(i = 0U; i != MAX_REPEATS; ++i) {
 		mus_repeats1[i] = 0U;
 		mus_repeats2[i] = 0U;
@@ -87,7 +92,23 @@ void mus_update() {
 
 void mus_update1() {
 	UBYTE note;
-	UWORD frequency;
+
+	if(mus_slide1) {
+		if(mus_target1 > mus_freq1) {
+			mus_freq1 += mus_slide1;
+			if(mus_freq1 > mus_target1) {
+				mus_freq1 = mus_target1;
+			}
+		}
+		else if(mus_target1 < mus_freq1) {
+			mus_freq1 -= mus_slide1;
+			if(mus_freq1 < mus_target1) {
+				mus_freq1 = mus_target1;
+			}
+		}
+		NR13_REG = (UBYTE)mus_freq1;
+		NR14_REG = mus_freq1 >> 8;
+	}
 
 	if(mus_wait1) {
 		mus_wait1--;
@@ -107,14 +128,18 @@ void mus_update1() {
 			if(note == T_WAIT) {
 				return;
 			} else if(note == T_REST) {
-				frequency = 0U;
+				mus_freq1 = 0U;
 				NR12_REG = 0U;
 			} else {
-				frequency = freq[((mus_octave1-MUS_FIRST_OCTAVE) << 4) + note];
+				if(mus_slide1) {
+					mus_target1 = freq[((mus_octave1-MUS_FIRST_OCTAVE) << 4) + note];
+				} else {
+					mus_freq1 = freq[((mus_octave1-MUS_FIRST_OCTAVE) << 4) + note];
+				}
 				NR12_REG = (mus_volume1 << 4) | mus_env1;
 			}
-			NR13_REG = (UBYTE)frequency;
-			NR14_REG = 0x80U | (frequency >> 8);
+			NR13_REG = (UBYTE)mus_freq1;
+			NR14_REG = 0x80U | (mus_freq1 >> 8);
 			return;
 		}
 		switch(note) {
@@ -172,6 +197,9 @@ void mus_update1() {
 					mus_rep_depth1--;
 				}
 				break;
+			case T_PORTAMENTO:
+				mus_slide1 = *mus_data1++;
+				break;
 			case T_EOF:
 				mus_data1 = mus_loop1;
 				if(*mus_data1 == T_EOF) {
@@ -185,7 +213,23 @@ void mus_update1() {
 
 void mus_update2() {
 	UBYTE note;
-	UWORD frequency;
+
+	if(mus_slide2) {
+		if(mus_target2 > mus_freq2) {
+			mus_freq2 += mus_slide2;
+			if(mus_freq2 > mus_target2) {
+				mus_freq2 = mus_target2;
+			}
+		}
+		else if(mus_target2 < mus_freq2) {
+			mus_freq2 -= mus_slide2;
+			if(mus_freq2 < mus_target2) {
+				mus_freq2 = mus_target2;
+			}
+		}
+		NR23_REG = (UBYTE)mus_freq2;
+		NR24_REG = mus_freq2 >> 8;
+	}
 
 	if(mus_wait2) {
 		mus_wait2--;
@@ -205,14 +249,18 @@ void mus_update2() {
 			if(note == T_WAIT) {
 				return;
 			} else if(note == T_REST) {
-				frequency = 0U;
+				mus_freq2 = 0U;
 				NR22_REG = 0U;
 			} else {
-				frequency = freq[((mus_octave2-MUS_FIRST_OCTAVE) << 4) + note];
+				if(mus_slide2) {
+					mus_target2 = freq[((mus_octave2-MUS_FIRST_OCTAVE) << 4) + note];
+				} else {
+					mus_freq2 = freq[((mus_octave2-MUS_FIRST_OCTAVE) << 4) + note];
+				}
 				NR22_REG = (mus_volume2 << 4) | mus_env2;
 			}
-			NR23_REG = (UBYTE)frequency;
-			NR24_REG = 0x80U | (frequency >> 8);
+			NR23_REG = (UBYTE)mus_freq2;
+			NR24_REG = 0x80U | (mus_freq2 >> 8);
 			return;
 		}
 		switch(note) {
@@ -283,7 +331,6 @@ void mus_update2() {
 
 void mus_update3() {
 	UBYTE note;
-	UWORD frequency;
 
 	if(mus_wait3) {
 		mus_wait3--;
@@ -302,16 +349,16 @@ void mus_update3() {
 			if(note == T_WAIT) {
 				return;
 			} else if(note == T_REST) {
-				frequency = 0U;
+				mus_freq3 = 0U;
 				NR32_REG = 0U;
 			} else {
-				frequency = freq[((mus_octave3-MUS_FIRST_OCTAVE) << 4) + note];
+				mus_freq3 = freq[((mus_octave3-MUS_FIRST_OCTAVE) << 4) + note];
 				NR32_REG = mus_volume3 << 5;
 			}
 			NR30_REG = 0x0U;
 			NR30_REG = 0x80U;
-			NR33_REG = (UBYTE)frequency;
-			NR34_REG = 0x80U | (frequency >> 8);
+			NR33_REG = (UBYTE)mus_freq3;
+			NR34_REG = 0x80U | (mus_freq3 >> 8);
 			return;
 		}
 		switch(note) {
@@ -382,7 +429,23 @@ void mus_update3() {
 }
 
 void mus_update4() {
-	UBYTE note, frequency;
+	UBYTE note;
+
+	if(mus_slide4) {
+		if(mus_target4 > mus_freq4) {
+			mus_freq4 += mus_slide4;
+			if(mus_freq4 > mus_target4) {
+				mus_freq4 = mus_target4;
+			}
+		}
+		else if(mus_target4 < mus_freq4) {
+			mus_freq4 -= mus_slide4;
+			if(mus_freq4 < mus_target4) {
+				mus_freq4 = mus_target4;
+			}
+		}
+		NR43_REG = mus_freq4;
+	}
 
 	if(mus_wait4) {
 		mus_wait4--;
@@ -401,13 +464,17 @@ void mus_update4() {
 			if(note == T_WAIT) {
 				return;
 			} else if(note == T_REST) {
-				frequency = 0U;
+				mus_freq4 = 0U;
 				NR42_REG = 0U;
 			} else {
-				frequency = noise_freq[((mus_octave4-MUS_NOISE_FIRST_OCTAVE) << 4) + note];
+				if(mus_slide4) {
+					mus_target4 = noise_freq[((mus_octave4-MUS_NOISE_FIRST_OCTAVE) << 4) + note];
+				} else {
+					mus_freq4 = noise_freq[((mus_octave4-MUS_NOISE_FIRST_OCTAVE) << 4) + note];
+				}
 				NR42_REG = (mus_volume4 << 4) | mus_env4;
 			}
-			NR43_REG = frequency;
+			NR43_REG = mus_freq4;
 			NR44_REG = 0x80U;
 			return;
 		}
