@@ -7,6 +7,7 @@
 #include "cos.h"
 #include "ram.h"
 #include "highscore.h"
+#include "music.h"
 
 // Maps
 #include "data/bg/hud.h"
@@ -110,7 +111,19 @@ void initGame() {
 			set_bkg_data_rle(background3_offset, background3_data_length, background3_data);
 			set_bkg_tiles_rle(0U, 0U, background3_tiles_width, background3_tiles_height, background3_tiles);
 		}
+
+		setMusicBank(5U);
+		if(level == 1U) {
+			playMusic(&plains_song_data);
+		}
+		else if(level == 2U) {
+			playMusic(&clouds_song_data);
+		}
+		else if(level == 3U) {
+			playMusic(&space_song_data);
+		}
 	}
+	mus_setPaused(1U);
 
 	clearSprites();
 	clearEntities();
@@ -149,17 +162,6 @@ void initGame() {
 	move_win(151U, 0U);
 
 	updateHUDTime();
-
-	setMusicBank(5U);
-	if(level == 1U) {
-		playMusic(&plains_song_data);
-	}
-	else if(level == 2U) {
-		playMusic(&clouds_song_data);
-	}
-	else if(level == 3U) {
-		playMusic(&space_song_data);
-	}
 
 	SHOW_BKG;
 	SHOW_WIN;
@@ -780,6 +782,8 @@ ingame_start:
 
 	introAnimation();
 
+	mus_setPaused(0U);
+
 	while(ingame_state == INGAME_ACTIVE) {
 		updateInput();
 		if(paused) {
@@ -821,6 +825,7 @@ ingame_start:
 
 		wait_vbl_done();
 	}
+	mus_setPaused(1U);
 
 	if(ingame_state == INGAME_DEAD) {
 		deathAnimation();
