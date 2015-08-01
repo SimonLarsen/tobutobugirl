@@ -319,7 +319,8 @@ void updatePlayer() {
 	else if(player_x > 152U) player_x = 152U;
 
 	// Check bounds
-	if(player_y > SCREENHEIGHT) {
+	if(player_y > SCREENHEIGHT+4U) {
+		player_y = SCREENHEIGHT;
 		killPlayer();
 	}
 
