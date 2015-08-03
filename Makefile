@@ -46,6 +46,14 @@ sprites:
 	#imgtogb --map -O 40 data/bg/selection3.png data/bg/selection3.h
 	#imgtogb --map -O 40 data/bg/selection4.png data/bg/selection4.h
 
+.PHONY: songs
+songs:
+	java -jar jar/MMLGB.jar mml/title.mml data/songs/title_song.asm 4
+	java -jar jar/MMLGB.jar mml/mainmenu.mml data/songs/mainmenu_song.asm 4
+	java -jar jar/MMLGB.jar mml/plains.mml data/songs/plains_song.asm 5
+	java -jar jar/MMLGB.jar mml/clouds.mml data/songs/clouds_song.asm 5
+	java -jar jar/MMLGB.jar mml/space.mml data/songs/space_song.asm 5
+
 .PHONY: tobu.gb
 tobu.gb: 
 	$(CC) $(CFLAGS) -c main.c
