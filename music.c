@@ -192,9 +192,6 @@ void mus_update1() {
 				mus_env1 = *mus_data1++;
 				NR12_REG = (mus_volume1 << 4) | mus_env1;
 				break;
-			case T_WAVE:
-				mus_data1++;
-				break;
 			case T_WAVEDUTY:
 				note = *mus_data1++;
 				NR11_REG = (note << 5);
@@ -203,8 +200,22 @@ void mus_update1() {
 				note = *mus_data1++;
 				NR51_REG = (NR51_REG & 0xEEU) | note; // 11101110
 				break;
-			case T_LOOP:
-				mus_loop1 = mus_data1;
+			case T_PORTAMENTO:
+				mus_slide1 = *mus_data1++;
+				break;
+			case T_VIBRATO:
+				mus_vib_pos1 = 0U;
+				note = *mus_data1++;
+				mus_vib_speed1 = note & 15U;
+				mus_vib_div1 = 15U - (note >> 4);
+				mus_vib_delay1 = 0U;
+				break;
+			case T_VIBRATO_DELAY:
+				mus_vib_pos1 = 0U;
+				note = *mus_data1++;
+				mus_vib_speed1 = note & 15U;
+				mus_vib_div1 = 15U - (note >> 4);
+				mus_vib_delay1 = *mus_data1++;
 				break;
 			case T_REP_START:
 				mus_rep_depth1++;
@@ -223,22 +234,8 @@ void mus_update1() {
 					mus_rep_depth1--;
 				}
 				break;
-			case T_PORTAMENTO:
-				mus_slide1 = *mus_data1++;
-				break;
-			case T_VIBRATO:
-				mus_vib_pos1 = 0U;
-				note = *mus_data1++;
-				mus_vib_speed1 = note & 15U;
-				mus_vib_div1 = 15U - (note >> 4);
-				mus_vib_delay1 = 0U;
-				break;
-			case T_VIBRATO_DELAY:
-				mus_vib_pos1 = 0U;
-				note = *mus_data1++;
-				mus_vib_speed1 = note & 15U;
-				mus_vib_div1 = 15U - (note >> 4);
-				mus_vib_delay1 = *mus_data1++;
+			case T_LOOP:
+				mus_loop1 = mus_data1;
 				break;
 			case T_TEMPO:
 				TMA_REG = *mus_data1++;
@@ -339,9 +336,6 @@ void mus_update2() {
 				mus_env2 = *mus_data2++;
 				NR22_REG = (mus_volume2 << 4) | mus_env2;
 				break;
-			case T_WAVE:
-				mus_data2++;
-				break;
 			case T_WAVEDUTY:
 				note = *mus_data2++;
 				NR21_REG = note << 5;
@@ -350,8 +344,21 @@ void mus_update2() {
 				note = *mus_data2++;
 				NR51_REG = (NR51_REG & 0xDDU) | (note << 1); // 11011101
 				break;
-			case T_LOOP:
-				mus_loop2 = mus_data2;
+			case T_PORTAMENTO:
+				mus_slide2 = *mus_data2++;
+				break;
+			case T_VIBRATO:
+				mus_vib_pos2 = 0U;
+				note = *mus_data2++;
+				mus_vib_speed2 = note & 15U; // 0b1111
+				mus_vib_div2 = 15U - (note >> 4);
+				break;
+			case T_VIBRATO_DELAY:
+				mus_vib_pos2 = 0U;
+				note = *mus_data2++;
+				mus_vib_speed2 = note & 15U;
+				mus_vib_div2 = 15U - (note >> 4);
+				mus_vib_delay2 = *mus_data2++;
 				break;
 			case T_REP_START:
 				mus_rep_depth2++;
@@ -370,21 +377,8 @@ void mus_update2() {
 					mus_rep_depth2--;
 				}
 				break;
-			case T_PORTAMENTO:
-				mus_slide2 = *mus_data2++;
-				break;
-			case T_VIBRATO:
-				mus_vib_pos2 = 0U;
-				note = *mus_data2++;
-				mus_vib_speed2 = note & 15U; // 0b1111
-				mus_vib_div2 = 15U - (note >> 4);
-				break;
-			case T_VIBRATO_DELAY:
-				mus_vib_pos2 = 0U;
-				note = *mus_data2++;
-				mus_vib_speed2 = note & 15U;
-				mus_vib_div2 = 15U - (note >> 4);
-				mus_vib_delay2 = *mus_data2++;
+			case T_LOOP:
+				mus_loop2 = mus_data2;
 				break;
 			case T_TEMPO:
 				TMA_REG = *mus_data2++;
@@ -449,24 +443,15 @@ void mus_update3() {
 				mus_volume3 = *mus_data3++;
 				NR32_REG = mus_volume3 << 5;
 				break;
-			case T_ENV:
-				mus_data3++;
-				break;
 			case T_WAVE:
 				note = *mus_data3++;
 				NR30_REG = 0x0U;
 				memcpy(0xFF30, mus_song + WAVE_OFFSET + (note << 4), 16U);
 				NR30_REG = 0x80U;
 				break;
-			case T_WAVEDUTY:
-				mus_data3++;
-				break;
 			case T_PAN:
 				note = *mus_data3++;
 				NR51_REG = (NR51_REG & 0xBBU) | (note << 2); // 10111011
-				break;
-			case T_LOOP:
-				mus_loop3 = mus_data3;
 				break;
 			case T_REP_START:
 				mus_rep_depth3++;
@@ -485,11 +470,8 @@ void mus_update3() {
 					mus_rep_depth3--;
 				}
 				break;
-			case T_PORTAMENTO:
-				mus_data3++;
-				break;
-			case T_VIBRATO:
-				mus_data3++;
+			case T_LOOP:
+				mus_loop3 = mus_data3;
 				break;
 			case T_TEMPO:
 				TMA_REG = *mus_data3++;
@@ -580,8 +562,8 @@ void mus_update4() {
 				note = *mus_data4++;
 				NR51_REG = (NR51_REG & 0x77U) | (note << 3); // 01110111
 				break;
-			case T_LOOP:
-				mus_loop4 = mus_data4;
+			case T_PORTAMENTO:
+				mus_slide4 = *mus_data4++;
 				break;
 			case T_REP_START:
 				mus_rep_depth4++;
@@ -600,11 +582,8 @@ void mus_update4() {
 					mus_rep_depth4--;
 				}
 				break;
-			case T_PORTAMENTO:
-				mus_slide4 = *mus_data4++;
-				break;
-			case T_VIBRATO:
-				mus_data4++;
+			case T_LOOP:
+				mus_loop4 = mus_data4;
 				break;
 			case T_TEMPO:
 				TMA_REG = *mus_data4++;
