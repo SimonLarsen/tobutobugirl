@@ -19,6 +19,8 @@
 UBYTE highscore_circle_index;
 UBYTE highscore_selection;
 
+extern UBYTE highscore_song_data;
+
 void initHighscore() {
 	disable_interrupts();
 	DISPLAY_OFF;
@@ -40,6 +42,9 @@ void initHighscore() {
 
 	clearSprites();
 	_highscoreUpdateScreen();
+
+	setMusicBank(4U);
+	playMusic(&highscore_song_data);
 
 	SPRITES_8x8;
 	SHOW_SPRITES;

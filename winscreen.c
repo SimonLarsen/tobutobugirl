@@ -9,6 +9,8 @@
 #include "data/bg/win2.h"
 #include "data/bg/win3.h"
 
+extern UBYTE winscreen_song_data;
+
 void drawScore(UBYTE x, UBYTE y, UBYTE value) {
 	UBYTE tile;
 
@@ -87,6 +89,9 @@ void enterWinscreen() {
 	initWinscreen();
 
 	fadeFromWhite(10U);
+
+	setMusicBank(4U);
+	playMusic(&winscreen_song_data);
 
 	delay(255U);
 

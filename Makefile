@@ -48,8 +48,10 @@ sprites:
 
 .PHONY: songs
 songs:
-	java -jar jar/MMLGB.jar mml/title.mml data/songs/title_song.asm 4
+	java -jar jar/MMLGB.jar mml/intro_cutscene_part_2.mml data/songs/title_song.asm 4
 	java -jar jar/MMLGB.jar mml/mainmenu.mml data/songs/mainmenu_song.asm 4
+	java -jar jar/MMLGB.jar mml/score_tally.mml data/songs/winscreen_song.asm 4
+	java -jar jar/MMLGB.jar mml/score.mml data/songs/highscore_song.asm 4
 	java -jar jar/MMLGB.jar mml/plains.mml data/songs/plains_song.asm 5
 	java -jar jar/MMLGB.jar mml/clouds.mml data/songs/clouds_song.asm 5
 	java -jar jar/MMLGB.jar mml/space.mml data/songs/space_song.asm 5
@@ -76,6 +78,8 @@ tobu.gb:
 	$(CC) $(CFLAGS) -c winscreen.c -Wf-bo3
 	$(CC) $(CFLAGS) -c data/songs/title_song.asm # bank 4
 	$(CC) $(CFLAGS) -c data/songs/mainmenu_song.asm # bank 4
+	$(CC) $(CFLAGS) -c data/songs/winscreen_song.asm # bank 4
+	$(CC) $(CFLAGS) -c data/songs/highscore_song.asm # bank 4
 	$(CC) $(CFLAGS) -c data/songs/plains_song.asm # bank 5
 	$(CC) $(CFLAGS) -c data/songs/clouds_song.asm # bank 5
 	$(CC) $(CFLAGS) -c data/songs/space_song.asm # bank 5
