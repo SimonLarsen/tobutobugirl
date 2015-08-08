@@ -437,6 +437,7 @@ void updateEntities() {
 				break;
 
 			case E_BIRD:
+			case E_FIREBALL:
 				if(ticks & 1U && ingame_state == INGAME_ACTIVE) {
 					if(entity_dir[i] == RIGHT) {
 						entity_x[i]++;
@@ -468,19 +469,6 @@ void updateEntities() {
 					entity_type[i] = E_NONE;
 					entity_y[i] = 0U;
 					continue;
-				}
-				break;
-
-			case E_FIREBALL:
-				if(ticks & 1U && ingame_state == INGAME_ACTIVE) {
-					if(entity_dir[i] == RIGHT) {
-						entity_x[i]++;
-						if(entity_x[i] == 152U) entity_dir[i] = LEFT;
-					}
-					else {
-						entity_x[i]--;
-						if(entity_x[i] == 24U) entity_dir[i] = RIGHT;
-					}
 				}
 				break;
 
