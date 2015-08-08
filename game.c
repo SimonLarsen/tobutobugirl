@@ -221,17 +221,7 @@ void updatePlayer() {
 		&& player_y > entity_y[i]-12U && player_y < entity_y[i]+11U
 		&& player_x > entity_x[i]-12U && player_x < entity_x[i]+12U) {
 			type = entity_type[i];
-			if(type == E_BLIP) {
-				entity_type[i] = E_NONE;
-				blips += 16U;
-				if(blips > 128U) blips = 128U;
-			} else if(type == E_PORTAL
-			&& player_y > entity_y[i]-4U && player_y < entity_y[i]+4U
-			&& player_x > entity_x[i]-4U && player_x < entity_x[i]+4U) {
-				ingame_state = INGAME_COMPLETED;
-				player_x = entity_x[i];
-				player_y = entity_y[i];
-			} else if(type <= E_FIREBALL) {
+			if(type <= E_FIREBALL) {
 				killPlayer();
 			} else if(type <= LAST_ENEMY) {
 				if(player_ydir == DOWN && player_y < entity_y[i]-2U) {
@@ -251,6 +241,16 @@ void updatePlayer() {
 				} else {
 					killPlayer();
 				}
+			} else if(type == E_BLIP) {
+				entity_type[i] = E_NONE;
+				blips += 16U;
+				if(blips > 128U) blips = 128U;
+			} else if(type == E_PORTAL
+			&& player_y > entity_y[i]-4U && player_y < entity_y[i]+4U
+			&& player_x > entity_x[i]-4U && player_x < entity_x[i]+4U) {
+				ingame_state = INGAME_COMPLETED;
+				player_x = entity_x[i];
+				player_y = entity_y[i];
 			}
 		}
 	}
@@ -317,8 +317,8 @@ void updatePlayer() {
 	}
 
 	// Left and right borders
-	if(player_x < 24U) player_x = 24U;
-	else if(player_x > 152U) player_x = 152U;
+	if(player_x < 23U) player_x = 23U;
+	else if(player_x > 153U) player_x = 153U;
 
 	// Check bounds
 	if(player_y > SCREENHEIGHT+4U) {
@@ -624,11 +624,15 @@ void updateSpawns() {
 					dice++;
 					break;
 				case E_GHOST:
+					if(x < 40U) x = 40U;
+					if(x > 136U) x = 136U;
 					spawnEntity(E_GHOST, x, 1U, NONE);
 					last_spawn_type = E_GHOST;
 					dice = 8U;
 					break;
 				case E_ALIEN:
+					if(x < 40U) x = 40U;
+					if(x > 136U) x = 136U;
 					spawnEntity(E_ALIEN, x, 1U, LEFT);
 					last_spawn_type = E_ALIEN;
 					dice = 8U;
