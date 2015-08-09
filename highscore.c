@@ -15,6 +15,7 @@
 #include "data/bg/selection1.h"
 #include "data/bg/selection2.h"
 #include "data/bg/selection3.h"
+#include "data/bg/selection4.h"
 
 UBYTE highscore_circle_index;
 UBYTE highscore_selection;
@@ -75,22 +76,36 @@ void _highscoreUpdateScreen() {
 	UBYTE *data;
 
 	// Select level images
-	if(highscore_selection == 1U) {
-		set_bkg_data(selection1_offset, selection1_data_length, selection1_data);
-		data = selection1_tiles;
-	} else if(highscore_selection == 2U) {
-		set_bkg_data(selection2_offset, selection2_data_length, selection2_data);
-		data = selection2_tiles;
-	} else if(highscore_selection == 3U) {
-		set_bkg_data(selection3_offset, selection3_data_length, selection3_data);
-		data = selection3_tiles;
+	tile = highscore_selection;
+	if(tile > levels_completed+1U) {
+		tile = 4U;
 	}
+
+	switch(tile) {
+		case 1U:
+			set_bkg_data(selection1_offset, selection1_data_length, selection1_data);
+			data = selection1_tiles;
+			break;
+		case 2U:
+			set_bkg_data(selection2_offset, selection2_data_length, selection2_data);
+			data = selection2_tiles;
+			break;
+		case 3U:
+			set_bkg_data(selection3_offset, selection3_data_length, selection3_data);
+			data = selection3_tiles;
+			break;
+		case 4U:
+			set_bkg_data(selection4_offset, selection4_data_length, selection4_data);
+			data = selection4_tiles;
+			break;
+	}
+
 	set_bkg_tiles(0U, 4U, 20U, 6U, data);
 	set_bkg_tiles(5U, 8U, 10U, 1U, highscore_tiles+165U);
 	set_bkg_tiles(5U, 9U, 10U, 1U, highscore_tiles+185U);
 
 	// Set level name
-	data = level_names[highscore_selection];
+	data = level_names[tile];
 	set_bkg_tiles(7U, 9U, 6U, 1U, data);
 
 	// Set numbers

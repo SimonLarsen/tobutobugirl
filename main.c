@@ -36,6 +36,10 @@ void initRAM() {
 		}
 	}
 
+	for(levels_completed = 0U; levels_completed != 3U; ++levels_completed) {
+		if(ram_data[levels_completed << 4] == 0U) break;
+	}
+
 	DISABLE_RAM_MBC1;
 }
 

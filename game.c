@@ -866,5 +866,9 @@ void addScore() {
 		last_highscore_slot = i;
 	}
 
+	if(level > levels_completed) {
+		levels_completed = level;
+	}
+
 	DISABLE_RAM_MBC1;
 }

@@ -20,7 +20,6 @@
 
 UBYTE select_circle_index;
 UBYTE select_ticks;
-UBYTE completed;
 
 extern UBYTE mainmenu_song_data;
 
@@ -45,15 +44,6 @@ void initSelect() {
 
 	clearSprites();
 	updateSelectScreen();
-
-	ENABLE_RAM_MBC1;
-	SWITCH_RAM_MBC1(0);
-
-	for(completed = 0U; completed != 3U; ++completed) {
-		if(ram_data[completed << 4] == 0U) break;
-	}
-
-	DISABLE_RAM_MBC1;
 
 	setMusicBank(4U);
 	playMusic(&mainmenu_song_data);
@@ -123,7 +113,7 @@ void selectTransitionIn() {
 	left = 0U;
 	right = 19U;
 
-	if(selection > completed+1U) {
+	if(selection > levels_completed+1U) {
 		set_bkg_data(selection4_offset, selection4_data_length, selection4_data);
 		data = selection4_tiles;
 	} else if(selection == 0U) {
@@ -176,7 +166,7 @@ void updateSelectScreen() {
 	if(selection == 0U) {
 		set_bkg_data(selection0_offset, selection0_data_length, selection0_data);
 		set_bkg_tiles(0U, 10U, 20U, 6U, selection0_tiles);
-	} else if(selection > completed+1U) {
+	} else if(selection > levels_completed+1U) {
 		set_bkg_data(selection4_offset, selection4_data_length, selection4_data);
 		set_bkg_tiles(0U, 10U, 20U, 6U, selection4_tiles);
 	} else if(selection == 1U) {
@@ -243,7 +233,7 @@ void enterSelect() {
 		if(CLICKED(J_START) || CLICKED(J_A)) {
 			if(selection == 0U) {
 				gamestate = GAMESTATE_HIGHSCORE;
-			} else if(selection <= completed+1U || ISDOWN(J_SELECT)) { // TODO: Remove cheat again
+			} else if(selection <= levels_completed+1U || ISDOWN(J_SELECT)) { // TODO: Remove cheat again
 				level = selection;
 				gamestate = GAMESTATE_INGAME;
 			}
@@ -253,7 +243,7 @@ void enterSelect() {
 		}
 
 		// Draw level name
-		if(selection <= completed+1U) {
+		if(selection <= levels_completed+1U) {
 			name_index = selection;
 		} else {
 			name_index = 4U;
