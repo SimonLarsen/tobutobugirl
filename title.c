@@ -16,6 +16,22 @@ const UBYTE title_message[11] = {
 	11U, 28U, 30U
 };
 
+const UBYTE konami_code[10] = {
+	J_UP,
+	J_UP,
+	J_DOWN,
+	J_DOWN,
+	J_LEFT,
+	J_RIGHT,
+	J_LEFT,
+	J_RIGHT,
+	J_B,
+	J_A
+};
+
+UBYTE cheat_input[16];
+UBYTE cheat_offset;
+
 void initTitle() {
 	disable_interrupts();
 	DISPLAY_OFF;
@@ -42,6 +58,19 @@ void initTitle() {
 	enable_interrupts();
 }
 
+void checkCheats() {
+	UBYTE i, j;
+	// Check Konami code
+	i = 0U;
+	j = (cheat_offset + 6U) & 15U;
+	for(; i != 10U; ++i) {
+		if(konami_code[i] != cheat_input[j]) return;
+		j = (j + 1) & 15U;
+	}
+
+	levels_completed = 3U;
+}
+
 void enterTitle() {
 	UBYTE i;
 
@@ -50,11 +79,22 @@ void enterTitle() {
 	fadeFromWhite(10U);
 
 	selection = level = 1U;
+	cheat_offset = 0U;
 
 	ticks = 0U;
 	while(1) {
 		updateJoystate();
-		if(CLICKED(J_START) || CLICKED(J_A)) {
+		if(CLICKED(J_UP)) cheat_input[cheat_offset++] = J_UP;
+		else if(CLICKED(J_DOWN)) cheat_input[cheat_offset++] = J_DOWN;
+		else if(CLICKED(J_LEFT)) cheat_input[cheat_offset++] = J_LEFT;
+		else if(CLICKED(J_RIGHT)) cheat_input[cheat_offset++] = J_RIGHT;
+		else if(CLICKED(J_A)) cheat_input[cheat_offset++] = J_A;
+		else if(CLICKED(J_B)) cheat_input[cheat_offset++] = J_B;
+		cheat_offset = cheat_offset & 15U;
+
+		if(CLICKED(J_START)) {
+			checkCheats();
+
 			initrand(DIV_REG);
 			gamestate = GAMESTATE_SELECT;
 			break;

@@ -233,7 +233,7 @@ void enterSelect() {
 		if(CLICKED(J_START) || CLICKED(J_A)) {
 			if(selection == 0U) {
 				gamestate = GAMESTATE_HIGHSCORE;
-			} else if(selection <= levels_completed+1U || ISDOWN(J_SELECT)) { // TODO: Remove cheat again
+			} else if(selection <= levels_completed+1U) { // TODO: Remove cheat again
 				level = selection;
 				gamestate = GAMESTATE_INGAME;
 			}

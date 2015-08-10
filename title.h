@@ -2,6 +2,7 @@
 #define TITLE_H
 
 void initTitle();
+void checkCheats();
 void enterTitle();
 
 #endif
