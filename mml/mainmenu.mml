@@ -61,15 +61,15 @@ B v10 f+<b>b<b>a+<b>f+b8f+>c+<b8f+b8
 B bf+b8ef+be @wd1 v6 @ve7 c+4e4 @ve-1
 B @wd2 v10 f+<b>b<b>a+<b>f+b8f+>c+<b8f+b8
 B bf+b8ef+be @wd1 v6 @ve7 c+4e8 @ve0 v9 >d+e
-B f+8 v5 f+ v9 <b v5 b v9 >b v5 b v9 @v6,3,=48 f+4....^8. @v0,0
-B v5 f+64 v9 e16. v5 e32 v9 d+32. v5 d+64 v9 e16^64 v5 e64 v7 c+32 v9 d+16.. v5 d+64 v9 c+16.. v5 c+64 v9 <b16.. v5 b64 v9 >c+16.. v5 c+64 v9 <@v6,3,=36  f+1f+4 @ve-7 f+=132 @v0,0 @ve0
+B f+8 v5 f+ v9 <b v5 b v9 >b v5 b v9 @v7,1,=48 f+4....^8. @v0,0
+B v5 f+64 v9 e16. v5 e32 v9 d+32. v5 d+64 v9 e16^64 v5 e64 v7 c+32 v9 d+16.. v5 d+64 v9 c+16.. v5 c+64 v9 <b16.. v5 b64 v9 >c+16.. v5 c+64 v9 <@v7,1,=36  f+1f+4 @ve-7 f+=132 @v0,0 @ve0
 B >d+e
-B f+8 v5 f+ v9 <b v5 b v9 >b v5 b v9 @v6,3,=48 f+4....^8. @v0,0
-B v5 f+64 v9 e16. v5 e32 v9 d+32. v5 d+64 v9 e16^64 v5 e64 v7 c+32 v9 d+16.. v5 d+64 v9 c+16.. v5 c+64 v9 <b16.. v5 b64 v9 >g+16.. v5 g+64 v9 @v6,3,=36 f+1f+4f+8 @ve-7 f+2^8. @v0,0 @ve0
-B l32 @wd2 v3 <@ve6 @v6,3,=36 b8 @ve0 ^8^32 v5 @ve0 @v0,0 b v9 g+ v5 g+ v9 a+ v5 a+ v9 b v5 b v9 a+8.> @p20 c+32. v5 @p0 c+64 v9 c+8.<@p16 f+ v5 @p0 f+ l16
-B v9 @v6,3,=36 f+4.. @v0,0 v10 @ve-1 >d+d+8d+e8f+8g+4
+B f+8 v5 f+ v9 <b v5 b v9 >b v5 b v9 @v7,1,=48 f+4....^8. @v0,0
+B v5 f+64 v9 e16. v5 e32 v9 d+32. v5 d+64 v9 e16^64 v5 e64 v7 c+32 v9 d+16.. v5 d+64 v9 c+16.. v5 c+64 v9 <b16.. v5 b64 v9 >g+16.. v5 g+64 v9 @v7,1,=36 f+1f+4f+8 @ve-7 f+2^8. @v0,0 @ve0
+B l32 @wd2 v3 <@ve6 @v7,1,=36 b8 @ve0 ^8^32 v5 @ve0 @v0,0 b v9 g+ v5 g+ v9 a+ v5 a+ v9 b v5 b v9 a+8.> @p20 c+32. v5 @p0 c+64 v9 c+8.<@p16 f+ v5 @p0 f+ l16
+B v9 @v7,1,=36 f+4.. @v0,0 v10 @ve-1 >d+d+8d+e8f+8g+4
 B v5 @ve4 <e @ve0 v9 g+8 v9 >f+c+8<b8a+8.b16^64> @p10 d+48^64 @p0 v5 d+96
-B v9 @v6,3,=36 d+4.. @v0,0 v10 @ve-1 d+d+8d+e8f+8g
+B v9 @v7,1,=36 d+4.. @v0,0 v10 @ve-1 d+d+8d+e8f+8g
 B r8 v5 @ve2 <e v9 @ve0 g16. v5 g32 v9 b16. v5 b32 v9 a16. v5 a32 v9 b16. v5 b32 v9 a16. v5 a32 v9 g8^32 v5 g32
 B v9 f+8.. v5 f+32 v9 >c+8.. v5 c+32 v9 c16. v5 c32 v9 c+32 v5 c+32 v9 d+8^32 v5 d+32 @wd1 v9 <b32 v5 b32 v9 >c+32 v5 c+32
 B v9 d+16. v5 d+32 v9 <g+32 v5 g+32 v9 b16. v5 b32 v9 e32 v5 e32 v9 g+32 v5 g+32 v9 b32 v5 b32 v9 b8.. v5 b32 v9 a+8.. v5 a+32
