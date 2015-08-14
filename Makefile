@@ -22,9 +22,9 @@ ingame_backgrounds:
 .PHONY: winscreen_backgrounds
 winscreen_backgrounds:
 	imgtogb --map -O 40 --rle data/bg/win_base.png data/bg/win_base.h
-	imgtogb --map -O 55 --rle data/bg/win1.png data/bg/win1.h
-	imgtogb --map -O 55 --rle data/bg/win2.png data/bg/win2.h
-	imgtogb --map -O 55 --rle data/bg/win3.png data/bg/win3.h
+	imgtogb --map -O 54 --rle data/bg/win1.png data/bg/win1.h
+	imgtogb --map -O 54 --rle data/bg/win2.png data/bg/win2.h
+	imgtogb --map -O 54 --rle data/bg/win3.png data/bg/win3.h
 
 .PHONY: highscore_backgrounds
 highscore_backgrounds:
