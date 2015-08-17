@@ -23,7 +23,8 @@ UBYTE first_load;
 UBYTE paused, ingame_state;
 
 UBYTE scrolly, scrolled;
-UBYTE next_spawn, last_spawn_x, last_spawn_type;
+UBYTE last_spawn_x, last_spawn_type;
+UBYTE next_spawn, next_watch;
 
 UBYTE timer, progress, portal_spawned;
 UBYTE blips, blip_bar;
@@ -56,6 +57,7 @@ const UBYTE entity_sprites[] = {
 	16*4,	// E_ALIEN
 	// Powerups
 	27*4,	// E_BLIP
+	22*4,	// E_WATCH
 	// Special
 	20*4,	// E_PORTAL
 	28*4,	// E_CLOUD
@@ -151,11 +153,12 @@ void initGame() {
 	entity_frame = 0U;
 	ticks = 0U;
 	next_spawn = 0U;
+	next_watch = 0U;
 	progress = 0U;
 	portal_spawned = 0U;
 
 	timer = 0U;
-	remaining_time = 64U;
+	remaining_time = 24U;
 	elapsed_time = 0U;
 
 	move_bkg(0U, 112U);
@@ -245,6 +248,11 @@ void updatePlayer() {
 				entity_type[i] = E_NONE;
 				blips += 16U;
 				if(blips > 128U) blips = 128U;
+			} else if(type == E_WATCH) {
+				entity_type[i] = E_NONE;
+				remaining_time += 8U;
+				if(remaining_time > 32U) remaining_time = 32;
+				updateHUDTime();
 			} else if(type == E_PORTAL
 			&& player_y > entity_y[i]-4U && player_y < entity_y[i]+4U
 			&& player_x > entity_x[i]-4U && player_x < entity_x[i]+4U) {
@@ -384,7 +392,7 @@ void updateHUD() {
 void updateHUDTime() {
 	UBYTE index;
 
-	index = (remaining_time+4U) >> 3;
+	index = remaining_time >> 2;
 	index = index << 2;
 
 	set_win_tiles(0U, 1U, 2U, 2U, &clock_tiles[index]);
@@ -596,8 +604,7 @@ void updateSpawns() {
 	if(progress < 111U) {
 		next_spawn -= 36U;
 
-		last_spawn_x = (last_spawn_x + 32U + ((UBYTE)rand() & 63U)) & 127U;
-		x = last_spawn_x + 24U;
+		x = ((last_spawn_x + 32U + ((UBYTE)rand() & 63U)) & 127U) + 24U;
 
 		step = progress / 39U; // TODO: Optimize?
 		dice = (UBYTE)rand() & 7U;
@@ -638,10 +645,10 @@ void updateSpawns() {
 					dice = 8U;
 					break;
 				case E_BIRD:
-					if(x < 80U) {
-						spawnEntity(E_BIRD, x, 1U, RIGHT);
-					} else {
+					if(x < last_spawn_x) {
 						spawnEntity(E_BIRD, x, 1U, LEFT);
+					} else {
+						spawnEntity(E_BIRD, x, 1U, RIGHT);
 					}
 					last_spawn_type = E_BIRD;
 					dice = 8U;
@@ -652,6 +659,15 @@ void updateSpawns() {
 					dice = 8U;
 					break;
 			}
+		}
+
+		last_spawn_x = x - 24U;
+
+		next_watch++;
+		if(next_watch == 14U) {
+			next_watch = 0U;
+			x = ((x + 32U + ((UBYTE)rand() & 63U)) & 127U) + 24U;
+			spawnEntity(E_WATCH, x, 1U, NONE);
 		}
 	}
 	else if(progress == 112U && !portal_spawned) {
