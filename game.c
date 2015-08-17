@@ -221,7 +221,7 @@ void updatePlayer() {
 	// Check entity collisions
 	for(i = 0U; i != MAX_ENTITIES; ++i) {
 		if(entity_type[i] != E_NONE && entity_type[i] <= LAST_COLLIDABLE
-		&& player_y > entity_y[i]-12U && player_y < entity_y[i]+11U
+		&& player_y < entity_y[i]+11U && player_y > entity_y[i]-12U
 		&& player_x > entity_x[i]-12U && player_x < entity_x[i]+12U) {
 			type = entity_type[i];
 			if(type <= E_FIREBALL) {
