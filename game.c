@@ -229,10 +229,10 @@ void updatePlayer() {
 			} else if(type <= LAST_ENEMY) {
 				if(player_ydir == DOWN && player_y < entity_y[i]-2U) {
 					if(dashing) {
-						spawnEntity(E_BLIP, player_x-20U, player_y-8U, 0U);
-						spawnEntity(E_BLIP, player_x+20U, player_y-8U, 0U);
 						entity_type[i] = E_NONE;
 						spawnEntity(E_CLOUD, player_x, player_y+5U, 0U);
+						blips += 32U;
+						if(blips > 128U) blips = 128U;
 						kills++;
 					}
 					else if(type == E_GHOST) {
@@ -244,10 +244,6 @@ void updatePlayer() {
 				} else {
 					killPlayer();
 				}
-			} else if(type == E_BLIP) {
-				entity_type[i] = E_NONE;
-				blips += 16U;
-				if(blips > 128U) blips = 128U;
 			} else if(type == E_WATCH) {
 				entity_type[i] = E_NONE;
 				remaining_time += 8U;
@@ -422,28 +418,6 @@ void updateEntities() {
 		switch(type) {
 			case E_NONE: continue;
 
-			case E_BLIP:
-				if(player_x < entity_x[i]) xdist = entity_x[i] - player_x;
-				else xdist = player_x - entity_x[i];
-				if(player_y < entity_y[i]) ydist = entity_y[i] - player_y;
-				else ydist = player_y - entity_y[i];
-
-				if(xdist < 24U && ydist < 24U) {
-					entity_dir[i] = RIGHT;
-				}
-
-				if(entity_dir[i] == RIGHT) {
-					if(xdist > 3U) {
-						if(player_x < entity_x[i]) entity_x[i] -= 2U;
-						else entity_x[i] += 2U;
-					}
-					if(ydist > 3U) {
-						if(player_y < entity_y[i]) entity_y[i] -= 2U;
-						else entity_y[i] += 2U;
-					}
-				}
-				break;
-
 			case E_BIRD:
 			case E_FIREBALL:
 				if(ticks & 1U && ingame_state == INGAME_ACTIVE) {
@@ -523,11 +497,6 @@ void updateEntities() {
 		frame = entity_sprites[type];
 
 		switch(type) {
-			case E_BLIP:
-				frame += (entity_frame & 1U) << 1U;
-				setSprite(entity_x[i]-12U, entity_y[i], frame, OBJ_PAL0);
-				break;
-
 			case E_CLOUD:
 				frame += entity_dir[i] << 2U;
 				setSprite(entity_x[i]-16U, entity_y[i], frame, OBJ_PAL0);
