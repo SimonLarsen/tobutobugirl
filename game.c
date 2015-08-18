@@ -57,7 +57,7 @@ const UBYTE entity_sprites[] = {
 	16*4,	// E_ALIEN
 	// Powerups
 	27*4,	// E_BLIP
-	22*4,	// E_WATCH
+	21*4,	// E_WATCH
 	// Special
 	20*4,	// E_PORTAL
 	28*4,	// E_CLOUD
@@ -449,11 +449,11 @@ void updateEntities() {
 				if(ticks & 1U && ingame_state == INGAME_ACTIVE) {
 					if(entity_dir[i] == RIGHT) {
 						entity_x[i]++;
-						if(entity_x[i] == 152U) entity_dir[i] = LEFT;
+						if(entity_x[i] >= 152U) entity_dir[i] = LEFT;
 					}
 					else {
 						entity_x[i]--;
-						if(entity_x[i] == 24U) entity_dir[i] = RIGHT;
+						if(entity_x[i] <= 24U) entity_dir[i] = RIGHT;
 					}
 				}
 				break;
