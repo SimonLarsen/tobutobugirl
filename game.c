@@ -221,13 +221,13 @@ void updatePlayer() {
 	// Check entity collisions
 	for(i = 0U; i != MAX_ENTITIES; ++i) {
 		if(entity_type[i] != E_NONE && entity_type[i] <= LAST_COLLIDABLE
-		&& player_y < entity_y[i]+11U && player_y > entity_y[i]-12U
+		&& player_y < entity_y[i]+10U && player_y > entity_y[i]-12U
 		&& player_x > entity_x[i]-12U && player_x < entity_x[i]+12U) {
 			type = entity_type[i];
 			if(type <= E_FIREBALL) {
 				killPlayer();
 			} else if(type <= LAST_ENEMY) {
-				if(player_ydir == DOWN && player_y < entity_y[i]-2U) {
+				if(player_ydir == DOWN && player_y < entity_y[i]) {
 					if(dashing) {
 						entity_type[i] = E_NONE;
 						spawnEntity(E_CLOUD, player_x, player_y+5U, 0U);
