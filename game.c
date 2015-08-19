@@ -802,7 +802,7 @@ ingame_start:
 
 		wait_vbl_done();
 	}
-	mus_setPaused(1U);
+	stopMusic();
 
 	if(ingame_state == INGAME_DEAD) {
 		deathAnimation();

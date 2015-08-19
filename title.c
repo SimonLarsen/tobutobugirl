@@ -116,4 +116,6 @@ void enterTitle() {
 
 	clearRemainingSprites();
 	fadeToWhite(10U);
+
+	stopMusic();
 }

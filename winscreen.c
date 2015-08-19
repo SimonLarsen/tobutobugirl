@@ -139,4 +139,6 @@ void enterWinscreen() {
 	}
 
 	fadeToWhite(10U);
+
+	stopMusic();
 }

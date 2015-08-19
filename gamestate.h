@@ -10,6 +10,7 @@ void set_bkg_tiles_rle(UBYTE x, UBYTE y, UBYTE width, UBYTE height, UBYTE *tiles
 void setGameBank(UBYTE i);
 void setMusicBank(UBYTE i);
 void playMusic(UBYTE *data);
+void stopMusic();
 
 extern UBYTE ticks;
 extern UBYTE gamestate, level, selection;

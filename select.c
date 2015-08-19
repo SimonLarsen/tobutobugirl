@@ -263,4 +263,6 @@ void enterSelect() {
 
 	clearRemainingSprites(); // Remove all sprites
 	fadeToWhite(10U);
+
+	stopMusic();
 }

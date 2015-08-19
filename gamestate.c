@@ -36,6 +36,10 @@ void playMusic(UBYTE *data) {
 	SWITCH_ROM_MBC1(game_bank);
 }
 
+void stopMusic() {
+	mus_setPaused(1U);
+}
+
 void clearSprites() {
 	UBYTE i;
 	for(i = 0U; i < 40U; ++i) move_sprite(i, 0U, 0U);

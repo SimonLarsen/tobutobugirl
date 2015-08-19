@@ -234,4 +234,6 @@ void enterHighscore() {
 
 	clearRemainingSprites();
 	fadeToWhite(10U);
+
+	stopMusic();
 }
