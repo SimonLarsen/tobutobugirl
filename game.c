@@ -23,7 +23,7 @@ UBYTE first_load;
 UBYTE paused, ingame_state;
 
 UBYTE scrolly, scrolled;
-UBYTE last_spawn_x, last_spawn_type;
+UBYTE last_spawn_x, last_spawn_type, last_spawn_index;
 UBYTE next_spawn, next_watch;
 
 UBYTE timer, progress, portal_spawned;
@@ -325,7 +325,7 @@ void updatePlayer() {
 	else if(player_x > 153U) player_x = 153U;
 
 	// Check bounds
-	if(player_y > SCREENHEIGHT+4U) {
+	if(player_y > SCREENHEIGHT+5U) {
 		player_y = SCREENHEIGHT;
 		killPlayer();
 	}
@@ -527,17 +527,19 @@ void updateEntities() {
 	}
 }
 
-void spawnEntity(UBYTE type, UBYTE x, UBYTE y, UBYTE dir) {
+UBYTE spawnEntity(UBYTE type, UBYTE x, UBYTE y, UBYTE dir) {
 	UBYTE i;
 	for(i = 0U; i != MAX_ENTITIES; ++i) {
 		if(entity_type[i] == E_NONE) break;
 	}
-	if(i == MAX_ENTITIES) return;
+	if(i == MAX_ENTITIES) return 255U;
 
 	entity_x[i] = x;
 	entity_y[i] = y;
 	entity_type[i] = type;
 	entity_dir[i] = dir;
+
+	return i;
 }
 
 void clearEntities() {
@@ -559,7 +561,7 @@ void initSpawns() {
 		last_spawn_x = (last_spawn_x + 32U + ((UBYTE)rand() & 63U)) & 127U;
 		x = last_spawn_x + 24U;
 		y -= 36U;
-		spawnEntity(E_BAT, x, y, RIGHT);
+		last_spawn_index = spawnEntity(E_BAT, x, y, RIGHT);
 	}
 	last_spawn_type = E_BAT;
 }
@@ -583,7 +585,7 @@ void updateSpawns() {
 			switch(type) {
 				case E_FIREBALL:
 					if(last_spawn_type != E_SPIKES && last_spawn_type != E_FIREBALL) {
-						spawnEntity(E_FIREBALL, x, 1U, NONE);
+						last_spawn_index = spawnEntity(E_FIREBALL, x, 1U, NONE);
 						last_spawn_type = E_FIREBALL;
 						dice = 8U;
 						break;
@@ -592,7 +594,7 @@ void updateSpawns() {
 					break;
 				case E_SPIKES:
 					if(last_spawn_type != E_SPIKES && last_spawn_type != E_FIREBALL) {
-						spawnEntity(E_SPIKES, x, 1U, NONE);
+						last_spawn_index = spawnEntity(E_SPIKES, x, 1U, NONE);
 						last_spawn_type = E_SPIKES;
 						dice = 8U;
 						break;
@@ -602,28 +604,28 @@ void updateSpawns() {
 				case E_GHOST:
 					if(x < 40U) x = 40U;
 					if(x > 136U) x = 136U;
-					spawnEntity(E_GHOST, x, 1U, NONE);
+					last_spawn_index = spawnEntity(E_GHOST, x, 1U, NONE);
 					last_spawn_type = E_GHOST;
 					dice = 8U;
 					break;
 				case E_ALIEN:
 					if(x < 40U) x = 40U;
 					if(x > 136U) x = 136U;
-					spawnEntity(E_ALIEN, x, 1U, LEFT);
+					last_spawn_index = spawnEntity(E_ALIEN, x, 1U, LEFT);
 					last_spawn_type = E_ALIEN;
 					dice = 8U;
 					break;
 				case E_BIRD:
 					if(x < last_spawn_x) {
-						spawnEntity(E_BIRD, x, 1U, LEFT);
+						last_spawn_index = spawnEntity(E_BIRD, x, 1U, LEFT);
 					} else {
-						spawnEntity(E_BIRD, x, 1U, RIGHT);
+						last_spawn_index = spawnEntity(E_BIRD, x, 1U, RIGHT);
 					}
 					last_spawn_type = E_BIRD;
 					dice = 8U;
 					break;
 				case E_BAT:
-					spawnEntity(E_BAT, x, 1U, NONE);
+					last_spawn_index = spawnEntity(E_BAT, x, 1U, NONE);
 					last_spawn_type = E_BAT;
 					dice = 8U;
 					break;
@@ -783,6 +785,13 @@ ingame_start:
 				}
 			}
 
+			if(last_spawn_index != 255U) {
+				if(entity_type[last_spawn_index] != E_NONE) {
+					last_spawn_x = entity_x[last_spawn_index]-24U;
+				} else {
+					last_spawn_index = 255U;
+				}
+			}
 			updatePlayer();
 			updateHUD();
 
