@@ -291,7 +291,9 @@ void updatePlayer() {
 		}
 
 		if(!ISDOWN(KEY_DASH)) {
-			dashing = 0U;
+			if(dashing >= DASH_TIME-SHORT_DASH_TIME) {
+				dashing -= DASH_TIME-SHORT_DASH_TIME;
+			}
 		}
 	}
 

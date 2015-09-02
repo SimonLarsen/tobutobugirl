@@ -27,6 +27,7 @@ void addScore();
 #define MOVE_SPEED			2U
 #define DASH_SPEED			4U
 #define DASH_TIME			14U
+#define SHORT_DASH_TIME		9U
 #define JUMP_SPEED			29U
 #define SHIELD_JUMP_SPEED	33U
 #define DJUMP_SPEED			26U
