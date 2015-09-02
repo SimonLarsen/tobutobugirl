@@ -216,7 +216,8 @@ void updateInput() {
 }
 
 void updatePlayer() {
-	UBYTE i, frame, palette, type;
+	UBYTE i, diff;
+	UBYTE frame, palette, type;
 
 	// Check entity collisions
 	for(i = 0U; i != MAX_ENTITIES; ++i) {
@@ -224,10 +225,12 @@ void updatePlayer() {
 		&& player_y < entity_y[i]+10U && player_y > entity_y[i]-12U
 		&& player_x > entity_x[i]-12U && player_x < entity_x[i]+12U) {
 			type = entity_type[i];
+			// Spikes
 			if(type <= E_FIREBALL) {
 				killPlayer();
+			// Enemies
 			} else if(type <= LAST_ENEMY) {
-				if(player_ydir == DOWN && player_y < entity_y[i]) {
+				if(player_ydir == DOWN && player_y < entity_y[i]+2U) {
 					if(dashing && dash_ydir == DOWN) {
 						entity_type[i] = E_NONE;
 						spawnEntity(E_CLOUD, player_x, player_y+5U, 0U);
@@ -242,13 +245,21 @@ void updatePlayer() {
 					bounce();
 					player_yspeed = JUMP_SPEED;
 				} else {
-					killPlayer();
+					diff = 0U;
+					if(player_x < entity_x[i]) diff += entity_x[i] - player_x;
+					else diff += player_x - entity_x[i];
+					if(player_y < entity_y[i]) diff += entity_y[i] - player_y;
+					else diff += player_y - entity_y[i];
+
+					if(diff < 12U) killPlayer();
 				}
+			// Watch pickup
 			} else if(type == E_WATCH) {
 				entity_type[i] = E_NONE;
 				remaining_time += 8U;
 				if(remaining_time > 32U) remaining_time = 32;
 				updateHUDTime();
+			// End level portal
 			} else if(type == E_PORTAL
 			&& player_y > entity_y[i]-4U && player_y < entity_y[i]+4U
 			&& player_x > entity_x[i]-4U && player_x < entity_x[i]+4U) {
