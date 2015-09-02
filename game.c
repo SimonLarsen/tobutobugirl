@@ -228,7 +228,7 @@ void updatePlayer() {
 				killPlayer();
 			} else if(type <= LAST_ENEMY) {
 				if(player_ydir == DOWN && player_y < entity_y[i]) {
-					if(dashing) {
+					if(dashing && dash_ydir == DOWN) {
 						entity_type[i] = E_NONE;
 						spawnEntity(E_CLOUD, player_x, player_y+5U, 0U);
 						blips += 32U;
