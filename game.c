@@ -256,7 +256,7 @@ void updatePlayer() {
 			// Watch pickup
 			} else if(type == E_WATCH) {
 				entity_type[i] = E_NONE;
-				remaining_time += 8U;
+				remaining_time += 12U;
 				if(remaining_time > 32U) remaining_time = 32;
 				updateHUDTime();
 			// End level portal
