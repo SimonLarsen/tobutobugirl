@@ -192,8 +192,7 @@ void updateInput() {
 		player_x -= MOVE_SPEED;
 		player_xdir = LEFT;
 	}
-
-	if(ISDOWN(J_RIGHT) && !dashing) {
+	else if(ISDOWN(J_RIGHT) && !dashing) {
 		player_x += MOVE_SPEED;
 		player_xdir = RIGHT;
 	}
@@ -471,14 +470,14 @@ void updateEntities() {
 				else ydist = player_y - entity_y[i];
 
 				if(xdist < 38U && ydist < 38U) {
-					if(xdist > 2U) {
-						if(player_x < entity_x[i]) player_x += 2U;
-						else player_x -= 2U;
+					if(xdist > 3U) {
+						if(player_x < entity_x[i]) player_x += 3U;
+						else player_x -= 3U;
 					}
 
-					if(ydist > 2U) {
-						if(player_y < entity_y[i]) player_y += 2U;
-						else player_y -= 2U;
+					if(ydist > 3U) {
+						if(player_y < entity_y[i]) player_y += 3U;
+						else player_y -= 3U;
 					}
 
 					player_yspeed = 1U;
