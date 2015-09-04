@@ -242,7 +242,11 @@ void updatePlayer() {
 						entity_type[i] = E_NONE;
 						spawnEntity(E_CLOUD, player_x, player_y+5U, 0U);
 					}
-					bounce();
+					// Bounce player
+					player_ydir = UP;
+					player_bounce = 16U;
+					dashes = 3U;
+					dashing = 0;
 					player_yspeed = JUMP_SPEED;
 				} else {
 					diff = 0U;
@@ -405,13 +409,6 @@ void updateHUDTime() {
 	index = index << 2;
 
 	set_win_tiles(0U, 1U, 2U, 2U, &clock_tiles[index]);
-}
-
-void bounce() {
-	player_ydir = UP;
-	player_bounce = 16U;
-	dashes = 3U;
-	dashing = 0;
 }
 
 void killPlayer() {

@@ -9,7 +9,6 @@ void updateHUDTime();
 void killPlayer();
 void updateEntities();
 UBYTE spawnEntity(UBYTE type, UBYTE x, UBYTE y, UBYTE dir);
-void bounce();
 void clearEntities();
 void initSpawns();
 void updateSpawns();
