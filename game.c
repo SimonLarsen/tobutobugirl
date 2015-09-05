@@ -794,6 +794,8 @@ ingame_start:
 				}
 			}
 
+			// Update last spawn position with last spawned
+			// enemy if it still exists
 			if(last_spawn_index != 255U) {
 				if(entity_type[last_spawn_index] != E_NONE) {
 					last_spawn_x = entity_x[last_spawn_index]-24U;
