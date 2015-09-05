@@ -646,7 +646,7 @@ void updateSpawns() {
 		next_watch++;
 		if(next_watch == 14U) {
 			next_watch = 0U;
-			x = ((x + 32U + ((UBYTE)rand() & 63U)) & 127U) + 24U;
+			x = ((last_spawn_x + 32U + ((UBYTE)rand() & 63U)) & 127U) + 24U;
 			spawnEntity(E_WATCH, x, 1U, NONE);
 		}
 	}
