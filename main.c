@@ -61,7 +61,7 @@ void main() {
 	joystate = oldjoystate = 0U;
 	level = 1U;
 	
-	gamestate = GAMESTATE_TITLE;
+	gamestate = GAMESTATE_INTRO;
 
 	SWITCH_16_8_MODE_MBC1;
 	add_TIM(updateMusic);
@@ -74,7 +74,7 @@ void main() {
 				enterIntro();
 				break;
 			case GAMESTATE_TITLE:
-				setGameBank(2);
+				setGameBank(3);
 				enterTitle();
 				break;
 			case GAMESTATE_SELECT:
