@@ -24,11 +24,12 @@ extern UBYTE levels_completed;
 #define RELEASED(x) (!(joystate & x) && (joystate & x) != (oldjoystate & x))
 #define ISDOWN(x) (joystate & (x))
 
-#define GAMESTATE_TITLE		0U
-#define GAMESTATE_SELECT	1U
-#define GAMESTATE_INGAME	2U
-#define GAMESTATE_WINSCREEN	3U
-#define GAMESTATE_HIGHSCORE	4U
+#define GAMESTATE_INTRO     0U
+#define GAMESTATE_TITLE     1U
+#define GAMESTATE_SELECT    2U
+#define GAMESTATE_INGAME    3U
+#define GAMESTATE_WINSCREEN 4U
+#define GAMESTATE_HIGHSCORE 5U
 
 extern const UBYTE level_names[4][6];
 

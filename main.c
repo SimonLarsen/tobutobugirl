@@ -1,7 +1,8 @@
 #include <gb/gb.h>
-
 #include "gamestate.h"
 #include "main.h"
+
+#include "intro.h"
 #include "title.h"
 #include "select.h"
 #include "game.h"
@@ -9,6 +10,7 @@
 #include "highscore.h"
 #include "ram.h"
 #include "music.h"
+#include "sound.h"
 
 const UBYTE RAM_SIG[8] = {'T','O','B','U','T','O','B','U'};
 
@@ -51,6 +53,7 @@ void updateMusic() {
 
 void main() {
 	initRAM();
+	snd_init();
 
 	last_highscore_level = 0U;
 	last_highscore_slot = 5U;
@@ -66,6 +69,10 @@ void main() {
 
 	while(1U) {
 		switch(gamestate) {
+			case GAMESTATE_INTRO:
+				setGameBank(2);
+				enterIntro();
+				break;
 			case GAMESTATE_TITLE:
 				setGameBank(2);
 				enterTitle();

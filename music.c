@@ -9,6 +9,8 @@
 
 UBYTE mus_paused;
 UBYTE *mus_song;
+
+UBYTE mus_enabled1, mus_enabled4;
 UWORD mus_freq1, mus_freq2, mus_freq3;
 UBYTE mus_freq4;
 UBYTE *mus_data1, *mus_data2, *mus_data3, *mus_data4;
@@ -17,6 +19,7 @@ UBYTE mus_octave1, mus_octave2, mus_octave3, mus_octave4;
 UBYTE mus_length1, mus_length2, mus_length3, mus_length4;
 UBYTE mus_volume1, mus_volume2, mus_volume3, mus_volume4;
 UBYTE mus_env1, mus_env2, mus_env4;
+UBYTE mus_duty1, mus_duty2;
 UBYTE mus_wait1, mus_wait2, mus_wait3, mus_wait4;
 UWORD mus_target1, mus_target2, mus_target4;
 UBYTE mus_slide1, mus_slide2, mus_slide4;
@@ -24,6 +27,7 @@ UBYTE mus_vib_speed1, mus_vib_speed2;
 UBYTE *mus_vib_table1, *mus_vib_table2;
 UBYTE mus_vib_pos1, mus_vib_pos2;
 UBYTE mus_vib_delay1, mus_vib_delay2;
+
 UBYTE *mus_rep1[MAX_REPEATS], *mus_rep2[MAX_REPEATS], *mus_rep3[MAX_REPEATS], *mus_rep4[MAX_REPEATS];
 UBYTE mus_repeats1[MAX_REPEATS], mus_repeats2[MAX_REPEATS], mus_repeats3[MAX_REPEATS], mus_repeats4[MAX_REPEATS];
 UBYTE mus_rep_depth1, mus_rep_depth2, mus_rep_depth3, mus_rep_depth4;
@@ -88,6 +92,7 @@ void mus_init(UBYTE *song_data) {
 	mus_data3 = mus_loop3 = mus_song + ((UWORD*)mus_song)[CHN3_OFFSET];
 	mus_data4 = mus_loop4 = mus_song + ((UWORD*)mus_song)[CHN4_OFFSET];
 
+	mus_enabled1 = mus_enabled4 = 0x80U;
 	mus_wait1 = mus_wait2 = mus_wait3 = mus_wait4 = 0U;
 	mus_octave1 = mus_octave2 = mus_octave3 = mus_octave4 = 4U;
 	mus_length1 = mus_length2 = mus_length3 = mus_length4 = 48U;
@@ -119,6 +124,26 @@ void mus_togglePaused() {
 	mus_setPaused(mus_paused ^ 1U);
 }
 
+void mus_disable1() {
+	mus_enabled1 = 0U;
+}
+
+void mus_disable4() {
+	mus_enabled4 = 0U;
+}
+
+void mus_restore1() {
+	mus_enabled1 = 0x80U;
+	NR10_REG = 0U;
+	NR11_REG = mus_duty1 << 5;
+	NR12_REG = (mus_volume1 << 4) | mus_env1;
+}
+
+void mus_restore4() {
+	mus_enabled4 = 0x80U;
+	NR42_REG = (mus_volume4 << 4) | mus_env4;
+}
+
 void mus_update() {
 	if(mus_paused) return;
 
@@ -145,8 +170,10 @@ void mus_update1() {
 				mus_freq1 = mus_target1;
 			}
 		}
-		NR13_REG = (UBYTE)mus_freq1;
-		NR14_REG = mus_freq1 >> 8;
+		if(mus_enabled1) {
+			NR13_REG = (UBYTE)mus_freq1;
+			NR14_REG = mus_freq1 >> 8;
+		}
 	}
 
 	if(mus_vib_delay1) {
@@ -156,8 +183,10 @@ void mus_update1() {
 		mus_vib_pos1 = (mus_vib_pos1 + mus_vib_speed1) & 63U;
 		vib_freq = mus_freq1 - *mus_vib_table1 + mus_vib_table1[mus_vib_pos1];
 
-		NR13_REG = (UBYTE)vib_freq;
-		NR14_REG = vib_freq >> 8;
+		if(mus_enabled1) {
+			NR13_REG = (UBYTE)vib_freq;
+			NR14_REG = vib_freq >> 8;
+		}
 	}
 
 	if(mus_wait1) {
@@ -179,17 +208,21 @@ void mus_update1() {
 				return;
 			} else if(note == T_REST) {
 				mus_freq1 = 0U;
-				NR12_REG = 0U;
+				if(mus_enabled1) NR12_REG = 0U;
 			} else {
 				if(mus_slide1) {
 					mus_target1 = freq[((mus_octave1-MUS_FIRST_OCTAVE) << 4) + note];
 				} else {
 					mus_freq1 = freq[((mus_octave1-MUS_FIRST_OCTAVE) << 4) + note];
 				}
-				NR12_REG = (mus_volume1 << 4) | mus_env1;
+				if(mus_enabled1) {
+					NR12_REG = (mus_volume1 << 4) | mus_env1;
+				}
 			}
-			NR13_REG = (UBYTE)mus_freq1;
-			NR14_REG = 0x80U | (mus_freq1 >> 8);
+			if(mus_enabled1) {
+				NR13_REG = (UBYTE)mus_freq1;
+				NR14_REG = mus_enabled1 | (mus_freq1 >> 8);
+			}
 			return;
 		}
 		switch(note) {
@@ -207,19 +240,19 @@ void mus_update1() {
 				break;
 			case T_VOL:
 				mus_volume1 = *mus_data1++;
-				NR12_REG = (mus_volume1 << 4) | mus_env1;
+				if(mus_enabled1) NR12_REG = (mus_volume1 << 4) | mus_env1;
 				break;
 			case T_ENV:
 				mus_env1 = *mus_data1++;
-				NR12_REG = (mus_volume1 << 4) | mus_env1;
+				if(mus_enabled1) NR12_REG = (mus_volume1 << 4) | mus_env1;
 				break;
 			case T_WAVEDUTY:
-				note = *mus_data1++;
-				NR11_REG = (note << 5);
+				mus_duty1 = *mus_data1++;
+				if(mus_enabled1) NR11_REG = mus_duty1 << 5;
 				break;
 			case T_PAN:
 				note = *mus_data1++;
-				NR51_REG = (NR51_REG & 0xEEU) | note; // 11101110
+				if(mus_enabled1) NR51_REG = (NR51_REG & 0xEEU) | note; // 11101110
 				break;
 			case T_PORTAMENTO:
 				mus_slide1 = *mus_data1++;
@@ -366,8 +399,8 @@ void mus_update2() {
 				NR22_REG = (mus_volume2 << 4) | mus_env2;
 				break;
 			case T_WAVEDUTY:
-				note = *mus_data2++;
-				NR21_REG = note << 5;
+				mus_duty2 = *mus_data2++;
+				NR21_REG = mus_duty2 << 5;
 				break;
 			case T_PAN:
 				note = *mus_data2++;
@@ -572,7 +605,7 @@ void mus_update4() {
 				NR42_REG = (mus_volume4 << 4) | mus_env4;
 			}
 			NR43_REG = mus_freq4;
-			NR44_REG = 0x80U;
+			NR44_REG = mus_enabled4;
 			return;
 		}
 		switch(note) {

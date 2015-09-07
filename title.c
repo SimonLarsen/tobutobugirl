@@ -82,7 +82,7 @@ void enterTitle() {
 	cheat_offset = 0U;
 
 	ticks = 0U;
-	while(1) {
+	while(1U) {
 		updateJoystate();
 		if(CLICKED(J_UP)) cheat_input[cheat_offset++] = J_UP;
 		else if(CLICKED(J_DOWN)) cheat_input[cheat_offset++] = J_DOWN;

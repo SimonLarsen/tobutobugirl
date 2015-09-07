@@ -65,7 +65,11 @@ tobu.gb:
 	$(CC) $(CFLAGS) -c circles.c
 	$(CC) $(CFLAGS) -c characters.c
 	$(CC) $(CFLAGS) -c music.c
+	$(CC) $(CFLAGS) -c sound.c
+	$(CC) $(CFLAGS) -c freq.c
+	$(CC) $(CFLAGS) -c noisefreq.c
 	$(CC) $(CFLAGS) -c game.c -Wf-bo1
+	$(CC) $(CFLAGS) -c intro.c -Wf-bo2
 	$(CC) $(CFLAGS) -c title.c -Wf-bo2
 	$(CC) $(CFLAGS) -c select.c -Wf-bo2
 	$(CC) $(CFLAGS) -c highscore.c -Wf-bo2

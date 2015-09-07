@@ -5,6 +5,7 @@
 #include "gamestate.h"
 #include "cos.h"
 #include "ram.h"
+#include "sound.h"
 
 #include "data/sprite/characters.h"
 #include "data/sprite/arrow.h"
@@ -65,6 +66,7 @@ void setTile(UBYTE x, UBYTE y, UBYTE *tile) {
 		selectScrollCircles();
 		selectUpdateSprites();
 		clearRemainingSprites();
+		snd_update();
 	}
 	delay(3U);
 }

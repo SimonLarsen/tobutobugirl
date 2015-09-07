@@ -11,6 +11,10 @@
 void mus_init(UBYTE *song);
 void mus_setPaused(UBYTE p);
 void mus_togglePaused();
+void mus_disable1();
+void mus_disable4();
+void mus_restore1();
+void mus_restore4();
 void mus_update();
 void mus_update1();
 void mus_update2();
