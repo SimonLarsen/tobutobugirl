@@ -1,7 +1,6 @@
 @wave0 = {0 0 1 1 2 9 9 10 11 12 13 13 14 14 14 15 13 12 11 11 10 10 10 10 10 10 11 11 12 12 12 15 }
 @wave1 = {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 15 15 15 15 15 15 15 15 15 15 15 15 15 15 15 15 }
 
-
 A t112 r1 L @ve-2
 A @wd2
 A l16 r
@@ -24,12 +23,19 @@ A @wd0 @ve-3 d+f+>d+ @wd1 @ve-5 <v8 f+32 v3 f+32 v8 >d+32 v3 d+32< v8 a+32 v3 a+
 
 A @wd1 v7 @ve0 l32 <<
 
-A b v2 b v7 >b v2 b v7 >a16 v2 a16 v7 d16 v2 d16 v7 <b v2 b v7 >c+16 v2 c+16 v7 <b v2 b v7 >d v2 d v7 e16 v2 e16 v7 <d v2 d v7 g v2 g v7 >d v2 d
-A v7 c+16 v2 c+16 v7 <a v2 a v7 >f+16 v2 f+16 v7 e v2 e v7 c+ v2 c+ v7 d+16 v2 d+16 v7 <g+ v2 g+ v7 >d+ v2 d+ v7 e16 v2 e16 v7 e v2 e v7 f+ v2 f+ v7 <b v2 b
-A v7 e v2 e v7 b v2 b v7 >e v2 e v7 g+16 v2 g+16 v7 e v2 e v7 <b v2 b v7 g+ v2 g+ v7 c+ v2 c+ v7 >g+16 v2 g+16 v7 f+16 v2 f+16 v7 e v2 e v7 <f+ v2 f+ v7 b v2 b
-A v8 >b v3 b v8 b16 v3 b16 v8 a+ v3 a+ v8 a+ v3 a+ v8 a+ v3 a+ v8 b8 v3 b16 v8 a+ v3 a+ v8 b v3 b v8 b v3 b v8 >c+8. v3 c+16
+; A b v2 b v7 >b v2 b v7 >a16 v2 a16 v7 d16 v2 d16 v7 <b v2 b v7 >c+16 v2 c+16 v7 <b v2 b v7 >d v2 d v7 e16 v2 e16 v7 <d v2 d v7 g v2 g v7 >d v2 d
+; A v7 c+16 v2 c+16 v7 <a v2 a v7 >f+16 v2 f+16 v7 e v2 e v7 c+ v2 c+ v7 d+16 v2 d+16 v7 <g+ v2 g+ v7 >d+ v2 d+ v7 e16 v2 e16 v7 e v2 e v7 f+ v2 f+ v7 <b v2 b
+; A v7 e v2 e v7 b v2 b v7 >e v2 e v7 g+16 v2 g+16 v7 e v2 e v7 <b v2 b v7 g+ v2 g+ v7 c+ v2 c+ v7 >g+16 v2 g+16 v7 f+16 v2 f+16 v7 e v2 e v7 <f+ v2 f+ v7 b v2 b
+; A v8 >b v3 b v8 b16 v3 b16 v8 a+ v3 a+ v8 a+ v3 a+ v8 a+ v3 a+ v8 b8 v3 b16 v8 a+ v3 a+ v8 b v3 b v8 b v3 b v8 >c+8. v3 c+16
+
+A o3 v7 b v2 b v7 g v2 g v7 b v2 b v7 >e v2 e v7 <b v2 b v7 g v2 g v7 b v2 b v7 >e v2 e v7 c+ v2 c+ v7 <a v2 a v7 >c+ v2 c+ v7 g v2 g v7 c+ v2 c+ v7 <a v2 a v7 >c+ v2 c+ v7 g v2 g
+A v7 c+ v2 c+ v7 <d+ v2 d+ v7 f+ v2 f+ v7 >d+ v2 d+ v7 <a+ v2 a+ v7 f+ v2 f+ v7 a+ v2 a+ v7 >d+16 v2 d+16 v7 <d+ v2 d+ v7 g+ v2 g+ v7 >d+ v2 d+ v7 g+ v2 g+ v7 d+ v2 d+ v7 c v2 c v7 <g+ v2 g+
+A v7 e v2 e v7 b v2 b v7 >e v2 e v7 g+ v2 g+ v7 b v2 b v7 >d+ v2 d+ v7 <e v2 e v7 g+ v2 g+ v7 <c+ v2 c+ v7 >c+ v2 c+ v7 g+ v2 g+ v7 c+ v2 c+ v7 f+ v2 f+ v7 >c+ v2 c+ v7 <c+ v2 c+ v7 f+ v2 f+
+A v7 e v2 e v7 e16 v2 e16 v7 c+ v2 c+ v7 c+ v2 c+ v7 c+ v2 c+ v7 d+8 v2 d+16 v7 c+ v2 c+ v7 d+ v2 d+ v7 d+ v2 d+ v7 e8. v2 e16
+
+
 A r1
-A r2r8. @wd2 v9 @ve-1 g16<<e16>a16 y-1 d y1 d y-1 c+ y1 c y0
+A r2r8. @wd2 v9 @ve-1 >g16<<e16>a16 y-1 d y1 d y-1 c+ y1 c y0
 A r1r1
 
 
@@ -70,10 +76,17 @@ B l32 @wd2 v3 <@ve6 @v6,3,=36 b8 @ve0 ^8^32 v5 @ve0 @v0,0 b v9 g+ v5 g+ v9 a+ v5
 B v9 @v6,3,=36 f+4.. @v0,0 v10 @ve-1 >d+d+8d+e8f+8g+4
 B v5 @ve4 <e @ve0 v9 g+8 v9 >f+c+8<b8a+8.b16^64> @p10 d+48^64 @p0 v5 d+96
 B v9 @v6,3,=36 d+4.. @v0,0 v10 @ve-1 d+d+8d+e8f+8g
-B r8 v5 @ve2 <e v9 @ve0 g16. v5 g32 v9 b16. v5 b32 v9 a16. v5 a32 v9 b16. v5 b32 v9 a16. v5 a32 v9 g8^32 v5 g32
-B v9 f+8.. v5 f+32 v9 >c+8.. v5 c+32 v9 c16. v5 c32 v9 c+32 v5 c+32 v9 d+8^32 v5 d+32 @wd1 v9 <b32 v5 b32 v9 >c+32 v5 c+32
-B v9 d+16. v5 d+32 v9 <g+32 v5 g+32 v9 b16. v5 b32 v9 e32 v5 e32 v9 g+32 v5 g+32 v9 b32 v5 b32 v9 b8.. v5 b32 v9 a+8.. v5 a+32
-B v8 e32 v3 e32 v8 e v3 e v8 c+32 v3 c+32 v8 c+32 v3 c+32 v8 c+32 v3 c+32 v8 d+8 v3 d+ v8 c+32 v3 c+32 v8 d+32 v3 d+32 v8 d+32 v3 d+32 v8 e8. v3 e
+; B r8 v5 @ve2 <e v9 @ve0 g16. v5 g32 v9 b16. v5 b32 v9 a16. v5 a32 v9 b16. v5 b32 v9 a16. v5 a32 v9 g8^32 v5 g32
+; B v9 f+8.. v5 f+32 v9 >c+8.. v5 c+32 v9 c16. v5 c32 v9 c+32 v5 c+32 v9 d+8^32 v5 d+32 @wd1 v9 <b32 v5 b32 v9 >c+32 v5 c+32
+; B v9 d+16. v5 d+32 v9 <g+32 v5 g+32 v9 b16. v5 b32 v9 e32 v5 e32 v9 g+32 v5 g+32 v9 b32 v5 b32 v9 b8.. v5 b32 v9 a+8.. v5 a+32
+; B v8 e32 v3 e32 v8 e v3 e v8 c+32 v3 c+32 v8 c+32 v3 c+32 v8 c+32 v3 c+32 v8 d+8 v3 d+ v8 c+32 v3 c+32 v8 d+32 v3 d+32 v8 d+32 v3 d+32 v8 e8. v3 e
+
+B r8o4 v5 @ve2 e v9 @ve0 g16. v5 g32 v9 b16. v5 b32 v9 a16. v5 a32 v9 b16. v5 b32 v9 a16. v5 a32 v9 g8^32 v5 g32
+B v9 f+8.. v5 f+32 v9 >c+8.. v5 c+32 v9 c16. v5 c32 v9 <a32 v5 a32 v9 g+8^32 v5 g+32
+
+B @wd1 v9 f+16. v5 f+32
+B v9 f+16. v5 f+32 v9 e32 v5 e32 v9 e16. v5 e32 v9 g+32 v5 g+32 v9 b32 v5 b32 v9 >e32 v5 e32 v9 d+8.. v5 d+32 v9 c+8.. v5 c+32
+B v9 <b32 v5 b32 v9 b v5 b v9 a+32 v5 a+32 v9 a+32 v5 a+32 v9 a+32 v5 a+32 v9 b8 v5 b v9 a+32 v5 a+32 v9 b32 v5 b32 v9 b32 v5 b32 v9 >c+8. v5 c+
 
 ;; Drum break
 B @wd2
@@ -112,10 +125,17 @@ C c+>l32 c+ v1 c+ v3 c+ v1 c+ v3 c+16. v1 c+ v3 <b v1 b v3 g+ v1 g+ v3 e v1 e v3
 C v3 <d+16>d+ v1 d+ v3 d+ v1 d+ v3 d+16. v1 d+ v3 c+ v1 c+ v3 <f+ v1 f+ v3 c+ v1 c+16. v3 <f+ v1 f+ v3 b v1 b v3 >f+ v1 f+ v3 b v1 b v3 f+ v1 f+ v3 d+ v1 d+ v3 <b v1 b
 C v3 >c+16>c+ v1 c+ v3 c+ v1 c+ v3 c+16. v1 c+ v3 <b v1 b v3 g+ v1 g+ v3 e v1 e v3 <f+16>f+ v1 f+ v3 >c+ v1 c+ v3 g+16. v1 g+ v3 a+ v1 a+ v3 f+ v1 f+ v3 c+ v1 c+
 C v3 <d+16>d+ v1 d+ v3 d+ v1 d+ v3 d+16. v1 d+ v3 <a v1 a v3 a+ v1 a+ v3 b v1 b v3 >c v1 c v3 <c v1 c v3 c v1 c v3 c16 v1 c16 v3 >f+ v1 f+ v3 c v1 c v3 <g v1 g
-C v3 <g16. v1 g v3 >g v1 g v3 >d16. v1 d v3 <b v1 b v3 g16. v1 g v3 <a v1 a v3 >e v1 e v3 g v1 g v3 b16. v1 b v3 a v1 a v3 e v1 e v3 f v1 f
-C v3 d+ v1 d+ v3 >d+ v1 d+ v3 <a+ v1 a+ v3 d+16. v1 d+ v3 f+16 v1 f+16 v3 a16 v1 a16 v3 c16 v1 c16 v3 f+16. v1 f+ v3 d+ v1 d+ v3 e v1 e v3 f+ v1 f+
-C v3 e16. v1 e v3 <b v1 b v3 e16. v1 e v3 e v1 e v3 >e v1 e v3 c+ v1 c+ v3 <f+16>f+ v1 f+ v3 >c+ v1 c+ v3 f+16 v1 f+16 v3 c+ v1 c+ v3 <a+ v1 a+ v3 f+ v1 f+
-C v3 <b v1 b v3 b16 v1 b16 v3 b v1 b v3 >f+ v1 f+ v3 f+ v1 f+ v3 b8 v1 b16 v3 b v1 b v3 e v1 e v3 e v1 e v3 f+8f+8
+
+;C v3 <g16. v1 g v3 >g v1 g v3 >d16. v1 d v3 <b v1 b v3 g16. v1 g v3 <a v1 a v3 >e v1 e v3 g v1 g v3 b16. v1 b v3 a v1 a v3 e v1 e v3 f v1 f
+;C v3 d+ v1 d+ v3 >d+ v1 d+ v3 <a+ v1 a+ v3 d+16. v1 d+ v3 f+16 v1 f+16 v3 a16 v1 a16 v3 c16 v1 c16 v3 f+16. v1 f+ v3 d+ v1 d+ v3 e v1 e v3 f+ v1 f+
+;C v3 e16. v1 e v3 <b v1 b v3 e16. v1 e v3 e v1 e v3 >e v1 e v3 c+ v1 c+ v3 <f+16>f+ v1 f+ v3 >c+ v1 c+ v3 f+16 v1 f+16 v3 c+ v1 c+ v3 <a+ v1 a+ v3 f+ v1 f+
+;C v3 <b v1 b v3 b16 v1 b16 v3 b v1 b v3 >f+ v1 f+ v3 f+ v1 f+ v3 b8 v1 b16 v3 b v1 b v3 e v1 e v3 e v1 e v3 f+8f+8
+
+C v3 <g16. v2 g32 v3 >g32 v2 g32 v3 e16. v2 e32 v3 e32 v2 e32 v3 >e32 v2 e32 v3 <e32 v2 e32 v3 <a16. v2 a32 v3 >e32 v2 e32 v3 b16. v2 b32 v3 >c+32 v2 c+32 v3 <e32 v2 e32 v3 a32 v2 a32
+C v3 d+16. v2 d+32 v3 f+32 v2 f+32 v3 >d+16. v2 d+32 v3 c+32 v2 c+32 v3 <a+32 v2 a+32 v3 g+16 v2 g+16 v3 d+16 v2 d+16 v3 <g+16. v2 g+32 v3 >g+32 v2 g+32 v3 >c32 v2 c32 v3 d+32 v2 d+32
+C v3 <e16. v2 e32 v3 <b32 v2 b32 v3 >e16. v2 e32 v3 <e32 v2 e32 v3 >e32 v2 e32 v3 c+32 v2 c+32 v3 <f+32 v2 f+32 v3 >f+32 v2 f+32 v3 >c+32 v2 c+32 v3 f+16 v2 f+16 v3 c+32 v2 c+32 v3 <a+32 v2 a+32 v3 f+32 v2 f+32
+C v3 <b32 v2 b32 v3 b16 v2 b32 v1 b32 v3 b32 v2 b32 v3 >f+32 v2 f+32 v3 f+32 v2 f+32 v3 b8 v2 b32 v1 b32 v3 b32 v2 b32 v3 e32 v2 e32 v3 e32 v2 e32 v3 f+4
+
 C r8brb16r16b16r16b16r16b64r64b64r64brb16<b8>b24r6
 C r24
 C brb16r16b16r16f+16r16f+64r64f+64r64f+rf+16r4.
