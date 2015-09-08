@@ -47,9 +47,6 @@ void initTitle() {
 
 	clearSprites();
 
-	setMusicBank(4U);
-	playMusic(&title_song_data);
-
 	HIDE_WIN;
 	SHOW_SPRITES;
 	SHOW_BKG;
@@ -81,6 +78,9 @@ void enterTitle() {
 
 	selection = level = 1U;
 	cheat_offset = 0U;
+
+	setMusicBank(4U);
+	playMusic(&title_song_data);
 
 	ticks = 0U;
 	while(1U) {

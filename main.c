@@ -70,7 +70,7 @@ void main() {
 	while(1U) {
 		switch(gamestate) {
 			case GAMESTATE_INTRO:
-				setGameBank(2);
+				setGameBank(6);
 				enterIntro();
 				break;
 			case GAMESTATE_TITLE:

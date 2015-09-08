@@ -76,8 +76,8 @@ tobu.gb:
 	$(CC) $(CFLAGS) -c freq.c
 	$(CC) $(CFLAGS) -c noisefreq.c
 	$(CC) $(CFLAGS) -c game.c -Wf-bo1
-	$(CC) $(CFLAGS) -c intro.c -Wf-bo2
 	$(CC) $(CFLAGS) -c title.c -Wf-bo3
+	$(CC) $(CFLAGS) -c intro.c -Wf-bo6
 	$(CC) $(CFLAGS) -c select.c -Wf-bo2
 	$(CC) $(CFLAGS) -c highscore.c -Wf-bo2
 	$(CC) $(CFLAGS) -c arrow.c -Wf-bo2

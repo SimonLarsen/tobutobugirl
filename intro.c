@@ -69,7 +69,7 @@ void updateIntro() {
 			setSprite(intro_player_x+8, intro_player_y-intro_scroll_y, frame+2U, OBJ_PAL0);
 
 			// Cat sprites
-			intro_cat_y = intro_player_y-15U + ((ticks & 16U) >> 4);
+			intro_cat_y = intro_player_y-12U + ((ticks & 16U) >> 4);
 			setSprite(intro_cat_x, intro_cat_y-intro_scroll_y-16U, 32U, OBJ_PAL0);
 			setSprite(intro_cat_x+8U, intro_cat_y-intro_scroll_y-16U, 34U, OBJ_PAL0);
 			setSprite(intro_cat_x, intro_cat_y-intro_scroll_y, 36U, OBJ_PAL0);
@@ -85,7 +85,7 @@ void updateIntro() {
 		case INTRO_STATE_TRIP:
 			if(ticks & 1U) {
 				if(intro_player_x < 55U) {
-					if(intro_cat_y >= 140U || (ticks & 3U) == 3U) {
+					if(intro_cat_y >= 130U || (ticks & 3U) == 3U) {
 						intro_cat_y--;
 					}
 				}
@@ -94,11 +94,10 @@ void updateIntro() {
 			if((ticks & 3U) == 3U) {
 				if(intro_scroll_y && intro_cat_y < intro_scroll_y+64U) {
 					intro_scroll_y--;
-					move_bkg(0U, intro_scroll_y);
 				}
 			}
 			if((ticks & 7U) == 7U) {
-				if(intro_cat_y >= 140U || (ticks & 15U) == 15U) {
+				if(intro_cat_y >= 130U || (ticks & 15U) == 15U) {
 					intro_cat_x++;
 				}
 			}
@@ -121,17 +120,18 @@ void updateIntro() {
 				setSprite(intro_player_x+8, intro_player_y-intro_scroll_y-13U, 54U, OBJ_PAL0);
 			}
 
-			if(intro_cat_y < 214U && intro_cat_y > 180U) {
+			// Exclamation mark
+			if((ticks & 16U) && intro_cat_y < 210U && intro_cat_y > 180U) {
 				setSprite(intro_player_x+4U, intro_player_y-intro_scroll_y-13U, 50U, OBJ_PAL0);
 			}
 
-			frame = 32U;
+			frame = 56U;
 			if(intro_cat_y < 180U) {
 				frame = 40U;
 			}
 
-			if(intro_cat_y < 140U) {
-				setSprite(intro_cat_x+4U, intro_cat_y-intro_scroll_y-8U, 48U, OBJ_PAL0);
+			if(intro_cat_y < 130U) {
+				setSprite(intro_cat_x+4U, intro_cat_y-intro_scroll_y-10U, 48U, OBJ_PAL0);
 			} else {
 				setSprite(intro_cat_x, intro_cat_y-intro_scroll_y-16U, frame, OBJ_PAL0);
 				setSprite(intro_cat_x+8U, intro_cat_y-intro_scroll_y-16U, frame+2U, OBJ_PAL0);
@@ -139,7 +139,7 @@ void updateIntro() {
 				setSprite(intro_cat_x+8U, intro_cat_y-intro_scroll_y, frame+6U, OBJ_PAL0);
 			}
 
-			if(intro_cat_y < 120U) {
+			if(intro_cat_y < 110U) {
 				intro_state = INTRO_STATE_BLINK;
 				intro_frame = 0U;
 				set_sprite_data(0U, intro_flash_data_length, intro_flash_data);
@@ -151,7 +151,6 @@ void updateIntro() {
 			if((ticks & 3U) == 3U) {
 				if(intro_scroll_y) {
 					intro_scroll_y--;
-					move_bkg(0U, intro_scroll_y);
 				}
 			}
 			if((ticks & 3U) == 3U) {
@@ -203,8 +202,8 @@ void enterIntro() {
 
 	intro_player_x = 185U;
 	intro_player_y = 240U;
-	intro_cat_x = intro_player_x + 8U;
-	intro_cat_y = 226U;
+	intro_cat_x = intro_player_x + 13U;
+	intro_cat_y = 228U;
 
 	intro_frame = 0U;
 
@@ -221,6 +220,7 @@ void enterIntro() {
 
 		clearRemainingSprites();
 		wait_vbl_done();
+		move_bkg(0U, intro_scroll_y);
 	}
 
 	clearRemainingSprites();
