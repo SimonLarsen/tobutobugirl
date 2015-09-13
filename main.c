@@ -1,6 +1,9 @@
 #include <gb/gb.h>
 #include "gamestate.h"
 #include "main.h"
+#include "ram.h"
+#include "music.h"
+#include "sound.h"
 
 #include "intro.h"
 #include "title.h"
@@ -8,9 +11,7 @@
 #include "game.h"
 #include "winscreen.h"
 #include "highscore.h"
-#include "ram.h"
-#include "music.h"
-#include "sound.h"
+#include "jukebox.h"
 
 const UBYTE RAM_SIG[8] = {'T','O','B','U','T','O','B','U'};
 
@@ -70,28 +71,32 @@ void main() {
 	while(1U) {
 		switch(gamestate) {
 			case GAMESTATE_INTRO:
-				setGameBank(6);
+				setGameBank(3U);
 				enterIntro();
 				break;
 			case GAMESTATE_TITLE:
-				setGameBank(3);
+				setGameBank(3U);
 				enterTitle();
 				break;
 			case GAMESTATE_SELECT:
-				setGameBank(2);
+				setGameBank(2U);
 				enterSelect();
 				break;
 			case GAMESTATE_INGAME:
-				setGameBank(1);
+				setGameBank(1U);
 				enterGame();
 				break;
 			case GAMESTATE_WINSCREEN:
-				setGameBank(3);
+				setGameBank(3U);
 				enterWinscreen();
 				break;
 			case GAMESTATE_HIGHSCORE:
-				setGameBank(2);
+				setGameBank(2U);
 				enterHighscore();
+				break;
+			case GAMESTATE_JUKEBOX:
+				setGameBank(4U);
+				enterJukebox();
 				break;
 		}
 	}

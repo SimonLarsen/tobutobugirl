@@ -15,7 +15,7 @@ title_backgrounds:
 
 .PHONY: select_backgrounds
 select_backgrounds:
-	imgtogb --map -O 9 data/bg/select.png data/bg/select.h
+	imgtogb --map --rle -O 9 data/bg/select.png data/bg/select.h
 
 .PHONY: ingame_backgrounds
 ingame_backgrounds:
@@ -37,7 +37,11 @@ highscore_backgrounds:
 	imgtogb --map -O 109 data/bg/highscore.png data/bg/highscore.h
 	imgtogb --sprite data/sprite/empty.png data/sprite/empty.h
 
-backgrounds: intro_backgrounds title_backgrounds select_backgrounds ingame_backgrounds winscreen_backgrounds highscore_backgrounds
+.PHONY: jukebox_backgrounds
+jukebox_backgrounds:
+	imgtogb --map --rle data/bg/jukebox.png data/bg/jukebox.h
+
+backgrounds: intro_backgrounds title_backgrounds select_backgrounds ingame_backgrounds winscreen_backgrounds highscore_backgrounds jukebox_backgrounds
 
 .PHONY: sprites
 sprites:
@@ -75,18 +79,19 @@ tobu.gb:
 	$(CC) $(CFLAGS) -c sound.c
 	$(CC) $(CFLAGS) -c freq.c
 	$(CC) $(CFLAGS) -c noisefreq.c
+	$(CC) $(CFLAGS) -c arrow.c
 	$(CC) $(CFLAGS) -c game.c -Wf-bo1
 	$(CC) $(CFLAGS) -c title.c -Wf-bo3
-	$(CC) $(CFLAGS) -c intro.c -Wf-bo6
+	$(CC) $(CFLAGS) -c intro.c -Wf-bo3
 	$(CC) $(CFLAGS) -c select.c -Wf-bo2
 	$(CC) $(CFLAGS) -c highscore.c -Wf-bo2
-	$(CC) $(CFLAGS) -c arrow.c -Wf-bo2
 	$(CC) $(CFLAGS) -c selection0.c -Wf-bo2
 	$(CC) $(CFLAGS) -c selection1.c -Wf-bo2
 	$(CC) $(CFLAGS) -c selection2.c -Wf-bo2
 	$(CC) $(CFLAGS) -c selection3.c -Wf-bo2
 	$(CC) $(CFLAGS) -c selection4.c -Wf-bo2
 	$(CC) $(CFLAGS) -c winscreen.c -Wf-bo3
+	$(CC) $(CFLAGS) -c jukebox.c -Wf-bo4
 	$(CC) $(CFLAGS) -c data/songs/title_song.asm # bank 4
 	$(CC) $(CFLAGS) -c data/songs/mainmenu_song.asm # bank 4
 	$(CC) $(CFLAGS) -c data/songs/winscreen_song.asm # bank 4
@@ -96,7 +101,7 @@ tobu.gb:
 	$(CC) $(CFLAGS) -c data/songs/space_song.asm # bank 5
 	$(CC) $(CFLAGS) -c data/songs/intro1_song.asm # bank 6
 	$(CC) $(CFLAGS) -c data/songs/intro2_song.asm # bank 6
-	$(CC) $(CFLAGS) -c -Wf-ba0 -c ram.c
+	$(CC) $(CFLAGS) -c -Wf-ba0 -c ram.c # ram bank 0
 	$(CC) $(CFLAGS) -Wl-yt3 -Wl-yo8 -Wl-ya1 *.o -o $@
 
 .PHONY: run

@@ -30,6 +30,7 @@ extern UBYTE levels_completed;
 #define GAMESTATE_INGAME    3U
 #define GAMESTATE_WINSCREEN 4U
 #define GAMESTATE_HIGHSCORE 5U
+#define GAMESTATE_JUKEBOX   6U
 
 extern const UBYTE level_names[4][6];
 
