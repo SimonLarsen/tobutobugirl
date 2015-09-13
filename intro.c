@@ -77,7 +77,7 @@ void updateIntro() {
 
 			if(intro_player_x == 77U) {
 				intro_state = INTRO_STATE_TRIP;
-				intro_player_y = 237U;
+				intro_player_y = 239U;
 				ticks = 0U;
 			}
 			break;
