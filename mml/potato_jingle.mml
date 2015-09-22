@@ -1,0 +1,5 @@
+@wave0 = { 0 1 2 12 14 14 14 13 12 10 6 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 15 2 1 0 }
+
+A t150 @wd1 @ve4 o4 v10 a16 @ve0 v4 a16 @ve4 v10 b16 @ve0 v4 b16 @ve4 v10 >c16 @ve0 v4 c16 @ve4 t142 v10 d16 @ve0 v4 t134 d16 v10 @ve4 e8 @ve-3  t100 ^4^=2 t150 v11 @ve-2 @wd2 g=5r=5 > @ve0 g16 @ve-4 ^2.^16 L r1
+B @wd1 @ve4 o4 v8 f16 @ve0 v2 f16 @ve4 v8 g16 @ve0 v2 g16 @ve4 v8 a16 @ve0 v2 a16 @ve4 v8 b16 @ve0 v2 b16 @ve4 v8 >c8 @ve-3 ^4 v10 @wd2 @ve-1 f+=3 L r1
+C @wave0 o6 v2 c16r16<b16r16a16r16g+16r16g4..<<<g2.^32 v1 g16 L r1
