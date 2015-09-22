@@ -1,7 +1,7 @@
 @wave0 = {0 0 1 1 2 9 9 10 11 12 13 13 14 14 14 15 13 12 11 11 10 10 10 10 10 10 11 11 12 12 12 15 }
 @wave1 = {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 15 15 15 15 15 15 15 15 15 15 15 15 15 15 15 15 }
 
-A t112 r1 L @ve-2
+A t108 r1 L @ve-2
 A @wd2
 A l16 r
 A o5 v7 f+b>c+8<f+b>e8<f+>ed+8<f+>d+c+8
@@ -115,12 +115,44 @@ C <b8r>brbrbr4.f+8
 C e8g+>e8.<d+8e4f+4
 C <b8r>brbrbrr96b64r192b64r64b64r32.b64r32.b8f+8
 C e8.>e8.<<b8>e4f+4
-C <b8r>brbrb @wave1 r8 v2 >>a24r48c+12r24c+ @wave0 v3 <<f+16. v1 f+32
-C v3 e16. v1 e32 v3 g+32 v1 g+32 v3 >e8^32 v1 e32 v3 <d+16. v1 d+32 v3 e16. v1 e32 v3 e24 @wave1 r48 v2 >>c12 @wave0 r24 v3 <<c+32r32f+8
-C <b8r>brbrb @wave1 r8 v2 >>a24r48c+12r24c+ @wave0 v3 <<f+8
-C e8g+>e8.<d+8e8 @wave1 v2 >>f+24r48c12 @wave0 r24 v3 <<c+32r32f+8
+C <b8r>brbrb @wave1 r8 
+
+C v2 @wave1 l=1
+C y1 o5 @po3 f+ @po1 e @po1 d @po1 c @po0 < @po4 a+ @po-3 a=2 r=4
+C o4 @po2 b @po-5 a+ @po3 g+ @po-2 g @po-5 f+ @po8 e @po4 d+ d @po4 c+ @po6 c r=16
+C y-1 o4 @po3 b @po-3 a+ @po3 g+ @po-3 g @po-9 f+ @po6 e @po1 d+ d @po4 c+> r=2 y0
+
+C @wave0 @po0 v3 l16 <<f+16. v1 f+32
+C v3 e16. v1 e32 v3 g+32 v1 g+32 v3 >e8^32 v1 e32 v3 <d+16. v1 d+32 v3 e16. v1 e32 v3 e24
+C @wave1 y-1 r48 v2 l=1 o4 @po3 b @po-3 a+ @po3 g+ @po-3 g @po-9 f+ @po6 e @po1 d+ d @po4 c+> r=7 y0
+C @po0 l16 @wave0 r24 v3 <<c+32r32f+8
+C <b8r>brbrb @wave1 r8 v2 
+
+C v2 @wave1 l=1
+C y1 o5 @po3 f+ @po1 e @po1 d @po1 c @po0 < @po4 a+ @po-3 a=2 r=4
+C o4 @po2 b @po-5 a+ @po3 g+ @po-2 g @po-5 f+ @po8 e @po4 d+ d @po4 c+ @po6 c r=16
+C y-1 o4 @po3 b @po-3 a+ @po3 g+ @po-3 g @po-9 f+ @po6 e @po1 d+ d @po4 c+ r=2 y0
+
+C @wave0 v3 l16 <f+8
+C e8g+>e8.<d+8e8 
+
+C v2 @wave1 l=1
+C y1 o4 @po2 b @po-5 a+ @po3 g+ @po-2 g @po-5 f+ @po8 e @po4 d+ d @po4 c+ @po6 c r=2
+C y-1 o4 @po3 b @po-3 a+ @po3 g+ @po-3 g @po-9 f+ @po6 e @po1 d+ d @po4 c+ r=7 y0
+
+C l16 @po0 @wave0 r24 v3 <c+32r32f+8
 C <b8r>brbrbr4.f+8
 C e8.>e8.<d+8e8.f+8<b>g+d+
+
+;;;;;;;;
+;C <b8r>brbrb @wave1 r8 v2 >>a24r48c+12r24c+ @wave0 v3 <<f+16. v1 f+32
+;C v3 e16. v1 e32 v3 g+32 v1 g+32 v3 >e8^32 v1 e32 v3 <d+16. v1 d+32 v3 e16. v1 e32 v3 e24 @wave1 r48 v2 >>c12 @wave0 r24 v3 <<c+32r32f+8
+;C <b8r>brbrb @wave1 r8 v2 >>a24r48c+12r24c+ @wave0 v3 <<f+8
+;C e8g+>e8.<d+8e8 @wave1 v2 >>f+24r48c12 @wave0 r24 v3 <<c+32r32f+8
+;C <b8r>brbrbr4.f+8
+;C e8.>e8.<d+8e8.f+8<b>g+d+
+;;;;;;;;
+
 C c+>l32 c+ v1 c+ v3 c+ v1 c+ v3 c+16. v1 c+ v3 <b v1 b v3 g+ v1 g+ v3 e v1 e v3 <f+16>f+ v1 f+ v3 >c+ v1 c+ v3 g+16. v1 g+ v3 a+ v1 a+ v3 f+ v1 f+ v3 c+ v1 c+
 C v3 <d+16>d+ v1 d+ v3 d+ v1 d+ v3 d+16. v1 d+ v3 c+ v1 c+ v3 <f+ v1 f+ v3 c+ v1 c+16. v3 <f+ v1 f+ v3 b v1 b v3 >f+ v1 f+ v3 b v1 b v3 f+ v1 f+ v3 d+ v1 d+ v3 <b v1 b
 C v3 >c+16>c+ v1 c+ v3 c+ v1 c+ v3 c+16. v1 c+ v3 <b v1 b v3 g+ v1 g+ v3 e v1 e v3 <f+16>f+ v1 f+ v3 >c+ v1 c+ v3 g+16. v1 g+ v3 a+ v1 a+ v3 f+ v1 f+ v3 c+ v1 c+

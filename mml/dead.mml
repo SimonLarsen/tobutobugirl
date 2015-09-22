@@ -1,5 +1,0 @@
-@wave0 = {0 0 1 1 2 9 9 10 11 12 13 13 14 14 14 15 13 12 11 11 10 10 10 10 10 10 11 11 12 12 12 15 }
-
-A t90 o5 v11 @wd2 @ve-1 a16b16>c16<g16b16>c16 t76 v5 << @wd1 @ve2 d+16 @ve-2 v9 d+16 @ve2 v5 d16 t60 @ve-2 v9 d32 t76 ^32 t50 @ve2 v5 c16 @ve-2 v9 c16. L r1
-B o5 v8 @wd2 @ve-1 f16g16a16e16g16a16 v5 << @wd1 @ve2 g+16 v8 @ve-2 g+16 v5 @ve2 f16 v8 @ve-2 f16 v5 @ve2 e16 v8 @ve-2 e16. L r1
-C r4. @wave0 o4 v3 c16. v2 c32 v3 <g+16. v2 g+32 v3 c16. v2 c32 v1 c32 L r1
