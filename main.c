@@ -62,7 +62,7 @@ void main() {
 	joystate = oldjoystate = 0U;
 	level = 1U;
 	
-	gamestate = GAMESTATE_INTRO;
+	gamestate = GAMESTATE_JUKEBOX;
 
 	SWITCH_16_8_MODE_MBC1;
 	add_TIM(updateMusic);

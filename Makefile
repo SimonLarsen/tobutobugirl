@@ -39,7 +39,7 @@ highscore_backgrounds:
 
 .PHONY: jukebox_backgrounds
 jukebox_backgrounds:
-	imgtogb --map --rle data/bg/jukebox.png data/bg/jukebox.h
+	imgtogb --map --rle -O 37 data/bg/jukebox.png data/bg/jukebox.h
 
 backgrounds: intro_backgrounds title_backgrounds select_backgrounds ingame_backgrounds winscreen_backgrounds highscore_backgrounds jukebox_backgrounds
 
@@ -47,8 +47,10 @@ backgrounds: intro_backgrounds title_backgrounds select_backgrounds ingame_backg
 sprites:
 	imgtogb --sprite --8x16 data/sprite/sprites.png data/sprite/sprites.h
 	imgtogb --sprite --8x16 data/sprite/portal.png data/sprite/portal.h
+	imgtogb --sprite --8x16 data/sprite/notes.png data/sprite/notes.h
+	imgtogb --sprite data/sprite/digital.png data/sprite/digital.h
 	#imgtogb --sprite data/sprite/characters.png data/sprite/characters.h # 40 tiles
-	#imgtogb --sprite data/sprite/arrow.png data/sprite/arrow.h
+	#imgtogb --sprite --8x16 data/sprite/arrow.png data/sprite/arrow.h
 	#imgtogb --map -O 40 data/bg/selection0.png data/bg/selection0.h
 	#imgtogb --map -O 40 data/bg/selection1.png data/bg/selection1.h
 	#imgtogb --map -O 40 data/bg/selection2.png data/bg/selection2.h

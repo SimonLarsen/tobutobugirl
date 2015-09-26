@@ -201,14 +201,14 @@ void enterHighscore() {
 
 		// Draw arrows
 		setSprite(20U-offset, 64U, 0U, OBJ_PAL0);
-		setSprite(28U-offset, 64U, 1U, OBJ_PAL0);
-		setSprite(20U-offset, 72U, 2U, OBJ_PAL0);
+		setSprite(28U-offset, 64U, 2U, OBJ_PAL0);
+		setSprite(20U-offset, 72U, 1U, OBJ_PAL0);
 		setSprite(28U-offset, 72U, 3U, OBJ_PAL0);
 
-		setSprite(140U+offset, 64U, 1U, OBJ_PAL0 | FLIP_X);
+		setSprite(140U+offset, 64U, 2U, OBJ_PAL0 | FLIP_X);
 		setSprite(148U+offset, 64U, 0U, OBJ_PAL0 | FLIP_X);
 		setSprite(140U+offset, 72U, 3U, OBJ_PAL0 | FLIP_X);
-		setSprite(148U+offset, 72U, 2U, OBJ_PAL0 | FLIP_X);
+		setSprite(148U+offset, 72U, 1U, OBJ_PAL0 | FLIP_X);
 
 		if((ticks & 63U) < 16U
 		&& last_highscore_level == highscore_selection

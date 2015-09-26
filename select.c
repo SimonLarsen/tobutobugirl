@@ -189,14 +189,14 @@ void selectUpdateSprites() {
 	offset = cos32_64[(ticks & 63U)] >> 3;
 
 	setSprite(24U-offset, 61U, 37U, OBJ_PAL0);
-	setSprite(32U-offset, 61U, 38U, OBJ_PAL0);
-	setSprite(24U-offset, 69U, 39U, OBJ_PAL0);
+	setSprite(32U-offset, 61U, 39U, OBJ_PAL0);
+	setSprite(24U-offset, 69U, 38U, OBJ_PAL0);
 	setSprite(32U-offset, 69U, 40U, OBJ_PAL0);
 
-	setSprite(136U+offset, 61U, 38U, OBJ_PAL0 | FLIP_X);
+	setSprite(136U+offset, 61U, 39U, OBJ_PAL0 | FLIP_X);
 	setSprite(144U+offset, 61U, 37U, OBJ_PAL0 | FLIP_X);
 	setSprite(136U+offset, 69U, 40U, OBJ_PAL0 | FLIP_X);
-	setSprite(144U+offset, 69U, 39U, OBJ_PAL0 | FLIP_X);
+	setSprite(144U+offset, 69U, 38U, OBJ_PAL0 | FLIP_X);
 }
 
 void selectScrollCircles() {

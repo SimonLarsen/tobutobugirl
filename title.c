@@ -11,9 +11,7 @@
 extern UBYTE title_song_data;
 
 const UBYTE title_message[11] = {
-	26U, 28U, 15U, 29U,
-	29U, 10U, 29U, 30U,
-	11U, 28U, 30U
+	26U, 28U, 15U, 29U, 29U, 10U, 29U, 30U, 11U, 28U, 30U
 };
 
 const UBYTE konami_code[10] = {
