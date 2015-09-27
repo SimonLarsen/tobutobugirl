@@ -3,6 +3,7 @@
 
 void initSelect();
 void setTile(UBYTE x, UBYTE y, UBYTE *tile);
+UBYTE *selectGetBannerData();
 void selectTransitionIn();
 void selectTransitionOut();
 void updateSelectScreen();

@@ -18,6 +18,7 @@
 #include "data/bg/selection2.h"
 #include "data/bg/selection3.h"
 #include "data/bg/selection4.h"
+#include "data/bg/selection5.h"
 
 UBYTE select_circle_index;
 UBYTE select_ticks;
@@ -106,6 +107,29 @@ void selectTransitionOut() {
 	} while(top <= bottom);
 }
 
+UBYTE *selectGetBannerData() {
+	if(selection == 0U) {
+		set_bkg_data(selection0_offset, selection0_data_length, selection0_data);
+		return selection0_tiles;
+	} else if(selection == 4U && levels_completed >= 2U) {
+		set_bkg_data(selection5_offset, selection5_data_length, selection5_data);
+		return selection5_tiles;
+	} else if(selection > levels_completed+1U) {
+		set_bkg_data(selection4_offset, selection4_data_length, selection4_data);
+		return selection4_tiles;
+	} else if(selection == 1U) {
+		set_bkg_data(selection1_offset, selection1_data_length, selection1_data);
+		return selection1_tiles;
+	} else if(selection == 2U) {
+		set_bkg_data(selection2_offset, selection2_data_length, selection2_data);
+		return selection2_tiles;
+	} else if(selection == 3U) {
+		set_bkg_data(selection3_offset, selection3_data_length, selection3_data);
+		return selection3_tiles;
+	}
+	return 0U;
+}
+
 void selectTransitionIn() {
 	UBYTE *tile, *data;
 	UBYTE ix, iy;
@@ -115,22 +139,7 @@ void selectTransitionIn() {
 	left = 0U;
 	right = 19U;
 
-	if(selection > levels_completed+1U) {
-		set_bkg_data(selection4_offset, selection4_data_length, selection4_data);
-		data = selection4_tiles;
-	} else if(selection == 0U) {
-		set_bkg_data(selection0_offset, selection0_data_length, selection0_data);
-		data = selection0_tiles;
-	} else if(selection == 1U) {
-		set_bkg_data(selection1_offset, selection1_data_length, selection1_data);
-		data = selection1_tiles;
-	} else if(selection == 2U) {
-		set_bkg_data(selection2_offset, selection2_data_length, selection2_data);
-		data = selection2_tiles;
-	} else if(selection == 3U) {
-		set_bkg_data(selection3_offset, selection3_data_length, selection3_data);
-		data = selection3_tiles;
-	}
+	data = selectGetBannerData();
 
 	tile = data;
 	do {
@@ -165,22 +174,8 @@ void selectTransitionIn() {
 }
 
 void updateSelectScreen() {
-	if(selection == 0U) {
-		set_bkg_data(selection0_offset, selection0_data_length, selection0_data);
-		set_bkg_tiles(0U, 10U, 20U, 6U, selection0_tiles);
-	} else if(selection > levels_completed+1U) {
-		set_bkg_data(selection4_offset, selection4_data_length, selection4_data);
-		set_bkg_tiles(0U, 10U, 20U, 6U, selection4_tiles);
-	} else if(selection == 1U) {
-		set_bkg_data(selection1_offset, selection1_data_length, selection1_data);
-		set_bkg_tiles(0U, 10U, 20U, 6U, selection1_tiles);
-	} else if(selection == 2U) {
-		set_bkg_data(selection2_offset, selection2_data_length, selection2_data);
-		set_bkg_tiles(0U, 10U, 20U, 6U, selection2_tiles);
-	} else if(selection == 3U) {
-		set_bkg_data(selection3_offset, selection3_data_length, selection3_data);
-		set_bkg_tiles(0U, 10U, 20U, 6U, selection3_tiles);
-	}
+	UBYTE *data = selectGetBannerData();
+	set_bkg_tiles(0U, 10U, 20U, 6U, data);
 }
 
 void selectUpdateSprites() {
@@ -208,7 +203,7 @@ void enterSelect() {
 	UBYTE i, offset, name_index;
 	initSelect();
 
-	fadeFromWhite(10U);
+	fadeFromWhite(6U);
 
 	while(gamestate == GAMESTATE_SELECT) {
 		updateJoystate();
@@ -219,14 +214,14 @@ void enterSelect() {
 		}
 
 		if(CLICKED(J_RIGHT)) {
-			if(selection == 3U) selection = 0U;
+			if(selection == 4U) selection = 0U;
 			else selection++;
 			selectTransitionOut();
 			selectTransitionIn();
 			selectUpdateSprites();
 		}
 		if(CLICKED(J_LEFT)) {
-			if(selection == 0U) selection = 3U;
+			if(selection == 0U) selection = 4U;
 			else selection--;
 			selectTransitionOut();
 			selectTransitionIn();
@@ -235,6 +230,8 @@ void enterSelect() {
 		if(CLICKED(J_START) || CLICKED(J_A)) {
 			if(selection == 0U) {
 				gamestate = GAMESTATE_HIGHSCORE;
+			} else if(selection == 4U && levels_completed >= 2U) {
+				gamestate = GAMESTATE_JUKEBOX;
 			} else if(selection <= levels_completed+1U) { // TODO: Remove cheat again
 				level = selection;
 				gamestate = GAMESTATE_INGAME;
@@ -245,10 +242,11 @@ void enterSelect() {
 		}
 
 		// Draw level name
-		if(selection <= levels_completed+1U) {
+		if(selection == 0U || (selection == 4U && levels_completed >= 2U)
+		|| (selection <= levels_completed+1U)) {
 			name_index = selection;
 		} else {
-			name_index = 4U;
+			name_index = 5U;
 		}
 		offset = 64U;
 		if(name_index == 3U) {

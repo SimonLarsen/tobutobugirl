@@ -11,6 +11,7 @@
 #include "data/sprite/notes.h"
 #include "data/sprite/bobblehead.h"
 
+UBYTE jukebox_active;
 UBYTE jukebox_selection;
 UBYTE jukebox_music_ticks;
 UBYTE jukebox_bop;
@@ -58,6 +59,7 @@ void initJukebox() {
 	BGP_REG = 0xE4U; // 11100100
 
 	ticks = 0U;
+	jukebox_active = 0U;
 	jukebox_selection = 0U;
 	jukebox_music_ticks = 0U;
 	jukeboxUpdateTitle();
@@ -74,6 +76,8 @@ void initJukebox() {
 }
 
 void jukeboxUpdateMusic() {
+	if(!jukebox_active) return;
+
 	updateMusic();
 	jukebox_music_ticks++;
 	if(jukebox_music_ticks == 24U) {
@@ -190,6 +194,7 @@ void enterJukebox() {
 					playMusic(&winscreen_song_data);
 					break;
 			}
+			jukebox_active = 1U;
 		}
 		if(CLICKED(J_B)) {
 			gamestate = GAMESTATE_SELECT;
