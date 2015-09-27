@@ -36,6 +36,12 @@ void playMusic(UBYTE *data) {
 	SWITCH_ROM_MBC1(game_bank);
 }
 
+void updateMusic() {
+	SWITCH_ROM_MBC1(music_bank);
+	mus_update();
+	SWITCH_ROM_MBC1(game_bank);
+}
+
 void stopMusic() {
 	mus_setPaused(1U);
 }

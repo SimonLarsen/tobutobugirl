@@ -49,6 +49,7 @@ sprites:
 	imgtogb --sprite --8x16 data/sprite/portal.png data/sprite/portal.h
 	imgtogb --sprite --8x16 data/sprite/notes.png data/sprite/notes.h
 	imgtogb --sprite data/sprite/digital.png data/sprite/digital.h
+	imgtogb --sprite --8x16 data/sprite/bobblehead.png data/sprite/bobblehead.h
 	#imgtogb --sprite data/sprite/characters.png data/sprite/characters.h # 40 tiles
 	#imgtogb --sprite --8x16 data/sprite/arrow.png data/sprite/arrow.h
 	#imgtogb --map -O 40 data/bg/selection0.png data/bg/selection0.h
@@ -56,6 +57,7 @@ sprites:
 	#imgtogb --map -O 40 data/bg/selection2.png data/bg/selection2.h
 	#imgtogb --map -O 40 data/bg/selection3.png data/bg/selection3.h
 	#imgtogb --map -O 40 data/bg/selection4.png data/bg/selection4.h
+	#imgtogb --map -O 40 data/bg/selection5.png data/bg/selection5.h
 
 .PHONY: songs
 songs:
@@ -92,6 +94,7 @@ tobu.gb:
 	$(CC) $(CFLAGS) -c selection2.c -Wf-bo2
 	$(CC) $(CFLAGS) -c selection3.c -Wf-bo2
 	$(CC) $(CFLAGS) -c selection4.c -Wf-bo2
+	$(CC) $(CFLAGS) -c selection5.c -Wf-bo2
 	$(CC) $(CFLAGS) -c winscreen.c -Wf-bo3
 	$(CC) $(CFLAGS) -c jukebox.c -Wf-bo4
 	$(CC) $(CFLAGS) -c data/songs/title_song.asm # bank 4

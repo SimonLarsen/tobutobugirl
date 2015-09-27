@@ -46,12 +46,6 @@ void initRAM() {
 	DISABLE_RAM_MBC1;
 }
 
-void updateMusic() {
-	SWITCH_ROM_MBC1(music_bank);
-	mus_update();
-	SWITCH_ROM_MBC1(game_bank);
-}
-
 void main() {
 	initRAM();
 	snd_init();
