@@ -111,7 +111,7 @@ UBYTE *selectGetBannerData() {
 	if(selection == 0U) {
 		set_bkg_data(selection0_offset, selection0_data_length, selection0_data);
 		return selection0_tiles;
-	} else if(selection == 4U && levels_completed >= 2U) {
+	} else if(selection == 4U) {
 		set_bkg_data(selection5_offset, selection5_data_length, selection5_data);
 		return selection5_tiles;
 	} else if(selection > levels_completed+1U) {
@@ -214,14 +214,21 @@ void enterSelect() {
 		}
 
 		if(CLICKED(J_RIGHT)) {
-			if(selection == 4U) selection = 0U;
+			if(selection == 3U && levels_completed < 2U) selection = 0U;
+			else if(selection == 4U) selection = 0U;
 			else selection++;
 			selectTransitionOut();
 			selectTransitionIn();
 			selectUpdateSprites();
 		}
 		if(CLICKED(J_LEFT)) {
-			if(selection == 0U) selection = 4U;
+			if(selection == 0U) {
+				if(levels_completed >= 2U) {
+					selection = 4U;
+				} else {
+					selection = 3U;
+				}
+			}
 			else selection--;
 			selectTransitionOut();
 			selectTransitionIn();
@@ -230,7 +237,7 @@ void enterSelect() {
 		if(CLICKED(J_START) || CLICKED(J_A)) {
 			if(selection == 0U) {
 				gamestate = GAMESTATE_HIGHSCORE;
-			} else if(selection == 4U && levels_completed >= 2U) {
+			} else if(selection == 4U) {
 				gamestate = GAMESTATE_JUKEBOX;
 			} else if(selection <= levels_completed+1U) { // TODO: Remove cheat again
 				level = selection;
@@ -242,7 +249,7 @@ void enterSelect() {
 		}
 
 		// Draw level name
-		if(selection == 0U || (selection == 4U && levels_completed >= 2U)
+		if(selection == 0U || selection == 4U
 		|| (selection <= levels_completed+1U)) {
 			name_index = selection;
 		} else {

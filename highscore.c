@@ -232,6 +232,9 @@ void enterHighscore() {
 		wait_vbl_done();
 	}
 
+	// Clear blinking after exit
+	last_highscore_slot = 5U;
+
 	clearRemainingSprites();
 	fadeToWhite(10U);
 
