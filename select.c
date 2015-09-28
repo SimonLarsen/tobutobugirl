@@ -32,8 +32,8 @@ void initSelect() {
 	move_bkg(0U, 0U);
 	set_sprite_data(0U, 37U, characters_data);
 	set_sprite_data(37U, arrow_data_length, arrow_data);
-	set_bkg_data(0U, circles_data_length, circles_data);
 
+	set_bkg_data(0U, circles_data_length, circles_data);
 	set_bkg_data_rle(select_offset, select_data_length, select_data);
 	set_bkg_tiles_rle(0U, 0U, select_tiles_width, select_tiles_height, select_tiles);
 

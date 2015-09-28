@@ -6,7 +6,7 @@ extern const unsigned char selection5_data[];
 
 #define selection5_tiles_width 20
 #define selection5_tiles_height 6
-#define selection5_offset 40
+#define selection5_offset 90
 extern const unsigned char selection5_tiles[];
 
 #endif

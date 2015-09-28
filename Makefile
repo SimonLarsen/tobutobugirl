@@ -34,7 +34,7 @@ winscreen_backgrounds:
 
 .PHONY: highscore_backgrounds
 highscore_backgrounds:
-	imgtogb --map -O 109 data/bg/highscore.png data/bg/highscore.h
+	imgtogb --map -O 47 data/bg/highscore.png data/bg/highscore.h
 	imgtogb --sprite data/sprite/empty.png data/sprite/empty.h
 
 .PHONY: jukebox_backgrounds
@@ -52,12 +52,12 @@ sprites:
 	imgtogb --sprite --8x16 data/sprite/bobblehead.png data/sprite/bobblehead.h
 	#imgtogb --sprite data/sprite/characters.png data/sprite/characters.h # 40 tiles
 	#imgtogb --sprite --8x16 data/sprite/arrow.png data/sprite/arrow.h
-	#imgtogb --map -O 40 data/bg/selection0.png data/bg/selection0.h
-	#imgtogb --map -O 40 data/bg/selection1.png data/bg/selection1.h
-	#imgtogb --map -O 40 data/bg/selection2.png data/bg/selection2.h
-	#imgtogb --map -O 40 data/bg/selection3.png data/bg/selection3.h
-	#imgtogb --map -O 40 data/bg/selection4.png data/bg/selection4.h
-	#imgtogb --map -O 40 data/bg/selection5.png data/bg/selection5.h
+	#imgtogb --map -O 90 data/bg/selection0.png data/bg/selection0.h
+	#imgtogb --map -O 90 data/bg/selection1.png data/bg/selection1.h
+	#imgtogb --map -O 90 data/bg/selection2.png data/bg/selection2.h
+	#imgtogb --map -O 90 data/bg/selection3.png data/bg/selection3.h
+	#imgtogb --map -O 90 data/bg/selection4.png data/bg/selection4.h
+	#imgtogb --map -O 90 data/bg/selection5.png data/bg/selection5.h
 
 .PHONY: songs
 songs:
