@@ -171,7 +171,7 @@ void enterHighscore() {
 
 	initHighscore();
 
-	fadeFromWhite(10U);
+	fadeFromWhite(6U);
 
 	while(1) {
 		updateJoystate();
@@ -236,7 +236,7 @@ void enterHighscore() {
 	last_highscore_slot = 5U;
 
 	clearRemainingSprites();
-	fadeToWhite(10U);
+	fadeToWhite(6U);
 
 	stopMusic();
 }

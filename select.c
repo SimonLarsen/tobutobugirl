@@ -256,7 +256,7 @@ void enterSelect() {
 			name_index = 5U;
 		}
 		offset = 64U;
-		if(name_index == 3U) {
+		if(name_index == 3U || name_index == 4U) {
 			offset += 4U;
 		}
 		for(i = 0U; i != 6; ++i) {
