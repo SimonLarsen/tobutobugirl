@@ -12,6 +12,7 @@ UBYTE elapsed_time, remaining_time, kills;
 UBYTE last_highscore_level, last_highscore_slot;
 UBYTE game_bank, music_bank;
 UBYTE levels_completed;
+UBYTE unlocked_bits;
 
 const UBYTE level_names[6][6] = {
 	{29U, 13U, 25U, 28U, 15U, 29U}, // "SCORES"

@@ -11,6 +11,7 @@
 #include "game.h"
 #include "winscreen.h"
 #include "highscore.h"
+#include "unlocked.h"
 #include "jukebox.h"
 
 const UBYTE RAM_SIG[8] = {'T','O','B','U','T','O','B','U'};
@@ -55,6 +56,7 @@ void main() {
 
 	joystate = oldjoystate = 0U;
 	level = 1U;
+	unlocked_bits = 0U;
 	
 	gamestate = GAMESTATE_INTRO;
 
@@ -87,6 +89,10 @@ void main() {
 			case GAMESTATE_HIGHSCORE:
 				setGameBank(2U);
 				enterHighscore();
+				break;
+			case GAMESTATE_UNLOCKED:
+				setGameBank(2U);
+				enterUnlocked();
 				break;
 			case GAMESTATE_JUKEBOX:
 				setGameBank(4U);

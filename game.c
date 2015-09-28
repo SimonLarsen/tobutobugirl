@@ -873,6 +873,12 @@ void addScore() {
 
 	if(level > levels_completed) {
 		levels_completed = level;
+		if(level == 1U) {
+			unlocked_bits = UNLOCKED_CLOUDS;
+		}
+		else if(level == 2U) {
+			unlocked_bits = UNLOCKED_SPACE | UNLOCKED_MUSIC;
+		}
 	}
 
 	DISABLE_RAM_MBC1;

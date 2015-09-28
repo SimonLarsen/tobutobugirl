@@ -51,6 +51,7 @@ void initHighscore() {
 	SHOW_SPRITES;
 	HIDE_WIN;
 	SHOW_BKG;
+
 	DISPLAY_ON;
 	enable_interrupts();
 }

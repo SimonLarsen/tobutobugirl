@@ -132,7 +132,11 @@ void enterWinscreen() {
 	while(1) {
 		updateJoystate();
 		if(CLICKED(J_START) || CLICKED(J_A)) {
-			gamestate = GAMESTATE_HIGHSCORE;
+			if(unlocked_bits) {
+				gamestate = GAMESTATE_UNLOCKED;
+			} else {
+				gamestate = GAMESTATE_HIGHSCORE;
+			}
 			break;
 		}
 		wait_vbl_done();
