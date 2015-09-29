@@ -174,6 +174,7 @@ void enterHighscore() {
 
 	fadeFromWhite(6U);
 
+	ticks = 0U;
 	while(1) {
 		updateJoystate();
 

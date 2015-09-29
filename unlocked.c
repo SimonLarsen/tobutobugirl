@@ -11,14 +11,14 @@
 #include "data/bg/selection3.h"
 #include "data/bg/selection5.h"
 
-const UBYTE messages[2][24] = {
+const UBYTE unlocked_messages[2][24] = {
 	{
-		10U, 24U, 15U, 34U, 30U, 10U, 22U, 15U, 32U, 15U, 22U, 10U,
-		10U, 10U, 31U, 24U, 22U, 25U, 13U, 21U, 15U, 14U, 10U, 10U,
+		10U, 24U, 15U, 34U, 30U, 10U, 22U, 15U, 32U, 15U, 22U, 10U, // " NEXT LEVEL "
+		10U, 10U, 31U, 24U, 22U, 25U, 13U, 21U, 15U, 14U, 10U, 10U, // "  UNLOCKED  "
 	},
 	{
-		23U, 31U, 29U, 19U, 13U, 10U, 26U, 22U, 11U, 35U, 15U, 28U,
-		10U, 10U, 31U, 24U, 22U, 25U, 13U, 21U, 15U, 14U, 10U, 10U,
+		23U, 31U, 29U, 19U, 13U, 10U, 26U, 22U, 11U, 35U, 15U, 28U, // "MUSIC PLAYER"
+		10U, 10U, 31U, 24U, 22U, 25U, 13U, 21U, 15U, 14U, 10U, 10U, // "  UNLOCKED  "
 	}
 };
 
@@ -40,16 +40,19 @@ void initUnlocked() {
 		unlocked_bits ^= UNLOCKED_CLOUDS;
 		set_bkg_data(selection2_offset, selection2_data_length, selection2_data);
 		set_bkg_tiles(0U, 8U, 20U, 6U, selection2_tiles);
+		set_bkg_tiles(4U, 5U, 12U, 2U, unlocked_messages[0]);
 	}
 	else if(unlocked_bits & UNLOCKED_SPACE) {
 		unlocked_bits ^= UNLOCKED_SPACE;
 		set_bkg_data(selection3_offset, selection3_data_length, selection3_data);
 		set_bkg_tiles(0U, 8U, 20U, 6U, selection3_tiles);
+		set_bkg_tiles(4U, 5U, 12U, 2U, unlocked_messages[0]);
 	}
 	else if(unlocked_bits & UNLOCKED_MUSIC) {
 		unlocked_bits ^= UNLOCKED_MUSIC;
 		set_bkg_data(selection5_offset, selection5_data_length, selection5_data);
 		set_bkg_tiles(0U, 8U, 20U, 6U, selection5_tiles);
+		set_bkg_tiles(4U, 5U, 12U, 2U, unlocked_messages[1]);
 	}
 
 	BGP_REG = 0xE4U; // 11100100
