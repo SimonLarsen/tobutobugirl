@@ -42,6 +42,7 @@ highscore_backgrounds:
 .PHONY: unlocked_backgrounds
 unlocked_backgrounds:
 	imgtogb --map -O 47 data/bg/unlocked.png data/bg/unlocked.h
+	imgtogb --map data/bg/zoom_circles.png data/bg/zoom_circles.h
 
 .PHONY: jukebox_backgrounds
 jukebox_backgrounds:

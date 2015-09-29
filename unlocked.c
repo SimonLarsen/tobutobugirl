@@ -5,7 +5,7 @@
 #include "gamestate.h"
 
 #include "data/sprite/characters.h"
-#include "data/bg/circles.h"
+#include "data/bg/zoom_circles.h"
 #include "data/bg/unlocked.h"
 #include "data/bg/selection2.h"
 #include "data/bg/selection3.h"
@@ -32,8 +32,10 @@ void initUnlocked() {
 	move_bkg(0U, 0U);
 
 	set_bkg_data(0U, 38U, characters_data);
-	set_bkg_data(38U, circles_data_length, circles_data);
+	set_bkg_data(38U, zoom_circles_data_length, zoom_circles_data);
 	set_bkg_data(unlocked_offset, unlocked_data_length, unlocked_data);
+	set_bkg_data(47U, 8U, &zoom_circles_data[0]);
+
 	set_bkg_tiles(0U, 0U, unlocked_tiles_width, unlocked_tiles_height, unlocked_tiles);
 
 	if(unlocked_bits & UNLOCKED_CLOUDS) {
@@ -81,7 +83,10 @@ void enterUnlocked() {
 		ticks++;
 		if((ticks & 3U) == 3U) {
 			unlocked_circle_index = (unlocked_circle_index+1U) & 7U;
-			set_bkg_data(47U, 1U, &circles_data[(unlocked_circle_index << 4)]);
+			set_bkg_data(47U+unlocked_circle_index, 8U-unlocked_circle_index, &zoom_circles_data[0]);
+			if(unlocked_circle_index) {
+				set_bkg_data(47U, unlocked_circle_index, &zoom_circles_data[(8U-unlocked_circle_index) << 4]);
+			}
 		}
 
 		if(CLICKED(J_START) || CLICKED(J_A)) {
