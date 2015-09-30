@@ -79,7 +79,7 @@ void _highscoreUpdateScreen() {
 	// Select level images
 	tile = highscore_selection;
 	if(tile > levels_completed+1U) {
-		tile = 4U;
+		tile = 5U;
 	}
 
 	switch(tile) {
@@ -95,7 +95,7 @@ void _highscoreUpdateScreen() {
 			set_bkg_data(selection3_offset, selection3_data_length, selection3_data);
 			data = selection3_tiles;
 			break;
-		case 4U:
+		case 5U:
 			set_bkg_data(selection4_offset, selection4_data_length, selection4_data);
 			data = selection4_tiles;
 			break;
