@@ -96,7 +96,9 @@ void enterWinscreen() {
 	fadeFromWhite(10U);
 
 	setMusicBank(4U);
+	disable_interrupts();
 	playMusic(&winscreen_song_data);
+	enable_interrupts();
 
 	delay(255U);
 

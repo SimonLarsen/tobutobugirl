@@ -78,7 +78,9 @@ void enterTitle() {
 	cheat_offset = 0U;
 
 	setMusicBank(4U);
+	disable_interrupts();
 	playMusic(&title_song_data);
+	enable_interrupts();
 
 	ticks = 0U;
 	while(1U) {

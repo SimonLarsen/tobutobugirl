@@ -160,6 +160,7 @@ void enterJukebox() {
 		if(CLICKED(J_A) || CLICKED(J_START)) {
 			stopMusic();
 			jukebox_music_ticks = 0U;
+			disable_interrupts();
 			switch(jukebox_selection) {
 				case 0U:
 					setMusicBank(6U);
@@ -194,6 +195,7 @@ void enterJukebox() {
 					playMusic(&winscreen_song_data);
 					break;
 			}
+			enable_interrupts();
 			jukebox_active = 1U;
 		}
 		if(CLICKED(J_B)) {
@@ -206,10 +208,10 @@ void enterJukebox() {
 		wait_vbl_done();
 	}
 
+	stopMusic();
 	clearRemainingSprites();
 	fadeToWhite(10U);
 
-	stopMusic();
 	remove_TIM(jukeboxUpdateMusic);
 	add_TIM(updateMusic);
 }
