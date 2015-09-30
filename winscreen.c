@@ -11,6 +11,10 @@
 
 extern UBYTE winscreen_song_data;
 
+const UBYTE winscreen_clear_text[5] = {
+	13U, 22U, 15U, 11U, 28U
+};
+
 void drawScore(UBYTE x, UBYTE y, UBYTE value) {
 	UBYTE tile;
 
@@ -57,6 +61,7 @@ void initWinscreen() {
 	set_bkg_data(0U, 40U, characters_data);
 	set_bkg_data_rle(win_base_offset, win_base_data_length, win_base_data);
 	set_bkg_tiles_rle(0U, 0U, win_base_tiles_width, win_base_tiles_height, win_base_tiles);
+	set_bkg_tiles(11U, 1U, 5U, 1U, winscreen_clear_text);
 
 	switch(level) {
 		case 1:
