@@ -98,15 +98,17 @@ void jukeboxUpdateSprites() {
 	setSprite(124U+offset, 108U, 2U, OBJ_PAL0 | FLIP_X);
 	setSprite(132U+offset, 108U, 0U, OBJ_PAL0 | FLIP_X);
 
-	// Small note
-	offset = jukebox_bop & 1U;
-	setSprite(11U, 94U+offset, 4U, OBJ_PAL0);
-	setSprite(145U, 18U+offset, 4U, OBJ_PAL0);
+	if(jukebox_active) {
+		// Small notes
+		offset = jukebox_bop & 1U;
+		setSprite(11U, 94U+offset, 4U, OBJ_PAL0);
+		setSprite(145U, 18U+offset, 4U, OBJ_PAL0);
 
-	// Double note
-	offset = (jukebox_bop & 1U) ^ 1U;
-	setSprite(12U, 19U+offset, 8U, OBJ_PAL0);
-	setSprite(20U, 19U+offset, 10U, OBJ_PAL0);
+		// Double note
+		offset = (jukebox_bop & 1U) ^ 1U;
+		setSprite(12U, 19U+offset, 8U, OBJ_PAL0);
+		setSprite(20U, 19U+offset, 10U, OBJ_PAL0);
+	}
 
 	// Bobble head figurine
 	offset = jukebox_bop & 3U;
