@@ -33,9 +33,11 @@ void setMusicBank(UBYTE i) {
 }
 
 void playMusic(UBYTE *data) {
+	disable_interrupts();
 	SWITCH_ROM_MBC1(music_bank);
 	mus_init(data);
 	SWITCH_ROM_MBC1(game_bank);
+	enable_interrupts();
 }
 
 void updateMusic() {
