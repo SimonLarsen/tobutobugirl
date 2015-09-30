@@ -58,8 +58,7 @@ void main() {
 	level = 1U;
 	unlocked_bits = 0U;
 	
-	unlocked_bits = UNLOCKED_CLOUDS;
-	gamestate = GAMESTATE_UNLOCKED;
+	gamestate = GAMESTATE_INTRO;
 
 	SWITCH_16_8_MODE_MBC1;
 	add_TIM(updateMusic);
