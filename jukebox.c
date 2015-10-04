@@ -161,7 +161,6 @@ void enterJukebox() {
 		}
 		if(CLICKED(J_A) || CLICKED(J_START)) {
 			stopMusic();
-			jukebox_music_ticks = 0U;
 			disable_interrupts();
 			switch(jukebox_selection) {
 				case 0U:
@@ -198,6 +197,8 @@ void enterJukebox() {
 					break;
 			}
 			enable_interrupts();
+			jukebox_music_ticks = 0U;
+			jukebox_bop = 1U;
 			jukebox_active = 1U;
 		}
 		if(CLICKED(J_B)) {
