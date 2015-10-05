@@ -1,6 +1,6 @@
-#include "data/bg/selection0.h"
+#include "data/bg/selection_highscore.h"
 
-const unsigned char selection0_data[] = {
+const unsigned char selection_highscore_data[] = {
 	255, 255,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0, 
 	255, 255,   0,   0,  64,   0, 192,   0, 192,   0,   0,   0,   0,   0,   0,   0, 
 	255, 255,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,  28,   0,  12, 
@@ -57,7 +57,7 @@ const unsigned char selection0_data[] = {
 	128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 128, 255, 255
 };
 
-const unsigned char selection0_tiles[] = {
+const unsigned char selection_highscore_tiles[] = {
 	 90,  90,  90,  90,  90,  90,  90,  90,  90,  91,  92,  90,  90,  90,  90,  90, 
 	 90,  90,  90,  90,  93,  93,  93,  93,  93,  93,  93,  94,  95,  96,  97,  98, 
 	 93,  93,  93,  93,  93,  93,  93,  93,  93,  93,  93,  93,  99, 100,  93, 101, 

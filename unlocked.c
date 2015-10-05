@@ -9,7 +9,7 @@
 #include "data/bg/unlocked.h"
 #include "data/bg/selection2.h"
 #include "data/bg/selection3.h"
-#include "data/bg/selection5.h"
+#include "data/bg/selection_jukebox.h"
 
 const UBYTE unlocked_messages[2][24] = {
 	{
@@ -52,8 +52,8 @@ void initUnlocked() {
 	}
 	else if(unlocked_bits & UNLOCKED_MUSIC) {
 		unlocked_bits ^= UNLOCKED_MUSIC;
-		set_bkg_data(selection5_offset, selection5_data_length, selection5_data);
-		set_bkg_tiles(0U, 8U, 20U, 6U, selection5_tiles);
+		set_bkg_data(selection_jukebox_offset, selection_jukebox_data_length, selection_jukebox_data);
+		set_bkg_tiles(0U, 8U, 20U, 6U, selection_jukebox_tiles);
 		set_bkg_tiles(4U, 5U, 12U, 2U, unlocked_messages[1]);
 	}
 

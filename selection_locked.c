@@ -1,6 +1,6 @@
-#include "data/bg/selection4.h"
+#include "data/bg/selection_locked.h"
 
-const unsigned char selection4_data[] = {
+const unsigned char selection_locked_data[] = {
 	255, 255,   0, 255,   0, 255,   0, 255,   0, 255,   0, 255,   0, 255,   0, 255, 
 	255, 255,   0, 255,   0, 255,   0, 255,   0, 255,   0, 255,   0, 255,   1, 255, 
 	255, 255,   0, 255,   0, 255,   0, 255,   0, 255,  63, 255, 224, 192, 128,   0, 
@@ -31,7 +31,7 @@ const unsigned char selection4_data[] = {
 	  0, 255,   0, 255,   0, 255,   0, 255,   0, 255,   0, 255,   0, 255, 255, 255
 };
 
-const unsigned char selection4_tiles[] = {
+const unsigned char selection_locked_tiles[] = {
 	 90,  90,  90,  90,  90,  90,  90,  91,  92,  93,  93,  94,  95,  90,  90,  90, 
 	 90,  90,  90,  90,  96,  96,  96,  96,  97,  96,  96,  98,  99, 100, 100, 101, 
 	102,  96,  97,  96,  96,  96,  96,  96,  96,  96,  96,  96,  96,  96,  96, 103, 

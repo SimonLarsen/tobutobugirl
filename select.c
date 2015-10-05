@@ -13,17 +13,26 @@
 #include "data/bg/circles.h"
 #include "data/bg/select.h"
 
-#include "data/bg/selection0.h"
 #include "data/bg/selection1.h"
 #include "data/bg/selection2.h"
 #include "data/bg/selection3.h"
-#include "data/bg/selection4.h"
-#include "data/bg/selection5.h"
+#include "data/bg/selection_highscore.h"
+#include "data/bg/selection_jukebox.h"
+#include "data/bg/selection_locked.h"
 
 UBYTE select_circle_index;
 UBYTE select_ticks;
 
 extern UBYTE mainmenu_song_data;
+
+const UBYTE select_names[6][6] = {
+	{29U, 13U, 25U, 28U, 15U, 29U}, // "SCORES"
+	{26U, 22U, 11U, 19U, 24U, 29U}, // "PLAINS"
+	{13U, 22U, 25U, 31U, 14U, 29U}, // "CLOUDS"
+	{29U, 26U, 11U, 13U, 15U, 10U}, // "SPACE "
+	{23U, 31U, 29U, 19U, 13U, 10U}, // "MUSIC "
+	{22U, 25U, 13U, 21U, 15U, 14U}  // "LOCKED"
+};
 
 void initSelect() {
 	disable_interrupts();
@@ -109,14 +118,14 @@ void selectTransitionOut() {
 
 UBYTE *selectGetBannerData() {
 	if(selection == 0U) {
-		set_bkg_data(selection0_offset, selection0_data_length, selection0_data);
-		return selection0_tiles;
+		set_bkg_data(selection_highscore_offset, selection_highscore_data_length, selection_highscore_data);
+		return selection_highscore_tiles;
 	} else if(selection == 4U) {
-		set_bkg_data(selection5_offset, selection5_data_length, selection5_data);
-		return selection5_tiles;
+		set_bkg_data(selection_jukebox_offset, selection_jukebox_data_length, selection_jukebox_data);
+		return selection_jukebox_tiles;
 	} else if(selection > levels_completed+1U) {
-		set_bkg_data(selection4_offset, selection4_data_length, selection4_data);
-		return selection4_tiles;
+		set_bkg_data(selection_locked_offset, selection_locked_data_length, selection_locked_data);
+		return selection_locked_tiles;
 	} else if(selection == 1U) {
 		set_bkg_data(selection1_offset, selection1_data_length, selection1_data);
 		return selection1_tiles;
@@ -260,7 +269,7 @@ void enterSelect() {
 			offset += 4U;
 		}
 		for(i = 0U; i != 6; ++i) {
-			setSprite(offset+(i << 3), 61U+cos4_16[(i+(ticks >> 1)) & 15U], level_names[name_index][i], OBJ_PAL0);
+			setSprite(offset+(i << 3), 61U+cos4_16[(i+(ticks >> 1)) & 15U], select_names[name_index][i], OBJ_PAL0);
 		}
 
 		selectUpdateSprites();

@@ -15,12 +15,10 @@ UBYTE levels_completed;
 UBYTE unlocked_bits;
 
 const UBYTE level_names[6][6] = {
-	{29U, 13U, 25U, 28U, 15U, 29U}, // "SCORES"
+	{0U, 0U, 0U, 0U, 0U}, // empty
 	{26U, 22U, 11U, 19U, 24U, 29U}, // "PLAINS"
 	{13U, 22U, 25U, 31U, 14U, 29U}, // "CLOUDS"
 	{29U, 26U, 11U, 13U, 15U, 10U}, // "SPACE "
-	{23U, 31U, 29U, 19U, 13U, 10U}, // "MUSIC "
-	{22U, 25U, 13U, 21U, 15U, 14U}  // "LOCKED"
 };
 
 void setGameBank(UBYTE i) {

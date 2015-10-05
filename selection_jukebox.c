@@ -1,6 +1,6 @@
-#include "data/bg/selection5.h"
+#include "data/bg/selection_jukebox.h"
 
-const unsigned char selection5_data[] = {
+const unsigned char selection_jukebox_data[] = {
 	255, 255, 255,   0, 255,   0, 255,   0, 255,   0, 255,   0, 255,   0, 255,   0, 
 	255, 255, 255,   0, 255,   0, 255,   0, 255,   0, 255,   0, 248,   7, 228,  24, 
 	255, 255, 127, 128, 127, 128, 127, 128, 127, 128, 127, 128, 255, 240, 111, 156, 
@@ -71,7 +71,7 @@ const unsigned char selection5_data[] = {
 	231,   0, 255,   0, 255,   0, 255,   0, 127,   0, 255,   0, 255,   0, 255, 255
 };
 
-const unsigned char selection5_tiles[] = {
+const unsigned char selection_jukebox_tiles[] = {
 	 90,  90,  90,  90,  90,  90,  90,  90,  90,  90,  90,  90,  90,  91,  92,  90, 
 	 90,  90,  90,  90,  93,  94,  95,  96,  93,  97,  98,  99, 100,  93,  93,  93, 
 	101, 102, 103, 104,  93,  93,  93,  93,  93, 105, 106, 107, 108, 109, 110, 111, 
