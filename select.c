@@ -25,15 +25,6 @@ UBYTE select_ticks;
 
 extern UBYTE mainmenu_song_data;
 
-const UBYTE select_names[6][6] = {
-	{29U, 13U, 25U, 28U, 15U, 29U}, // "SCORES"
-	{26U, 22U, 11U, 19U, 24U, 29U}, // "PLAINS"
-	{13U, 22U, 25U, 31U, 14U, 29U}, // "CLOUDS"
-	{29U, 26U, 11U, 13U, 15U, 10U}, // "SPACE "
-	{23U, 31U, 29U, 19U, 13U, 10U}, // "MUSIC "
-	{22U, 25U, 13U, 21U, 15U, 14U}  // "LOCKED"
-};
-
 void initSelect() {
 	disable_interrupts();
 	DISPLAY_OFF;
@@ -120,7 +111,7 @@ UBYTE *selectGetBannerData() {
 	if(selection == 0U) {
 		set_bkg_data(selection_highscore_offset, selection_highscore_data_length, selection_highscore_data);
 		return selection_highscore_tiles;
-	} else if(selection == 4U) {
+	} else if(selection == 5U) {
 		set_bkg_data(selection_jukebox_offset, selection_jukebox_data_length, selection_jukebox_data);
 		return selection_jukebox_tiles;
 	} else if(selection > levels_completed+1U) {
@@ -133,6 +124,9 @@ UBYTE *selectGetBannerData() {
 		set_bkg_data(selection2_offset, selection2_data_length, selection2_data);
 		return selection2_tiles;
 	} else if(selection == 3U) {
+		set_bkg_data(selection3_offset, selection3_data_length, selection3_data);
+		return selection3_tiles;
+	} else if(selection == 4U) {
 		set_bkg_data(selection3_offset, selection3_data_length, selection3_data);
 		return selection3_tiles;
 	}
@@ -223,8 +217,8 @@ void enterSelect() {
 		}
 
 		if(CLICKED(J_RIGHT)) {
-			if(selection == 3U && levels_completed < 2U) selection = 0U;
-			else if(selection == 4U) selection = 0U;
+			if(selection == 4U && levels_completed < 2U) selection = 0U;
+			else if(selection == 5U) selection = 0U;
 			else selection++;
 			selectTransitionOut();
 			selectTransitionIn();
@@ -233,9 +227,9 @@ void enterSelect() {
 		if(CLICKED(J_LEFT)) {
 			if(selection == 0U) {
 				if(levels_completed >= 2U) {
-					selection = 4U;
+					selection = 5U;
 				} else {
-					selection = 3U;
+					selection = 4U;
 				}
 			}
 			else selection--;
@@ -246,7 +240,7 @@ void enterSelect() {
 		if(CLICKED(J_START) || CLICKED(J_A)) {
 			if(selection == 0U) {
 				gamestate = GAMESTATE_HIGHSCORE;
-			} else if(selection == 4U) {
+			} else if(selection == 5U) {
 				gamestate = GAMESTATE_JUKEBOX;
 			} else if(selection <= levels_completed+1U) { // TODO: Remove cheat again
 				level = selection;
@@ -258,18 +252,18 @@ void enterSelect() {
 		}
 
 		// Draw level name
-		if(selection == 0U || selection == 4U
+		if(selection == 0U || selection == 5U
 		|| (selection <= levels_completed+1U)) {
 			name_index = selection;
 		} else {
-			name_index = 5U;
+			name_index = 6U;
 		}
 		offset = 64U;
-		if(name_index == 3U || name_index == 4U) {
+		if(level_names[name_index][5] == 10U) {
 			offset += 4U;
 		}
 		for(i = 0U; i != 6; ++i) {
-			setSprite(offset+(i << 3), 61U+cos4_16[(i+(ticks >> 1)) & 15U], select_names[name_index][i], OBJ_PAL0);
+			setSprite(offset+(i << 3), 61U+cos4_16[(i+(ticks >> 1)) & 15U], level_names[name_index][i], OBJ_PAL0);
 		}
 
 		selectUpdateSprites();

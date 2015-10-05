@@ -1,6 +1,7 @@
 #include <gb/gb.h>
 #include "defines.h"
 #include "music.h"
+#include "game_backgrounds.h"
 
 #include "gamestate.h"
 
@@ -14,11 +15,14 @@ UBYTE game_bank, music_bank;
 UBYTE levels_completed;
 UBYTE unlocked_bits;
 
-const UBYTE level_names[6][6] = {
-	{0U, 0U, 0U, 0U, 0U}, // empty
+const UBYTE level_names[7][6] = {
+	{29U, 13U, 25U, 28U, 15U, 29U}, // "SCORES"
 	{26U, 22U, 11U, 19U, 24U, 29U}, // "PLAINS"
 	{13U, 22U, 25U, 31U, 14U, 29U}, // "CLOUDS"
 	{29U, 26U, 11U, 13U, 15U, 10U}, // "SPACE "
+	{14U, 28U, 15U, 11U, 23U, 10U}, // "DREAM "
+	{23U, 31U, 29U, 19U, 13U, 10U}, // "MUSIC "
+	{22U, 25U, 13U, 21U, 15U, 14U}  // "LOCKED"
 };
 
 void setGameBank(UBYTE i) {
@@ -74,6 +78,31 @@ void clearRemainingSprites() {
 		if(next_sprite == 40U) next_sprite = 0U;
 	}
 	sprites_used = 0U;
+}
+
+void setIngameBackground(UBYTE level) {
+	SWITCH_ROM_MBC1(7);
+
+	switch(level) {
+		case 1U:
+			set_bkg_data_rle(background1_offset, background1_data_length, background1_data);
+			set_bkg_tiles_rle(0U, 0U, background1_tiles_width, background1_tiles_height, background1_tiles);
+			break;
+		case 2U:
+			set_bkg_data_rle(background2_offset, background2_data_length, background2_data);
+			set_bkg_tiles_rle(0U, 0U, background2_tiles_width, background2_tiles_height, background2_tiles);
+			break;
+		case 3U:
+			set_bkg_data_rle(background3_offset, background3_data_length, background3_data);
+			set_bkg_tiles_rle(0U, 0U, background3_tiles_width, background3_tiles_height, background3_tiles);
+			break;
+		case 4U:
+			set_bkg_data_rle(background4_offset, background4_data_length, background4_data);
+			set_bkg_tiles_rle(0U, 0U, background4_tiles_width, background4_tiles_height, background4_tiles);
+			break;
+	}
+
+	SWITCH_ROM_MBC1(game_bank);
 }
 
 void set_bkg_data_rle(UBYTE first, UBYTE n, UBYTE *data) {

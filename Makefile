@@ -26,6 +26,7 @@ ingame_backgrounds:
 	imgtogb --map -O 34 --rle data/bg/background1.png data/bg/background1.h 
 	imgtogb --map -O 34 --rle data/bg/background2.png data/bg/background2.h 
 	imgtogb --map -O 34 --rle data/bg/background3.png data/bg/background3.h 
+	imgtogb --map -O 34 --rle data/bg/background4.png data/bg/background4.h 
 
 .PHONY: winscreen_backgrounds
 winscreen_backgrounds:
@@ -90,8 +91,6 @@ tobu.gb:
 	$(CC) $(CFLAGS) -c noisefreq.c
 	$(CC) $(CFLAGS) -c arrow.c
 	$(CC) $(CFLAGS) -c game.c -Wf-bo1
-	$(CC) $(CFLAGS) -c title.c -Wf-bo3
-	$(CC) $(CFLAGS) -c intro.c -Wf-bo3
 	$(CC) $(CFLAGS) -c select.c -Wf-bo2
 	$(CC) $(CFLAGS) -c highscore.c -Wf-bo2
 	$(CC) $(CFLAGS) -c unlocked.c -Wf-bo2
@@ -101,6 +100,8 @@ tobu.gb:
 	$(CC) $(CFLAGS) -c selection_highscore.c -Wf-bo2
 	$(CC) $(CFLAGS) -c selection_jukebox.c -Wf-bo2
 	$(CC) $(CFLAGS) -c selection_locked.c -Wf-bo2
+	$(CC) $(CFLAGS) -c title.c -Wf-bo3
+	$(CC) $(CFLAGS) -c intro.c -Wf-bo3
 	$(CC) $(CFLAGS) -c winscreen.c -Wf-bo3
 	$(CC) $(CFLAGS) -c jukebox.c -Wf-bo4
 	$(CC) $(CFLAGS) -c data/songs/title_song.asm # bank 4
@@ -112,6 +113,7 @@ tobu.gb:
 	$(CC) $(CFLAGS) -c data/songs/space_song.asm # bank 5
 	$(CC) $(CFLAGS) -c data/songs/intro1_song.asm # bank 6
 	$(CC) $(CFLAGS) -c data/songs/intro2_song.asm # bank 6
+	$(CC) $(CFLAGS) -c game_backgrounds.c -Wf-bo7
 	$(CC) $(CFLAGS) -c -Wf-ba0 -c ram.c # ram bank 0
 	$(CC) $(CFLAGS) -Wl-yt3 -Wl-yo8 -Wl-ya1 *.o -o $@
 

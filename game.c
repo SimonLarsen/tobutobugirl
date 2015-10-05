@@ -12,9 +12,6 @@
 // Maps
 #include "data/bg/hud.h"
 #include "data/bg/clock.h"
-#include "data/bg/background1.h"
-#include "data/bg/background2.h"
-#include "data/bg/background3.h"
 // Sprites
 #include "data/sprite/sprites.h"
 #include "data/sprite/portal.h"
@@ -23,10 +20,10 @@ UBYTE first_load;
 UBYTE paused, ingame_state;
 
 UBYTE scrolly, scrolled;
-UBYTE last_spawn_x, last_spawn_type, last_spawn_index;
+UBYTE last_spawn_x, last_spawn_index;
 UBYTE next_spawn, next_watch;
 
-UBYTE timer, progress, portal_spawned;
+UBYTE timer, progress, portal_spawned, repeat_spikes;
 UBYTE blips, blip_bar;
 UBYTE player_x, player_y;
 UBYTE player_xdir, player_ydir;
@@ -43,7 +40,8 @@ extern UBYTE plains_song_data;
 extern UBYTE clouds_song_data;
 extern UBYTE space_song_data;
 
-const UBYTE scrolled_length[4] = { 0U, 16U, 24U, 32U };
+const UBYTE scrolled_length[4] = { 16U, 24U, 32U, 32U };
+const UBYTE allowed_spikes[4] = { 1U, 1U, 1U, 3U };
 
 const UBYTE entity_sprites[] = {
 	0,		// E_NONE
@@ -63,24 +61,26 @@ const UBYTE entity_sprites[] = {
 	28*4,	// E_CLOUD
 };
 
-const UBYTE spawn_levels[3][3][8] = {
-	// Plains
-	{
+const UBYTE spawn_levels[4][3][8] = {
+	{ // Plains
 		{E_BIRD, E_BIRD, E_BAT, E_BAT, E_BAT, E_BAT, E_BAT, E_BAT},
 		{E_SPIKES, E_SPIKES, E_BIRD, E_BIRD, E_BAT, E_BAT, E_BAT, E_BAT},
 		{E_SPIKES, E_SPIKES, E_SPIKES, E_BIRD, E_BIRD, E_BIRD, E_BAT, E_BAT}
 	},
-	// Clouds
-	{
+	{ // Clouds
 		{E_SPIKES, E_SPIKES, E_SPIKES, E_BIRD, E_BIRD, E_BAT, E_BAT, E_BAT},
 		{E_SPIKES, E_SPIKES, E_ALIEN, E_ALIEN, E_BIRD, E_BIRD, E_BAT, E_BAT},
 		{E_SPIKES, E_SPIKES, E_GHOST, E_GHOST, E_BIRD, E_BIRD, E_BAT, E_BAT}
 	},
-	// Space
-	{
+	{ // Space
 		{E_SPIKES, E_SPIKES, E_GHOST, E_GHOST, E_BIRD, E_BIRD, E_BAT, E_BAT},
 		{E_FIREBALL, E_FIREBALL, E_GHOST, E_GHOST, E_GHOST, E_BIRD, E_BIRD, E_BIRD},
 		{E_FIREBALL, E_FIREBALL, E_FIREBALL, E_FIREBALL, E_GHOST, E_GHOST, E_GHOST, E_GHOST}
+	},
+	{ // Dream
+		{E_SPIKES, E_SPIKES, E_GHOST, E_GHOST, E_GHOST, E_BAT, E_BIRD, E_BIRD},
+		{E_FIREBALL, E_FIREBALL, E_SPIKES, E_GHOST, E_GHOST, E_GHOST, E_BIRD, E_BIRD},
+		{E_FIREBALL, E_FIREBALL, E_SPIKES, E_SPIKES, E_GHOST, E_GHOST, E_BIRD, E_BIRD}
 	}
 };
 
@@ -103,16 +103,7 @@ void initGame() {
 	if(first_load) {
 		first_load = 0U;
 
-		if(level == 1U) {
-			set_bkg_data_rle(background1_offset, background1_data_length, background1_data);
-			set_bkg_tiles_rle(0U, 0U, background1_tiles_width, background1_tiles_height, background1_tiles);
-		} else if(level == 2U) {
-			set_bkg_data_rle(background2_offset, background2_data_length, background2_data);
-			set_bkg_tiles_rle(0U, 0U, background2_tiles_width, background2_tiles_height, background2_tiles);
-		} else if(level == 3U) {
-			set_bkg_data_rle(background3_offset, background3_data_length, background3_data);
-			set_bkg_tiles_rle(0U, 0U, background3_tiles_width, background3_tiles_height, background3_tiles);
-		}
+		setIngameBackground(level);
 
 		setMusicBank(5U);
 		if(level == 1U) {
@@ -156,6 +147,7 @@ void initGame() {
 	next_watch = 0U;
 	progress = 0U;
 	portal_spawned = 0U;
+	repeat_spikes = 0U;
 
 	timer = 0U;
 	remaining_time = 24U;
@@ -572,7 +564,6 @@ void initSpawns() {
 		y -= 36U;
 		last_spawn_index = spawnEntity(E_BAT, x, y, RIGHT);
 	}
-	last_spawn_type = E_BAT;
 }
 
 void updateSpawns() {
@@ -590,21 +581,21 @@ void updateSpawns() {
 		dice = (UBYTE)rand() & 7U;
 
 		while(dice != 8U) {
-			type = spawn_levels[level-1][step][dice];
+			type = spawn_levels[level-1U][step][dice];
 			switch(type) {
 				case E_FIREBALL:
-					if(last_spawn_type != E_SPIKES && last_spawn_type != E_FIREBALL) {
+					if(repeat_spikes < allowed_spikes[level-1U]) {
 						last_spawn_index = spawnEntity(E_FIREBALL, x, 1U, NONE);
-						last_spawn_type = E_FIREBALL;
+						repeat_spikes++;
 						dice = 8U;
 						break;
 					}
 					dice++;
 					break;
 				case E_SPIKES:
-					if(last_spawn_type != E_SPIKES && last_spawn_type != E_FIREBALL) {
+					if(repeat_spikes < allowed_spikes[level-1U]) {
 						last_spawn_index = spawnEntity(E_SPIKES, x, 1U, NONE);
-						last_spawn_type = E_SPIKES;
+						repeat_spikes++;
 						dice = 8U;
 						break;
 					}
@@ -614,14 +605,14 @@ void updateSpawns() {
 					if(x < 40U) x = 40U;
 					if(x > 136U) x = 136U;
 					last_spawn_index = spawnEntity(E_GHOST, x, 1U, NONE);
-					last_spawn_type = E_GHOST;
+					repeat_spikes = 0U;
 					dice = 8U;
 					break;
 				case E_ALIEN:
 					if(x < 40U) x = 40U;
 					if(x > 136U) x = 136U;
 					last_spawn_index = spawnEntity(E_ALIEN, x, 1U, LEFT);
-					last_spawn_type = E_ALIEN;
+					repeat_spikes = 0U;
 					dice = 8U;
 					break;
 				case E_BIRD:
@@ -630,12 +621,12 @@ void updateSpawns() {
 					} else {
 						last_spawn_index = spawnEntity(E_BIRD, x, 1U, RIGHT);
 					}
-					last_spawn_type = E_BIRD;
+					repeat_spikes = 0U;
 					dice = 8U;
 					break;
 				case E_BAT:
 					last_spawn_index = spawnEntity(E_BAT, x, 1U, NONE);
-					last_spawn_type = E_BAT;
+					repeat_spikes = 0U;
 					dice = 8U;
 					break;
 			}
@@ -811,8 +802,8 @@ ingame_start:
 
 			// Scroll screen
 			scrolled += scrolly;
-			if(scrolled > scrolled_length[level]) {
-				scrolled -= scrolled_length[level];
+			if(scrolled > scrolled_length[level-1U]) {
+				scrolled -= scrolled_length[level-1U];
 				if(progress < 112U) progress++;
 				move_bkg(0U, 112U-progress);
 			}
@@ -878,6 +869,9 @@ void addScore() {
 		}
 		else if(level == 2U) {
 			unlocked_bits = UNLOCKED_SPACE | UNLOCKED_MUSIC;
+		}
+		else if(level == 3U) {
+			unlocked_bits = UNLOCKED_DREAM;
 		}
 	}
 

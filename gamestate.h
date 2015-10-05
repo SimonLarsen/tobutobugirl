@@ -5,6 +5,7 @@ void clearSprites();
 void updateJoystate();
 void setSprite(UBYTE x, UBYTE y, UBYTE tile, UBYTE prop);
 void clearRemainingSprites();
+void setIngameBackground(UBYTE level);
 void set_bkg_data_rle(UBYTE first, UBYTE n, UBYTE *data);
 void set_bkg_tiles_rle(UBYTE x, UBYTE y, UBYTE width, UBYTE height, UBYTE *tiles);
 void setGameBank(UBYTE i);
@@ -38,6 +39,7 @@ extern UBYTE unlocked_bits;
 #define UNLOCKED_CLOUDS 1U
 #define UNLOCKED_SPACE  2U
 #define UNLOCKED_MUSIC  4U
+#define UNLOCKED_DREAM  8U
 
 extern const UBYTE level_names[4][6];
 

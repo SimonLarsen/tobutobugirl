@@ -79,7 +79,7 @@ void _highscoreUpdateScreen() {
 	// Select level images
 	tile = highscore_selection;
 	if(tile > levels_completed+1U) {
-		tile = 5U;
+		tile = 6U;
 	}
 
 	switch(tile) {
@@ -95,7 +95,11 @@ void _highscoreUpdateScreen() {
 			set_bkg_data(selection3_offset, selection3_data_length, selection3_data);
 			data = selection3_tiles;
 			break;
-		case 5U:
+		case 4U:
+			set_bkg_data(selection3_offset, selection3_data_length, selection3_data);
+			data = selection3_tiles;
+			break;
+		case 6U:
 			set_bkg_data(selection_locked_offset, selection_locked_data_length, selection_locked_data);
 			data = selection_locked_tiles;
 			break;
@@ -185,12 +189,12 @@ void enterHighscore() {
 
 		if(CLICKED(J_LEFT)) {
 			highscore_selection--;
-			if(highscore_selection == 0U) highscore_selection = 3U;
+			if(highscore_selection == 0U) highscore_selection = 4U;
 			highscoreUpdateScreen();
 		}
 		if(CLICKED(J_RIGHT)) {
 			highscore_selection++;
-			if(highscore_selection == 4U) highscore_selection = 1U;
+			if(highscore_selection == 5U) highscore_selection = 1U;
 			highscoreUpdateScreen();
 		}
 

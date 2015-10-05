@@ -11,14 +11,18 @@
 #include "data/bg/selection3.h"
 #include "data/bg/selection_jukebox.h"
 
-const UBYTE unlocked_messages[2][24] = {
+const UBYTE unlocked_messages[3][24] = {
 	{
 		10U, 24U, 15U, 34U, 30U, 10U, 22U, 15U, 32U, 15U, 22U, 10U, // " NEXT LEVEL "
-		10U, 10U, 31U, 24U, 22U, 25U, 13U, 21U, 15U, 14U, 10U, 10U, // "  UNLOCKED  "
+		10U, 10U, 31U, 24U, 22U, 25U, 13U, 21U, 15U, 14U, 10U, 10U  // "  UNLOCKED  "
 	},
 	{
 		23U, 31U, 29U, 19U, 13U, 10U, 26U, 22U, 11U, 35U, 15U, 28U, // "MUSIC PLAYER"
-		10U, 10U, 31U, 24U, 22U, 25U, 13U, 21U, 15U, 14U, 10U, 10U, // "  UNLOCKED  "
+		10U, 10U, 31U, 24U, 22U, 25U, 13U, 21U, 15U, 14U, 10U, 10U  // "  UNLOCKED  "
+	},
+	{
+		10U, 10U, 10U, 14U, 28U, 15U, 11U, 23U, 10U, 10U, 10U, 10U, // "   DREAM    "
+		10U, 10U, 31U, 24U, 22U, 25U, 13U, 21U, 15U, 14U, 10U, 10U  // "  UNLOCKED  "
 	}
 };
 
@@ -55,6 +59,12 @@ void initUnlocked() {
 		set_bkg_data(selection_jukebox_offset, selection_jukebox_data_length, selection_jukebox_data);
 		set_bkg_tiles(0U, 8U, 20U, 6U, selection_jukebox_tiles);
 		set_bkg_tiles(4U, 5U, 12U, 2U, unlocked_messages[1]);
+	}
+	else if(unlocked_bits & UNLOCKED_DREAM) {
+		unlocked_bits ^= UNLOCKED_DREAM;
+		set_bkg_data(selection3_offset, selection3_data_length, selection3_data);
+		set_bkg_tiles(0U, 8U, 20U, 6U, selection3_tiles);
+		set_bkg_tiles(4U, 5U, 12U, 2U, unlocked_messages[2]);
 	}
 
 	BGP_REG = 0xE4U; // 11100100

@@ -22,6 +22,7 @@ void initRAM() {
 	ENABLE_RAM_MBC1;
 	SWITCH_RAM_MBC1(0);
 
+	// Check for signature
 	initialized = 1U;
 	for(i = 0U; i != 8U; ++i) {
 		if(ram_data[SIG_ADDR + i] != RAM_SIG[i]) {
@@ -31,7 +32,7 @@ void initRAM() {
 	}
 
 	if(initialized == 0U) {
-		for(i = 0U; i != 42U; ++i) {
+		for(i = 0U; i != 58U; ++i) {
 			ram_data[i] = 0U;
 		}
 
@@ -40,7 +41,7 @@ void initRAM() {
 		}
 	}
 
-	for(levels_completed = 0U; levels_completed != 3U; ++levels_completed) {
+	for(levels_completed = 0U; levels_completed != 4U; ++levels_completed) {
 		if(ram_data[levels_completed << 4] == 0U) break;
 	}
 
