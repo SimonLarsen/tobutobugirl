@@ -28,13 +28,8 @@ void addScore();
 #define DASH_TIME			14U
 #define SHORT_DASH_TIME		8U
 #define JUMP_SPEED			29U
-#define SHIELD_JUMP_SPEED	33U
-#define DJUMP_SPEED			26U
-#define JUMPPAD_SPEED		39U
 #define MAX_YSPEED			24U
 #define MAX_FLY_SPEED		24U
-
-#define RETICULE_MAX_OFFSET	30U
 
 #define P_BALLOON_TIME	100U
 #define P_ROCKET_TIME	25U
@@ -63,17 +58,6 @@ void addScore();
 #define LAST_COLLIDABLE E_PORTAL
 
 #define MAX_ENTITIES 18U
-
-// Powerups
-#define	P_NONE		0U
-#define P_PADDLE	1U
-#define P_BALLOON	2U
-#define P_BATS		3U
-#define P_ROCKET	4U
-#define P_SHIELD	5U
-
-#define FIRST_POWERUP	P_PADDLE
-#define LAST_POWERUP	P_SHIELD
 
 // States
 #define INGAME_ACTIVE		0U
