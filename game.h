@@ -34,6 +34,9 @@ void addScore();
 #define KEY_DASH	J_A
 #define KEY_USE		J_B
 
+#define SPAWN_INTERVAL 36U
+#define CLOCK_BONUS 8U
+
 // Entities
 #define E_NONE 		0U
 

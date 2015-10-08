@@ -21,7 +21,7 @@ UBYTE paused, ingame_state;
 
 UBYTE scrolly, scrolled;
 UBYTE last_spawn_x, last_spawn_index;
-UBYTE next_spawn, next_watch;
+UBYTE next_spawn, next_clock;
 
 UBYTE timer, progress, portal_spawned, repeat_spikes;
 UBYTE blips, blip_bar;
@@ -40,7 +40,20 @@ extern UBYTE plains_song_data;
 extern UBYTE clouds_song_data;
 extern UBYTE space_song_data;
 
-const UBYTE scrolled_length[4] = { 16U, 24U, 32U, 32U };
+const UBYTE scrolled_length[4] = {
+	16U, // 16 * 111 / 36 = 49
+	24U, // 24 * 111 / 36 = 74
+	32U, // 32 * 111 / 36 = 98
+	40U  // 40 * 111 / 36 = 123
+};
+
+const UBYTE clock_interval[4] = {
+	13U,
+	19U,
+	20U,
+	25U
+};
+
 const UBYTE allowed_spikes[4] = { 1U, 1U, 1U, 3U };
 
 const UBYTE entity_sprites[] = {
@@ -144,13 +157,13 @@ void initGame() {
 	entity_frame = 0U;
 	ticks = 0U;
 	next_spawn = 0U;
-	next_watch = 0U;
+	next_clock = clock_interval[level-1U];
 	progress = 0U;
 	portal_spawned = 0U;
 	repeat_spikes = 0U;
 
 	timer = 0U;
-	remaining_time = 24U;
+	remaining_time = 32U;
 	elapsed_time = 0U;
 
 	move_bkg(0U, 112U);
@@ -251,7 +264,7 @@ void updatePlayer() {
 			// Watch pickup
 			} else if(type == E_CLOCK) {
 				entity_type[i] = E_NONE;
-				remaining_time += 12U;
+				remaining_time += CLOCK_BONUS;
 				if(remaining_time > 32U) remaining_time = 32;
 				updateHUDTime();
 			// End level portal
@@ -570,7 +583,7 @@ void updateSpawns() {
 	UBYTE x, dice, type, step;
 	next_spawn += scrolly;
 
-	if(next_spawn < 36U) return;
+	if(next_spawn < SPAWN_INTERVAL) return;
 
 	if(progress < 111U) {
 		next_spawn -= 36U;
@@ -634,9 +647,9 @@ void updateSpawns() {
 
 		last_spawn_x = x - 24U;
 
-		next_watch++;
-		if(next_watch == 14U) {
-			next_watch = 0U;
+		next_clock--;
+		if(next_clock == 0U) {
+			next_clock = clock_interval[level-1U];
 			x = ((last_spawn_x + 32U + ((UBYTE)rand() & 63U)) & 127U) + 24U;
 			spawnEntity(E_CLOCK, x, 1U, NONE);
 		}
@@ -802,7 +815,7 @@ ingame_start:
 
 			// Scroll screen
 			scrolled += scrolly;
-			if(scrolled > scrolled_length[level-1U]) {
+			if(scrolled >= scrolled_length[level-1U]) {
 				scrolled -= scrolled_length[level-1U];
 				if(progress < 112U) progress++;
 				move_bkg(0U, 112U-progress);
