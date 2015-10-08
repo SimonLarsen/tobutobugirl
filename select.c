@@ -144,6 +144,7 @@ void selectTransitionIn() {
 
 	disable_interrupts();
 	data = selectGetBannerData();
+	updateMusic();
 	enable_interrupts();
 
 	tile = data;
