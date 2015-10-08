@@ -142,7 +142,9 @@ void selectTransitionIn() {
 	left = 0U;
 	right = 19U;
 
+	disable_interrupts();
 	data = selectGetBannerData();
+	enable_interrupts();
 
 	tile = data;
 	do {
