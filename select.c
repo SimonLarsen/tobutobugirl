@@ -218,7 +218,7 @@ void enterSelect() {
 			selectScrollCircles();
 		}
 
-		if(CLICKED(J_RIGHT)) {
+		if(ISDOWN(J_RIGHT)) {
 			if(selection == 4U && levels_completed < 2U) selection = 0U;
 			else if(selection == 5U) selection = 0U;
 			else selection++;
@@ -226,7 +226,7 @@ void enterSelect() {
 			selectTransitionIn();
 			selectUpdateSprites();
 		}
-		if(CLICKED(J_LEFT)) {
+		if(ISDOWN(J_LEFT)) {
 			if(selection == 0U) {
 				if(levels_completed >= 2U) {
 					selection = 5U;

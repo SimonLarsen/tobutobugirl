@@ -187,12 +187,12 @@ void enterHighscore() {
 			highscoreScrollCircles();
 		}
 
-		if(CLICKED(J_LEFT)) {
+		if(ISDOWN(J_LEFT)) {
 			highscore_selection--;
 			if(highscore_selection == 0U) highscore_selection = 4U;
 			highscoreUpdateScreen();
 		}
-		if(CLICKED(J_RIGHT)) {
+		if(ISDOWN(J_RIGHT)) {
 			highscore_selection++;
 			if(highscore_selection == 5U) highscore_selection = 1U;
 			highscoreUpdateScreen();
