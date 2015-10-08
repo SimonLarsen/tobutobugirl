@@ -31,10 +31,6 @@ void addScore();
 #define MAX_YSPEED			24U
 #define MAX_FLY_SPEED		24U
 
-#define P_BALLOON_TIME	100U
-#define P_ROCKET_TIME	25U
-#define P_SHIELD_TIME	100U
-
 #define KEY_DASH	J_A
 #define KEY_USE		J_B
 
