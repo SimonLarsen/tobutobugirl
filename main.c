@@ -72,7 +72,7 @@ void main() {
 				enterIntro();
 				break;
 			case GAMESTATE_TITLE:
-				setGameBank(3U);
+				setGameBank(2U);
 				enterTitle();
 				break;
 			case GAMESTATE_SELECT:

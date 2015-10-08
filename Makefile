@@ -34,6 +34,7 @@ winscreen_backgrounds:
 	imgtogb --map -O 69 --rle data/bg/win1.png data/bg/win1.h
 	imgtogb --map -O 69 --rle data/bg/win2.png data/bg/win2.h
 	imgtogb --map -O 69 --rle data/bg/win3.png data/bg/win3.h
+	imgtogb --map -O 69 --rle data/bg/win4.png data/bg/win4.h
 
 .PHONY: highscore_backgrounds
 highscore_backgrounds:
@@ -100,7 +101,7 @@ tobu.gb:
 	$(CC) $(CFLAGS) -c selection_highscore.c -Wf-bo2
 	$(CC) $(CFLAGS) -c selection_jukebox.c -Wf-bo2
 	$(CC) $(CFLAGS) -c selection_locked.c -Wf-bo2
-	$(CC) $(CFLAGS) -c title.c -Wf-bo3
+	$(CC) $(CFLAGS) -c title.c -Wf-bo2
 	$(CC) $(CFLAGS) -c intro.c -Wf-bo3
 	$(CC) $(CFLAGS) -c winscreen.c -Wf-bo3
 	$(CC) $(CFLAGS) -c jukebox.c -Wf-bo4
