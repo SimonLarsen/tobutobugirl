@@ -55,7 +55,7 @@ const UBYTE entity_sprites[] = {
 	16*4,	// E_ALIEN
 	// Powerups
 	27*4,	// E_BLIP
-	21*4,	// E_WATCH
+	21*4,	// E_CLOCK
 	// Special
 	20*4,	// E_PORTAL
 	28*4,	// E_CLOUD
@@ -249,7 +249,7 @@ void updatePlayer() {
 					if(diff < 12U) killPlayer();
 				}
 			// Watch pickup
-			} else if(type == E_WATCH) {
+			} else if(type == E_CLOCK) {
 				entity_type[i] = E_NONE;
 				remaining_time += 12U;
 				if(remaining_time > 32U) remaining_time = 32;
@@ -638,7 +638,7 @@ void updateSpawns() {
 		if(next_watch == 14U) {
 			next_watch = 0U;
 			x = ((last_spawn_x + 32U + ((UBYTE)rand() & 63U)) & 127U) + 24U;
-			spawnEntity(E_WATCH, x, 1U, NONE);
+			spawnEntity(E_CLOCK, x, 1U, NONE);
 		}
 	}
 	else if(progress == 112U && !portal_spawned) {

@@ -48,7 +48,7 @@ void addScore();
 #define E_GHOST		5U
 #define E_ALIEN		6U
 #define E_BLIP		7U
-#define E_WATCH		8U
+#define E_CLOCK		8U
 #define E_PORTAL	9U
 #define E_CLOUD		10U
 
