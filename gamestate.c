@@ -25,6 +25,8 @@ const UBYTE level_names[7][6] = {
 	{22U, 25U, 13U, 21U, 15U, 14U}  // "LOCKED"
 };
 
+const UBYTE level_max_time[4] = { 56U, 56U, 64U, 64U };
+
 void setGameBank(UBYTE i) {
 	game_bank = i;
 	SWITCH_ROM_MBC1(i);

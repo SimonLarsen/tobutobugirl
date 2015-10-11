@@ -48,10 +48,10 @@ const UBYTE scrolled_length[4] = {
 };
 
 const UBYTE clock_interval[4] = {
-	13U,
-	19U,
-	20U,
-	25U
+	13U, //  49/13 = 3
+	19U, //  74/19 = 3
+	20U, //  98/20 = 4
+	25U  // 123/25 = 4
 };
 
 const UBYTE allowed_spikes[4] = { 1U, 1U, 1U, 3U };
@@ -853,7 +853,7 @@ void addScore() {
 	ENABLE_RAM_MBC1;
 	SWITCH_RAM_MBC1(0);
 
-	score = 4U*remaining_time + kills;
+	score = TOTAL_SCORE;
 
 	data = &ram_data[(level - 1U) << 4];
 	for(i = 0U; i != 5U; ++i) {

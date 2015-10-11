@@ -41,6 +41,11 @@ extern UBYTE unlocked_bits;
 #define UNLOCKED_MUSIC  4U
 #define UNLOCKED_DREAM  8U
 
-extern const UBYTE level_names[4][6];
+#define TIME_BONUS (2U*level_max_time[level-1U])
+#define KILL_BONUS (kills)
+#define TOTAL_SCORE (TIME_BONUS + KILL_BONUS)
+
+extern const UBYTE level_names[7][6];
+extern const UBYTE level_max_time[4];
 
 #endif
