@@ -5,6 +5,7 @@
 #include "music.h"
 #include "sound.h"
 
+#include "logos.h"
 #include "intro.h"
 #include "title.h"
 #include "select.h"
@@ -59,7 +60,7 @@ void main() {
 	level = 1U;
 	unlocked_bits = 0U;
 	
-	gamestate = GAMESTATE_INTRO;
+	gamestate = GAMESTATE_LOGOS;
 
 	SWITCH_16_8_MODE_MBC1;
 	add_TIM(updateMusic);
@@ -67,6 +68,10 @@ void main() {
 
 	while(1U) {
 		switch(gamestate) {
+			case GAMESTATE_LOGOS:
+				setGameBank(1U);
+				enterLogos();
+				break;
 			case GAMESTATE_INTRO:
 				setGameBank(3U);
 				enterIntro();

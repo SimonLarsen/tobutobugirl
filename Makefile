@@ -3,7 +3,12 @@ CFLAGS=
 
 default: backgrounds sprites tobu.gb
 
-backgrounds: intro_backgrounds title_backgrounds select_backgrounds ingame_backgrounds winscreen_backgrounds highscore_backgrounds unlocked_backgrounds jukebox_backgrounds
+backgrounds: logos_backgrounds intro_backgrounds title_backgrounds select_backgrounds ingame_backgrounds winscreen_backgrounds highscore_backgrounds unlocked_backgrounds jukebox_backgrounds
+
+.PHONY: logos_backgrounds
+logos_backgrounds:
+	imgtogb --map --rle data/bg/tangram.png data/bg/tangram.h
+	imgtogb --map --rle data/bg/potato.png data/bg/potato.h
 
 .PHONY: intro_backgrounds
 intro_backgrounds:
@@ -91,6 +96,7 @@ tobu.gb:
 	$(CC) $(CFLAGS) -c freq.c
 	$(CC) $(CFLAGS) -c noisefreq.c
 	$(CC) $(CFLAGS) -c arrow.c
+	$(CC) $(CFLAGS) -c logos.c -Wf-bo1
 	$(CC) $(CFLAGS) -c game.c -Wf-bo1
 	$(CC) $(CFLAGS) -c select.c -Wf-bo2
 	$(CC) $(CFLAGS) -c highscore.c -Wf-bo2

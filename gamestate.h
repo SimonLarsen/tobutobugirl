@@ -27,14 +27,15 @@ extern UBYTE unlocked_bits;
 #define RELEASED(x) (!(joystate & x) && (joystate & x) != (oldjoystate & x))
 #define ISDOWN(x) (joystate & (x))
 
-#define GAMESTATE_INTRO     0U
-#define GAMESTATE_TITLE     1U
-#define GAMESTATE_SELECT    2U
-#define GAMESTATE_INGAME    3U
-#define GAMESTATE_WINSCREEN 4U
-#define GAMESTATE_HIGHSCORE 5U
-#define GAMESTATE_JUKEBOX   6U
-#define GAMESTATE_UNLOCKED  7U
+#define GAMESTATE_LOGOS     0U
+#define GAMESTATE_INTRO     1U
+#define GAMESTATE_TITLE     2U
+#define GAMESTATE_SELECT    3U
+#define GAMESTATE_INGAME    4U
+#define GAMESTATE_WINSCREEN 5U
+#define GAMESTATE_HIGHSCORE 6U
+#define GAMESTATE_JUKEBOX   7U
+#define GAMESTATE_UNLOCKED  8U
 
 #define UNLOCKED_CLOUDS 1U
 #define UNLOCKED_SPACE  2U
