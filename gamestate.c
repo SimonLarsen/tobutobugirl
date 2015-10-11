@@ -5,8 +5,8 @@
 
 #include "gamestate.h"
 
-UBYTE ticks;
-UBYTE gamestate, level, selection;
+UBYTE ticks, paused;
+UBYTE gamestate, scene_state, level, selection;
 UBYTE joystate, oldjoystate;
 UBYTE next_sprite, sprites_used;
 UBYTE elapsed_time, remaining_time, kills;

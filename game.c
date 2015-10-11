@@ -17,8 +17,6 @@
 #include "data/sprite/portal.h"
 
 UBYTE first_load;
-UBYTE paused, ingame_state;
-
 UBYTE scrolly, scrolled;
 UBYTE last_spawn_x, last_spawn_index;
 UBYTE next_spawn, next_clock;
@@ -149,7 +147,7 @@ void initGame() {
 	scrolled = 0U;
 	scrolly = 0U;
 
-	ingame_state = INGAME_ACTIVE;
+	scene_state = INGAME_ACTIVE;
 	blips = 0U;
 	blip_bar = 0U;
 	kills = 0U;
@@ -271,7 +269,7 @@ void updatePlayer() {
 			} else if(type == E_PORTAL
 			&& player_y > entity_y[i]-4U && player_y < entity_y[i]+4U
 			&& player_x > entity_x[i]-4U && player_x < entity_x[i]+4U) {
-				ingame_state = INGAME_COMPLETED;
+				scene_state = INGAME_COMPLETED;
 				player_x = entity_x[i];
 				player_y = entity_y[i];
 			}
@@ -416,7 +414,7 @@ void updateHUDTime() {
 }
 
 void killPlayer() {
-	ingame_state = INGAME_DEAD;
+	scene_state = INGAME_DEAD;
 }
 
 void updateEntities() {
@@ -434,7 +432,7 @@ void updateEntities() {
 
 			case E_BIRD:
 			case E_FIREBALL:
-				if(ticks & 1U && ingame_state == INGAME_ACTIVE) {
+				if(ticks & 1U && scene_state == INGAME_ACTIVE) {
 					if(entity_dir[i] == RIGHT) {
 						entity_x[i]++;
 						if(entity_x[i] >= 152U) entity_dir[i] = LEFT;
@@ -448,7 +446,7 @@ void updateEntities() {
 
 			case E_ALIEN:
 			case E_GHOST:
-				if(ticks & 1U && ingame_state == INGAME_ACTIVE) {
+				if(ticks & 1U && scene_state == INGAME_ACTIVE) {
 					entity_x[i] -= cos32_64[ticks & 63U];
 					entity_x[i] += cos32_64[(ticks+1U) & 63U];
 					if(ticks & 32U) {
@@ -776,11 +774,11 @@ ingame_start:
 
 	mus_setPaused(0U);
 
-	while(ingame_state == INGAME_ACTIVE) {
+	while(scene_state == INGAME_ACTIVE) {
 		updateInput();
 		if(paused) {
 			if(CLICKED(J_SELECT)) {
-				ingame_state = INGAME_QUIT;
+				scene_state = INGAME_QUIT;
 			}
 		} else {
 			ticks++;
@@ -794,7 +792,7 @@ ingame_start:
 				updateHUDTime();
 
 				if(remaining_time == 0U) {
-					ingame_state = INGAME_DEAD;
+					scene_state = INGAME_DEAD;
 				}
 			}
 
@@ -828,15 +826,15 @@ ingame_start:
 	}
 	stopMusic();
 
-	if(ingame_state == INGAME_DEAD) {
+	if(scene_state == INGAME_DEAD) {
 		deathAnimation();
 	}
-	else if(ingame_state == INGAME_COMPLETED) {
+	else if(scene_state == INGAME_COMPLETED) {
 		intoPortalAnimation();
 		addScore();
 		gamestate = GAMESTATE_WINSCREEN;
 	}
-	else if(ingame_state == INGAME_QUIT) {
+	else if(scene_state == INGAME_QUIT) {
 		gamestate = GAMESTATE_SELECT;
 	}
 

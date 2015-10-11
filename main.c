@@ -106,7 +106,7 @@ void main() {
 				enterJukebox();
 				break;
 			case GAMESTATE_ENDING:
-				setGameBank(1U);
+				setGameBank(3U);
 				enterEnding();
 				break;
 		}

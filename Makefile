@@ -12,7 +12,7 @@ logos_backgrounds:
 
 .PHONY: intro_backgrounds
 intro_backgrounds:
-	imgtogb --map --rle data/bg/intro_bg.png data/bg/intro_bg.h
+	#imgtogb --map --rle data/bg/intro_bg.png data/bg/intro_bg.h
 	imgtogb --sprite --8x16 data/sprite/intro_sprites.png data/sprite/intro_sprites.h
 	imgtogb --sprite --8x16 data/sprite/intro_flash.png data/sprite/intro_flash.h
 
@@ -98,7 +98,6 @@ tobu.gb:
 	$(CC) $(CFLAGS) -c arrow.c
 	$(CC) $(CFLAGS) -c logos.c -Wf-bo1
 	$(CC) $(CFLAGS) -c game.c -Wf-bo1
-	$(CC) $(CFLAGS) -c ending.c -Wf-bo1
 	$(CC) $(CFLAGS) -c select.c -Wf-bo2
 	$(CC) $(CFLAGS) -c highscore.c -Wf-bo2
 	$(CC) $(CFLAGS) -c unlocked.c -Wf-bo2
@@ -110,6 +109,8 @@ tobu.gb:
 	$(CC) $(CFLAGS) -c selection_locked.c -Wf-bo2
 	$(CC) $(CFLAGS) -c title.c -Wf-bo2
 	$(CC) $(CFLAGS) -c intro.c -Wf-bo3
+	$(CC) $(CFLAGS) -c intro_bg.c -Wf-bo3
+	$(CC) $(CFLAGS) -c ending.c -Wf-bo3
 	$(CC) $(CFLAGS) -c winscreen.c -Wf-bo3
 	$(CC) $(CFLAGS) -c jukebox.c -Wf-bo4
 	$(CC) $(CFLAGS) -c data/songs/title_song.asm # bank 4

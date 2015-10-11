@@ -8,7 +8,6 @@
 #include "data/sprite/intro_sprites.h"
 #include "data/sprite/intro_flash.h"
 
-UBYTE intro_state;
 UBYTE intro_player_x;
 UBYTE intro_player_y;
 UBYTE intro_cat_x;
@@ -53,7 +52,7 @@ void initIntro() {
 void updateIntro() {
 	UBYTE frame;
 
-	switch(intro_state) {
+	switch(scene_state) {
 		case INTRO_STATE_WALK:
 			if(ticks & 1U) {
 				intro_player_x--;
@@ -76,7 +75,7 @@ void updateIntro() {
 			setSprite(intro_cat_x+8U, intro_cat_y-intro_scroll_y, 38U, OBJ_PAL0);
 
 			if(intro_player_x == 77U) {
-				intro_state = INTRO_STATE_TRIP;
+				scene_state = INTRO_STATE_TRIP;
 				intro_player_y = 239U;
 				ticks = 0U;
 			}
@@ -140,7 +139,7 @@ void updateIntro() {
 			}
 
 			if(intro_cat_y < 110U) {
-				intro_state = INTRO_STATE_BLINK;
+				scene_state = INTRO_STATE_BLINK;
 				intro_frame = 0U;
 				set_sprite_data(0U, intro_flash_data_length, intro_flash_data);
 			}
@@ -197,7 +196,7 @@ void enterIntro() {
 
 	fadeFromWhite(10U);
 
-	intro_state = INTRO_STATE_WALK;
+	scene_state = INTRO_STATE_WALK;
 	intro_scroll_y = 112U;
 
 	intro_player_x = 185U;

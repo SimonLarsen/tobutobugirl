@@ -14,8 +14,8 @@ void playMusic(UBYTE *data);
 void updateMusic();
 void stopMusic();
 
-extern UBYTE ticks;
-extern UBYTE gamestate, level, selection;
+extern UBYTE ticks, paused;
+extern UBYTE gamestate, scene_state, level, selection;
 extern UBYTE joystate, oldjoystate;
 extern UBYTE elapsed_time, remaining_time, kills;
 extern UBYTE last_highscore_level, last_highscore_slot;
