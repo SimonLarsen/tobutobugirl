@@ -14,6 +14,7 @@
 #include "highscore.h"
 #include "unlocked.h"
 #include "jukebox.h"
+#include "ending.h"
 
 const UBYTE RAM_SIG[8] = {'T','O','B','U','T','O','B','U'};
 
@@ -103,6 +104,10 @@ void main() {
 			case GAMESTATE_JUKEBOX:
 				setGameBank(4U);
 				enterJukebox();
+				break;
+			case GAMESTATE_ENDING:
+				setGameBank(1U);
+				enterEnding();
 				break;
 		}
 	}

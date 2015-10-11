@@ -36,6 +36,7 @@ extern UBYTE unlocked_bits;
 #define GAMESTATE_HIGHSCORE 6U
 #define GAMESTATE_JUKEBOX   7U
 #define GAMESTATE_UNLOCKED  8U
+#define GAMESTATE_ENDING    9U
 
 #define UNLOCKED_CLOUDS 1U
 #define UNLOCKED_SPACE  2U

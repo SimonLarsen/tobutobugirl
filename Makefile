@@ -98,6 +98,7 @@ tobu.gb:
 	$(CC) $(CFLAGS) -c arrow.c
 	$(CC) $(CFLAGS) -c logos.c -Wf-bo1
 	$(CC) $(CFLAGS) -c game.c -Wf-bo1
+	$(CC) $(CFLAGS) -c ending.c -Wf-bo1
 	$(CC) $(CFLAGS) -c select.c -Wf-bo2
 	$(CC) $(CFLAGS) -c highscore.c -Wf-bo2
 	$(CC) $(CFLAGS) -c unlocked.c -Wf-bo2
