@@ -378,6 +378,9 @@ void updatePlayer() {
 		setSprite(player_x-16U, player_y, frame+2U, FLIP_X | palette);
 	}
 
+	// Dash marker
+	setSprite(player_x-12U, player_y-9U, 92U+(dashes << 1), palette);
+
 	// Update scroll
 	scrolly = 0U;
 	if(player_y < SCRLMGN) {
