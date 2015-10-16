@@ -15,7 +15,7 @@
 #define ENDING_STATE_SHAKE     5U
 #define ENDING_STATE_PAN       6U
 #define ENDING_STATE_GET_UP    7U
-#define ENDING_STATE_WAVE      8U
+#define ENDING_STATE_END       8U
 
 UBYTE ending_frame;
 
@@ -231,9 +231,10 @@ void updateEnding() {
 			tmp += 28U;
 			setSprite(player_x, player_y-scroll_y, tmp, OBJ_PAL0);
 			setSprite(player_x+8U, player_y-scroll_y, tmp+2U, OBJ_PAL0);
-			break;
 
-		case ENDING_STATE_WAVE:
+			if(ending_frame >= 32U) {
+				scene_state = ENDING_STATE_END;
+			}
 			break;
 	}
 }
@@ -253,7 +254,7 @@ void enterEnding() {
 
 	ticks = 0U;
 	scroll_y = 20U;
-	while(1U) {
+	while(scene_state != ENDING_STATE_END) {
 		updateJoystate();
 
 		updateEnding();
@@ -265,4 +266,7 @@ void enterEnding() {
 	}
 
 	gamestate = GAMESTATE_UNLOCKED;
+
+	clearRemainingSprites();
+	fadeToWhite(8U);
 }
