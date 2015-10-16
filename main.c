@@ -61,7 +61,7 @@ void main() {
 	level = 1U;
 	unlocked_bits = 0U;
 	
-	gamestate = GAMESTATE_LOGOS;
+	gamestate = GAMESTATE_ENDING;
 
 	SWITCH_16_8_MODE_MBC1;
 	add_TIM(updateMusic);
@@ -90,7 +90,7 @@ void main() {
 				enterGame();
 				break;
 			case GAMESTATE_WINSCREEN:
-				setGameBank(3U);
+				setGameBank(7U);
 				enterWinscreen();
 				break;
 			case GAMESTATE_HIGHSCORE:

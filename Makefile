@@ -62,6 +62,8 @@ sprites:
 	imgtogb --sprite --8x16 data/sprite/notes.png data/sprite/notes.h
 	imgtogb --sprite data/sprite/digital.png data/sprite/digital.h
 	imgtogb --sprite --8x16 data/sprite/bobblehead.png data/sprite/bobblehead.h
+	imgtogb --sprite --8x16 data/sprite/ending_sprites1.png data/sprite/ending_sprites1.h
+	imgtogb --sprite --8x16 data/sprite/ending_sprites2.png data/sprite/ending_sprites2.h
 	#imgtogb --sprite data/sprite/characters.png data/sprite/characters.h # 40 tiles
 	#imgtogb --sprite --8x16 data/sprite/arrow.png data/sprite/arrow.h
 	#imgtogb --map -O 90 data/bg/selection1.png data/bg/selection1.h
@@ -111,7 +113,6 @@ tobu.gb:
 	$(CC) $(CFLAGS) -c intro.c -Wf-bo3
 	$(CC) $(CFLAGS) -c intro_bg.c -Wf-bo3
 	$(CC) $(CFLAGS) -c ending.c -Wf-bo3
-	$(CC) $(CFLAGS) -c winscreen.c -Wf-bo3
 	$(CC) $(CFLAGS) -c jukebox.c -Wf-bo4
 	$(CC) $(CFLAGS) -c data/songs/title_song.asm # bank 4
 	$(CC) $(CFLAGS) -c data/songs/mainmenu_song.asm # bank 4
@@ -122,6 +123,7 @@ tobu.gb:
 	$(CC) $(CFLAGS) -c data/songs/space_song.asm # bank 5
 	$(CC) $(CFLAGS) -c data/songs/intro1_song.asm # bank 6
 	$(CC) $(CFLAGS) -c data/songs/intro2_song.asm # bank 6
+	$(CC) $(CFLAGS) -c winscreen.c -Wf-bo7
 	$(CC) $(CFLAGS) -c game_backgrounds.c -Wf-bo7
 	$(CC) $(CFLAGS) -c -Wf-ba0 -c ram.c # ram bank 0
 	$(CC) $(CFLAGS) -Wl-yt3 -Wl-yo8 -Wl-ya1 *.o -o $@

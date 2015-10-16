@@ -22,6 +22,9 @@ extern UBYTE last_highscore_level, last_highscore_slot;
 extern UBYTE game_bank, music_bank;
 extern UBYTE levels_completed;
 extern UBYTE unlocked_bits;
+extern UBYTE scroll_x, scroll_y;
+extern UBYTE player_x, player_y;
+extern UBYTE cat_x, cat_y;
 
 #define CLICKED(x) ((joystate & x) && (joystate & x) != (oldjoystate & x))
 #define RELEASED(x) (!(joystate & x) && (joystate & x) != (oldjoystate & x))

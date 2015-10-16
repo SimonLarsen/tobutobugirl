@@ -17,13 +17,12 @@
 #include "data/sprite/portal.h"
 
 UBYTE first_load;
-UBYTE scrolly, scrolled;
+UBYTE scrolled;
 UBYTE last_spawn_x, last_spawn_index;
 UBYTE next_spawn, next_clock;
 
 UBYTE timer, progress, portal_spawned, repeat_spikes;
 UBYTE blips, blip_bar;
-UBYTE player_x, player_y;
 UBYTE player_xdir, player_ydir;
 UBYTE player_yspeed, player_bounce;
 UBYTE dashing, dashes, dash_xdir, dash_ydir;
@@ -145,7 +144,7 @@ void initGame() {
 	dash_ydir = 0U;
 	paused = 0U;
 	scrolled = 0U;
-	scrolly = 0U;
+	scroll_y = 0U;
 
 	scene_state = INGAME_ACTIVE;
 	blips = 0U;
@@ -382,9 +381,9 @@ void updatePlayer() {
 	setSprite(player_x-12U, player_y-9U, 92U+(dashes << 1), palette);
 
 	// Update scroll
-	scrolly = 0U;
+	scroll_y = 0U;
 	if(player_y < SCRLMGN) {
-		scrolly = SCRLMGN - player_y;
+		scroll_y = SCRLMGN - player_y;
 		player_y = SCRLMGN;
 	}
 }
@@ -502,7 +501,7 @@ void updateEntities() {
 		}
 
 		// Scroll entitites
-		entity_y[i] += scrolly;
+		entity_y[i] += scroll_y;
 		if(entity_y[i] > SCREENHEIGHT+16U) {
 			entity_type[i] = E_NONE;
 			continue;
@@ -582,7 +581,7 @@ void initSpawns() {
 
 void updateSpawns() {
 	UBYTE x, dice, type, step;
-	next_spawn += scrolly;
+	next_spawn += scroll_y;
 
 	if(next_spawn < SPAWN_INTERVAL) return;
 
@@ -737,7 +736,7 @@ void deathAnimation() {
 	UBYTE offset, frame;
 	set_sprite_data(0U, portal_data_length, portal_data);
 
-	scrolly = 0U;
+	scroll_y = 0U;
 	for(ticks = 0U; ticks != 48U; ++ticks) {
 		if(ticks < 16U) {
 			setSprite(player_x-16U, player_y, 4U, OBJ_PAL0);
@@ -815,7 +814,7 @@ ingame_start:
 			updateSpawns();
 
 			// Scroll screen
-			scrolled += scrolly;
+			scrolled += scroll_y;
 			if(scrolled >= scrolled_length[level-1U]) {
 				scrolled -= scrolled_length[level-1U];
 				if(progress < 112U) progress++;
