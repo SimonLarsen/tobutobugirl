@@ -189,7 +189,7 @@ void updateIntro() {
 void enterIntro() {
 	initIntro();
 
-	fadeFromWhite(10U);
+	fadeFromWhite(6U);
 
 	scene_state = INTRO_STATE_WALK;
 	scroll_y = 112U;
