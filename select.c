@@ -45,7 +45,7 @@ void initSelect() {
 	BGP_REG = 0xB4U; // 11100100
 
 	clearSprites();
-	updateSelectScreen();
+	_selectUpdateScreen();
 
 	setMusicBank(4U);
 	playMusic(&mainmenu_song_data);
@@ -57,54 +57,6 @@ void initSelect() {
 
 	DISPLAY_ON;
 	enable_interrupts();
-}
-
-void setTile(UBYTE x, UBYTE y, UBYTE *tile) {
-	set_bkg_tiles(x, y, 1U, 1U, tile);
-	select_ticks++;
-	if((select_ticks & 14U) == 14U) {
-		select_ticks = 0U;
-		selectScrollCircles();
-		selectUpdateSprites();
-		clearRemainingSprites();
-		snd_update();
-	}
-	delay(3U);
-}
-
-void selectTransitionOut() {
-	UBYTE tile = 8U;
-	UBYTE ix, iy;
-	UBYTE top, bottom, left, right;
-	top = 10U;
-	bottom = 15U;
-	left = 0U;
-	right = 19U;
-
-	do {
-		ix = left;
-		iy = top;
-		while(ix != right) {
-			setTile(ix, iy, &tile);
-			ix++;
-		}
-		while(iy != bottom) {
-			setTile(ix, iy, &tile);
-			iy++;
-		}
-		while(ix != left) {
-			setTile(ix, iy, &tile);
-			ix--;
-		}
-		while(iy != top) {
-			setTile(ix, iy, &tile);
-			iy--;
-		}
-		bottom--;
-		right--;
-		top++;
-		left++;
-	} while(top <= bottom);
 }
 
 UBYTE *selectGetBannerData() {
@@ -133,53 +85,18 @@ UBYTE *selectGetBannerData() {
 	return 0U;
 }
 
-void selectTransitionIn() {
-	UBYTE *tile, *data;
-	UBYTE ix, iy;
-	UBYTE top, bottom, left, right;
-	top = 10U;
-	bottom = 15U;
-	left = 0U;
-	right = 19U;
+void selectUpdateScreen() {
+	clearRemainingSprites();
+	fadeToWhite(4U);
+	DISPLAY_OFF;
 
-	disable_interrupts();
-	data = selectGetBannerData();
-	updateMusic();
-	enable_interrupts();
+	_selectUpdateScreen();
 
-	tile = data;
-	do {
-		ix = left;
-		iy = top;
-		while(ix != right) {
-			setTile(ix, iy, tile);
-			ix++;
-			tile++;
-		}
-		while(iy != bottom) {
-			setTile(ix, iy, tile);
-			iy++;
-			tile += 20U;
-		}
-		while(ix != left) {
-			setTile(ix, iy, tile);
-			ix--;
-			tile--;
-		}
-		while(iy != top) {
-			setTile(ix, iy, tile);
-			iy--;
-			tile -= 20U;
-		}
-		bottom--;
-		right--;
-		top++;
-		left++;
-		tile += 21U;
-	} while(top <= bottom);
+	DISPLAY_ON;
+	fadeFromWhite(4U);
 }
 
-void updateSelectScreen() {
+void _selectUpdateScreen() {
 	UBYTE *data = selectGetBannerData();
 	set_bkg_tiles(0U, 10U, 20U, 6U, data);
 }
@@ -223,8 +140,7 @@ void enterSelect() {
 			if(selection == 4U && levels_completed < 2U) selection = 0U;
 			else if(selection == 5U) selection = 0U;
 			else selection++;
-			selectTransitionOut();
-			selectTransitionIn();
+			selectUpdateScreen();
 			selectUpdateSprites();
 		}
 		if(ISDOWN(J_LEFT)) {
@@ -236,8 +152,7 @@ void enterSelect() {
 				}
 			}
 			else selection--;
-			selectTransitionOut();
-			selectTransitionIn();
+			selectUpdateScreen();
 			selectUpdateSprites();
 		}
 		if(CLICKED(J_START) || CLICKED(J_A)) {

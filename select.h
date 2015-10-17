@@ -2,11 +2,9 @@
 #define SELECT_H
 
 void initSelect();
-void setTile(UBYTE x, UBYTE y, UBYTE *tile);
 UBYTE *selectGetBannerData();
-void selectTransitionIn();
-void selectTransitionOut();
-void updateSelectScreen();
+void selectUpdateScreen();
+void _selectUpdateScreen();
 void selectUpdateSprites();
 void selectScrollCircles();
 void enterSelect();
