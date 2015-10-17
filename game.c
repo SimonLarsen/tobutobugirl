@@ -316,7 +316,7 @@ void updatePlayer() {
 				player_yspeed -= 2U;
 			}
 		}
-		if(CLICKED(KEY_USE) || (ticks & 7U) == 7U) {
+		if(CLICKED(KEY_USE) || (ticks & 15U) == 15U) {
 			spawnEntity(E_CLOUD, player_x, player_y+4U, 0U);
 		}
 	}
