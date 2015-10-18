@@ -9,6 +9,7 @@
 #include "data/bg/unlocked.h"
 #include "data/bg/selection2.h"
 #include "data/bg/selection3.h"
+#include "data/bg/selection4.h"
 #include "data/bg/selection_jukebox.h"
 
 const UBYTE unlocked_messages[3][24] = {
@@ -62,8 +63,8 @@ void initUnlocked() {
 	}
 	else if(unlocked_bits & UNLOCKED_DREAM) {
 		unlocked_bits ^= UNLOCKED_DREAM;
-		set_bkg_data(selection3_offset, selection3_data_length, selection3_data);
-		set_bkg_tiles(0U, 8U, 20U, 6U, selection3_tiles);
+		set_bkg_data(selection4_offset, selection4_data_length, selection4_data);
+		set_bkg_tiles(0U, 8U, 20U, 6U, selection4_tiles);
 		set_bkg_tiles(4U, 5U, 12U, 2U, unlocked_messages[2]);
 	}
 

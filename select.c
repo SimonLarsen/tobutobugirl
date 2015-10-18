@@ -16,6 +16,7 @@
 #include "data/bg/selection1.h"
 #include "data/bg/selection2.h"
 #include "data/bg/selection3.h"
+#include "data/bg/selection4.h"
 #include "data/bg/selection_highscore.h"
 #include "data/bg/selection_jukebox.h"
 #include "data/bg/selection_locked.h"
@@ -79,8 +80,8 @@ UBYTE *selectGetBannerData() {
 		set_bkg_data(selection3_offset, selection3_data_length, selection3_data);
 		return selection3_tiles;
 	} else if(selection == 4U) {
-		set_bkg_data(selection3_offset, selection3_data_length, selection3_data);
-		return selection3_tiles;
+		set_bkg_data(selection4_offset, selection4_data_length, selection4_data);
+		return selection4_tiles;
 	}
 	return 0U;
 }

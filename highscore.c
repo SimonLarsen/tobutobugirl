@@ -15,6 +15,7 @@
 #include "data/bg/selection1.h"
 #include "data/bg/selection2.h"
 #include "data/bg/selection3.h"
+#include "data/bg/selection4.h"
 #include "data/bg/selection_locked.h"
 
 UBYTE highscore_circle_index;
@@ -96,8 +97,8 @@ void _highscoreUpdateScreen() {
 			data = selection3_tiles;
 			break;
 		case 4U:
-			set_bkg_data(selection3_offset, selection3_data_length, selection3_data);
-			data = selection3_tiles;
+			set_bkg_data(selection4_offset, selection4_data_length, selection4_data);
+			data = selection4_tiles;
 			break;
 		case 6U:
 			set_bkg_data(selection_locked_offset, selection_locked_data_length, selection_locked_data);

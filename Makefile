@@ -69,6 +69,7 @@ sprites:
 	#imgtogb --map -O 90 data/bg/selection1.png data/bg/selection1.h
 	#imgtogb --map -O 90 data/bg/selection2.png data/bg/selection2.h
 	#imgtogb --map -O 90 data/bg/selection3.png data/bg/selection3.h
+	#imgtogb --map -O 90 data/bg/selection4.png data/bg/selection4.h
 	#imgtogb --map -O 90 data/bg/selection_highscore.png data/bg/selection_highscore.h
 	#imgtogb --map -O 90 data/bg/selection_jukebox.png data/bg/selection_jukebox.h
 	#imgtogb --map -O 90 data/bg/selection_locked.png data/bg/selection_locked.h
@@ -106,6 +107,7 @@ tobu.gb:
 	$(CC) $(CFLAGS) -c selection1.c -Wf-bo2
 	$(CC) $(CFLAGS) -c selection2.c -Wf-bo2
 	$(CC) $(CFLAGS) -c selection3.c -Wf-bo2
+	$(CC) $(CFLAGS) -c selection4.c -Wf-bo2
 	$(CC) $(CFLAGS) -c selection_highscore.c -Wf-bo2
 	$(CC) $(CFLAGS) -c selection_jukebox.c -Wf-bo2
 	$(CC) $(CFLAGS) -c selection_locked.c -Wf-bo2
