@@ -31,7 +31,6 @@ UBYTE entity_x[MAX_ENTITIES];
 UBYTE entity_y[MAX_ENTITIES];
 UBYTE entity_type[MAX_ENTITIES];
 UBYTE entity_dir[MAX_ENTITIES];
-UBYTE entity_frame;
 
 extern UBYTE plains_song_data;
 extern UBYTE clouds_song_data;
@@ -64,11 +63,10 @@ const UBYTE entity_sprites[] = {
 	14*4,	// E_GHOST
 	16*4,	// E_ALIEN
 	// Powerups
-	27*4,	// E_BLIP
 	21*4,	// E_CLOCK
 	// Special
 	20*4,	// E_PORTAL
-	28*4,	// E_CLOUD
+	28*4	// E_CLOUD
 };
 
 const UBYTE spawn_levels[4][3][8] = {
@@ -152,7 +150,6 @@ void initGame() {
 	blip_bar = 0U;
 	kills = 0U;
 
-	entity_frame = 0U;
 	ticks = 0U;
 	next_spawn = 0U;
 	next_clock = clock_interval[level-1U];
@@ -201,7 +198,7 @@ void updateInput() {
 	}
 
 	if(CLICKED(KEY_DASH)) {
-		if(dashes > 0U) {
+		if(dashes) {
 			dash_xdir = dash_ydir = NONE;
 			if(ISDOWN(J_LEFT)) dash_xdir = LEFT;
 			else if(ISDOWN(J_RIGHT)) dash_xdir = RIGHT;
@@ -351,7 +348,7 @@ void updatePlayer() {
 
 	// Update sprite
 	frame = 0U;
-	if(player_bounce != 0U) {
+	if(player_bounce) {
 		frame = 8U;
 		player_bounce--;
 	}
@@ -367,8 +364,8 @@ void updatePlayer() {
 	}
 
 	// Blink
+	palette = OBJ_PAL0;
 	if(!dashes && (ticks & 4U)) palette = OBJ_PAL1;
-	else palette = OBJ_PAL0;
 
 	// Dash marker
 	setSprite(player_x-12U, player_y-9U, 20U+(dashes << 1), palette);
@@ -429,7 +426,15 @@ void updateEntities() {
 	UBYTE i, frame, type;
 	UBYTE xdist, ydist;
 
-	if((ticks & 7U) == 7U) entity_frame++;
+	// Update last spawn position with last spawned
+	// enemy if it still exists
+	if(last_spawn_index != NO_LAST_SPAWN) {
+		if(entity_type[last_spawn_index] != E_NONE) {
+			last_spawn_x = entity_x[last_spawn_index]-24U;
+		} else {
+			last_spawn_index = NO_LAST_SPAWN;
+		}
+	}
 
 	for(i = 0U; i != MAX_ENTITIES; ++i) {
 		type = entity_type[i];
@@ -495,14 +500,11 @@ void updateEntities() {
 					player_ydir = UP;
 				}
 
-				if((ticks & 7U) == 7U) {
-					if(entity_dir[i] == RIGHT) {
-						entity_dir[i] = LEFT;
-					} else {
-						entity_dir[i] = RIGHT;
-					}
+				if(ticks & 8U) {
+					entity_dir[i] = LEFT;
+				} else {
+					entity_dir[i] = RIGHT;
 				}
-
 				break;
 		}
 
@@ -534,7 +536,7 @@ void updateEntities() {
 				break;
 
 			default:
-				if(entity_frame & 1U) frame += 4U;
+				frame += ((ticks & 8U) >> 1);
 				if(entity_dir[i] == LEFT) {
 					setSprite(entity_x[i]-16U, entity_y[i], frame, OBJ_PAL0);
 					setSprite(entity_x[i]-8U, entity_y[i], frame+2U, OBJ_PAL0);
@@ -552,7 +554,7 @@ UBYTE spawnEntity(UBYTE type, UBYTE x, UBYTE y, UBYTE dir) {
 	for(i = 0U; i != MAX_ENTITIES; ++i) {
 		if(entity_type[i] == E_NONE) break;
 	}
-	if(i == MAX_ENTITIES) return 255U;
+	if(i == MAX_ENTITIES) return NO_LAST_SPAWN;
 
 	entity_x[i] = x;
 	entity_y[i] = y;
@@ -806,15 +808,6 @@ ingame_start:
 				}
 			}
 
-			// Update last spawn position with last spawned
-			// enemy if it still exists
-			if(last_spawn_index != 255U) {
-				if(entity_type[last_spawn_index] != E_NONE) {
-					last_spawn_x = entity_x[last_spawn_index]-24U;
-				} else {
-					last_spawn_index = 255U;
-				}
-			}
 			updatePlayer();
 			updateHUD();
 
