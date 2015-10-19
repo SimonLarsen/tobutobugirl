@@ -54,76 +54,46 @@ void updateEnding() {
 			}
 			break;
 		case ENDING_STATE_FALL:
-			if(player_y < 80U) {
-				if((ticks & 7U) == 7U) {
-					player_y++;
-				}
-				if((ticks & 127U) == 127U) {
-					player_x--;
-				}
-			} else {
-				if((ticks & 3U) == 3U) {
-					player_y++;
-				}
-				if((ticks & 63U) == 63U) {
-					player_x--;
-				}
+			if((ticks & 63U) == 63U) {
+				player_x--;
+			}
+			if((ticks & 3U) == 3U) {
+				player_y++;
 			}
 
 			if(player_y >= 135U) {
-				if((ticks & 15U) == 15U) {
-					scroll_y++;
-				}
+				tmp = ticks & 15U;
+				if(tmp == 15U) scroll_y++;
 			}
 			else if(player_y >= 125U) {
-				if((ticks & 7U) == 7U) {
-					scroll_y++;
-				}
+				tmp = ticks & 7U;
+				if(tmp == 7U) scroll_y++;
 			}
 			else if(player_y >= 90U) {
-				if((ticks & 3U) == 3U) {
-					scroll_y++;
-				}
+				tmp = ticks & 3U;
+				if(tmp == 3U) scroll_y++;
 			}
 
-			if(player_y < 70U) {
-				setSprite(player_x, player_y-scroll_y+2U, 0U, OBJ_PAL0);
+			if(player_y >= 142U) {
+				tmp = 12U;
 			}
-			else if(player_y < 80U) {
-				setSprite(player_x, player_y-scroll_y, 2U, OBJ_PAL0);
+			else if(player_y >= 140U) {
+				tmp = 8U;
 			}
-			else if(player_y < 90U) {
-				setSprite(player_x, player_y-scroll_y-4U, 4U, OBJ_PAL0);
-				setSprite(player_x, player_y-scroll_y+12U, 6U, OBJ_PAL0);
-			}
-			else if(player_y < 105U) {
-				setSprite(player_x-4U, player_y-scroll_y-8U,  8U, OBJ_PAL0);
-				setSprite(player_x+4U, player_y-scroll_y-8U, 10U, OBJ_PAL0);
-				setSprite(player_x-4U, player_y-scroll_y+8U, 12U, OBJ_PAL0);
-				setSprite(player_x+4U, player_y-scroll_y+8U, 14U, OBJ_PAL0);
+			else if(ticks & 16U) {
+				tmp = 0U;
 			}
 			else {
-				if(player_y >= 142U) {
-					tmp = 44U;
-				}
-				else if(player_y >= 140U) {
-					tmp = 40U;
-				}
-				else if(ticks & 16U) {
-					tmp = 16U;
-				}
-				else {
-					tmp = 28U;
-				}
-
-				setSprite(player_x-4U, player_y-scroll_y-12U, tmp, OBJ_PAL0);
-				setSprite(player_x+4U, player_y-scroll_y-12U, tmp+2U, OBJ_PAL0);
-
-				setSprite(player_x-4U, player_y-scroll_y+4U,  20U, OBJ_PAL0);
-				setSprite(player_x+4U, player_y-scroll_y+4U,  22U, OBJ_PAL0);
-				setSprite(player_x-4U, player_y-scroll_y+20U, 24U, OBJ_PAL0);
-				setSprite(player_x+4U, player_y-scroll_y+20U, 26U, OBJ_PAL0);
+				tmp = 4U;
 			}
+
+			setSprite(player_x-4U, player_y-scroll_y-12U, tmp, OBJ_PAL0);
+			setSprite(player_x+4U, player_y-scroll_y-12U, tmp+2U, OBJ_PAL0);
+
+			setSprite(player_x-4U, player_y-scroll_y+4U,  20U, OBJ_PAL0);
+			setSprite(player_x+4U, player_y-scroll_y+4U,  22U, OBJ_PAL0);
+			setSprite(player_x-4U, player_y-scroll_y+20U, 24U, OBJ_PAL0);
+			setSprite(player_x+4U, player_y-scroll_y+20U, 26U, OBJ_PAL0);
 
 			if(player_y >= 143U) {
 				scene_state = ENDING_STATE_POP;
@@ -134,12 +104,16 @@ void updateEnding() {
 
 		case ENDING_STATE_POP:
 			// Shocked
-			setSprite(player_x-4U, player_y-scroll_y+4U,  48U, OBJ_PAL0);
-			setSprite(player_x+4U, player_y-scroll_y+4U,  50U, OBJ_PAL0);
-			setSprite(player_x-4U, player_y-scroll_y+20U, 52U, OBJ_PAL0);
-			setSprite(player_x+4U, player_y-scroll_y+20U, 54U, OBJ_PAL0);
+			setSprite(player_x-4U, player_y-scroll_y+4U,  28U, OBJ_PAL0);
+			setSprite(player_x+4U, player_y-scroll_y+4U,  30U, OBJ_PAL0);
+			setSprite(player_x-4U, player_y-scroll_y+20U, 32U, OBJ_PAL0);
+			setSprite(player_x+4U, player_y-scroll_y+20U, 34U, OBJ_PAL0);
 
-			if(ticks >= 32U) {
+			if(ticks & 16U) {
+				setSprite(player_x-1U, player_y-scroll_y-10U, 16U, OBJ_PAL0);
+			}
+
+			if(ticks >= 64U) {
 				scene_state = ENDING_STATE_FALL2;
 				player_x -= 3U;
 				player_y += 6U;
@@ -157,11 +131,11 @@ void updateEnding() {
 				cat_x--;
 			}
 
-			setSprite(player_x, player_y-scroll_y, 56U, OBJ_PAL0);
-			setSprite(player_x+8U, player_y-scroll_y, 58U, OBJ_PAL0);
+			setSprite(player_x, player_y-scroll_y, 36U, OBJ_PAL0);
+			setSprite(player_x+8U, player_y-scroll_y, 38U, OBJ_PAL0);
 
-			setSprite(cat_x, cat_y-scroll_y, 60U, OBJ_PAL0);
-			setSprite(cat_x+8U, cat_y-scroll_y, 62U, OBJ_PAL0);
+			setSprite(cat_x, cat_y-scroll_y, 40U, OBJ_PAL0);
+			setSprite(cat_x+8U, cat_y-scroll_y, 42U, OBJ_PAL0);
 
 			if(player_y >= 240U) {
 				scene_state = ENDING_STATE_SHAKE;
@@ -174,7 +148,7 @@ void updateEnding() {
 		case ENDING_STATE_SHAKE:
 			scroll_x = 0U;
 			if(ticks <= 50U && (ticks & 3U) == 3U) {
-				scroll_x = ((UBYTE)rand() & 2U) - 1U;
+				scroll_x = ((UBYTE)rand() & 4U) - 2U;
 			}
 
 			if(ticks >= 110U) {
@@ -244,8 +218,8 @@ void enterEnding() {
 
 	scroll_x = 0U;
 	scroll_y = 20U;
-	player_x = 94U;
-	player_y = 60U;
+	player_x = 104U;
+	player_y = 0U;
 	scene_state = ENDING_STATE_FALL;
 
 	move_bkg(0U, scroll_y);
