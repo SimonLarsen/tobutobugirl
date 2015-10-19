@@ -112,6 +112,7 @@ void initGame() {
 
 	if(first_load) {
 		first_load = 0U;
+		last_progress = 0U;
 
 		setIngameBackground(level);
 
@@ -369,6 +370,9 @@ void updatePlayer() {
 	if(!dashes && (ticks & 4U)) palette = OBJ_PAL1;
 	else palette = OBJ_PAL0;
 
+	// Dash marker
+	setSprite(player_x-12U, player_y-9U, 20U+(dashes << 1), palette);
+
 	if(player_xdir == LEFT) {
 		setSprite(player_x-16U, player_y, frame, palette);
 		setSprite(player_x-8U, player_y, frame+2U, palette);
@@ -376,9 +380,6 @@ void updatePlayer() {
 		setSprite(player_x-8U, player_y, frame, FLIP_X | palette);
 		setSprite(player_x-16U, player_y, frame+2U, FLIP_X | palette);
 	}
-
-	// Dash marker
-	setSprite(player_x-12U, player_y-9U, 92U+(dashes << 1), palette);
 
 	// Update scroll
 	scroll_y = 0U;
@@ -404,6 +405,11 @@ void updateHUD() {
 	progressbar = 118U - (progress << 1U) / 3U;
 	setSprite(152U, progressbar, 104U, OBJ_PAL0);
 	setSprite(160U, progressbar, 106U, OBJ_PAL0);
+
+	// Set last progress flag
+	if(last_progress) {
+		setSprite(153U, 115U-(last_progress >> 1), 92U, OBJ_PAL0);
+	}
 }
 
 void updateHUDTime() {
@@ -674,6 +680,7 @@ void introAnimation() {
 		}
 
 		updateEntities();
+		updateHUD();
 
 		clearRemainingSprites();
 		wait_vbl_done();
@@ -691,6 +698,7 @@ void introAnimation() {
 		setSprite(player_x-16U, player_y, 2U, FLIP_X | OBJ_PAL0);
 
 		updateEntities();
+		updateHUD();
 
 		clearRemainingSprites();
 		wait_vbl_done();
@@ -830,6 +838,7 @@ ingame_start:
 
 	if(scene_state == INGAME_DEAD) {
 		deathAnimation();
+		last_progress = progress;
 	}
 	else if(scene_state == INGAME_COMPLETED) {
 		intoPortalAnimation();

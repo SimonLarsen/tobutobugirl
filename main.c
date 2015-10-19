@@ -56,12 +56,13 @@ void main() {
 
 	last_highscore_level = 0U;
 	last_highscore_slot = 5U;
+	last_progress = 0U;
 
 	joystate = oldjoystate = 0U;
 	level = 1U;
 	unlocked_bits = 0U;
 	
-	gamestate = GAMESTATE_ENDING;
+	gamestate = GAMESTATE_LOGOS;
 
 	SWITCH_16_8_MODE_MBC1;
 	add_TIM(updateMusic);
