@@ -831,7 +831,9 @@ ingame_start:
 
 	if(scene_state == INGAME_DEAD) {
 		deathAnimation();
-		last_progress = progress;
+		if(progress > last_progress) {
+			last_progress = progress;
+		}
 	}
 	else if(scene_state == INGAME_COMPLETED) {
 		intoPortalAnimation();
