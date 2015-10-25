@@ -1,7 +1,7 @@
 #ifndef INTRO_BG_MAP_H
 #define INTRO_BG_MAP_H
 
-#define intro_bg_data_length 173
+#define intro_bg_data_length 174
 extern const unsigned char intro_bg_data[];
 
 #define intro_bg_tiles_width 20
