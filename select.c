@@ -61,13 +61,7 @@ void initSelect() {
 }
 
 UBYTE *selectGetBannerData() {
-	if(selection == 0U) {
-		set_bkg_data(selection_highscore_offset, selection_highscore_data_length, selection_highscore_data);
-		return selection_highscore_tiles;
-	} else if(selection == 5U) {
-		set_bkg_data(selection_jukebox_offset, selection_jukebox_data_length, selection_jukebox_data);
-		return selection_jukebox_tiles;
-	} else if(selection > levels_completed+1U) {
+	if(selection <= 4U && selection > levels_completed+1U) {
 		set_bkg_data(selection_locked_offset, selection_locked_data_length, selection_locked_data);
 		return selection_locked_tiles;
 	} else if(selection == 1U) {
@@ -82,7 +76,14 @@ UBYTE *selectGetBannerData() {
 	} else if(selection == 4U) {
 		set_bkg_data(selection4_offset, selection4_data_length, selection4_data);
 		return selection4_tiles;
+	} else if(selection == 5U) {
+		set_bkg_data(selection_highscore_offset, selection_highscore_data_length, selection_highscore_data);
+		return selection_highscore_tiles;
+	} else if(selection == 6U) {
+		set_bkg_data(selection_jukebox_offset, selection_jukebox_data_length, selection_jukebox_data);
+		return selection_jukebox_tiles;
 	}
+
 	return 0U;
 }
 
@@ -138,28 +139,26 @@ void enterSelect() {
 		}
 
 		if(ISDOWN(J_RIGHT)) {
-			if(selection == 4U && levels_completed < 2U) selection = 0U;
-			else if(selection == 5U) selection = 0U;
-			else selection++;
+			selection++;
+			if(selection == 7U || (levels_completed < 2U && selection == 6U)) {
+				selection = 1U;
+			}
 			selectUpdateScreen();
 			selectUpdateSprites();
 		}
 		if(ISDOWN(J_LEFT)) {
+			selection--;
 			if(selection == 0U) {
-				if(levels_completed >= 2U) {
-					selection = 5U;
-				} else {
-					selection = 4U;
-				}
+				if(selection < 2U) selection = 5U;
+				else selection = 6U;
 			}
-			else selection--;
 			selectUpdateScreen();
 			selectUpdateSprites();
 		}
 		if(CLICKED(J_START) || CLICKED(J_A)) {
-			if(selection == 0U) {
+			if(selection == 5U) {
 				gamestate = GAMESTATE_HIGHSCORE;
-			} else if(selection == 5U) {
+			} else if(selection == 6U) {
 				gamestate = GAMESTATE_JUKEBOX;
 			} else if(selection <= levels_completed+1U) { // TODO: Remove cheat again
 				level = selection;
@@ -171,12 +170,12 @@ void enterSelect() {
 		}
 
 		// Draw level name
-		if(selection == 0U || selection == 5U
-		|| (selection <= levels_completed+1U)) {
-			name_index = selection;
+		if(selection <= 4U && selection > levels_completed+1U) {
+			name_index = 0U;
 		} else {
-			name_index = 6U;
+			name_index = selection;
 		}
+
 		offset = 64U;
 		if(level_names[name_index][5] == 10U) {
 			offset += 4U;
