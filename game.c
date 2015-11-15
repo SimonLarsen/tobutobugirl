@@ -407,6 +407,12 @@ void updateHUD() {
 	if(last_progress) {
 		setSprite(153U, 115U-(last_progress >> 1), 92U, OBJ_PAL0);
 	}
+
+	// Low on time marker
+	if(remaining_time < 16U && ticks & 16U) {
+		setSprite(136U, 24U, 28U, OBJ_PAL0);
+		setSprite(144U, 24U, 30U, OBJ_PAL0);
+	}
 }
 
 void updateHUDTime() {
@@ -415,7 +421,9 @@ void updateHUDTime() {
 	index = remaining_time >> 2;
 	index = index << 2;
 
+	disable_interrupts();
 	set_win_tiles(0U, 1U, 2U, 2U, &clock_tiles[index]);
+	enable_interrupts();
 }
 
 void killPlayer() {

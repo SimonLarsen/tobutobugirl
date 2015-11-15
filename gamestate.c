@@ -20,6 +20,9 @@ UBYTE scroll_x, scroll_y;
 UBYTE player_x, player_y;
 UBYTE cat_x, cat_y;
 
+UBYTE options_show_dash;
+UBYTE options_reverse_keys;
+
 const UBYTE level_names[7][6] = {
 	{22U, 25U, 13U, 21U, 15U, 14U}, // "LOCKED"
 	{26U, 22U, 11U, 19U, 24U, 29U}, // "PLAINS"

@@ -23,6 +23,7 @@
 
 UBYTE select_circle_index;
 UBYTE select_ticks;
+UBYTE select_scroll_dir;
 
 extern UBYTE mainmenu_song_data;
 
@@ -87,17 +88,6 @@ UBYTE *selectGetBannerData() {
 	return 0U;
 }
 
-void selectUpdateScreen() {
-	clearRemainingSprites();
-	fadeToWhite(4U);
-	DISPLAY_OFF;
-
-	_selectUpdateScreen();
-
-	DISPLAY_ON;
-	fadeFromWhite(4U);
-}
-
 void _selectUpdateScreen() {
 	UBYTE *data = selectGetBannerData();
 	set_bkg_tiles(0U, 10U, 20U, 6U, data);
@@ -124,6 +114,57 @@ void selectScrollCircles() {
 	set_bkg_data(30U, 1U, &circles_data[(select_circle_index << 4)]);
 }
 
+void selectFadeOut() {
+	UBYTE i;
+	UBYTE tiles[6U];
+
+	for(i = 0U; i != 6U; ++i) tiles[i] = 8U;
+
+	for(i = 0U; i != 20U; ++i) {
+		disable_interrupts();
+		set_bkg_tiles(i, 10U, 1U, 6U, tiles);
+		enable_interrupts();
+		if(i & 1U) {
+			ticks++;
+			if((ticks & 3U) == 3U) {
+				selectScrollCircles();
+			}
+			wait_vbl_done();
+		}
+	}
+}
+
+void selectFadeIn() {
+	UBYTE i, j;
+	UBYTE *data;
+	UBYTE *ptr;
+	UBYTE tiles[6];
+
+	disable_interrupts();
+	data = selectGetBannerData();
+	enable_interrupts();
+
+	for(i = 0U; i != 20U; ++i) {
+		ptr = data + i;
+		for(j = 0U; j != 6U; ++j) {
+			tiles[j] = *ptr;
+			ptr += 20U;
+		}
+		++ptr;
+
+		disable_interrupts();
+		set_bkg_tiles(i, 10U, 1U, 6U, tiles);
+		enable_interrupts();
+		if(i & 1U) {
+			ticks++;
+			if((ticks & 3U) == 3U) {
+				selectScrollCircles();
+			}
+			wait_vbl_done();
+		}
+	}
+}
+
 void enterSelect() {
 	UBYTE i, offset, name_index;
 	initSelect();
@@ -143,7 +184,9 @@ void enterSelect() {
 			if(selection == 7U || (levels_completed < 2U && selection == 6U)) {
 				selection = 1U;
 			}
-			selectUpdateScreen();
+			clearRemainingSprites();
+			selectFadeOut();
+			selectFadeIn();
 			selectUpdateSprites();
 		}
 		if(ISDOWN(J_LEFT)) {
@@ -152,7 +195,9 @@ void enterSelect() {
 				if(selection < 2U) selection = 5U;
 				else selection = 6U;
 			}
-			selectUpdateScreen();
+			clearRemainingSprites();
+			selectFadeOut();
+			selectFadeIn();
 			selectUpdateSprites();
 		}
 		if(CLICKED(J_START) || CLICKED(J_A)) {
@@ -160,7 +205,7 @@ void enterSelect() {
 				gamestate = GAMESTATE_HIGHSCORE;
 			} else if(selection == 6U) {
 				gamestate = GAMESTATE_JUKEBOX;
-			} else if(selection <= levels_completed+1U) { // TODO: Remove cheat again
+			} else if(selection <= levels_completed+1U) {
 				level = selection;
 				gamestate = GAMESTATE_INGAME;
 			}
@@ -190,7 +235,7 @@ void enterSelect() {
 	}
 
 	clearRemainingSprites(); // Remove all sprites
-	fadeToWhite(10U);
+	fadeToWhite(6U);
 
 	stopMusic();
 }

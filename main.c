@@ -12,6 +12,7 @@
 #include "game.h"
 #include "winscreen.h"
 #include "highscore.h"
+#include "options.h"
 #include "unlocked.h"
 #include "jukebox.h"
 #include "ending.h"
@@ -27,25 +28,33 @@ void initRAM() {
 	// Check for signature
 	initialized = 1U;
 	for(i = 0U; i != 8U; ++i) {
-		if(ram_data[SIG_ADDR + i] != RAM_SIG[i]) {
+		if(ram_data[RAM_SIG_ADDR + i] != RAM_SIG[i]) {
 			initialized = 0U;
 			break;
 		}
 	}
 
+	// Initialize memory
 	if(initialized == 0U) {
 		for(i = 0U; i != 58U; ++i) {
 			ram_data[i] = 0U;
 		}
 
 		for(i = 0U; i != 8U; ++i) {
-			ram_data[SIG_ADDR + i] = RAM_SIG[i];
+			ram_data[RAM_SIG_ADDR + i] = RAM_SIG[i];
 		}
+
+		ram_data[RAM_SHOW_DASH] = 1U;
+		ram_data[RAM_REVERSE_KEYS] = 0U;
 	}
 
+	// Load values from ram
 	for(levels_completed = 0U; levels_completed != 4U; ++levels_completed) {
 		if(ram_data[levels_completed << 4] == 0U) break;
 	}
+
+	options_show_dash = ram_data[RAM_SHOW_DASH];
+	options_reverse_keys = ram_data[RAM_REVERSE_KEYS];
 
 	DISABLE_RAM_MBC1;
 }
@@ -62,7 +71,7 @@ void main() {
 	level = 1U;
 	unlocked_bits = 0U;
 	
-	gamestate = GAMESTATE_LOGOS;
+	gamestate = GAMESTATE_OPTIONS;
 
 	SWITCH_16_8_MODE_MBC1;
 	add_TIM(updateMusic);
@@ -74,9 +83,9 @@ void main() {
 				setGameBank(1U);
 				enterLogos();
 				break;
-			case GAMESTATE_INTRO:
-				setGameBank(3U);
-				enterIntro();
+			case GAMESTATE_INGAME:
+				setGameBank(1U);
+				enterGame();
 				break;
 			case GAMESTATE_TITLE:
 				setGameBank(2U);
@@ -86,14 +95,6 @@ void main() {
 				setGameBank(2U);
 				enterSelect();
 				break;
-			case GAMESTATE_INGAME:
-				setGameBank(1U);
-				enterGame();
-				break;
-			case GAMESTATE_WINSCREEN:
-				setGameBank(7U);
-				enterWinscreen();
-				break;
 			case GAMESTATE_HIGHSCORE:
 				setGameBank(2U);
 				enterHighscore();
@@ -102,13 +103,25 @@ void main() {
 				setGameBank(2U);
 				enterUnlocked();
 				break;
-			case GAMESTATE_JUKEBOX:
-				setGameBank(4U);
-				enterJukebox();
+			case GAMESTATE_INTRO:
+				setGameBank(3U);
+				enterIntro();
 				break;
 			case GAMESTATE_ENDING:
 				setGameBank(3U);
 				enterEnding();
+				break;
+			case GAMESTATE_JUKEBOX:
+				setGameBank(4U);
+				enterJukebox();
+				break;
+			case GAMESTATE_WINSCREEN:
+				setGameBank(7U);
+				enterWinscreen();
+				break;
+			case GAMESTATE_OPTIONS:
+				setGameBank(7U);
+				enterOptions();
 				break;
 		}
 	}
