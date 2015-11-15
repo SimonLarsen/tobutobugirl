@@ -24,14 +24,15 @@ UBYTE options_show_dash;
 UBYTE options_reverse_keys;
 UBYTE options_player_skin;
 
-const UBYTE level_names[7][6] = {
+const UBYTE level_names[8][6] = {
 	{22U, 25U, 13U, 21U, 15U, 14U}, // "LOCKED"
 	{26U, 22U, 11U, 19U, 24U, 29U}, // "PLAINS"
 	{13U, 22U, 25U, 31U, 14U, 29U}, // "CLOUDS"
 	{29U, 26U, 11U, 13U, 15U, 10U}, // "SPACE "
 	{14U, 28U, 15U, 11U, 23U, 10U}, // "DREAM "
+	{23U, 31U, 29U, 19U, 13U, 10U}, // "MUSIC "
 	{29U, 13U, 25U, 28U, 15U, 29U}, // "SCORES"
-	{23U, 31U, 29U, 19U, 13U, 10U}  // "MUSIC "
+	{13U, 25U, 24U, 16U, 19U, 17U}  // "CONFIG"
 };
 
 const UBYTE level_max_time[4] = { 56U, 56U, 64U, 64U };

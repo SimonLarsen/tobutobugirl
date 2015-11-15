@@ -14,25 +14,33 @@ UBYTE options_selection;
 const UBYTE on_str[] = {10U, 25U, 24U};
 const UBYTE off_str[] = {25U, 16U, 16U};
 
+extern UBYTE highscore_song_data;
+
 void initOptions() {
 	disable_interrupts();
 	DISPLAY_OFF;
+
+	OBP0_REG = 0xD0U; // 11010000
+	BGP_REG = 0xE4U; // 11100100
 
 	move_bkg(0U, 0U);
 
 	set_bkg_data(0U, 40U, characters_data);
 	set_bkg_data_rle(options_offset, options_data_length, options_data);
 	set_bkg_tiles_rle(0U, 0U, options_tiles_width, options_tiles_height, options_tiles);
-
 	set_sprite_data(0U, select_arrow_data_length, select_arrow_data);
 
 	options_selection = 0U;
 
 	// Draw ON/OFF
-	options_show_dash ^= 1U;
-	options_reverse_keys ^= 1U;
-	toggleShowDash();
-	toggleReverseKeys();
+	if(options_show_dash) set_bkg_tiles(15U, 5U, 3U, 1U, on_str);
+	else set_bkg_tiles(15U, 5U, 3U, 1U, off_str);
+
+	if(options_reverse_keys) set_bkg_tiles(15U, 7U, 3U, 1U, on_str);
+	else set_bkg_tiles(15U, 7U, 3U, 1U, off_str);
+
+	setMusicBank(4U);
+	playMusic(&highscore_song_data);
 
 	SHOW_BKG;
 	SHOW_SPRITES;
@@ -50,7 +58,8 @@ void toggleShowDash() {
 	enable_interrupts();
 
 	ENABLE_RAM_MBC1;
-	ram_data[RAM_SHOW_DASH] = options_show_dash;
+	SWITCH_RAM_MBC1(0);
+	ram_data[RAM_SHOW_DASH] ^= 1U;
 	DISABLE_RAM_MBC1;
 }
 
@@ -62,7 +71,8 @@ void toggleReverseKeys() {
 	enable_interrupts();
 
 	ENABLE_RAM_MBC1;
-	ram_data[RAM_REVERSE_KEYS] = options_reverse_keys;
+	SWITCH_RAM_MBC1(0);
+	ram_data[RAM_REVERSE_KEYS] ^= 1U;
 	DISABLE_RAM_MBC1;
 }
 

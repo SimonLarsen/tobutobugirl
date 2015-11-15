@@ -1,9 +1,12 @@
 #include <gb/gb.h>
+#include <gb/sample.h>
 #include "logos.h"
 #include "fade.h"
 #include "gamestate.h"
+
 #include "data/bg/tangram.h"
 #include "data/bg/potato.h"
+#include "data/samples/tangram.h"
 
 #define LOGO_DELAY 2U
 
@@ -31,17 +34,19 @@ void enterLogos() {
 
 	fadeFromWhite(8U);
 
+	ticks = 0U;
 	i = LOGO_DELAY;
 	while(i != 0U) {
 		ticks++;
-		if(ticks == 60U) {
+
+		if(ticks == 20U && i == LOGO_DELAY) {
+			play_sample(tangram_sample_data, tangram_sample_samples);
+		}
+
+		if(ticks == 50U) {
 			i--;
 			ticks = 0U;
 		}
-
-		updateJoystate();
-
-		if(ISDOWN(J_START)) break;
 
 		wait_vbl_done();
 	}
@@ -49,17 +54,14 @@ void enterLogos() {
 	fadeToWhite(8U);
 	fadeFromWhite(8U);
 
+	ticks = 0U;
 	i = LOGO_DELAY;
 	while(i != 0U) {
 		ticks++;
-		if(ticks == 60U) {
+		if(ticks == 50U) {
 			i--;
 			ticks = 0U;
 		}
-
-		updateJoystate();
-
-		if(ISDOWN(J_START)) break;
 
 		wait_vbl_done();
 	}

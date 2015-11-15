@@ -388,7 +388,9 @@ void updatePlayer() {
 	if(!dashes && (ticks & 4U)) palette = OBJ_PAL1;
 
 	// Dash marker
-	setSprite(player_x-12U, player_y-9U, 20U+(dashes << 1), palette);
+	if(options_show_dash) {
+		setSprite(player_x-12U, player_y-9U, 20U+(dashes << 1), palette);
+	}
 
 	if(player_xdir == LEFT) {
 		setSprite(player_x-16U, player_y, frame, palette);

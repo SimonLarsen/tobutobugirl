@@ -20,6 +20,7 @@
 #include "data/bg/selection_highscore.h"
 #include "data/bg/selection_jukebox.h"
 #include "data/bg/selection_locked.h"
+#include "data/bg/selection_options.h"
 
 UBYTE select_circle_index;
 UBYTE select_ticks;
@@ -78,11 +79,14 @@ UBYTE *selectGetBannerData() {
 		set_bkg_data(selection4_offset, selection4_data_length, selection4_data);
 		return selection4_tiles;
 	} else if(selection == 5U) {
-		set_bkg_data(selection_highscore_offset, selection_highscore_data_length, selection_highscore_data);
-		return selection_highscore_tiles;
-	} else if(selection == 6U) {
 		set_bkg_data(selection_jukebox_offset, selection_jukebox_data_length, selection_jukebox_data);
 		return selection_jukebox_tiles;
+	} else if(selection == 6U) {
+		set_bkg_data(selection_highscore_offset, selection_highscore_data_length, selection_highscore_data);
+		return selection_highscore_tiles;
+	} else if(selection == 7U) {
+		set_bkg_data(selection_options_offset, selection_options_data_length, selection_options_data);
+		return selection_options_tiles;
 	}
 
 	return 0U;
@@ -181,9 +185,8 @@ void enterSelect() {
 
 		if(ISDOWN(J_RIGHT)) {
 			selection++;
-			if(selection == 7U || (levels_completed < 2U && selection == 6U)) {
-				selection = 1U;
-			}
+			if(selection == 5U && levels_completed < 2U) selection++;
+			if(selection > 7U) selection = 1U;
 			clearRemainingSprites();
 			selectFadeOut();
 			selectFadeIn();
@@ -191,10 +194,8 @@ void enterSelect() {
 		}
 		if(ISDOWN(J_LEFT)) {
 			selection--;
-			if(selection == 0U) {
-				if(selection < 2U) selection = 5U;
-				else selection = 6U;
-			}
+			if(selection == 5U && levels_completed < 2U) selection--;
+			if(selection == 0U) selection = 7U;
 			clearRemainingSprites();
 			selectFadeOut();
 			selectFadeIn();
@@ -202,9 +203,11 @@ void enterSelect() {
 		}
 		if(CLICKED(J_START) || CLICKED(J_A)) {
 			if(selection == 5U) {
-				gamestate = GAMESTATE_HIGHSCORE;
-			} else if(selection == 6U) {
 				gamestate = GAMESTATE_JUKEBOX;
+			} else if(selection == 6U) {
+				gamestate = GAMESTATE_HIGHSCORE;
+			} else if(selection == 7U) {
+				gamestate = GAMESTATE_OPTIONS;
 			} else if(selection <= levels_completed+1U) {
 				level = selection;
 				gamestate = GAMESTATE_INGAME;

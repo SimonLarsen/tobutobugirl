@@ -83,6 +83,7 @@ sprites:
 	#imgtogb --map -O 90 data/bg/selection_highscore.png data/bg/selection_highscore.h
 	#imgtogb --map -O 90 data/bg/selection_jukebox.png data/bg/selection_jukebox.h
 	#imgtogb --map -O 90 data/bg/selection_locked.png data/bg/selection_locked.h
+	#imgtogb --map -O 90 data/bg/selection_options.png data/bg/selection_options.h
 
 .PHONY: songs
 songs:
@@ -121,7 +122,7 @@ tobu.gb:
 	$(CC) $(CFLAGS) -c selection_highscore.c -Wf-bo2
 	$(CC) $(CFLAGS) -c selection_jukebox.c -Wf-bo2
 	$(CC) $(CFLAGS) -c selection_locked.c -Wf-bo2
-	$(CC) $(CFLAGS) -c title.c -Wf-bo2
+	$(CC) $(CFLAGS) -c selection_options.c -Wf-bo2
 	$(CC) $(CFLAGS) -c intro.c -Wf-bo3
 	$(CC) $(CFLAGS) -c intro_bg.c -Wf-bo3
 	$(CC) $(CFLAGS) -c ending.c -Wf-bo3
@@ -138,8 +139,9 @@ tobu.gb:
 	$(CC) $(CFLAGS) -c winscreen.c -Wf-bo7
 	$(CC) $(CFLAGS) -c game_backgrounds.c -Wf-bo7
 	$(CC) $(CFLAGS) -c options.c -Wf-bo7
+	$(CC) $(CFLAGS) -c title.c -Wf-bo8
 	$(CC) $(CFLAGS) -c -Wf-ba0 -c ram.c # ram bank 0
-	$(CC) $(CFLAGS) -Wl-yt3 -Wl-yo8 -Wl-ya1 *.o -o $@
+	$(CC) $(CFLAGS) -Wl-yt3 -Wl-yo16 -Wl-ya1 *.o -o $@
 
 .PHONY: run
 run:
