@@ -15,6 +15,11 @@
 // Sprites
 #include "data/sprite/sprites.h"
 #include "data/sprite/portal.h"
+#include "data/sprite/skin1.h"
+#include "data/sprite/skin2.h"
+#include "data/sprite/skin3.h"
+#include "data/sprite/skin4.h"
+#include "data/sprite/skin5.h"
 
 UBYTE first_load;
 UBYTE scrolled;
@@ -105,8 +110,9 @@ void initGame() {
 	set_bkg_data(hud_offset, hud_data_length, hud_data);
 	set_bkg_data(clock_offset, clock_data_length, clock_data);
 	set_win_tiles(0U, 0U, hud_tiles_width, hud_tiles_height, hud_tiles);
-	set_sprite_data(0U, sprites_data_length, sprites_data);
-	set_sprite_data(0U, portal_data_length, portal_data);
+	set_sprite_data(20U, sprites_data_length, sprites_data);
+	set_sprite_data(0U, 4U, skin1_data);
+	set_sprite_data(4U, portal_data_length, portal_data);
 
 	if(first_load) {
 		first_load = 0U;
@@ -172,6 +178,17 @@ void initGame() {
 	DISPLAY_ON;
 
 	enable_interrupts();
+}
+
+UBYTE *getSkinData() {
+	switch(player_skin) {
+		case 1U: return skin1_data;
+		case 2U: return skin2_data;
+		case 3U: return skin3_data;
+		case 4U: return skin4_data;
+		case 5U: return skin5_data;
+	}
+	return 0U;
 }
 
 void updateInput() {
@@ -680,7 +697,7 @@ void updateSpawns() {
 void introAnimation() {
 	UBYTE frame;
 	for(ticks = 0U; ticks != 64U; ++ticks) {
-		frame = 28U - ((ticks >> 4) << 2);
+		frame = 20U - ((ticks >> 4) << 2);
 		if(ticks & 8U) {
 			setSprite(player_x-16U, player_y, frame, OBJ_PAL0);
 			setSprite(player_x-8U, player_y, frame+2U, OBJ_PAL0);
@@ -714,12 +731,17 @@ void introAnimation() {
 		wait_vbl_done();
 	}
 
-	set_sprite_data(0U, portal_data_length, sprites_data);
+	disable_interrupts();
+	set_sprite_data(0U, 20U, skin1_data);
+	set_sprite_data(20U, 4U, sprites_data);
+	enable_interrupts();
 }
 
 void intoPortalAnimation() {
 	UBYTE frame;
+	disable_interrupts();
 	set_sprite_data(0U, portal_data_length, portal_data);
+	enable_interrupts();
 
 	for(ticks = 0U; ticks != 32U; ++ticks) {
 		if(ticks & 4U) {
@@ -728,15 +750,15 @@ void intoPortalAnimation() {
 			BGP_REG = 0x1BU; // 00011011
 		}
 
-		setSprite(player_x-16U, player_y, 16U, OBJ_PAL0);
-		setSprite(player_x-8U, player_y, 18U, OBJ_PAL0);
+		setSprite(player_x-16U, player_y, entity_sprites[E_PORTAL], OBJ_PAL0);
+		setSprite(player_x-8U, player_y, entity_sprites[E_PORTAL]+2U, OBJ_PAL0);
 
 		clearRemainingSprites();
 		wait_vbl_done();
 	}
 
 	for(ticks = 0U; ticks != 64U; ++ticks) {
-		frame = 16U + ((ticks >> 4) << 2);
+		frame = 4U + ((ticks >> 4) << 2);
 		if(ticks & 8U) {
 			setSprite(player_x-16U, player_y, frame, OBJ_PAL0);
 			setSprite(player_x-8U, player_y, frame+2U, OBJ_PAL0);
@@ -752,19 +774,20 @@ void intoPortalAnimation() {
 
 void deathAnimation() {
 	UBYTE offset, frame;
-	set_sprite_data(0U, portal_data_length, portal_data);
+	set_sprite_data(0U, 8U, skin1_data+320UL);
+	set_sprite_data(8U, portal_data_length, portal_data);
 
 	scroll_y = 0U;
 	for(ticks = 0U; ticks != 48U; ++ticks) {
 		if(ticks < 16U) {
+			setSprite(player_x-16U, player_y, 0U, OBJ_PAL0);
+			setSprite(player_x-8U, player_y, 2U, OBJ_PAL0);
+		} else if(ticks < 20U) {
 			setSprite(player_x-16U, player_y, 4U, OBJ_PAL0);
 			setSprite(player_x-8U, player_y, 6U, OBJ_PAL0);
-		} else if(ticks < 20U) {
+		} else if(ticks < 24U) {
 			setSprite(player_x-16U, player_y, 8U, OBJ_PAL0);
 			setSprite(player_x-8U, player_y, 10U, OBJ_PAL0);
-		} else if(ticks < 24U) {
-			setSprite(player_x-16U, player_y, 12U, OBJ_PAL0);
-			setSprite(player_x-8U, player_y, 14U, OBJ_PAL0);
 		} else {
 			offset = ((ticks-16U) >> 1);
 			frame = 108U + ((ticks & 4U) >> 1);

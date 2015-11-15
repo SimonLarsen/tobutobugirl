@@ -2,6 +2,7 @@
 #define GAME_H
 
 void initGame();
+UBYTE *getSkinData();
 void updateInput();
 void updatePlayer();
 void updateHUD();

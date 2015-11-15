@@ -25,7 +25,7 @@ extern UBYTE game_bank, music_bank;
 extern UBYTE levels_completed;
 extern UBYTE unlocked_bits;
 extern UBYTE scroll_x, scroll_y;
-extern UBYTE player_x, player_y;
+extern UBYTE player_x, player_y, player_skin;
 extern UBYTE cat_x, cat_y;
 
 extern UBYTE options_show_dash;

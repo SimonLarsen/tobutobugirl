@@ -17,7 +17,7 @@ UBYTE game_bank, music_bank;
 UBYTE levels_completed;
 UBYTE unlocked_bits;
 UBYTE scroll_x, scroll_y;
-UBYTE player_x, player_y;
+UBYTE player_x, player_y, player_skin;
 UBYTE cat_x, cat_y;
 
 UBYTE options_show_dash;

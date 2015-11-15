@@ -61,6 +61,11 @@ jukebox_backgrounds:
 sprites:
 	imgtogb --sprite --8x16 data/sprite/sprites.png data/sprite/sprites.h
 	imgtogb --sprite --8x16 data/sprite/portal.png data/sprite/portal.h
+	imgtogb --sprite --8x16 data/sprite/skin1.png data/sprite/skin1.h
+	imgtogb --sprite --8x16 data/sprite/skin2.png data/sprite/skin2.h
+	imgtogb --sprite --8x16 data/sprite/skin3.png data/sprite/skin3.h
+	imgtogb --sprite --8x16 data/sprite/skin4.png data/sprite/skin4.h
+	imgtogb --sprite --8x16 data/sprite/skin5.png data/sprite/skin5.h
 	imgtogb --sprite --8x16 data/sprite/notes.png data/sprite/notes.h
 	imgtogb --sprite --8x16 data/sprite/intro_sprites.png data/sprite/intro_sprites.h
 	imgtogb --sprite --8x16 data/sprite/intro_flash.png data/sprite/intro_flash.h
