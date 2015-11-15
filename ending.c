@@ -44,7 +44,7 @@ void initEnding() {
 }
 
 void updateEnding() {
-	UBYTE tmp;
+	UBYTE tmp, tmp2;
 
 	switch(scene_state) {
 		case ENDING_STATE_WAIT:
@@ -151,6 +151,16 @@ void updateEnding() {
 				scroll_x = ((UBYTE)rand() & 4U) - 2U;
 			}
 
+			if(ticks >= 12U && ticks < 36U) {
+				tmp = 44U + (((ticks-12U) >> 3) << 2);
+				tmp2 = 144U; if(tmp != 44U) tmp2 -= 4U;
+
+				setSprite(cat_x-8U, tmp2, tmp, OBJ_PAL0);
+				setSprite(cat_x, tmp2, tmp+2U, OBJ_PAL0);
+				setSprite(player_x+16U, tmp2, tmp, OBJ_PAL0 | FLIP_X);
+				setSprite(player_x+8U, tmp2, tmp+2U, OBJ_PAL0 | FLIP_X);
+			}
+
 			if(ticks >= 110U) {
 				scene_state = ENDING_STATE_PAN;
 				ticks = 0U;
@@ -206,7 +216,7 @@ void updateEnding() {
 			setSprite(player_x, player_y-scroll_y, tmp, OBJ_PAL0);
 			setSprite(player_x+8U, player_y-scroll_y, tmp+2U, OBJ_PAL0);
 
-			if(ending_frame >= 32U) {
+			if(ending_frame >= 28U) {
 				scene_state = ENDING_STATE_END;
 			}
 			break;
