@@ -25,11 +25,12 @@ extern UBYTE game_bank, music_bank;
 extern UBYTE levels_completed;
 extern UBYTE unlocked_bits;
 extern UBYTE scroll_x, scroll_y;
-extern UBYTE player_x, player_y, player_skin;
+extern UBYTE player_x, player_y;
 extern UBYTE cat_x, cat_y;
 
 extern UBYTE options_show_dash;
 extern UBYTE options_reverse_keys;
+extern UBYTE options_player_skin;
 
 #define CLICKED(x) ((joystate & x) && (joystate & x) != (oldjoystate & x))
 #define RELEASED(x) (!(joystate & x) && (joystate & x) != (oldjoystate & x))

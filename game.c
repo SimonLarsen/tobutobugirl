@@ -98,6 +98,8 @@ const UBYTE spawn_levels[4][3][8] = {
 };
 
 void initGame() {
+	UBYTE *skin_data;
+
 	disable_interrupts();
 	DISPLAY_OFF;
 	SPRITES_8x16;
@@ -111,7 +113,8 @@ void initGame() {
 	set_bkg_data(clock_offset, clock_data_length, clock_data);
 	set_win_tiles(0U, 0U, hud_tiles_width, hud_tiles_height, hud_tiles);
 	set_sprite_data(20U, sprites_data_length, sprites_data);
-	set_sprite_data(0U, 4U, skin1_data);
+	skin_data = getSkinData();
+	set_sprite_data(0U, 4U, skin_data);
 	set_sprite_data(4U, portal_data_length, portal_data);
 
 	if(first_load) {
@@ -181,7 +184,7 @@ void initGame() {
 }
 
 UBYTE *getSkinData() {
-	switch(player_skin) {
+	switch(options_player_skin) {
 		case 1U: return skin1_data;
 		case 2U: return skin2_data;
 		case 3U: return skin3_data;
@@ -696,6 +699,8 @@ void updateSpawns() {
 
 void introAnimation() {
 	UBYTE frame;
+	UBYTE *skin_data;
+
 	for(ticks = 0U; ticks != 64U; ++ticks) {
 		frame = 20U - ((ticks >> 4) << 2);
 		if(ticks & 8U) {
@@ -732,7 +737,8 @@ void introAnimation() {
 	}
 
 	disable_interrupts();
-	set_sprite_data(0U, 20U, skin1_data);
+	skin_data = getSkinData();
+	set_sprite_data(0U, 20U, skin_data);
 	set_sprite_data(20U, 4U, sprites_data);
 	enable_interrupts();
 }
@@ -774,7 +780,9 @@ void intoPortalAnimation() {
 
 void deathAnimation() {
 	UBYTE offset, frame;
-	set_sprite_data(0U, 8U, skin1_data+320UL);
+	UBYTE *skin_data;
+	skin_data = getSkinData();
+	set_sprite_data(0U, 8U, skin_data+320UL);
 	set_sprite_data(8U, portal_data_length, portal_data);
 
 	scroll_y = 0U;

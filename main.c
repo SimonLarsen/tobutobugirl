@@ -46,6 +46,7 @@ void initRAM() {
 
 		ram_data[RAM_SHOW_DASH] = 1U;
 		ram_data[RAM_REVERSE_KEYS] = 0U;
+		ram_data[RAM_PLAYER_SKIN] = 1U;
 	}
 
 	// Load values from ram
@@ -55,6 +56,7 @@ void initRAM() {
 
 	options_show_dash = ram_data[RAM_SHOW_DASH];
 	options_reverse_keys = ram_data[RAM_REVERSE_KEYS];
+	options_player_skin = ram_data[RAM_PLAYER_SKIN];
 
 	DISABLE_RAM_MBC1;
 }
