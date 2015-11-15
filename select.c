@@ -54,9 +54,9 @@ void initSelect() {
 	playMusic(&mainmenu_song_data);
 
 	HIDE_WIN;
-	SPRITES_8x8;
 	SHOW_SPRITES;
 	SHOW_BKG;
+	SPRITES_8x8;
 
 	DISPLAY_ON;
 	enable_interrupts();

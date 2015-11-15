@@ -43,7 +43,7 @@ void enterLogos() {
 			play_sample(tangram_sample_data, tangram_sample_samples);
 		}
 
-		if(ticks == 50U) {
+		if(ticks == 40U) {
 			i--;
 			ticks = 0U;
 		}
