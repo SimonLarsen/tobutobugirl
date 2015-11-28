@@ -23,7 +23,8 @@
 #include "data/bg/selection_options.h"
 
 UBYTE select_circle_index;
-UBYTE select_ticks;
+UBYTE select_arrow_offset1;
+UBYTE select_arrow_offset2;
 UBYTE select_scroll_dir;
 
 extern UBYTE mainmenu_song_data;
@@ -40,8 +41,10 @@ void initSelect() {
 	set_bkg_data_rle(select_offset, select_data_length, select_data);
 	set_bkg_tiles_rle(0U, 0U, select_tiles_width, select_tiles_height, select_tiles);
 
-	select_circle_index = 0U;
 	ticks = 0U;
+	select_circle_index = 0U;
+	select_arrow_offset1 = 0U;
+	select_arrow_offset2 = 0U;
 
 	OBP0_REG = 0xD0U; // 11010000
 	OBP1_REG = 0xB4U; // 11100100
@@ -98,19 +101,15 @@ void _selectUpdateScreen() {
 }
 
 void selectUpdateSprites() {
-	UBYTE offset;
+	setSprite(24U-select_arrow_offset1, 61U, 37U, OBJ_PAL0);
+	setSprite(32U-select_arrow_offset1, 61U, 39U, OBJ_PAL0);
+	setSprite(24U-select_arrow_offset1, 69U, 38U, OBJ_PAL0);
+	setSprite(32U-select_arrow_offset1, 69U, 40U, OBJ_PAL0);
 
-	offset = cos32_64[(ticks & 63U)] >> 3;
-
-	setSprite(24U-offset, 61U, 37U, OBJ_PAL0);
-	setSprite(32U-offset, 61U, 39U, OBJ_PAL0);
-	setSprite(24U-offset, 69U, 38U, OBJ_PAL0);
-	setSprite(32U-offset, 69U, 40U, OBJ_PAL0);
-
-	setSprite(136U+offset, 61U, 39U, OBJ_PAL0 | FLIP_X);
-	setSprite(144U+offset, 61U, 37U, OBJ_PAL0 | FLIP_X);
-	setSprite(136U+offset, 69U, 40U, OBJ_PAL0 | FLIP_X);
-	setSprite(144U+offset, 69U, 38U, OBJ_PAL0 | FLIP_X);
+	setSprite(136U+select_arrow_offset2, 61U, 39U, OBJ_PAL0 | FLIP_X);
+	setSprite(144U+select_arrow_offset2, 61U, 37U, OBJ_PAL0 | FLIP_X);
+	setSprite(136U+select_arrow_offset2, 69U, 40U, OBJ_PAL0 | FLIP_X);
+	setSprite(144U+select_arrow_offset2, 69U, 38U, OBJ_PAL0 | FLIP_X);
 }
 
 void selectScrollCircles() {
@@ -119,27 +118,34 @@ void selectScrollCircles() {
 }
 
 void selectFadeOut() {
-	UBYTE i;
+	UBYTE i, x;
 	UBYTE tiles[6U];
 
 	for(i = 0U; i != 6U; ++i) tiles[i] = 8U;
 
 	for(i = 0U; i != 20U; ++i) {
 		disable_interrupts();
-		set_bkg_tiles(i, 10U, 1U, 6U, tiles);
+		if(select_scroll_dir == LEFT) x = i;
+		else x = 19U - i;
+		set_bkg_tiles(x, 10U, 1U, 6U, tiles);
 		enable_interrupts();
 		if(i & 1U) {
 			ticks++;
-			if((ticks & 3U) == 3U) {
-				selectScrollCircles();
-			}
+			if((ticks & 3U) == 3U) selectScrollCircles();
+			if(select_scroll_dir == LEFT) select_arrow_offset1 = cos32_64[i >> 1];
+			else select_arrow_offset2 = cos32_64[i >> 1];
+			selectUpdateSprites();
+			clearRemainingSprites();
+			snd_update();
 			wait_vbl_done();
 		}
 	}
+	select_arrow_offset1 = 0U;
+	select_arrow_offset2 = 0U;
 }
 
 void selectFadeIn() {
-	UBYTE i, j;
+	UBYTE i, j, x;
 	UBYTE *data;
 	UBYTE *ptr;
 	UBYTE tiles[6];
@@ -149,7 +155,9 @@ void selectFadeIn() {
 	enable_interrupts();
 
 	for(i = 0U; i != 20U; ++i) {
-		ptr = data + i;
+		if(select_scroll_dir == LEFT) x = i;
+		else x = 19U - i;
+		ptr = data + x;
 		for(j = 0U; j != 6U; ++j) {
 			tiles[j] = *ptr;
 			ptr += 20U;
@@ -157,16 +165,22 @@ void selectFadeIn() {
 		++ptr;
 
 		disable_interrupts();
-		set_bkg_tiles(i, 10U, 1U, 6U, tiles);
+		set_bkg_tiles(x, 10U, 1U, 6U, tiles);
 		enable_interrupts();
 		if(i & 1U) {
 			ticks++;
-			if((ticks & 3U) == 3U) {
-				selectScrollCircles();
-			}
+			if((ticks & 3U) == 3U) selectScrollCircles();
+			if(select_scroll_dir == LEFT) select_arrow_offset1 = cos32_64[10U - (i >> 1)];
+			else select_arrow_offset2 = cos32_64[10U - (i >> 1)];
+			selectUpdateSprites();
+			clearRemainingSprites();
+			snd_update();
 			wait_vbl_done();
 		}
 	}
+
+	select_arrow_offset1 = 0U;
+	select_arrow_offset2 = 0U;
 }
 
 void enterSelect() {
@@ -185,6 +199,7 @@ void enterSelect() {
 
 		if(ISDOWN(J_RIGHT)) {
 			selection++;
+			select_scroll_dir = RIGHT;
 			if(selection == 5U && levels_completed < 2U) selection++;
 			if(selection > 7U) selection = 1U;
 			clearRemainingSprites();
@@ -194,6 +209,7 @@ void enterSelect() {
 		}
 		if(ISDOWN(J_LEFT)) {
 			selection--;
+			select_scroll_dir = LEFT;
 			if(selection == 5U && levels_completed < 2U) selection--;
 			if(selection == 0U) selection = 7U;
 			clearRemainingSprites();
