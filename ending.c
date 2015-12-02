@@ -90,10 +90,13 @@ void updateEnding() {
 			setSprite(player_x-4U, player_y-scroll_y-12U, tmp, OBJ_PAL0);
 			setSprite(player_x+4U, player_y-scroll_y-12U, tmp+2U, OBJ_PAL0);
 
-			setSprite(player_x-4U, player_y-scroll_y+4U,  20U, OBJ_PAL0);
-			setSprite(player_x+4U, player_y-scroll_y+4U,  22U, OBJ_PAL0);
-			setSprite(player_x-4U, player_y-scroll_y+20U, 24U, OBJ_PAL0);
-			setSprite(player_x+4U, player_y-scroll_y+20U, 26U, OBJ_PAL0);
+			if(ticks & 8U) tmp = 28U;
+			else tmp = 20U;
+
+			setSprite(player_x-4U, player_y-scroll_y+4U,  tmp+0U, OBJ_PAL0);
+			setSprite(player_x+4U, player_y-scroll_y+4U,  tmp+2U, OBJ_PAL0);
+			setSprite(player_x-4U, player_y-scroll_y+20U, tmp+4U, OBJ_PAL0);
+			setSprite(player_x+4U, player_y-scroll_y+20U, tmp+6U, OBJ_PAL0);
 
 			if(player_y >= 143U) {
 				scene_state = ENDING_STATE_POP;
@@ -104,10 +107,10 @@ void updateEnding() {
 
 		case ENDING_STATE_POP:
 			// Shocked
-			setSprite(player_x-4U, player_y-scroll_y+4U,  28U, OBJ_PAL0);
-			setSprite(player_x+4U, player_y-scroll_y+4U,  30U, OBJ_PAL0);
-			setSprite(player_x-4U, player_y-scroll_y+20U, 32U, OBJ_PAL0);
-			setSprite(player_x+4U, player_y-scroll_y+20U, 34U, OBJ_PAL0);
+			setSprite(player_x-4U, player_y-scroll_y+4U,  36U, OBJ_PAL0);
+			setSprite(player_x+4U, player_y-scroll_y+4U,  38U, OBJ_PAL0);
+			setSprite(player_x-4U, player_y-scroll_y+20U, 40U, OBJ_PAL0);
+			setSprite(player_x+4U, player_y-scroll_y+20U, 42U, OBJ_PAL0);
 
 			if(ticks & 16U) {
 				setSprite(player_x-1U, player_y-scroll_y-10U, 16U, OBJ_PAL0);
@@ -131,11 +134,11 @@ void updateEnding() {
 				cat_x--;
 			}
 
-			setSprite(player_x, player_y-scroll_y, 36U, OBJ_PAL0);
-			setSprite(player_x+8U, player_y-scroll_y, 38U, OBJ_PAL0);
+			setSprite(player_x, player_y-scroll_y, 44U, OBJ_PAL0);
+			setSprite(player_x+8U, player_y-scroll_y, 46U, OBJ_PAL0);
 
-			setSprite(cat_x, cat_y-scroll_y, 40U, OBJ_PAL0);
-			setSprite(cat_x+8U, cat_y-scroll_y, 42U, OBJ_PAL0);
+			setSprite(cat_x, cat_y-scroll_y, 48U, OBJ_PAL0);
+			setSprite(cat_x+8U, cat_y-scroll_y, 50U, OBJ_PAL0);
 
 			if(player_y >= 240U) {
 				scene_state = ENDING_STATE_SHAKE;
@@ -152,8 +155,8 @@ void updateEnding() {
 			}
 
 			if(ticks >= 12U && ticks < 36U) {
-				tmp = 44U + (((ticks-12U) >> 3) << 2);
-				tmp2 = 144U; if(tmp != 44U) tmp2 -= 4U;
+				tmp = 52U + (((ticks-12U) >> 3) << 2);
+				tmp2 = 144U; if(tmp != 52U) tmp2 -= 4U;
 
 				setSprite(cat_x-8U, tmp2, tmp, OBJ_PAL0);
 				setSprite(cat_x, tmp2, tmp+2U, OBJ_PAL0);
