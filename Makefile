@@ -67,6 +67,7 @@ sprites:
 	imgtogb --sprite --8x16 data/sprite/ending_sprites2.png data/sprite/ending_sprites2.h
 	imgtogb --sprite data/sprite/digital.png data/sprite/digital.h
 	imgtogb --sprite --8x16 data/sprite/select_arrow.png data/sprite/select_arrow.h
+	imgtogb --sprite data/sprite/togglecat.png data/sprite/togglecat.h
 	#imgtogb --sprite data/sprite/characters.png data/sprite/characters.h # 40 tiles
 	#imgtogb --sprite --8x16 data/sprite/arrow.png data/sprite/arrow.h
 	#imgtogb --map -O 90 data/bg/selection1.png data/bg/selection1.h

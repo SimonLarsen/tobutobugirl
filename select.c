@@ -9,6 +9,7 @@
 
 #include "data/sprite/characters.h"
 #include "data/sprite/arrow.h"
+#include "data/sprite/togglecat.h"
 
 #include "data/bg/circles.h"
 #include "data/bg/select.h"
@@ -25,6 +26,13 @@ UBYTE select_circle_index;
 UBYTE select_arrow_offset1;
 UBYTE select_arrow_offset2;
 UBYTE select_scroll_dir;
+UBYTE select_cat_state;
+UBYTE select_cat_frame;
+
+#define CAT_OFF 0U
+#define CAT_IN  1U
+#define CAT_ON  2U
+#define CAT_OUT 3U
 
 extern UBYTE mainmenu_song_data;
 
@@ -35,6 +43,7 @@ void initSelect() {
 	move_bkg(0U, 0U);
 	set_sprite_data(0U, 37U, characters_data);
 	set_sprite_data(37U, arrow_data_length, arrow_data);
+	set_sprite_data(41U, togglecat_data_length, togglecat_data);
 
 	set_bkg_data(0U, circles_data_length, circles_data);
 	set_bkg_data_rle(select_offset, select_data_length, select_data);
@@ -44,6 +53,9 @@ void initSelect() {
 	select_circle_index = 0U;
 	select_arrow_offset1 = 0U;
 	select_arrow_offset2 = 0U;
+
+	select_cat_state = CAT_OFF;
+	if(player_skin == 2U) select_cat_state = CAT_ON;
 
 	OBP0_REG = 0xD0U; // 11010000
 	OBP1_REG = 0xB4U; // 11100100
@@ -87,7 +99,6 @@ UBYTE *selectGetBannerData() {
 		set_bkg_data(selection_highscore_offset, selection_highscore_data_length, selection_highscore_data);
 		return selection_highscore_tiles;
 	}
-
 	return 0U;
 }
 
@@ -97,20 +108,59 @@ void _selectUpdateScreen() {
 }
 
 void selectUpdateSprites() {
-	setSprite(24U-select_arrow_offset1, 61U, 37U, OBJ_PAL0);
-	setSprite(32U-select_arrow_offset1, 61U, 39U, OBJ_PAL0);
-	setSprite(24U-select_arrow_offset1, 69U, 38U, OBJ_PAL0);
-	setSprite(32U-select_arrow_offset1, 69U, 40U, OBJ_PAL0);
+	UBYTE frame;
 
-	setSprite(136U+select_arrow_offset2, 61U, 39U, OBJ_PAL0 | FLIP_X);
-	setSprite(144U+select_arrow_offset2, 61U, 37U, OBJ_PAL0 | FLIP_X);
-	setSprite(136U+select_arrow_offset2, 69U, 40U, OBJ_PAL0 | FLIP_X);
-	setSprite(144U+select_arrow_offset2, 69U, 38U, OBJ_PAL0 | FLIP_X);
+	setSprite(24U-select_arrow_offset1, 69U, 37U, OBJ_PAL0);
+	setSprite(32U-select_arrow_offset1, 69U, 39U, OBJ_PAL0);
+	setSprite(24U-select_arrow_offset1, 77U, 38U, OBJ_PAL0);
+	setSprite(32U-select_arrow_offset1, 77U, 40U, OBJ_PAL0);
+
+	setSprite(136U+select_arrow_offset2, 69U, 39U, OBJ_PAL0 | FLIP_X);
+	setSprite(144U+select_arrow_offset2, 69U, 37U, OBJ_PAL0 | FLIP_X);
+	setSprite(136U+select_arrow_offset2, 77U, 40U, OBJ_PAL0 | FLIP_X);
+	setSprite(144U+select_arrow_offset2, 77U, 38U, OBJ_PAL0 | FLIP_X);
+
+	if(levels_completed >= 3U) {
+		switch(select_cat_state) {
+			case CAT_OFF:
+				if((ticks & 31U) == 31U) select_cat_frame ^= 1U;
+				if(CLICKED(J_SELECT)) {
+					select_cat_state = CAT_IN;
+					player_skin = 2U;
+				}
+				break;
+			case CAT_IN:
+				if((ticks & 7U) == 7U) select_cat_frame++;
+				if(select_cat_frame == 6U) select_cat_state = CAT_ON;
+				break;
+			case CAT_ON:
+				if((ticks & 15U) == 15U) select_cat_frame++;
+				if(select_cat_frame == 8U) select_cat_frame = 6U;
+				if(CLICKED(J_SELECT)) {
+					select_cat_state = CAT_OUT;
+					player_skin = 1U;
+				}
+				break;
+			case CAT_OUT:
+				if((ticks & 7U) == 7U) select_cat_frame--;
+				if(select_cat_frame == 2U) {
+					select_cat_state = CAT_OFF;
+					select_cat_frame = 0U;
+				}
+				break;
+		}
+
+		frame = 41U + (select_cat_frame << 2);
+		setSprite(136U, 20U, frame++, OBJ_PAL0);
+		setSprite(144U, 20U, frame++, OBJ_PAL0);
+		setSprite(136U, 28U, frame++, OBJ_PAL0);
+		setSprite(144U, 28U, frame, OBJ_PAL0);
+	}
 }
 
 void selectScrollCircles() {
 	select_circle_index = (select_circle_index+1U) & 7U;
-	set_bkg_data(30U, 1U, &circles_data[(select_circle_index << 4)]);
+	set_bkg_data(9U, 1U, &circles_data[(select_circle_index << 4)]);
 }
 
 void selectFadeOut() {
@@ -239,7 +289,7 @@ void enterSelect() {
 			offset += 4U;
 		}
 		for(i = 0U; i != 6; ++i) {
-			setSprite(offset+(i << 3), 61U+cos4_16[(i+(ticks >> 1)) & 15U], level_names[name_index][i], OBJ_PAL0);
+			setSprite(offset+(i << 3), 69U+cos4_16[(i+(ticks >> 1)) & 15U], level_names[name_index][i], OBJ_PAL0);
 		}
 
 		selectUpdateSprites();
