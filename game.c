@@ -155,7 +155,7 @@ void initGame() {
 	scroll_y = 0U;
 
 	scene_state = INGAME_ACTIVE;
-	blips = 0U;
+	blips = 128U;
 	blip_bar = 0U;
 	kills = 0U;
 
