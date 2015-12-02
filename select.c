@@ -198,21 +198,21 @@ void enterSelect() {
 		}
 
 		if(ISDOWN(J_RIGHT)) {
+			snd_play(SFX_BLIP);
 			selection++;
 			select_scroll_dir = RIGHT;
 			if(selection == 5U && levels_completed < 2U) selection++;
 			if(selection > 7U) selection = 1U;
-			clearRemainingSprites();
 			selectFadeOut();
 			selectFadeIn();
 			selectUpdateSprites();
 		}
 		if(ISDOWN(J_LEFT)) {
+			snd_play(SFX_BLIP);
 			selection--;
 			select_scroll_dir = LEFT;
 			if(selection == 5U && levels_completed < 2U) selection--;
 			if(selection == 0U) selection = 7U;
-			clearRemainingSprites();
 			selectFadeOut();
 			selectFadeIn();
 			selectUpdateSprites();
@@ -250,6 +250,7 @@ void enterSelect() {
 
 		selectUpdateSprites();
 		clearRemainingSprites();
+		snd_update();
 		wait_vbl_done();
 	}
 

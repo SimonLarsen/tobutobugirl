@@ -140,12 +140,15 @@ void mus_restore1() {
 	mus_enabled1 = 0x80U;
 	NR10_REG = 0U;
 	NR11_REG = mus_duty1 << 5;
-	NR12_REG = (mus_volume1 << 4) | mus_env1;
+	NR12_REG = 0U;
+	NR13_REG = 0U;
+	NR14_REG = 0x80U;
 }
 
 void mus_restore4() {
 	mus_enabled4 = 0x80U;
-	NR42_REG = (mus_volume4 << 4) | mus_env4;
+	NR42_REG = 0U;
+	NR44_REG = 0x80U;
 }
 
 void mus_update() {
@@ -208,17 +211,19 @@ void mus_update1() {
 				return;
 			} else if(note == T_REST) {
 				mus_freq1 = 0U;
-				NR12_REG = 0U;
+				if(mus_enabled1) NR12_REG = 0U;
 			} else {
 				if(mus_slide1) {
 					mus_target1 = freq[((mus_octave1-MUS_FIRST_OCTAVE) << 4) + note] + mus_po1 - 128U;
 				} else {
 					mus_freq1 = freq[((mus_octave1-MUS_FIRST_OCTAVE) << 4) + note] + mus_po1 - 128U;
 				}
-				NR12_REG = (mus_volume1 << 4) | mus_env1;
+				if(mus_enabled1) NR12_REG = (mus_volume1 << 4) | mus_env1;
 			}
-			NR13_REG = (UBYTE)mus_freq1;
-			NR14_REG = mus_enabled1 | (mus_freq1 >> 8);
+			if(mus_enabled1) {
+				NR13_REG = (UBYTE)mus_freq1;
+				NR14_REG = (mus_freq1 >> 8) | 0x80U;
+			}
 			return;
 		}
 		switch(note) {
@@ -236,19 +241,19 @@ void mus_update1() {
 				break;
 			case T_VOL:
 				mus_volume1 = *mus_data1++;
-				NR12_REG = (mus_volume1 << 4) | mus_env1;
+				if(mus_enabled1) NR12_REG = (mus_volume1 << 4) | mus_env1;
 				break;
 			case T_ENV:
 				mus_env1 = *mus_data1++;
-				NR12_REG = (mus_volume1 << 4) | mus_env1;
+				if(mus_enabled1) NR12_REG = (mus_volume1 << 4) | mus_env1;
 				break;
 			case T_WAVEDUTY:
 				mus_duty1 = *mus_data1++;
-				NR11_REG = mus_duty1 << 5;
+				if(mus_enabled1) NR11_REG = mus_duty1 << 5;
 				break;
 			case T_PAN:
 				note = *mus_data1++;
-				NR51_REG = (NR51_REG & 0xEEU) | note; // 11101110
+				if(mus_enabled1) NR51_REG = (NR51_REG & 0xEEU) | note; // 11101110
 				break;
 			case T_PORTAMENTO:
 				mus_slide1 = *mus_data1++;
