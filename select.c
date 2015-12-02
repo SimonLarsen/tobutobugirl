@@ -20,7 +20,6 @@
 #include "data/bg/selection_highscore.h"
 #include "data/bg/selection_jukebox.h"
 #include "data/bg/selection_locked.h"
-#include "data/bg/selection_options.h"
 
 UBYTE select_circle_index;
 UBYTE select_arrow_offset1;
@@ -87,9 +86,6 @@ UBYTE *selectGetBannerData() {
 	} else if(selection == 6U) {
 		set_bkg_data(selection_highscore_offset, selection_highscore_data_length, selection_highscore_data);
 		return selection_highscore_tiles;
-	} else if(selection == 7U) {
-		set_bkg_data(selection_options_offset, selection_options_data_length, selection_options_data);
-		return selection_options_tiles;
 	}
 
 	return 0U;
@@ -202,7 +198,7 @@ void enterSelect() {
 			selection++;
 			select_scroll_dir = RIGHT;
 			if(selection == 5U && levels_completed < 2U) selection++;
-			if(selection > 7U) selection = 1U;
+			if(selection > 6U) selection = 1U;
 			selectFadeOut();
 			selectFadeIn();
 			selectUpdateSprites();
@@ -212,7 +208,7 @@ void enterSelect() {
 			selection--;
 			select_scroll_dir = LEFT;
 			if(selection == 5U && levels_completed < 2U) selection--;
-			if(selection == 0U) selection = 7U;
+			if(selection == 0U) selection = 6U;
 			selectFadeOut();
 			selectFadeIn();
 			selectUpdateSprites();
@@ -222,8 +218,6 @@ void enterSelect() {
 				gamestate = GAMESTATE_JUKEBOX;
 			} else if(selection == 6U) {
 				gamestate = GAMESTATE_HIGHSCORE;
-			} else if(selection == 7U) {
-				gamestate = GAMESTATE_OPTIONS;
 			} else if(selection <= levels_completed+1U) {
 				level = selection;
 				gamestate = GAMESTATE_INGAME;

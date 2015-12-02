@@ -10,10 +10,6 @@ Memory:
 	32-41	Level 3
 	48-57   Level 4
 
-	64U     Show dash counter option (0/1)
-	65U     Reverse keys option (0/1)
-	66U     Player skin (1-5)
-
 	120-127 Ram signature "TOBUTOBU"
  */
 

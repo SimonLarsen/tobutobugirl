@@ -17,9 +17,6 @@
 #include "data/sprite/portal.h"
 #include "data/sprite/skin1.h"
 #include "data/sprite/skin2.h"
-#include "data/sprite/skin3.h"
-#include "data/sprite/skin4.h"
-#include "data/sprite/skin5.h"
 
 UBYTE first_load;
 UBYTE scrolled;
@@ -184,14 +181,7 @@ void initGame() {
 }
 
 UBYTE *getSkinData() {
-	switch(options_player_skin) {
-		case 1U: return skin1_data;
-		case 2U: return skin2_data;
-		case 3U: return skin3_data;
-		case 4U: return skin4_data;
-		case 5U: return skin5_data;
-	}
-	return 0U;
+	return skin1_data;
 }
 
 void updateInput() {
@@ -388,9 +378,7 @@ void updatePlayer() {
 	if(!dashes && (ticks & 4U)) palette = OBJ_PAL1;
 
 	// Dash marker
-	if(options_show_dash) {
-		setSprite(player_x-12U, player_y-9U, 20U+(dashes << 1), palette);
-	}
+	setSprite(player_x-12U, player_y-9U, 20U+(dashes << 1), palette);
 
 	if(player_xdir == LEFT) {
 		setSprite(player_x-16U, player_y, frame, palette);

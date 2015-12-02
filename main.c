@@ -12,7 +12,6 @@
 #include "game.h"
 #include "winscreen.h"
 #include "highscore.h"
-#include "options.h"
 #include "unlocked.h"
 #include "jukebox.h"
 #include "ending.h"
@@ -43,20 +42,12 @@ void initRAM() {
 		for(i = 0U; i != 8U; ++i) {
 			ram_data[RAM_SIG_ADDR + i] = RAM_SIG[i];
 		}
-
-		ram_data[RAM_SHOW_DASH] = 1U;
-		ram_data[RAM_REVERSE_KEYS] = 0U;
-		ram_data[RAM_PLAYER_SKIN] = 1U;
 	}
 
 	// Load values from ram
 	for(levels_completed = 0U; levels_completed != 4U; ++levels_completed) {
 		if(ram_data[levels_completed << 4] == 0U) break;
 	}
-
-	options_show_dash = ram_data[RAM_SHOW_DASH];
-	options_reverse_keys = ram_data[RAM_REVERSE_KEYS];
-	options_player_skin = ram_data[RAM_PLAYER_SKIN];
 
 	DISABLE_RAM_MBC1;
 }
@@ -120,10 +111,6 @@ void main() {
 			case GAMESTATE_WINSCREEN:
 				setGameBank(7U);
 				enterWinscreen();
-				break;
-			case GAMESTATE_OPTIONS:
-				setGameBank(7U);
-				enterOptions();
 				break;
 		}
 	}

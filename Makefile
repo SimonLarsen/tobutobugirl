@@ -3,7 +3,7 @@ CFLAGS=
 
 default: backgrounds sprites tobu.gb
 
-backgrounds: logos_backgrounds intro_backgrounds title_backgrounds select_backgrounds ingame_backgrounds winscreen_backgrounds highscore_backgrounds unlocked_backgrounds jukebox_backgrounds options_backgrounds
+backgrounds: logos_backgrounds intro_backgrounds title_backgrounds select_backgrounds ingame_backgrounds winscreen_backgrounds highscore_backgrounds unlocked_backgrounds jukebox_backgrounds
 
 .PHONY: logos_backgrounds
 logos_backgrounds:
@@ -21,10 +21,6 @@ title_backgrounds:
 .PHONY: select_backgrounds
 select_backgrounds:
 	imgtogb --map --rle -O 9 data/bg/select.png data/bg/select.h
-
-.PHONY: options_backgrounds
-options_backgrounds:
-	imgtogb --map --rle -O 40 data/bg/options.png data/bg/options.h
 
 .PHONY: ingame_backgrounds
 ingame_backgrounds:
@@ -63,9 +59,6 @@ sprites:
 	imgtogb --sprite --8x16 data/sprite/portal.png data/sprite/portal.h
 	imgtogb --sprite --8x16 data/sprite/skin1.png data/sprite/skin1.h
 	imgtogb --sprite --8x16 data/sprite/skin2.png data/sprite/skin2.h
-	imgtogb --sprite --8x16 data/sprite/skin3.png data/sprite/skin3.h
-	imgtogb --sprite --8x16 data/sprite/skin4.png data/sprite/skin4.h
-	imgtogb --sprite --8x16 data/sprite/skin5.png data/sprite/skin5.h
 	imgtogb --sprite --8x16 data/sprite/notes.png data/sprite/notes.h
 	imgtogb --sprite --8x16 data/sprite/intro_sprites.png data/sprite/intro_sprites.h
 	imgtogb --sprite --8x16 data/sprite/intro_flash.png data/sprite/intro_flash.h
@@ -74,7 +67,6 @@ sprites:
 	imgtogb --sprite --8x16 data/sprite/ending_sprites2.png data/sprite/ending_sprites2.h
 	imgtogb --sprite data/sprite/digital.png data/sprite/digital.h
 	imgtogb --sprite --8x16 data/sprite/select_arrow.png data/sprite/select_arrow.h
-	imgtogb --sprite --8x16 data/sprite/skins.png data/sprite/skins.h
 	#imgtogb --sprite data/sprite/characters.png data/sprite/characters.h # 40 tiles
 	#imgtogb --sprite --8x16 data/sprite/arrow.png data/sprite/arrow.h
 	#imgtogb --map -O 90 data/bg/selection1.png data/bg/selection1.h
@@ -84,7 +76,6 @@ sprites:
 	#imgtogb --map -O 90 data/bg/selection_highscore.png data/bg/selection_highscore.h
 	#imgtogb --map -O 90 data/bg/selection_jukebox.png data/bg/selection_jukebox.h
 	#imgtogb --map -O 90 data/bg/selection_locked.png data/bg/selection_locked.h
-	#imgtogb --map -O 90 data/bg/selection_options.png data/bg/selection_options.h
 
 .PHONY: songs
 songs:
@@ -123,7 +114,6 @@ tobu.gb:
 	$(CC) $(CFLAGS) -c selection_highscore.c -Wf-bo2
 	$(CC) $(CFLAGS) -c selection_jukebox.c -Wf-bo2
 	$(CC) $(CFLAGS) -c selection_locked.c -Wf-bo2
-	$(CC) $(CFLAGS) -c selection_options.c -Wf-bo2
 	$(CC) $(CFLAGS) -c intro.c -Wf-bo3
 	$(CC) $(CFLAGS) -c intro_bg.c -Wf-bo3
 	$(CC) $(CFLAGS) -c ending.c -Wf-bo3
@@ -139,7 +129,6 @@ tobu.gb:
 	$(CC) $(CFLAGS) -c data/songs/intro2_song.asm # bank 6
 	$(CC) $(CFLAGS) -c winscreen.c -Wf-bo7
 	$(CC) $(CFLAGS) -c game_backgrounds.c -Wf-bo7
-	$(CC) $(CFLAGS) -c options.c -Wf-bo7
 	$(CC) $(CFLAGS) -c title.c -Wf-bo8
 	$(CC) $(CFLAGS) -c -Wf-ba0 -c ram.c # ram bank 0
 	$(CC) $(CFLAGS) -Wl-yt3 -Wl-yo16 -Wl-ya1 *.o -o $@
