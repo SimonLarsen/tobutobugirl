@@ -63,6 +63,7 @@ void main() {
 	joystate = oldjoystate = 0U;
 	level = 1U;
 	unlocked_bits = 0U;
+	player_skin = 1U;
 	
 	gamestate = GAMESTATE_LOGOS;
 

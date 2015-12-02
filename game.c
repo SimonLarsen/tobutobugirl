@@ -57,17 +57,17 @@ const UBYTE allowed_spikes[4] = { 1U, 1U, 1U, 3U };
 const UBYTE entity_sprites[] = {
 	0,		// E_NONE
 	 // Hazards
-	8*4,	// E_SPIKES
-	18*4, 	// E_FIREBALL
+	9*4,	// E_SPIKES
+	19*4, 	// E_FIREBALL
 	 // Enemies
-	10*4,	// E_BIRD
-	12*4,	// E_BAT
-	14*4,	// E_GHOST
-	16*4,	// E_ALIEN
+	11*4,	// E_BIRD
+	13*4,	// E_BAT
+	15*4,	// E_GHOST
+	17*4,	// E_ALIEN
 	// Powerups
-	21*4,	// E_CLOCK
+	22*4,	// E_CLOCK
 	// Special
-	20*4,	// E_PORTAL
+	21*4,	// E_PORTAL
 	28*4	// E_CLOUD
 };
 
@@ -103,14 +103,15 @@ void initGame() {
 
 	OBP0_REG = 0xD0U; // 11010000
 	OBP1_REG = 0x40U; // 01010000
-	BGP_REG = 0xE4U; // 11100100
+	BGP_REG = 0xE4U;  // 11100100
 
 	// Load tile data
 	set_bkg_data(hud_offset, hud_data_length, hud_data);
 	set_bkg_data(clock_offset, clock_data_length, clock_data);
 	set_win_tiles(0U, 0U, hud_tiles_width, hud_tiles_height, hud_tiles);
-	set_sprite_data(20U, sprites_data_length, sprites_data);
+
 	skin_data = getSkinData();
+	set_sprite_data(24U, sprites_data_length, sprites_data);
 	set_sprite_data(0U, 4U, skin_data);
 	set_sprite_data(4U, portal_data_length, portal_data);
 
@@ -181,7 +182,10 @@ void initGame() {
 }
 
 UBYTE *getSkinData() {
-	return skin1_data;
+	if(player_skin == 1U) return skin1_data;
+	else if(player_skin == 2U) return skin2_data;
+
+	return 0U;
 }
 
 void updateInput() {
@@ -367,10 +371,11 @@ void updatePlayer() {
 	}
 
 	if(dashing) {
-		frame = 16U;
+		frame = 20U;
 	}
-	else if(ISDOWN(KEY_USE) && blips && (ticks & 8U)) {
-		frame = 12U;
+	else if(ISDOWN(KEY_USE) && blips) {
+		if(ticks & 8U) frame = 12U;
+		else frame = 16U;
 	}
 
 	// Blink
@@ -378,7 +383,7 @@ void updatePlayer() {
 	if(!dashes && (ticks & 4U)) palette = OBJ_PAL1;
 
 	// Dash marker
-	setSprite(player_x-12U, player_y-9U, 20U+(dashes << 1), palette);
+	setSprite(player_x-12U, player_y-9U, 24U+(dashes << 1), palette);
 
 	if(player_xdir == LEFT) {
 		setSprite(player_x-16U, player_y, frame, palette);
@@ -415,13 +420,13 @@ void updateHUD() {
 
 	// Set last progress flag
 	if(last_progress) {
-		setSprite(153U, 115U-(last_progress >> 1), 92U, OBJ_PAL0);
+		setSprite(153U, 115U-(last_progress >> 1), 96U, OBJ_PAL0);
 	}
 
 	// Low on time marker
 	if(remaining_time < 16U && ticks & 16U) {
-		setSprite(136U, 24U, 28U, OBJ_PAL0);
-		setSprite(144U, 24U, 30U, OBJ_PAL0);
+		setSprite(136U, 24U, 32U, OBJ_PAL0);
+		setSprite(144U, 24U, 34U, OBJ_PAL0);
 	}
 }
 
@@ -728,8 +733,8 @@ void introAnimation() {
 
 	disable_interrupts();
 	skin_data = getSkinData();
-	set_sprite_data(0U, 20U, skin_data);
-	set_sprite_data(20U, 4U, sprites_data);
+	set_sprite_data(0U, 24U, skin_data);
+	set_sprite_data(24U, 4U, sprites_data);
 	enable_interrupts();
 }
 
@@ -772,7 +777,7 @@ void deathAnimation() {
 	UBYTE offset, frame;
 	UBYTE *skin_data;
 	skin_data = getSkinData();
-	set_sprite_data(0U, 8U, skin_data+320UL);
+	set_sprite_data(0U, 8U, skin_data+384UL);
 	set_sprite_data(8U, portal_data_length, portal_data);
 
 	scroll_y = 0U;
