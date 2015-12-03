@@ -64,7 +64,7 @@ void checkCheats() {
 		j = (j + 1) & 15U;
 	}
 
-	levels_completed = 3U;
+	levels_completed = 4U;
 }
 
 void enterTitle() {
