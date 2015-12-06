@@ -59,7 +59,7 @@ void initHighscore() {
 
 void highscoreScrollCircles() {
 	highscore_circle_index = (highscore_circle_index+1U) & 7U;
-	set_bkg_data(79U, 1U, &circles_data[(highscore_circle_index << 4)]);
+	set_bkg_data(47U, 1U, &circles_data[(highscore_circle_index << 4)]);
 }
 
 void highscoreUpdateScreen() {

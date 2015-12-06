@@ -244,7 +244,7 @@ void enterSelect() {
 		}
 
 		if(ISDOWN(J_RIGHT)) {
-			snd_play(SFX_BLIP);
+			//snd_play(SFX_BLIP);
 			selection++;
 			select_scroll_dir = RIGHT;
 			if(selection == 5U && levels_completed < 2U) selection++;
@@ -254,7 +254,7 @@ void enterSelect() {
 			selectUpdateSprites();
 		}
 		if(ISDOWN(J_LEFT)) {
-			snd_play(SFX_BLIP);
+			//snd_play(SFX_BLIP);
 			selection--;
 			select_scroll_dir = LEFT;
 			if(selection == 5U && levels_completed < 2U) selection--;
