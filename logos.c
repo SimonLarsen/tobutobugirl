@@ -52,6 +52,14 @@ void enterLogos() {
 	}
 	
 	fadeToWhite(8U);
+
+	disable_interrupts();
+	DISPLAY_OFF;
+	set_bkg_data_rle(0U, potato_data_length, potato_data);
+	set_bkg_tiles_rle(0U, 0U, potato_tiles_width, potato_tiles_height, potato_tiles);
+	DISPLAY_ON;
+	enable_interrupts();
+
 	fadeFromWhite(8U);
 
 	ticks = 0U;
