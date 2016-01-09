@@ -2,8 +2,8 @@
 #include "gamestate.h"
 #include "main.h"
 #include "ram.h"
-#include "music.h"
 #include "sound.h"
+#include "mmlgb/driver/music.h"
 
 #include "logos.h"
 #include "intro.h"

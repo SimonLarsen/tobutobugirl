@@ -1,9 +1,9 @@
 #include <gb/gb.h>
 #include "sound.h"
-#include "notes.h"
-#include "freq.h"
-#include "noisefreq.h"
-#include "music.h"
+#include "mmlgb/driver/music.h"
+#include "mmlgb/driver/notes.h"
+#include "mmlgb/driver/freq.h"
+#include "mmlgb/driver/noisefreq.h"
 
 UBYTE snd_square_time;
 UBYTE snd_noise_time;

@@ -7,7 +7,7 @@
 #include "cos.h"
 #include "ram.h"
 #include "highscore.h"
-#include "music.h"
+#include "mmlgb/driver/music.h"
 
 // Maps
 #include "data/bg/hud.h"

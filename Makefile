@@ -98,10 +98,10 @@ tobu.gb:
 	$(CC) $(CFLAGS) -c cos.c
 	$(CC) $(CFLAGS) -c circles.c
 	$(CC) $(CFLAGS) -c characters.c
-	$(CC) $(CFLAGS) -c music.c
 	$(CC) $(CFLAGS) -c sound.c
-	$(CC) $(CFLAGS) -c freq.c
-	$(CC) $(CFLAGS) -c noisefreq.c
+	$(CC) $(CFLAGS) -c mmlgb/driver/music.c
+	$(CC) $(CFLAGS) -c mmlgb/driver/freq.c
+	$(CC) $(CFLAGS) -c mmlgb/driver/noisefreq.c
 	$(CC) $(CFLAGS) -c arrow.c
 	$(CC) $(CFLAGS) -c logos.c -Wf-bo1
 	$(CC) $(CFLAGS) -c game.c -Wf-bo1

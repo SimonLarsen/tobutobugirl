@@ -1,9 +1,8 @@
 #include <gb/gb.h>
 #include "defines.h"
-#include "music.h"
-#include "game_backgrounds.h"
-
 #include "gamestate.h"
+#include "game_backgrounds.h"
+#include "mmlgb/driver/music.h"
 
 UBYTE ticks, paused;
 UBYTE gamestate, scene_state, level, selection;
