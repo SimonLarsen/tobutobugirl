@@ -128,8 +128,12 @@ void updateEnding() {
 		case ENDING_STATE_FALL2:
 			player_y++;
 			cat_y++;
+			if(ticks & 1U) {
+				player_y++;
+				cat_y++;
+			}
 
-			if((ticks & 7U) == 7U) {
+			if((ticks & 3U) == 3U) {
 				player_x++;
 				cat_x--;
 			}
@@ -164,7 +168,7 @@ void updateEnding() {
 				setSprite(player_x+8U, tmp2, tmp+2U, OBJ_PAL0 | FLIP_X);
 			}
 
-			if(ticks >= 110U) {
+			if(ticks >= 127U) {
 				scene_state = ENDING_STATE_PAN;
 				ticks = 0U;
 				disable_interrupts();
