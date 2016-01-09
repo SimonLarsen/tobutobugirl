@@ -20,7 +20,8 @@ title_backgrounds:
 
 .PHONY: select_backgrounds
 select_backgrounds:
-	imgtogb --map --rle -O 9 data/bg/select.png data/bg/select.h
+	imgtogb --map -O 9 data/bg/catface.png data/bg/catface.h
+	imgtogb --map --rle -O 13 data/bg/select.png data/bg/select.h
 
 .PHONY: ingame_backgrounds
 ingame_backgrounds:

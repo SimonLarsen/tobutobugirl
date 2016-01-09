@@ -12,6 +12,7 @@
 #include "data/sprite/togglecat.h"
 
 #include "data/bg/circles.h"
+#include "data/bg/catface.h"
 #include "data/bg/select.h"
 
 #include "data/bg/selection1.h"
@@ -46,6 +47,7 @@ void initSelect() {
 	set_sprite_data(41U, togglecat_data_length, togglecat_data);
 
 	set_bkg_data(0U, circles_data_length, circles_data);
+	set_bkg_data(catface_offset, catface_data_length, catface_data);
 	set_bkg_data_rle(select_offset, select_data_length, select_data);
 	set_bkg_tiles_rle(0U, 0U, select_tiles_width, select_tiles_height, select_tiles);
 
@@ -160,22 +162,35 @@ void selectUpdateSprites() {
 
 void selectScrollCircles() {
 	select_circle_index = (select_circle_index+1U) & 7U;
-	set_bkg_data(9U, 1U, &circles_data[(select_circle_index << 4)]);
+	set_bkg_data(13U, 1U, &circles_data[(select_circle_index << 4)]);
 }
 
 void selectFadeOut() {
 	UBYTE i, x;
-	UBYTE tiles[6U];
+	UBYTE even_tiles[6U];
+	UBYTE odd_tiles[6U];
 
-	for(i = 0U; i != 6U; ++i) tiles[i] = 8U;
+	even_tiles[0] = 10U;
+	even_tiles[1] = 12U;
+
+	odd_tiles[0] = 9U;
+	odd_tiles[1] = 11U;
 
 	for(i = 0U; i != 20U; ++i) {
 		disable_interrupts();
 		if(select_scroll_dir == LEFT) x = i;
 		else x = 19U - i;
-		set_bkg_tiles(x, 10U, 1U, 6U, tiles);
+		if(x & 1U) {
+			set_bkg_tiles(x, 10U, 1U, 2U, odd_tiles);
+			set_bkg_tiles(x, 12U, 1U, 2U, odd_tiles);
+			set_bkg_tiles(x, 14U, 1U, 2U, odd_tiles);
+		} else {
+			set_bkg_tiles(x, 10U, 1U, 2U, even_tiles);
+			set_bkg_tiles(x, 12U, 1U, 2U, even_tiles);
+			set_bkg_tiles(x, 14U, 1U, 2U, even_tiles);
+		}
 		enable_interrupts();
-		if(i & 1U) {
+		if(!(i & 1U)) {
 			ticks++;
 			if((ticks & 3U) == 3U) selectScrollCircles();
 			if(select_scroll_dir == LEFT) select_arrow_offset1 = cos32_64[i >> 1];
