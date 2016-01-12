@@ -1,5 +1,5 @@
 CC=lcc
-CFLAGS=
+CFLAGS=-Wl-j
 
 default: backgrounds sprites tobu.gb
 
