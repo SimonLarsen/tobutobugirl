@@ -1,5 +1,5 @@
 CC=lcc
-CFLAGS=
+CFLAGS=-Wl-j
 
 default: backgrounds sprites tobu.gb
 
@@ -81,15 +81,15 @@ sprites:
 
 .PHONY: songs
 songs:
-	java -jar jar/MMLGB.jar mml/intro_cutscene_part_2.mml data/songs/title_song.asm 4
-	java -jar jar/MMLGB.jar mml/mainmenu.mml data/songs/mainmenu_song.asm 4
-	java -jar jar/MMLGB.jar mml/score_tally.mml data/songs/winscreen_song.asm 4
-	java -jar jar/MMLGB.jar mml/score.mml data/songs/highscore_song.asm 4
-	java -jar jar/MMLGB.jar mml/plains.mml data/songs/plains_song.asm 5
-	java -jar jar/MMLGB.jar mml/clouds.mml data/songs/clouds_song.asm 5
-	java -jar jar/MMLGB.jar mml/space.mml data/songs/space_song.asm 5
-	java -jar jar/MMLGB.jar mml/intro_cutscene_part_1.mml data/songs/intro1_song.asm 6
-	java -jar jar/MMLGB.jar mml/intro_cutscene_part_2.mml data/songs/intro2_song.asm 6
+	java -jar jar/MMLGB.jar data/mml/intro_cutscene_part_2.mml data/songs/title_song.asm 4
+	java -jar jar/MMLGB.jar data/mml/mainmenu.mml data/songs/mainmenu_song.asm 4
+	java -jar jar/MMLGB.jar data/mml/score_tally.mml data/songs/winscreen_song.asm 4
+	java -jar jar/MMLGB.jar data/mml/score.mml data/songs/highscore_song.asm 4
+	java -jar jar/MMLGB.jar data/mml/plains.mml data/songs/plains_song.asm 5
+	java -jar jar/MMLGB.jar data/mml/clouds.mml data/songs/clouds_song.asm 5
+	java -jar jar/MMLGB.jar data/mml/space.mml data/songs/space_song.asm 5
+	java -jar jar/MMLGB.jar data/mml/intro_cutscene_part_1.mml data/songs/intro1_song.asm 6
+	java -jar jar/MMLGB.jar data/mml/intro_cutscene_part_2.mml data/songs/intro2_song.asm 6
 
 .PHONY: sounds
 sounds:
