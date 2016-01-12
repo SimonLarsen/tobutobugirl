@@ -91,6 +91,10 @@ songs:
 	java -jar jar/MMLGB.jar mml/intro_cutscene_part_1.mml data/songs/intro1_song.asm 6
 	java -jar jar/MMLGB.jar mml/intro_cutscene_part_2.mml data/songs/intro2_song.asm 6
 
+.PHONY: sounds
+sounds:
+	java -jar jar/MMLGB.jar data/sounds/sfx_blip.mml data/sounds/sfx_blip.h
+
 .PHONY: tobu.gb
 tobu.gb: 
 	$(CC) $(CFLAGS) -c main.c
@@ -103,6 +107,7 @@ tobu.gb:
 	$(CC) $(CFLAGS) -c mmlgb/driver/music.c
 	$(CC) $(CFLAGS) -c mmlgb/driver/freq.c
 	$(CC) $(CFLAGS) -c mmlgb/driver/noisefreq.c
+	$(CC) $(CFLAGS) -c mmlgb/driver/vib.c
 	$(CC) $(CFLAGS) -c arrow.c
 	$(CC) $(CFLAGS) -c logos.c -Wf-bo1
 	$(CC) $(CFLAGS) -c game.c -Wf-bo1

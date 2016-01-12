@@ -198,7 +198,7 @@ void selectFadeOut() {
 			selectUpdateSprites();
 			clearRemainingSprites();
 			snd_update();
-			wait_vbl_done();
+			snd_update(); wait_vbl_done();
 		}
 	}
 	select_arrow_offset1 = 0U;
@@ -236,7 +236,7 @@ void selectFadeIn() {
 			selectUpdateSprites();
 			clearRemainingSprites();
 			snd_update();
-			wait_vbl_done();
+			snd_update(); wait_vbl_done();
 		}
 	}
 
@@ -259,6 +259,7 @@ void enterSelect() {
 		}
 
 		if(ISDOWN(J_RIGHT)) {
+			snd_play(SFX_BLIP);
 			selection++;
 			select_scroll_dir = RIGHT;
 			if(selection == 5U && levels_completed < 2U) selection++;
@@ -268,6 +269,7 @@ void enterSelect() {
 			selectUpdateSprites();
 		}
 		if(ISDOWN(J_LEFT)) {
+			snd_play(SFX_BLIP);
 			selection--;
 			select_scroll_dir = LEFT;
 			if(selection == 5U && levels_completed < 2U) selection--;
@@ -307,8 +309,7 @@ void enterSelect() {
 
 		selectUpdateSprites();
 		clearRemainingSprites();
-		snd_update();
-		wait_vbl_done();
+		snd_update(); wait_vbl_done();
 	}
 
 	clearRemainingSprites(); // Remove all sprites
