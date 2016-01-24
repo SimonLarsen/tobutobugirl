@@ -94,6 +94,7 @@ songs:
 .PHONY: sounds
 sounds:
 	java -jar jar/MMLGB.jar data/sounds/sfx_blip.mml data/sounds/sfx_blip.h
+	java -jar jar/MMLGB.jar data/sounds/sfx_dash.mml data/sounds/sfx_dash.h
 
 .PHONY: tobu.gb
 tobu.gb: 

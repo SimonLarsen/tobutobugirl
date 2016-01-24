@@ -7,6 +7,7 @@
 #include "mmlgb/driver/vib.h"
 
 #include "data/sounds/sfx_blip.h"
+#include "data/sounds/sfx_dash.h"
 
 UBYTE snd_active1, snd_active4;
 
@@ -29,14 +30,18 @@ void snd_init() {
 	snd_active1 = snd_active4 = 0U;
 }
 
-void snd_play(UBYTE id) {
+void playSound(UBYTE id) {
 	UBYTE *data;
 
 	switch(id) {
+		case SFX_DASH:
+			data = sfx_dash_data;
+			break;
 		case SFX_BLIP:
 			data = sfx_blip_data;
 			break;
 	}
+
 	snd_data1 = data + ((UWORD*)data)[CHN1_OFFSET];
 	snd_data4 = data + ((UWORD*)data)[CHN4_OFFSET];
 
@@ -175,7 +180,7 @@ void snd_update1() {
 			case T_EOF:
 				snd_active1 = 0U;
 				mus_restore1();
-				break;
+				return;
 		}
 	}
 }
@@ -260,7 +265,7 @@ void snd_update4() {
 			case T_EOF:
 				snd_active4 = 0U;
 				mus_restore4();
-				break;
+				return;
 		}
 	}
 }

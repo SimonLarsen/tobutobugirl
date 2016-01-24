@@ -7,6 +7,7 @@
 #include "cos.h"
 #include "ram.h"
 #include "highscore.h"
+#include "sound.h"
 #include "mmlgb/driver/music.h"
 
 // Maps
@@ -223,6 +224,7 @@ void updateInput() {
 				dashing = DASH_TIME;
 				dashes--;
 				spawnEntity(E_CLOUD, player_x, player_y-6U, 0U);
+				playSound(SFX_DASH);
 			}
 		}
 	}
@@ -710,6 +712,7 @@ void introAnimation() {
 		updateHUD();
 
 		clearRemainingSprites();
+		snd_update();
 		wait_vbl_done();
 	}
 
@@ -728,6 +731,7 @@ void introAnimation() {
 		updateHUD();
 
 		clearRemainingSprites();
+		snd_update();
 		wait_vbl_done();
 	}
 
@@ -755,6 +759,7 @@ void intoPortalAnimation() {
 		setSprite(player_x-8U, player_y, entity_sprites[E_PORTAL]+2U, OBJ_PAL0);
 
 		clearRemainingSprites();
+		snd_update();
 		wait_vbl_done();
 	}
 
@@ -769,6 +774,7 @@ void intoPortalAnimation() {
 		}
 
 		clearRemainingSprites();
+		snd_update();
 		wait_vbl_done();
 	}
 }
@@ -809,6 +815,7 @@ void deathAnimation() {
 		updateHUD();
 
 		clearRemainingSprites();
+		snd_update();
 		wait_vbl_done();
 	}
 }
@@ -864,6 +871,7 @@ ingame_start:
 			clearRemainingSprites();
 		}
 
+		snd_update();
 		wait_vbl_done();
 	}
 	stopMusic();
