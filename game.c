@@ -9,6 +9,7 @@
 #include "highscore.h"
 #include "sound.h"
 #include "mmlgb/driver/music.h"
+#include "pause.h"
 
 // Maps
 #include "data/bg/hud.h"
@@ -182,6 +183,25 @@ void initGame() {
 	enable_interrupts();
 }
 
+void restoreGame() {
+	disable_interrupts();
+	DISPLAY_OFF;
+
+	setIngameBackground(level);
+
+	set_bkg_data(hud_offset, hud_data_length, hud_data);
+	set_bkg_data(clock_offset, clock_data_length, clock_data);
+	set_win_tiles(0U, 0U, hud_tiles_width, hud_tiles_height, hud_tiles);
+	move_bkg(0U, 112U-progress);
+
+	SHOW_BKG;
+	SHOW_WIN;
+	SHOW_SPRITES;
+
+	DISPLAY_ON;
+	enable_interrupts();
+}
+
 UBYTE *getSkinData() {
 	if(player_skin == 1U) return skin1_data;
 	else if(player_skin == 2U) return skin2_data;
@@ -191,17 +211,6 @@ UBYTE *getSkinData() {
 
 void updateInput() {
 	updateJoystate();
-
-	if(CLICKED(J_START)) {
-		paused = paused ^ 1U;
-		if(paused) {
-			BGP_REG = 0xF9U; // 11111001
-		} else {
-			BGP_REG = 0xE4U; // 11100100
-		}
-	}
-
-	if(paused) return;
 
 	if(ISDOWN(J_LEFT) && !dashing) {
 		player_x -= MOVE_SPEED;
@@ -385,7 +394,9 @@ void updatePlayer() {
 	if(!dashes && (ticks & 4U)) palette = OBJ_PAL1;
 
 	// Dash marker
-	setSprite(player_x-12U, player_y-9U, 24U+(dashes << 1), palette);
+	if(show_dashcounter) {
+		setSprite(player_x-12U, player_y-9U, 24U+(dashes << 1), palette);
+	}
 
 	if(player_xdir == LEFT) {
 		setSprite(player_x-16U, player_y, frame, palette);
@@ -834,43 +845,41 @@ ingame_start:
 
 	while(scene_state == INGAME_ACTIVE) {
 		updateInput();
-		if(paused) {
-			if(CLICKED(J_SELECT)) {
-				scene_state = INGAME_QUIT;
-			}
-		} else {
-			ticks++;
-			timer++;
-
-			// Update timing
-			if(timer == 60U) {
-				timer = 0U;
-				elapsed_time++;
-				remaining_time--;
-				updateHUDTime();
-
-				if(remaining_time == 0U) {
-					scene_state = INGAME_DEAD;
-				}
-			}
-
-			updatePlayer();
-			updateHUD();
-
-			updateEntities();
-			updateSpawns();
-
-			// Scroll screen
-			scrolled += scroll_y;
-			if(scrolled >= scrolled_length[level-1U]) {
-				scrolled -= scrolled_length[level-1U];
-				if(progress < 112U) progress++;
-				move_bkg(0U, 112U-progress);
-			}
-
-			clearRemainingSprites();
+		if(CLICKED(J_START)) {
+			scene_state = enterPause();
+			restoreGame();
 		}
 
+		ticks++;
+		timer++;
+
+		// Update timing
+		if(timer == 60U) {
+			timer = 0U;
+			elapsed_time++;
+			remaining_time--;
+			updateHUDTime();
+
+			if(remaining_time == 0U) {
+				scene_state = INGAME_DEAD;
+			}
+		}
+
+		updatePlayer();
+		updateHUD();
+
+		updateEntities();
+		updateSpawns();
+
+		// Scroll screen
+		scrolled += scroll_y;
+		if(scrolled >= scrolled_length[level-1U]) {
+			scrolled -= scrolled_length[level-1U];
+			if(progress < 112U) progress++;
+			move_bkg(0U, 112U-progress);
+		}
+
+		clearRemainingSprites();
 		snd_update();
 		wait_vbl_done();
 	}

@@ -2,6 +2,7 @@
 #define GAME_H
 
 void initGame();
+void restoreGame();
 UBYTE *getSkinData();
 void updateInput();
 void updatePlayer();
@@ -18,9 +19,6 @@ void introAnimation();
 void intoPortalAnimation();
 void deathAnimation();
 void addScore();
-
-#define MAPW 10U
-#define MAPH 16U
 
 #define SCRLMGN 84U
 

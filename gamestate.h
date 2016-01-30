@@ -29,21 +29,23 @@ extern UBYTE player_x, player_y;
 extern UBYTE cat_x, cat_y;
 
 extern UBYTE player_skin;
+extern UBYTE show_dashcounter;
 
 #define CLICKED(x) ((joystate & x) && (joystate & x) != (oldjoystate & x))
 #define RELEASED(x) (!(joystate & x) && (joystate & x) != (oldjoystate & x))
 #define ISDOWN(x) (joystate & (x))
 
-#define GAMESTATE_LOGOS     0U
-#define GAMESTATE_INTRO     1U
-#define GAMESTATE_TITLE     2U
-#define GAMESTATE_SELECT    3U
-#define GAMESTATE_INGAME    4U
-#define GAMESTATE_WINSCREEN 5U
-#define GAMESTATE_HIGHSCORE 6U
-#define GAMESTATE_JUKEBOX   7U
-#define GAMESTATE_UNLOCKED  8U
-#define GAMESTATE_ENDING    9U
+#define GAMESTATE_LOGOS      0U
+#define GAMESTATE_INTRO      1U
+#define GAMESTATE_TITLE      2U
+#define GAMESTATE_SELECT     3U
+#define GAMESTATE_INGAME     4U
+#define GAMESTATE_PAUSE      5U
+#define GAMESTATE_WINSCREEN  6U
+#define GAMESTATE_HIGHSCORE  7U
+#define GAMESTATE_JUKEBOX    8U
+#define GAMESTATE_UNLOCKED   9U
+#define GAMESTATE_ENDING    10U
 
 #define UNLOCKED_CLOUDS 1U
 #define UNLOCKED_SPACE  2U

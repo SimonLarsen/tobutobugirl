@@ -3,7 +3,7 @@ CFLAGS=-Wl-j
 
 default: backgrounds sprites tobu.gb
 
-backgrounds: logos_backgrounds intro_backgrounds title_backgrounds select_backgrounds ingame_backgrounds winscreen_backgrounds highscore_backgrounds unlocked_backgrounds jukebox_backgrounds
+backgrounds: logos_backgrounds intro_backgrounds title_backgrounds select_backgrounds ingame_backgrounds pause_backgrounds winscreen_backgrounds highscore_backgrounds unlocked_backgrounds jukebox_backgrounds
 
 .PHONY: logos_backgrounds
 logos_backgrounds:
@@ -31,6 +31,10 @@ ingame_backgrounds:
 	imgtogb --map -O 34 --rle data/bg/background2.png data/bg/background2.h 
 	imgtogb --map -O 34 --rle data/bg/background3.png data/bg/background3.h 
 	imgtogb --map -O 34 --rle data/bg/background4.png data/bg/background4.h 
+
+.PHONY: pause_backgrounds
+pause_backgrounds:
+	imgtogb --map --rle -O 38 data/bg/pause_bg.png data/bg/pause_bg.h
 
 .PHONY: winscreen_backgrounds
 winscreen_backgrounds:
@@ -112,6 +116,7 @@ tobu.gb:
 	$(CC) $(CFLAGS) -c arrow.c
 	$(CC) $(CFLAGS) -c logos.c -Wf-bo1
 	$(CC) $(CFLAGS) -c game.c -Wf-bo1
+	$(CC) $(CFLAGS) -c pause.c -Wf-bo1
 	$(CC) $(CFLAGS) -c select.c -Wf-bo2
 	$(CC) $(CFLAGS) -c highscore.c -Wf-bo2
 	$(CC) $(CFLAGS) -c unlocked.c -Wf-bo2

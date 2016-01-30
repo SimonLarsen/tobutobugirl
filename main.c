@@ -42,12 +42,16 @@ void initRAM() {
 		for(i = 0U; i != 8U; ++i) {
 			ram_data[RAM_SIG_ADDR + i] = RAM_SIG[i];
 		}
+
+		ram_data[64U] = 1U;
 	}
 
 	// Load values from ram
 	for(levels_completed = 0U; levels_completed != 4U; ++levels_completed) {
 		if(ram_data[levels_completed << 4] == 0U) break;
 	}
+
+	show_dashcounter = ram_data[64U];
 
 	DISABLE_RAM_MBC1;
 }
@@ -65,7 +69,7 @@ void main() {
 	unlocked_bits = 0U;
 	player_skin = 1U;
 	
-	gamestate = GAMESTATE_LOGOS;
+	gamestate = GAMESTATE_SELECT;
 
 	SWITCH_16_8_MODE_MBC1;
 	add_TIM(updateMusic);

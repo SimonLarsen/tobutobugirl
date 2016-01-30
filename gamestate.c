@@ -20,6 +20,7 @@ UBYTE player_x, player_y;
 UBYTE cat_x, cat_y;
 
 UBYTE player_skin;
+UBYTE show_dashcounter;
 
 const UBYTE level_names[7][6] = {
 	{22U, 25U, 13U, 21U, 15U, 14U}, // "LOCKED"
