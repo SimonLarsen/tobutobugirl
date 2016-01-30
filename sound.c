@@ -17,7 +17,6 @@ UBYTE snd_octave1, snd_octave4;
 UBYTE snd_length1, snd_length4;
 UBYTE snd_volume1, snd_volume4;
 UBYTE snd_env1, snd_env4;
-UBYTE snd_duty1;
 UBYTE snd_wait1, snd_wait4;
 UWORD snd_target1, snd_target4;
 UBYTE snd_slide1, snd_slide4;
@@ -25,6 +24,7 @@ UBYTE snd_vib_speed1;
 UBYTE *snd_vib_table1;
 UBYTE snd_vib_pos1;
 UBYTE snd_noise_step;
+UBYTE snd_po1;
 
 void snd_init() {
 	snd_active1 = snd_active4 = 0U;
@@ -52,10 +52,11 @@ void playSound(UBYTE id) {
 		snd_wait1 = 0U;
 		snd_octave1 = 4U;
 		snd_length1 = 48U;
-		snd_volume1 = 15U;
-		snd_env1 = 3U;
+		snd_volume1 = 14U;
+		snd_env1 = 15U;
 		snd_slide1 = 0U;
 		snd_vib_speed1 = 0U;
+		snd_po1 = 128U;
 		NR51_REG |= 0x11U;
 	}
 	if(*snd_data4 != T_EOF) {
@@ -129,9 +130,9 @@ void snd_update1() {
 				NR12_REG = 0U;
 			} else {
 				if(snd_slide1) {
-					snd_target1 = freq[((snd_octave1-MUS_FIRST_OCTAVE) << 4) + note];
+					snd_target1 = freq[((snd_octave1-MUS_FIRST_OCTAVE) << 4) + note] + snd_po1 - 128U;
 				} else {
-					snd_freq1 = freq[((snd_octave1-MUS_FIRST_OCTAVE) << 4) + note];
+					snd_freq1 = freq[((snd_octave1-MUS_FIRST_OCTAVE) << 4) + note] + snd_po1 - 128U;
 				}
 				NR12_REG = (snd_volume1 << 4) | snd_env1;
 			}
@@ -161,11 +162,13 @@ void snd_update1() {
 				NR12_REG = (snd_volume1 << 4) | snd_env1;
 				break;
 			case T_WAVEDUTY:
-				snd_duty1 = *snd_data1++;
-				NR11_REG = snd_duty1 << 5;
+				NR11_REG = (*snd_data1++) << 5;
 				break;
 			case T_PORTAMENTO:
 				snd_slide1 = *snd_data1++;
+				break;
+			case T_PITCH_OFFSET:
+				snd_po1 = *snd_data1++;
 				break;
 			case T_VIBRATO:
 				snd_vib_pos1 = 0U;
