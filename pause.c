@@ -11,7 +11,7 @@ const UBYTE pause_text_on[] = { 10U, 25U, 24U };
 const UBYTE pause_text_off[] = { 25U, 16U, 16U };
 
 const UBYTE pause_marker_x1[] = { 49U, 9U, 57U };
-const UBYTE pause_marker_x2[] = { 111U, 150U, 102U };
+const UBYTE pause_marker_x2[] = { 110U, 150U, 102U };
 const UBYTE pause_marker_y[] = { 112U, 124U, 136U };
 
 UBYTE pause_selection;
