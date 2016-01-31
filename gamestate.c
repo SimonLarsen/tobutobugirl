@@ -2,6 +2,7 @@
 #include "defines.h"
 #include "gamestate.h"
 #include "game_backgrounds.h"
+#include "cloud_animations.h"
 #include "mmlgb/driver/music.h"
 
 UBYTE ticks, paused;
@@ -90,7 +91,7 @@ void clearRemainingSprites() {
 }
 
 void setIngameBackground(UBYTE level) {
-	SWITCH_ROM_MBC1(7);
+	SWITCH_ROM_MBC1(7U);
 
 	switch(level) {
 		case 1U:
@@ -113,6 +114,21 @@ void setIngameBackground(UBYTE level) {
 		case 255U: // pause menu
 			set_bkg_data_rle(pause_bg_offset, pause_bg_data_length, pause_bg_data);
 			set_bkg_tiles_rle(0U, 0U, pause_bg_tiles_width, pause_bg_tiles_height, pause_bg_tiles);
+			break;
+	}
+
+	SWITCH_ROM_MBC1(game_bank);
+}
+
+void setCloudAnimation(UBYTE skin) {
+	SWITCH_ROM_MBC1(8U);
+
+	switch(skin) {
+		case 1U:
+			set_sprite_data(0U, pause_cloud1_data_length, pause_cloud1_data);
+			break;
+		case 2U:
+			set_sprite_data(0U, pause_cloud2_data_length, pause_cloud2_data);
 			break;
 	}
 

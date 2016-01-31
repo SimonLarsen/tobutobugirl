@@ -3,6 +3,7 @@
 #include "gamestate.h"
 #include "fade.h"
 #include "sound.h"
+#include "ram.h"
 
 #include "data/sprite/characters.h"
 
@@ -14,6 +15,7 @@ const UBYTE pause_marker_x2[] = { 111U, 150U, 102U };
 const UBYTE pause_marker_y[] = { 112U, 124U, 136U };
 
 UBYTE pause_selection;
+UBYTE pause_ticks;
 
 void pauseUpdateDashCounter() {
 	if(show_dashcounter) {
@@ -29,6 +31,7 @@ void initPause() {
 
 	set_bkg_data(0, 38U, characters_data);
 	setIngameBackground(255U);
+	setCloudAnimation(player_skin);
 
 	pauseUpdateDashCounter();
 
@@ -43,12 +46,16 @@ void initPause() {
 }
 
 UBYTE enterPause() {
+	UBYTE i, j, frame;
+
 	clearRemainingSprites();
 	initPause();
 
 	pause_selection = 0U;
+	pause_ticks = 0U;
 
 	while(1U) {
+		pause_ticks++;
 		updateJoystate();
 		
 		if(CLICKED(J_START)) {
@@ -67,7 +74,12 @@ UBYTE enterPause() {
 			if(pause_selection == 0U) {
 				return 0U;
 			} else if(pause_selection == 1U) {
+				ENABLE_RAM_MBC1;
+				SWITCH_RAM_MBC1(0);
 				show_dashcounter = !show_dashcounter;
+				ram_data[RAM_DASHCOUNTER] = !ram_data[RAM_DASHCOUNTER];
+				DISABLE_RAM_MBC1;
+
 				disable_interrupts();
 				pauseUpdateDashCounter();
 				enable_interrupts();
@@ -76,6 +88,16 @@ UBYTE enterPause() {
 			}
 		}
 
+		// Draw cloud animation
+		frame = pause_ticks & 48U;
+		for(j = 0U; j != 2U; ++j) {
+			for(i = 0U; i != 4U; ++i) {
+				setSprite(72U+(i << 3U), 48U+(j << 4U), frame, OBJ_PAL0);
+				frame += 2U;
+			}
+		}
+
+		// Draw selection markers
 		setSprite(pause_marker_x1[pause_selection], pause_marker_y[pause_selection], 104U, OBJ_PAL0);
 		setSprite(pause_marker_x1[pause_selection]+8U, pause_marker_y[pause_selection], 106U, OBJ_PAL0);
 

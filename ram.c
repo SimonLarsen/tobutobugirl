@@ -10,7 +10,7 @@ Memory:
 	32-41	Level 3
 	48-57   Level 4
 
-	64U     Show dash counter
+	58U     Show dash counter
 
 	120-127 Ram signature "TOBUTOBU"
  */

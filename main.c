@@ -35,7 +35,7 @@ void initRAM() {
 
 	// Initialize memory
 	if(initialized == 0U) {
-		for(i = 0U; i != 58U; ++i) {
+		for(i = 0U; i != 64U; ++i) {
 			ram_data[i] = 0U;
 		}
 
@@ -43,7 +43,7 @@ void initRAM() {
 			ram_data[RAM_SIG_ADDR + i] = RAM_SIG[i];
 		}
 
-		ram_data[64U] = 1U;
+		ram_data[RAM_DASHCOUNTER] = 1U;
 	}
 
 	// Load values from ram
@@ -51,7 +51,7 @@ void initRAM() {
 		if(ram_data[levels_completed << 4] == 0U) break;
 	}
 
-	show_dashcounter = ram_data[64U];
+	show_dashcounter = ram_data[RAM_DASHCOUNTER];
 
 	DISABLE_RAM_MBC1;
 }
@@ -69,7 +69,7 @@ void main() {
 	unlocked_bits = 0U;
 	player_skin = 1U;
 	
-	gamestate = GAMESTATE_SELECT;
+	gamestate = GAMESTATE_LOGOS;
 
 	SWITCH_16_8_MODE_MBC1;
 	add_TIM(updateMusic);

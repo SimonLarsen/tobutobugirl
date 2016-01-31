@@ -6,6 +6,7 @@ void updateJoystate();
 void setSprite(UBYTE x, UBYTE y, UBYTE tile, UBYTE prop);
 void clearRemainingSprites();
 void setIngameBackground(UBYTE level);
+void setCloudAnimation(UBYTE skin);
 void set_bkg_data_rle(UBYTE first, UBYTE n, UBYTE *data);
 void set_bkg_tiles_rle(UBYTE x, UBYTE y, UBYTE width, UBYTE height, UBYTE *tiles);
 void setGameBank(UBYTE i);
