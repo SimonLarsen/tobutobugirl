@@ -29,4 +29,11 @@ extern const unsigned char background3_data[];
 extern const unsigned char background4_tiles[];
 extern const unsigned char background4_data[];
 
+#define pause_bg_data_length 48
+#define pause_bg_tiles_width 20
+#define pause_bg_tiles_height 18
+#define pause_bg_offset 38
+extern const unsigned char pause_bg_data[];
+extern const unsigned char pause_bg_tiles[];
+
 #endif

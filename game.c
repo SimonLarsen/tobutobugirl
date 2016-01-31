@@ -415,21 +415,23 @@ void updatePlayer() {
 }
 
 void updateHUD() {
-	UBYTE progressbar;
+	UBYTE frame, progressbar;
 
 	if(blip_bar > blips) {
 		blip_bar = blips;
 	} else if(blip_bar < blips) {
 		blip_bar += 2U;
 	}
+
 	// Blips
 	setSprite(168U-(blip_bar >> 3), 136U, 100U, OBJ_PAL0);
 	setSprite(176U-(blip_bar >> 3), 136U, 102U, OBJ_PAL0);
 
 	// Progress bar
+	frame = 104U + ((player_skin-1U) << 2U);
 	progressbar = 118U - (progress << 1U) / 3U;
-	setSprite(152U, progressbar, 104U, OBJ_PAL0);
-	setSprite(160U, progressbar, 106U, OBJ_PAL0);
+	setSprite(152U, progressbar, frame, OBJ_PAL0);
+	setSprite(160U, progressbar, frame+2U, OBJ_PAL0);
 
 	// Set last progress flag
 	if(last_progress) {
@@ -815,7 +817,7 @@ void deathAnimation() {
 			setSprite(player_x-8U, player_y, 10U, OBJ_PAL0);
 		} else {
 			offset = ((ticks-16U) >> 1);
-			frame = 108U + ((ticks & 4U) >> 1);
+			frame = 28U + ((ticks & 4U) >> 1);
 			setSprite(player_x-8U-offset, player_y-offset, frame, OBJ_PAL0);
 			setSprite(player_x-8U+offset, player_y-offset, frame, OBJ_PAL0);
 			setSprite(player_x-8U-offset, player_y+offset, frame, OBJ_PAL0);

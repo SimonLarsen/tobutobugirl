@@ -109,6 +109,11 @@ void setIngameBackground(UBYTE level) {
 			set_bkg_data_rle(background4_offset, background4_data_length, background4_data);
 			set_bkg_tiles_rle(0U, 0U, background4_tiles_width, background4_tiles_height, background4_tiles);
 			break;
+
+		case 255U: // pause menu
+			set_bkg_data_rle(pause_bg_offset, pause_bg_data_length, pause_bg_data);
+			set_bkg_tiles_rle(0U, 0U, pause_bg_tiles_width, pause_bg_tiles_height, pause_bg_tiles);
+			break;
 	}
 
 	SWITCH_ROM_MBC1(game_bank);
