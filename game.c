@@ -909,8 +909,10 @@ ingame_start:
 		gamestate = GAMESTATE_SELECT;
 	}
 
-	HIDE_SPRITES;
-	fadeToWhite(10U);
+	clearRemainingSprites();
+	if(scene_state != INGAME_QUIT) {
+		fadeToWhite(10U);
+	}
 
 	if(gamestate == GAMESTATE_INGAME) goto ingame_start;
 }
