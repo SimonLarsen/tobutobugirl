@@ -28,8 +28,8 @@ A @wd1 @ve0 o4 v9 <g+>c+ v5 c+ v9 d+
 
 
 
-B r1r2r3 @wd1 v11 @ve-1 l24
-B o4 y0 g+r12g+
+B r1r2r6^24 @wd1 v11 @ve-1 l24
+B o4 y1 a+r12a+r12>c
 B L o5 v11 y0 @ve-1 @wd1 r8c+r6r8c+r6rc+r12c+r12d+
 B r8cr6r8cr6rcr12cr12d+
 B r8c+r6r8c+r6rc+r12c+r12d+
@@ -54,28 +54,28 @@ B v3 f+12 v3 d+ v4 f+12 v5 d+ v7 f+12 v7 d+ v8 f+12 v10 d+ v10 f+12 v9 d+ v8 f+1
 
  
 C @wave0 l24 y0
-C v3 o3 c+r12 o6 v2 c+ r v3 <<c+r12c+<c+r v2 o6 c+ r12 v3 o3 g+c+r v2 o6 c+ v3 o2 g+r v2 o6 c+ v3 o3 d+r v2 o6 d+
-C v3 o3 c+r12 v2 o6 c+ r v3 <<c+r12c+<c+r v2 o6 c+ r12 v3 o3 g+c+r v2 o5 g+ v3 o2 f+g+a+>c+d+g+
-C L o3 c+r12 v2 y-1 o5 f r v3 y0 <c+r12c+<c+r v2 y-1 >>f r12 v3 y0 <<g+c+r v2 y-1 >>f v3 y0 <c+r v2 y-1 >f v3 y0 <<c+r v2 y-1 >>f+
-C v3 y0 <<cr12 v2 y-1 >>d+ r v3 y0 <cr12c<cr v2 y-1 >>d+ r12 v3 y0 <<g+cr v2 y-1 >>d+ v3 y0 <cr v2 y-1 >d+ v3 y0 <<cr v2 y-1 >>f+
-C v3 y0 o2 a+r12 v2 y-1 o5 f r v3 y0 <<a+r12a+<a+r v2 y-1 o5 f r12 v3 y0 <<aa+r v2 y-1 >>f v3 y0 <<c+r v2 y-1 >>f v3 y0 <<d+r v2 y-1 >>f
-C v3 y0 <<fr12 v2 y-1 >a r v3 y0 fr12<f>fr v2 y-1 >f r12 v3 y0 <<efr v2 y-1 >>f v3 y0 <<ar v2 y-1 >>f v3 y0 <cr v2 y-1 >c
-C v3 y0 o2 f+r12 v2 y-1 o5 f+ r v3 y0 <<f+r12f+<f+r v2 y-1 o5 f+ r12 v3 y0 <<d+<g+r v2 y-1 o5 g+ v3 y0 <<g+r v2 y-1 >>g+ v3 y0 o2 g+r v2 y-1 o5 g+
-C v3 y0 <<c+r12 v2 y-1 >>g+ r v3 y0 <c+r12c+<c+r v2 y-1 >>a+ r12 v3 y0 <<d<a+r v2 y-1 o5 a+ v3 y0 <<g+r v2 y-1 >>a+ v3 y0 <<dr v2 y-1 o6 d
-C v3 y0 o2 f+r12 v2 y-1 o5 a+ r v3 y0 <<f+r12f+<f+r v2 y-1 o5 a+ r12 v3 y0 <<c+<f+r v2 y-1 o5 a+ v3 y0 <<f+r v2 y-1 >>a+ v3 y0 o2 f+r v2 y-1 o5 a+
-C v3 y0 o2 g+r12 v2 y-1 o5 a+ r v3 y0 <<d+r12d+<g+r v2 y-1 v3 y0 >gg+r12<g+r v2 y-1 o5 f+ v3 y0 o2 a+r v2 y-1 o5 f+ v3 y0 <<c12v2 y-1 >>f+
-C v3 y0 <<c+r12 v2 y-1 >>f r v3 y0 <c+r12c+<c+r v2 y-1 >>f r12 v3 y0 <<g+c+r v2 y-1 >>f v3 y0 <c+r v2 y-1 >f v3 y0 <<c+r v2 y-1 >>f
-C v3 y0 <<cr12 v2 y-1 >>d+ r v3 y0 <cr12c<cr v2 y-1 >>d+ r12 v3 y0 <<g+cr v2 y-1 >>d+ v3 y0 o2 g+12>g+a+g+f
-C f+r12 v2 y-1 >>f+ r v3 y0 <f+r12f+<f+r v2 y-1 >>f+ r12 v3 y0 <<f+f+r v2 y-1 >>f+ v3 y0 <f+r v2 y-1 >f+ v3 y0 <<f+r v2 y-1 >>f+
-C v3 y0 <<f+r12 v2 y-1 >>a r v3 y0 <f+r12f+<f+r v2 y-1 >>a r12 v3 y0 <c+<f+r v2 y-1 >>a v3 y0 <f+r v2 y-1 >a v3 y0 <<f+r v2 y-1 >>a
-C v3 y0 o2 fr12 v2 y-1 o5 g+ r v3 y0 <<fr12f<fr v2 y-1 o5 g+ r12 v3 y0 <<c<fr v2 y-1 o5 g+ v3 y0 <<fr v2 y-1 >>g+ v3 y0 o2 fr v2 y-1 o5 g+
-C v3 y0 <<er12 v2 y-1 >>g r v3 y0 <er12e<a+r v2 y-1 >>g r12 v3 y0 <<a+er v2 y-1 >>a+ v3 y0 <e12v2 y-1 v3 y0 <a+c+r v2 y-1 >>a+
-C v3 y0 <<d+r12 v2 y-1 >>a+ r v3 y0 <d+r12d+<a+r v2 y-1 >>a+ r12 v3 y0 <<c+<f+r v2 y-1 o5 a+ v3 y0 <<f+r v2 y-1 >>a+ v3 y0 o2 f+r v2 y-1 o5 a+
-C v3 y0 o2 g+r12 v2 y-1 o5 a+ r v3 y0 <<d+r12d+<g+r v2 y-1 o5 a+ r12 v3 y0 <<gg+r v2 y-1 >>g+ v3 y0 <<g+r v2 y-1 >>g+ v3 y0 o2 g+r v2 y-1 o5 g+
-C v3 y0 <<c+r12 v2 y-1 o6 c+ r v3 y0 <<c+r12c+<c+r v2 y-1 o6 c+ r12 v3 y0 o3 g+c+r v2 y-1 o6 c+ v3 y0 <<c+r v2 y-1 >>c+ v3 y0 o3 c+r v2 y-1 o6 c+
-C v3 y0 o3 c+r12 v2 y-1 o6 c+ r v3 y0 <<c+r12c+<c+r v2 y-1 o6 c+ r12 v3 y0 o3 g+c+r v2 y-1 o6 c+ v3 y0 <<c+12 v2 y-1 v3 y0 d+<c+r v2 y-1 o6 c+
-C v3 y0 o3 c+r12 v2 y-1 o6 c+ r v3 y0 <<c+r12c+<c+r v2 y-1 o6 c+ r12 v3 y0 o3 g+c+r v2 y-1 o6 c+ v3 y0 <<c+r v2 y-1 >>c+ v3 y0 o3 c+r v2 y-1 o6 c+
-C v3 y0 o3 c+r12 v2 y-1 o6 c r v3 y0 <<c+r12c+<c+r v2 y-1 o6 c r12 v3 y0 o3 g+c+r v2 y-1 o6 c v3 y0 o3 c+f+g+a>c+d+
+C v3 o3 c+r12 o6 v2 c+ r v3 <<c+r12c+<c+r v2 o6 c+ r12 v3 o3 g+=7r=1c+=7r=9 v2 o6 c+ v3 o4 c+r v2 o6 c+ v3 o3 d+r v2 o6 d+
+C v3 o3 c+r12 v2 o6 c+ r v3 <<c+r12c+<c+r v2 o6 c+ r12 v3 o3 a+=7r=1g+=7r=17 <f+=7r=1g+=7r=1a+=7r=1>c+=7r=1d+=7r=1g+=7r=1
+C L o3 c+r12 v2 y-1 o5 f r v3 y0 <c+r12c+<c+r v2 y-1 >>f r12 v3 y0 <<g+=7r=1c+=7r=9 v2 y-1 >>f v3 y0 <c+r v2 y-1 >f v3 y0 <<c+r v2 y-1 >>f+
+C v3 y0 <<cr12 v2 y-1 >>d+ r v3 y0 <cr12c<cr v2 y-1 >>d+ r12 v3 y0 <<g+=7r=1c=7r=9 v2 y-1 >>d+ v3 y0 <cr v2 y-1 >d+ v3 y0 <<cr v2 y-1 >>f+
+C v3 y0 o2 a+r12 v2 y-1 o5 f r v3 y0 <<a+r12a+<a+r v2 y-1 o5 f r12 v3 y0 <<a=7r=1a+=7r=9 v2 y-1 >>f v3 y0 <<c+r v2 y-1 >>f v3 y0 <<d+r v2 y-1 >>f
+C v3 y0 <<fr12 v2 y-1 >a r v3 y0 fr12<f>fr v2 y-1 >f r12 v3 y0 <<e=7r=1f=7r=9 v2 y-1 >>f v3 y0 <<ar v2 y-1 >>f v3 y0 <cr v2 y-1 >c
+C v3 y0 o2 f+r12 v2 y-1 o5 f+ r v3 y0 <<f+r12f+<f+r v2 y-1 o5 f+ r12 v3 y0 <<d+=7r=1<g+=7r=9 v2 y-1 o5 g+ v3 y0 <<g+r v2 y-1 >>g+ v3 y0 o2 g+r v2 y-1 o5 g+
+C v3 y0 <<c+r12 v2 y-1 >>g+ r v3 y0 <c+r12c+<c+r v2 y-1 >>a+ r12 v3 y0 <<d=7r=1<a+=7r=9 v2 y-1 o5 a+ v3 y0 <<g+r v2 y-1 >>a+ v3 y0 <<dr v2 y-1 o6 d
+C v3 y0 o2 f+r12 v2 y-1 o5 a+ r v3 y0 <<f+r12f+<f+r v2 y-1 o5 a+ r12 v3 y0 <<c+=7r=1<f+=7r=9 v2 y-1 o5 a+ v3 y0 <<f+r v2 y-1 >>a+ v3 y0 o2 f+r v2 y-1 o5 a+
+C v3 y0 o2 g+r12 v2 y-1 o5 a+ r v3 y0 <<d+r12d+<g+r v2 y-1 v3 y0 >gg+=7r=17<g+r v2 y-1 o5 f+ v3 y0 o2 a+r v2 y-1 o5 f+ v3 y0 <<c12v2 y-1 >>f+
+C v3 y0 <<c+r12 v2 y-1 >>f r v3 y0 <c+r12c+<c+r v2 y-1 >>f r12 v3 y0 <<g+=7r=1c+=7r=9 v2 y-1 >>f v3 y0 <c+r v2 y-1 >f v3 y0 <<c+r v2 y-1 >>f
+C v3 y0 <<cr12 v2 y-1 >>d+ r v3 y0 <cr12c<cr v2 y-1 >>d+ r12 v3 y0 <<g+=7r=1c=7r=9 v2 y-1 >>d+ v3 y0 o2 g+12>g+a+g+f
+C f+r12 v2 y-1 >>f+ r v3 y0 <f+r12f+<f+r v2 y-1 >>f+ r12 v3 y0 <c+=7r=1<f+=7r=9 v2 y-1 >>f+ v3 y0 <f+r v2 y-1 >f+ v3 y0 <<f+r v2 y-1 >>f+
+C v3 y0 <<f+r12 v2 y-1 >>a r v3 y0 <f+r12f+<f+r v2 y-1 >>a r12 v3 y0 <c+=7r=1<f+=7r=9 v2 y-1 >>a v3 y0 <f+r v2 y-1 >a v3 y0 <<f+r v2 y-1 >>a
+C v3 y0 o2 fr12 v2 y-1 o5 g+ r v3 y0 <<fr12f<fr v2 y-1 o5 g+ r12 v3 y0 <<c=7r=1<f=7r=9 v2 y-1 o5 g+ v3 y0 <<fr v2 y-1 >>g+ v3 y0 o2 fr v2 y-1 o5 g+
+C v3 y0 <<er12 v2 y-1 >>g r v3 y0 <er12e<a+r v2 y-1 >>g r12 v3 y0 <<a+=7r=1e=7r=9 v2 y-1 >>a+ v3 y0 <e12v2 y-1 v3 y0 <a+c+r v2 y-1 >>a+
+C v3 y0 <<d+r12 v2 y-1 >>a+ r v3 y0 <d+r12d+<a+r v2 y-1 >>a+ r12 v3 y0 <<c+=7r=1<f+=7r=9 v2 y-1 o5 a+ v3 y0 <<f+r v2 y-1 >>a+ v3 y0 o2 f+r v2 y-1 o5 a+
+C v3 y0 o2 g+r12 v2 y-1 o5 a+ r v3 y0 <<d+r12d+<g+r v2 y-1 o5 a+ r12 v3 y0 <<g=7r=1g+=7r=9 v2 y-1 >>g+ v3 y0 <<g+r v2 y-1 >>g+ v3 y0 o2 g+r v2 y-1 o5 g+
+C v3 y0 <<c+r12 v2 y-1 o6 c+ r v3 y0 <<c+r12c+<c+r v2 y-1 o6 c+ r12 v3 y0 o3 g+=7r=1c+=7r=9 v2 y-1 o6 c+ v3 y0 <<c+r v2 y-1 >>c+ v3 y0 o3 c+r v2 y-1 o6 c+
+C v3 y0 o3 c+r12 v2 y-1 o6 c+ r v3 y0 <<c+r12c+<c+r v2 y-1 o6 c+ r12 v3 y0 o3 g+=7r=1c+=7r=9 v2 y-1 o6 c+ v3 y0 <<c+12 v2 y-1 v3 y0 d+<c+r v2 y-1 o6 c+
+C v3 y0 o3 c+r12 v2 y-1 o6 c+ r v3 y0 <<c+r12c+<c+r v2 y-1 o6 c+ r12 v3 y0 o3 g+=7r=1c+=7r=9 v2 y-1 o6 c+ v3 y0 <<c+r v2 y-1 >>c+ v3 y0 o3 c+r v2 y-1 o6 c+
+C v3 y0 o3 c+r12 v2 y-1 o6 c r v3 y0 <<c+r12c+<c+r v2 y-1 o6 c r12 v3 y0 o3 g+=7r=1c+=7r=9 v2 y-1 o6 c v3 y0 o3 c+=7r=1f+=7r=1g+=7r=1a>c+=7r=1d+=7r=1
 
 @@1 = { o3 a+12 o8 br o8 b12 o8 br o6 b12 o8 br o8 b24r12 o3 a+12 o8 br o8 b12 o8 br o6 b24r12 o8 b12 o8 br }
 @@2 = { o3 a+12 o8 br o8 b12 o8 br o6 b24r12 o8 b24r12 o3 a+12 o8 br o8 b12 o8 br o6 b24r12 o8 b12 o8 br }

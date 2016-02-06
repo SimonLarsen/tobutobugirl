@@ -78,7 +78,7 @@ void main() {
 	while(1U) {
 		switch(gamestate) {
 			case GAMESTATE_LOGOS:
-				setGameBank(1U);
+				setGameBank(9U);
 				enterLogos();
 				break;
 			case GAMESTATE_INGAME:

@@ -10,6 +10,8 @@
 
 #define LOGO_DELAY 2U
 
+extern UBYTE potato_jingle_data;
+
 void initLogos() {
 	disable_interrupts();
 	DISPLAY_OFF;
@@ -43,7 +45,7 @@ void enterLogos() {
 			play_sample(tangram_sample_data, tangram_sample_samples);
 		}
 
-		if(ticks == 40U) {
+		if(ticks == 60U) {
 			i--;
 			ticks = 0U;
 		}
@@ -57,16 +59,22 @@ void enterLogos() {
 	DISPLAY_OFF;
 	set_bkg_data_rle(0U, potato_data_length, potato_data);
 	set_bkg_tiles_rle(0U, 0U, potato_tiles_width, potato_tiles_height, potato_tiles);
+
 	DISPLAY_ON;
 	enable_interrupts();
 
 	fadeFromWhite(8U);
 
+	disable_interrupts();
+	setMusicBank(9U);
+	playMusic(&potato_jingle_data);
+	enable_interrupts();
+
 	ticks = 0U;
 	i = LOGO_DELAY;
 	while(i != 0U) {
 		ticks++;
-		if(ticks == 50U) {
+		if(ticks == 80U) {
 			i--;
 			ticks = 0U;
 		}
@@ -74,6 +82,7 @@ void enterLogos() {
 		wait_vbl_done();
 	}
 
+	stopMusic();
 	fadeToWhite(8U);
 
 	gamestate = GAMESTATE_INTRO;

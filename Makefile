@@ -1,5 +1,5 @@
 CC=lcc
-CFLAGS=-Wl-j
+CFLAGS=
 
 default: backgrounds sprites tobu.gb
 
@@ -96,6 +96,7 @@ songs:
 	java -jar jar/MMLGB.jar data/mml/space.mml data/songs/space_song.asm 5
 	java -jar jar/MMLGB.jar data/mml/intro_cutscene_part_1.mml data/songs/intro1_song.asm 6
 	java -jar jar/MMLGB.jar data/mml/intro_cutscene_part_2.mml data/songs/intro2_song.asm 6
+	java -jar jar/MMLGB.jar data/mml/potato_jingle.mml data/songs/potato_jingle.asm 9
 
 .PHONY: sounds
 sounds:
@@ -116,7 +117,6 @@ tobu.gb:
 	$(CC) $(CFLAGS) -c mmlgb/driver/noisefreq.c
 	$(CC) $(CFLAGS) -c mmlgb/driver/vib.c
 	$(CC) $(CFLAGS) -c arrow.c
-	$(CC) $(CFLAGS) -c logos.c -Wf-bo1
 	$(CC) $(CFLAGS) -c game.c -Wf-bo1
 	$(CC) $(CFLAGS) -c pause.c -Wf-bo1
 	$(CC) $(CFLAGS) -c select.c -Wf-bo2
@@ -146,6 +146,8 @@ tobu.gb:
 	$(CC) $(CFLAGS) -c game_backgrounds.c -Wf-bo7
 	$(CC) $(CFLAGS) -c cloud_animations.c -Wf-bo8
 	$(CC) $(CFLAGS) -c title.c -Wf-bo8
+	$(CC) $(CFLAGS) -c logos.c -Wf-bo9
+	$(CC) $(CFLAGS) -c data/songs/potato_jingle.asm # bank 9
 	$(CC) $(CFLAGS) -c -Wf-ba0 -c ram.c # ram bank 0
 	$(CC) $(CFLAGS) -Wl-yt3 -Wl-yo16 -Wl-ya1 *.o -o $@
 

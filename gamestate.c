@@ -137,7 +137,7 @@ void setCloudAnimation(UBYTE skin) {
 
 void set_bkg_data_rle(UBYTE first, UBYTE n, UBYTE *data) {
 	UBYTE i, j, run, tile;
-	UBYTE block[16];
+	UBYTE block[32];
 
 	run = 0U;
 	for(i = first; i != first+n; ++i) {
