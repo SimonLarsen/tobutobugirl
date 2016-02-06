@@ -263,7 +263,7 @@ void enterSelect() {
 			select_scroll_dir = RIGHT;
 			if(selection == 5U && levels_completed < 2U) selection++;
 			if(selection > 6U) selection = 1U;
-			playSound(SFX_BLIP);
+			playSound(SFX_MENU_SWITCH);
 			selectFadeOut();
 			selectFadeIn();
 			selectUpdateSprites();
@@ -273,7 +273,7 @@ void enterSelect() {
 			select_scroll_dir = LEFT;
 			if(selection == 5U && levels_completed < 2U) selection--;
 			if(selection == 0U) selection = 6U;
-			playSound(SFX_BLIP);
+			playSound(SFX_MENU_SWITCH);
 			selectFadeOut();
 			selectFadeIn();
 			selectUpdateSprites();

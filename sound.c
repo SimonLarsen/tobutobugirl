@@ -6,8 +6,18 @@
 #include "mmlgb/driver/noisefreq.h"
 #include "mmlgb/driver/vib.h"
 
-#include "data/sounds/sfx_blip.h"
+#include "data/sounds/sfx_bump.h"
+#include "data/sounds/sfx_bump_alien.h"
 #include "data/sounds/sfx_dash.h"
+#include "data/sounds/sfx_highscore_switch.h"
+#include "data/sounds/sfx_menu_cancel.h"
+#include "data/sounds/sfx_menu_confirm.h"
+#include "data/sounds/sfx_menu_switch.h"
+#include "data/sounds/sfx_player_die.h"
+#include "data/sounds/sfx_stomp.h"
+#include "data/sounds/sfx_stomp_bat.h"
+#include "data/sounds/sfx_time_low.h"
+#include "data/sounds/sfx_time_pickup.h"
 
 UBYTE snd_active1, snd_active4;
 
@@ -34,12 +44,30 @@ void playSound(UBYTE id) {
 	UBYTE *data;
 
 	switch(id) {
+		case SFX_BUMP:
+			data = sfx_bump_data; break;
+		case SFX_BUMP_ALIEN:
+			data = sfx_bump_alien_data; break;
 		case SFX_DASH:
-			data = sfx_dash_data;
-			break;
-		case SFX_BLIP:
-			data = sfx_blip_data;
-			break;
+			data = sfx_dash_data; break;
+		case SFX_HIGHSCORE_SWITCH:
+			data = sfx_highscore_switch_data; break;
+		case SFX_MENU_CANCEL:
+			data = sfx_menu_cancel_data; break;
+		case SFX_MENU_CONFIRM:
+			data = sfx_menu_confirm_data; break;
+		case SFX_MENU_SWITCH:
+			data = sfx_menu_switch_data; break;
+		case SFX_PLAYER_DIE:
+			data = sfx_player_die_data; break;
+		case SFX_STOMP:
+			data = sfx_stomp_data; break;
+		case SFX_STOMP_BAT:
+			data = sfx_stomp_bat_data; break;
+		case SFX_TIME_LOW:
+			data = sfx_time_low_data; break;
+		case SFX_TIME_PICKUP:
+			data = sfx_time_pickup_data; break;
 	}
 
 	snd_data1 = data + ((UWORD*)data)[CHN1_OFFSET];
