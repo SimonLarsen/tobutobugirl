@@ -1,4 +1,5 @@
 #include <gb/gb.h>
+#include "sound.h"
 #include "fade.h"
 
 const UINT8 fadePals[] = {
@@ -13,6 +14,7 @@ void fadeToWhite(UBYTE delay) {
 	for(i = 1U; i != 4U; ++i) {
 		BGP_REG = fadePals[i];
 		for(j = 0U; j != delay; ++j) {
+			snd_update();
 			wait_vbl_done();
 		}
 	}
@@ -24,6 +26,7 @@ void fadeFromWhite(UBYTE delay) {
 	for(i = 3U; i != 0U; --i) {
 		BGP_REG = fadePals[i];
 		for(j = 0U; j != delay; ++j) {
+			snd_update();
 			wait_vbl_done();
 		}
 	}

@@ -203,7 +203,6 @@ void enterJukebox() {
 			jukebox_music_ticks = 0U;
 			jukebox_bop = 1U;
 			jukebox_active = 1U;
-			playSound(SFX_MENU_CONFIRM);
 		}
 		if(CLICKED(J_B)) {
 			gamestate = GAMESTATE_SELECT;

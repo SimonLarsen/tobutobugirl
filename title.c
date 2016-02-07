@@ -4,6 +4,7 @@
 #include "title.h"
 #include "fade.h"
 #include "gamestate.h"
+#include "sound.h"
 
 #include "data/bg/titlescreen.h"
 #include "data/sprite/characters.h"
@@ -114,6 +115,8 @@ void enterTitle() {
 		clearRemainingSprites();
 		wait_vbl_done();
 	}
+
+	playSound(SFX_MENU_CONFIRM);
 
 	clearRemainingSprites();
 	fadeToWhite(6U);

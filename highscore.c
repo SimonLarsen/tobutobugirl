@@ -192,14 +192,14 @@ void enterHighscore() {
 		if(ISDOWN(J_LEFT)) {
 			highscore_selection--;
 			if(highscore_selection == 0U) highscore_selection = 4U;
-			highscoreUpdateScreen();
 			playSound(SFX_HIGHSCORE_SWITCH);
+			highscoreUpdateScreen();
 		}
 		if(ISDOWN(J_RIGHT)) {
 			highscore_selection++;
 			if(highscore_selection == 5U) highscore_selection = 1U;
-			highscoreUpdateScreen();
 			playSound(SFX_HIGHSCORE_SWITCH);
+			highscoreUpdateScreen();
 		}
 
 		if(CLICKED(J_START) || CLICKED(J_B)) {
