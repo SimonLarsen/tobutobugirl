@@ -167,7 +167,7 @@ tobu.gb:
 
 .PHONY: run
 run:
-	$(EMULATOR) -qt tobu.gb
+	$(EMULATOR) tobu.gb
 
 .PHONY: clean
 clean:
