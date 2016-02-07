@@ -71,6 +71,7 @@ UBYTE enterPause() {
 			playSound(SFX_MENU_SWITCH);
 		}
 		if(CLICKED(J_A)) {
+			playSound(SFX_MENU_CONFIRM);
 			if(pause_selection == 0U) {
 				return 0U;
 			} else if(pause_selection == 1U) {
@@ -86,7 +87,6 @@ UBYTE enterPause() {
 			} else if(pause_selection == 2U) {
 				return 3U;
 			}
-			playSound(SFX_MENU_SWITCH);
 		}
 
 		// Draw cloud animation
