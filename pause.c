@@ -63,13 +63,11 @@ UBYTE enterPause() {
 		}
 
 		if(CLICKED(J_UP)) {
-			if(pause_selection == 0U) pause_selection = 3U;
-			pause_selection--;
+			if(pause_selection != 0) pause_selection--;
 			playSound(SFX_MENU_SWITCH);
 		}
 		if(CLICKED(J_DOWN)) {
-			pause_selection++;
-			if(pause_selection == 3U) pause_selection = 0U;
+			if(pause_selection != 2U) pause_selection++;
 			playSound(SFX_MENU_SWITCH);
 		}
 		if(CLICKED(J_A)) {
