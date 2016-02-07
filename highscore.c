@@ -5,6 +5,7 @@
 #include "cos.h"
 #include "highscore.h"
 #include "ram.h"
+#include "sound.h"
 
 #include "data/sprite/characters.h"
 #include "data/sprite/arrow.h"
@@ -192,15 +193,18 @@ void enterHighscore() {
 			highscore_selection--;
 			if(highscore_selection == 0U) highscore_selection = 4U;
 			highscoreUpdateScreen();
+			playSound(SFX_HIGHSCORE_SWITCH);
 		}
 		if(ISDOWN(J_RIGHT)) {
 			highscore_selection++;
 			if(highscore_selection == 5U) highscore_selection = 1U;
 			highscoreUpdateScreen();
+			playSound(SFX_HIGHSCORE_SWITCH);
 		}
 
 		if(CLICKED(J_START) || CLICKED(J_B)) {
 			gamestate = GAMESTATE_SELECT;
+			playSound(SFX_MENU_CANCEL);
 			break;
 		}
 
@@ -236,6 +240,7 @@ void enterHighscore() {
 		}
 
 		clearRemainingSprites();
+		snd_update();
 		wait_vbl_done();
 	}
 

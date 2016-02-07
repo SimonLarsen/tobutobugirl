@@ -4,6 +4,7 @@
 #include "fade.h"
 #include "gamestate.h"
 #include "cos.h"
+#include "sound.h"
 
 #include "data/bg/jukebox.h"
 #include "data/sprite/digital.h"
@@ -150,6 +151,7 @@ void enterJukebox() {
 				jukebox_selection--;
 			}
 			jukeboxUpdateTitle();
+			playSound(SFX_MENU_CONFIRM);
 		}
 		if(CLICKED(J_RIGHT)) {
 			if(jukebox_selection == JUKEBOX_NUM_SONGS-1U) {
@@ -158,6 +160,7 @@ void enterJukebox() {
 				jukebox_selection++;
 			}
 			jukeboxUpdateTitle();
+			playSound(SFX_MENU_CONFIRM);
 		}
 		if(CLICKED(J_A) || CLICKED(J_START)) {
 			stopMusic();
@@ -200,14 +203,17 @@ void enterJukebox() {
 			jukebox_music_ticks = 0U;
 			jukebox_bop = 1U;
 			jukebox_active = 1U;
+			playSound(SFX_MENU_CONFIRM);
 		}
 		if(CLICKED(J_B)) {
 			gamestate = GAMESTATE_SELECT;
+			playSound(SFX_MENU_CANCEL);
 			break;
 		}
 
 		jukeboxUpdateSprites();
 		clearRemainingSprites();
+		snd_update();
 		wait_vbl_done();
 	}
 

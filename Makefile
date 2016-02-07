@@ -158,6 +158,7 @@ tobu.gb:
 	$(CC) $(CFLAGS) -c title.c -Wf-bo8
 	$(CC) $(CFLAGS) -c logos.c -Wf-bo9
 	$(CC) $(CFLAGS) -c data/songs/potato_jingle.asm # bank 9
+	$(CC) $(CFLAGS) -c sound_data.c -Wf-bo10
 	$(CC) $(CFLAGS) -c -Wf-ba0 -c ram.c # ram bank 0
 	$(CC) $(CFLAGS) -Wl-yt3 -Wl-yo16 -Wl-ya1 *.o -o $@
 

@@ -7,6 +7,8 @@ void snd_update();
 void snd_update1();
 void snd_update4();
 
+#define SOUND_BANK 10U
+
 #define SFX_BUMP              1U
 #define SFX_BUMP_ALIEN        2U
 #define SFX_DASH              3U

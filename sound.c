@@ -1,23 +1,24 @@
 #include <gb/gb.h>
 #include "sound.h"
+#include "gamestate.h"
 #include "mmlgb/driver/music.h"
 #include "mmlgb/driver/notes.h"
 #include "mmlgb/driver/freq.h"
 #include "mmlgb/driver/noisefreq.h"
 #include "mmlgb/driver/vib.h"
 
-#include "data/sounds/sfx_bump.h"
-#include "data/sounds/sfx_bump_alien.h"
-#include "data/sounds/sfx_dash.h"
-#include "data/sounds/sfx_highscore_switch.h"
-#include "data/sounds/sfx_menu_cancel.h"
-#include "data/sounds/sfx_menu_confirm.h"
-#include "data/sounds/sfx_menu_switch.h"
-#include "data/sounds/sfx_player_die.h"
-#include "data/sounds/sfx_stomp.h"
-#include "data/sounds/sfx_stomp_bat.h"
-#include "data/sounds/sfx_time_low.h"
-#include "data/sounds/sfx_time_pickup.h"
+extern UBYTE sfx_bump_data;
+extern UBYTE sfx_bump_alien_data;
+extern UBYTE sfx_dash_data;
+extern UBYTE sfx_highscore_switch_data;
+extern UBYTE sfx_menu_cancel_data;
+extern UBYTE sfx_menu_confirm_data;
+extern UBYTE sfx_menu_switch_data;
+extern UBYTE sfx_player_die_data;
+extern UBYTE sfx_stomp_data;
+extern UBYTE sfx_stomp_bat_data;
+extern UBYTE sfx_time_low_data;
+extern UBYTE sfx_time_pickup_data;
 
 UBYTE snd_active1, snd_active4;
 
@@ -43,31 +44,34 @@ void snd_init() {
 void playSound(UBYTE id) {
 	UBYTE *data;
 
+	disable_interrupts();
+	SWITCH_ROM_MBC1(SOUND_BANK);
+
 	switch(id) {
 		case SFX_BUMP:
-			data = sfx_bump_data; break;
+			data = &sfx_bump_data; break;
 		case SFX_BUMP_ALIEN:
-			data = sfx_bump_alien_data; break;
+			data = &sfx_bump_alien_data; break;
 		case SFX_DASH:
-			data = sfx_dash_data; break;
+			data = &sfx_dash_data; break;
 		case SFX_HIGHSCORE_SWITCH:
-			data = sfx_highscore_switch_data; break;
+			data = &sfx_highscore_switch_data; break;
 		case SFX_MENU_CANCEL:
-			data = sfx_menu_cancel_data; break;
+			data = &sfx_menu_cancel_data; break;
 		case SFX_MENU_CONFIRM:
-			data = sfx_menu_confirm_data; break;
+			data = &sfx_menu_confirm_data; break;
 		case SFX_MENU_SWITCH:
-			data = sfx_menu_switch_data; break;
+			data = &sfx_menu_switch_data; break;
 		case SFX_PLAYER_DIE:
-			data = sfx_player_die_data; break;
+			data = &sfx_player_die_data; break;
 		case SFX_STOMP:
-			data = sfx_stomp_data; break;
+			data = &sfx_stomp_data; break;
 		case SFX_STOMP_BAT:
-			data = sfx_stomp_bat_data; break;
+			data = &sfx_stomp_bat_data; break;
 		case SFX_TIME_LOW:
-			data = sfx_time_low_data; break;
+			data = &sfx_time_low_data; break;
 		case SFX_TIME_PICKUP:
-			data = sfx_time_pickup_data; break;
+			data = &sfx_time_pickup_data; break;
 	}
 
 	snd_data1 = data + ((UWORD*)data)[CHN1_OFFSET];
@@ -100,11 +104,18 @@ void playSound(UBYTE id) {
 		snd_noise_step = 0U;
 		NR51_REG |= 0x88U;
 	}
+
+	SWITCH_ROM_MBC1(game_bank);
+	enable_interrupts();
 }
 
 void snd_update() {
+	disable_interrupts();
+	SWITCH_ROM_MBC1(SOUND_BANK);
 	if(snd_active1) snd_update1();
 	if(snd_active4) snd_update4();
+	SWITCH_ROM_MBC1(game_bank);
+	enable_interrupts();
 }
 
 void snd_update1() {

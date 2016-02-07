@@ -268,10 +268,17 @@ void updatePlayer() {
 						blips += 32U;
 						if(blips > 128U) blips = 128U;
 						kills++;
+						if(type == E_BAT) playSound(SFX_STOMP_BAT);
+						else playSound(SFX_STOMP);
 					}
 					else if(type == E_GHOST) {
 						entity_type[i] = E_NONE;
 						spawnEntity(E_CLOUD, player_x, player_y+5U, 0U);
+						playSound(SFX_STOMP);
+					}
+					else {
+						if(type == E_ALIEN) playSound(SFX_BUMP_ALIEN);
+						else playSound(SFX_BUMP);
 					}
 					// Bounce player
 					player_ydir = UP;
@@ -294,6 +301,7 @@ void updatePlayer() {
 				remaining_time += CLOCK_BONUS;
 				if(remaining_time > 32U) remaining_time = 32;
 				updateHUDTime();
+				playSound(SFX_TIME_PICKUP);
 			// End level portal
 			} else if(type == E_PORTAL
 			&& player_y > entity_y[i]-4U && player_y < entity_y[i]+4U
@@ -806,6 +814,8 @@ void deathAnimation() {
 	set_sprite_data(0U, 8U, skin_data+384UL);
 	set_sprite_data(8U, portal_data_length, portal_data);
 
+	playSound(SFX_PLAYER_DIE);
+
 	scroll_y = 0U;
 	for(ticks = 0U; ticks != 48U; ++ticks) {
 		if(ticks < 16U) {
@@ -869,7 +879,10 @@ ingame_start:
 			remaining_time--;
 			updateHUDTime();
 
-			if(remaining_time == 0U) {
+			if(remaining_time == 15U) {
+				playSound(SFX_TIME_LOW);
+			}
+			else if(remaining_time == 0U) {
 				scene_state = INGAME_DEAD;
 			}
 		}

@@ -287,9 +287,11 @@ void enterSelect() {
 				level = selection;
 				gamestate = GAMESTATE_INGAME;
 			}
+			playSound(SFX_MENU_CONFIRM);
 		}
 		if(CLICKED(J_B)) {
 			gamestate = GAMESTATE_TITLE;
+			playSound(SFX_MENU_CANCEL);
 		}
 
 		// Draw level name
