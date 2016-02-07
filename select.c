@@ -29,6 +29,7 @@ UBYTE select_arrow_offset2;
 UBYTE select_scroll_dir;
 UBYTE select_cat_state;
 UBYTE select_cat_frame;
+UBYTE select_cat_frame_reverse;
 
 #define CAT_OFF 0U
 #define CAT_IN  1U
@@ -57,6 +58,8 @@ void initSelect() {
 	select_arrow_offset2 = 0U;
 
 	select_cat_state = CAT_OFF;
+	select_cat_frame = 0U;
+	select_cat_frame_reverse = 0U;
 	if(player_skin == 2U) select_cat_state = CAT_ON;
 
 	OBP0_REG = 0xD0U; // 11010000
@@ -125,7 +128,15 @@ void selectUpdateSprites() {
 	if(levels_completed >= 3U) {
 		switch(select_cat_state) {
 			case CAT_OFF:
-				if((ticks & 31U) == 31U) select_cat_frame ^= 1U;
+				if((ticks & 15U) == 15U) {
+					if(select_cat_frame_reverse) {
+						select_cat_frame--;
+					} else {
+						select_cat_frame++;
+					}
+					if(select_cat_frame == 0U) select_cat_frame_reverse = 0U;
+					else if(select_cat_frame == 4U) select_cat_frame_reverse = 1U;
+				}
 				if(CLICKED(J_SELECT)) {
 					select_cat_state = CAT_IN;
 					player_skin = 2U;
@@ -133,11 +144,11 @@ void selectUpdateSprites() {
 				break;
 			case CAT_IN:
 				if((ticks & 7U) == 7U) select_cat_frame++;
-				if(select_cat_frame == 6U) select_cat_state = CAT_ON;
+				if(select_cat_frame == 8U) select_cat_state = CAT_ON;
 				break;
 			case CAT_ON:
 				if((ticks & 15U) == 15U) select_cat_frame++;
-				if(select_cat_frame == 8U) select_cat_frame = 6U;
+				if(select_cat_frame == 10U) select_cat_frame = 8U;
 				if(CLICKED(J_SELECT)) {
 					select_cat_state = CAT_OUT;
 					player_skin = 1U;
@@ -145,9 +156,9 @@ void selectUpdateSprites() {
 				break;
 			case CAT_OUT:
 				if((ticks & 7U) == 7U) select_cat_frame--;
-				if(select_cat_frame == 2U) {
+				if(select_cat_frame == 4U) {
 					select_cat_state = CAT_OFF;
-					select_cat_frame = 0U;
+					select_cat_frame_reverse = 1U;
 				}
 				break;
 		}
