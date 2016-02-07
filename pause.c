@@ -65,10 +65,12 @@ UBYTE enterPause() {
 		if(CLICKED(J_UP)) {
 			if(pause_selection == 0U) pause_selection = 3U;
 			pause_selection--;
+			playSound(SFX_MENU_SWITCH);
 		}
 		if(CLICKED(J_DOWN)) {
 			pause_selection++;
 			if(pause_selection == 3U) pause_selection = 0U;
+			playSound(SFX_MENU_SWITCH);
 		}
 		if(CLICKED(J_A)) {
 			if(pause_selection == 0U) {
@@ -86,6 +88,7 @@ UBYTE enterPause() {
 			} else if(pause_selection == 2U) {
 				return 3U;
 			}
+			playSound(SFX_MENU_SWITCH);
 		}
 
 		// Draw cloud animation

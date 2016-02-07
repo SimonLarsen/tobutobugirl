@@ -864,10 +864,6 @@ ingame_start:
 
 	while(scene_state == INGAME_ACTIVE) {
 		updateInput();
-		if(CLICKED(J_START)) {
-			scene_state = enterPause();
-			restoreGame();
-		}
 
 		ticks++;
 		timer++;
@@ -899,6 +895,13 @@ ingame_start:
 			scrolled -= scrolled_length[level-1U];
 			if(progress < 112U) progress++;
 			move_bkg(0U, 112U-progress);
+		}
+
+		if(CLICKED(J_START)) {
+			scene_state = enterPause();
+			if(scene_state != INGAME_QUIT) {
+				restoreGame();
+			}
 		}
 
 		clearRemainingSprites();
