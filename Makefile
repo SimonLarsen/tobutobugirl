@@ -1,5 +1,7 @@
 CC=lcc
 CFLAGS=
+IMGTOGB=imgtogb
+EMULATOR=gambatte-qt
 
 default: backgrounds sprites tobu.gb
 
@@ -7,83 +9,83 @@ backgrounds: logos_backgrounds intro_backgrounds title_backgrounds select_backgr
 
 .PHONY: logos_backgrounds
 logos_backgrounds:
-	imgtogb --map --rle data/bg/tangram.png data/bg/tangram.h
-	imgtogb --map --rle data/bg/potato.png data/bg/potato.h
+	$(IMGTOGB) --map --rle data/bg/tangram.png data/bg/tangram.h
+	$(IMGTOGB) --map --rle data/bg/potato.png data/bg/potato.h
 
 .PHONY: intro_backgrounds
 intro_backgrounds:
-	#imgtogb --map --rle data/bg/intro_bg.png data/bg/intro_bg.h
+	#$(IMGTOGB) --map --rle data/bg/intro_bg.png data/bg/intro_bg.h
 
 .PHONY: title_backgrounds
 title_backgrounds:
-	imgtogb --map data/bg/titlescreen.png data/bg/titlescreen.h
+	$(IMGTOGB) --map data/bg/titlescreen.png data/bg/titlescreen.h
 
 .PHONY: select_backgrounds
 select_backgrounds:
-	imgtogb --map -O 9 data/bg/catface.png data/bg/catface.h
-	imgtogb --map --rle -O 13 data/bg/select.png data/bg/select.h
+	$(IMGTOGB) --map -O 9 data/bg/catface.png data/bg/catface.h
+	$(IMGTOGB) --map --rle -O 13 data/bg/select.png data/bg/select.h
 
 .PHONY: ingame_backgrounds
 ingame_backgrounds:
-	imgtogb --map data/bg/hud.png data/bg/hud.h
-	imgtogb --map -O 20 data/bg/clock.png data/bg/clock.h 
-	imgtogb --map -O 34 --rle data/bg/background1.png data/bg/background1.h 
-	imgtogb --map -O 34 --rle data/bg/background2.png data/bg/background2.h 
-	imgtogb --map -O 34 --rle data/bg/background3.png data/bg/background3.h 
-	imgtogb --map -O 34 --rle data/bg/background4.png data/bg/background4.h 
+	$(IMGTOGB) --map data/bg/hud.png data/bg/hud.h
+	$(IMGTOGB) --map -O 20 data/bg/clock.png data/bg/clock.h
+	$(IMGTOGB) --map -O 34 --rle data/bg/background1.png data/bg/background1.h
+	$(IMGTOGB) --map -O 34 --rle data/bg/background2.png data/bg/background2.h
+	$(IMGTOGB) --map -O 34 --rle data/bg/background3.png data/bg/background3.h
+	$(IMGTOGB) --map -O 34 --rle data/bg/background4.png data/bg/background4.h
 
 .PHONY: pause_backgrounds
 pause_backgrounds:
-	imgtogb --map --rle -O 38 data/bg/pause_bg.png data/bg/pause_bg.h
+	$(IMGTOGB) --map --rle -O 38 data/bg/pause_bg.png data/bg/pause_bg.h
 
 .PHONY: winscreen_backgrounds
 winscreen_backgrounds:
-	imgtogb --map -O 40 --rle data/bg/win_base.png data/bg/win_base.h
-	imgtogb --map -O 69 --rle data/bg/win1.png data/bg/win1.h
-	imgtogb --map -O 69 --rle data/bg/win2.png data/bg/win2.h
-	imgtogb --map -O 69 --rle data/bg/win3.png data/bg/win3.h
-	imgtogb --map -O 69 --rle data/bg/win4.png data/bg/win4.h
+	$(IMGTOGB) --map -O 40 --rle data/bg/win_base.png data/bg/win_base.h
+	$(IMGTOGB) --map -O 69 --rle data/bg/win1.png data/bg/win1.h
+	$(IMGTOGB) --map -O 69 --rle data/bg/win2.png data/bg/win2.h
+	$(IMGTOGB) --map -O 69 --rle data/bg/win3.png data/bg/win3.h
+	$(IMGTOGB) --map -O 69 --rle data/bg/win4.png data/bg/win4.h
 
 .PHONY: highscore_backgrounds
 highscore_backgrounds:
-	imgtogb --map -O 47 data/bg/highscore.png data/bg/highscore.h
-	imgtogb --sprite data/sprite/empty.png data/sprite/empty.h
+	$(IMGTOGB) --map -O 47 data/bg/highscore.png data/bg/highscore.h
+	$(IMGTOGB) --sprite data/sprite/empty.png data/sprite/empty.h
 
 .PHONY: unlocked_backgrounds
 unlocked_backgrounds:
-	imgtogb --map -O 47 data/bg/unlocked.png data/bg/unlocked.h
-	imgtogb --map data/bg/zoom_circles.png data/bg/zoom_circles.h
+	$(IMGTOGB) --map -O 47 data/bg/unlocked.png data/bg/unlocked.h
+	$(IMGTOGB) --map data/bg/zoom_circles.png data/bg/zoom_circles.h
 
 .PHONY: jukebox_backgrounds
 jukebox_backgrounds:
-	imgtogb --map --rle -O 37 data/bg/jukebox.png data/bg/jukebox.h
+	$(IMGTOGB) --map --rle -O 37 data/bg/jukebox.png data/bg/jukebox.h
 
 .PHONY: sprites
 sprites:
-	imgtogb --sprite --8x16 data/sprite/sprites.png data/sprite/sprites.h
-	imgtogb --sprite --8x16 data/sprite/portal.png data/sprite/portal.h
-	imgtogb --sprite --8x16 data/sprite/skin1.png data/sprite/skin1.h
-	imgtogb --sprite --8x16 data/sprite/skin2.png data/sprite/skin2.h
-	imgtogb --sprite --8x16 data/sprite/notes.png data/sprite/notes.h
-	imgtogb --sprite --8x16 data/sprite/intro_sprites.png data/sprite/intro_sprites.h
-	imgtogb --sprite --8x16 data/sprite/intro_flash.png data/sprite/intro_flash.h
-	imgtogb --sprite --8x16 data/sprite/bobblehead.png data/sprite/bobblehead.h
-	imgtogb --sprite --8x16 data/sprite/ending_sprites1.png data/sprite/ending_sprites1.h
-	imgtogb --sprite --8x16 data/sprite/ending_sprites2.png data/sprite/ending_sprites2.h
-	imgtogb --sprite data/sprite/digital.png data/sprite/digital.h
-	imgtogb --sprite --8x16 data/sprite/select_arrow.png data/sprite/select_arrow.h
-	imgtogb --sprite data/sprite/togglecat.png data/sprite/togglecat.h
-	imgtogb --sprite --8x16 data/sprite/pause_cloud1.png data/sprite/pause_cloud1.h
-	imgtogb --sprite --8x16 data/sprite/pause_cloud2.png data/sprite/pause_cloud2.h
-	#imgtogb --sprite data/sprite/characters.png data/sprite/characters.h # 40 tiles
-	#imgtogb --sprite --8x16 data/sprite/arrow.png data/sprite/arrow.h
-	#imgtogb --map -O 90 data/bg/selection1.png data/bg/selection1.h
-	#imgtogb --map -O 90 data/bg/selection2.png data/bg/selection2.h
-	#imgtogb --map -O 90 data/bg/selection3.png data/bg/selection3.h
-	#imgtogb --map -O 90 data/bg/selection4.png data/bg/selection4.h
-	#imgtogb --map -O 90 data/bg/selection_highscore.png data/bg/selection_highscore.h
-	#imgtogb --map -O 90 data/bg/selection_jukebox.png data/bg/selection_jukebox.h
-	#imgtogb --map -O 90 data/bg/selection_locked.png data/bg/selection_locked.h
+	$(IMGTOGB) --sprite --8x16 data/sprite/sprites.png data/sprite/sprites.h
+	$(IMGTOGB) --sprite --8x16 data/sprite/portal.png data/sprite/portal.h
+	$(IMGTOGB) --sprite --8x16 data/sprite/skin1.png data/sprite/skin1.h
+	$(IMGTOGB) --sprite --8x16 data/sprite/skin2.png data/sprite/skin2.h
+	$(IMGTOGB) --sprite --8x16 data/sprite/notes.png data/sprite/notes.h
+	$(IMGTOGB) --sprite --8x16 data/sprite/intro_sprites.png data/sprite/intro_sprites.h
+	$(IMGTOGB) --sprite --8x16 data/sprite/intro_flash.png data/sprite/intro_flash.h
+	$(IMGTOGB) --sprite --8x16 data/sprite/bobblehead.png data/sprite/bobblehead.h
+	$(IMGTOGB) --sprite --8x16 data/sprite/ending_sprites1.png data/sprite/ending_sprites1.h
+	$(IMGTOGB) --sprite --8x16 data/sprite/ending_sprites2.png data/sprite/ending_sprites2.h
+	$(IMGTOGB) --sprite data/sprite/digital.png data/sprite/digital.h
+	$(IMGTOGB) --sprite --8x16 data/sprite/select_arrow.png data/sprite/select_arrow.h
+	$(IMGTOGB) --sprite data/sprite/togglecat.png data/sprite/togglecat.h
+	$(IMGTOGB) --sprite --8x16 data/sprite/pause_cloud1.png data/sprite/pause_cloud1.h
+	$(IMGTOGB) --sprite --8x16 data/sprite/pause_cloud2.png data/sprite/pause_cloud2.h
+	#$(IMGTOGB) --sprite data/sprite/characters.png data/sprite/characters.h # 40 tiles
+	#$(IMGTOGB) --sprite --8x16 data/sprite/arrow.png data/sprite/arrow.h
+	#$(IMGTOGB) --map -O 90 data/bg/selection1.png data/bg/selection1.h
+	#$(IMGTOGB) --map -O 90 data/bg/selection2.png data/bg/selection2.h
+	#$(IMGTOGB) --map -O 90 data/bg/selection3.png data/bg/selection3.h
+	#$(IMGTOGB) --map -O 90 data/bg/selection4.png data/bg/selection4.h
+	#$(IMGTOGB) --map -O 90 data/bg/selection_highscore.png data/bg/selection_highscore.h
+	#$(IMGTOGB) --map -O 90 data/bg/selection_jukebox.png data/bg/selection_jukebox.h
+	#$(IMGTOGB) --map -O 90 data/bg/selection_locked.png data/bg/selection_locked.h
 
 .PHONY: songs
 songs:
@@ -114,7 +116,7 @@ sounds:
 	java -jar jar/MMLGB.jar data/sounds/sfx_time_pickup.mml data/sounds/sfx_time_pickup.h
 
 .PHONY: tobu.gb
-tobu.gb: 
+tobu.gb:
 	$(CC) $(CFLAGS) -c main.c
 	$(CC) $(CFLAGS) -c fade.c
 	$(CC) $(CFLAGS) -c gamestate.c
@@ -164,7 +166,7 @@ tobu.gb:
 
 .PHONY: run
 run:
-	gambatte-qt tobu.gb
+	$(EMULATOR) -qt tobu.gb
 
 .PHONY: clean
 clean:
