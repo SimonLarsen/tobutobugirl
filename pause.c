@@ -10,8 +10,8 @@
 const UBYTE pause_text_on[] = { 10U, 25U, 24U };
 const UBYTE pause_text_off[] = { 25U, 16U, 16U };
 
-const UBYTE pause_marker_x1[] = { 49U, 9U, 57U };
-const UBYTE pause_marker_x2[] = { 110U, 150U, 102U };
+const UBYTE pause_marker_x1[] = { 49U, 17U, 57U };
+const UBYTE pause_marker_x2[] = { 110U, 142U, 102U };
 const UBYTE pause_marker_y[] = { 112U, 124U, 136U };
 
 UBYTE pause_selection;
@@ -19,9 +19,9 @@ UBYTE pause_ticks;
 
 void pauseUpdateDashCounter() {
 	if(show_dashcounter) {
-		set_bkg_tiles(15U, 14U, 3U, 1U, pause_text_on);
+		set_bkg_tiles(14U, 14U, 3U, 1U, pause_text_on);
 	} else {
-		set_bkg_tiles(15U, 14U, 3U, 1U, pause_text_off);
+		set_bkg_tiles(14U, 14U, 3U, 1U, pause_text_off);
 	}
 }
 
