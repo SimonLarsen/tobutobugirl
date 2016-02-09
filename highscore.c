@@ -46,9 +46,6 @@ void initHighscore() {
 	clearSprites();
 	_highscoreUpdateScreen();
 
-	setMusicBank(4U);
-	playMusic(&highscore_song_data);
-
 	SPRITES_8x8;
 	SHOW_SPRITES;
 	HIDE_WIN;
@@ -179,6 +176,11 @@ void enterHighscore() {
 	initHighscore();
 
 	fadeFromWhite(6U);
+
+	disable_interrupts();
+	setMusicBank(4U);
+	playMusic(&highscore_song_data);
+	enable_interrupts();
 
 	ticks = 0U;
 	while(1) {
