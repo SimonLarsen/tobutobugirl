@@ -32,8 +32,8 @@ void addScore();
 #define MAX_YSPEED      24U
 #define MAX_FLY_SPEED   24U
 
-#define KEY_DASH	J_A
-#define KEY_USE		J_B
+#define KEY_DASH J_A
+#define KEY_USE  J_B
 
 #define SPAWN_INTERVAL 36U
 #define CLOCK_BONUS 8U

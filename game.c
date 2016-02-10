@@ -334,8 +334,8 @@ void updatePlayer() {
 		}
 
 		if(!ISDOWN(KEY_DASH)) {
-			if(dashing > DASH_TIME-SHORT_DASH_TIME) {
-				dashing -= DASH_TIME - SHORT_DASH_TIME;
+			if(DASH_TIME - dashing > 6U) {
+				dashing = 0U;
 			}
 		}
 	}
