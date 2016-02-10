@@ -206,6 +206,7 @@ void enterHighscore() {
 
 		if(CLICKED(J_START) || CLICKED(J_B)) {
 			gamestate = GAMESTATE_SELECT;
+			stopMusic();
 			playSound(SFX_MENU_CANCEL);
 			break;
 		}
@@ -251,6 +252,4 @@ void enterHighscore() {
 
 	clearRemainingSprites();
 	fadeToWhite(6U);
-
-	stopMusic();
 }

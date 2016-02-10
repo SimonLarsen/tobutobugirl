@@ -302,6 +302,7 @@ void enterSelect() {
 		}
 		if(CLICKED(J_B)) {
 			gamestate = GAMESTATE_TITLE;
+			stopMusic();
 			playSound(SFX_MENU_CANCEL);
 		}
 
@@ -328,6 +329,4 @@ void enterSelect() {
 
 	clearRemainingSprites(); // Remove all sprites
 	fadeToWhite(6U);
-
-	stopMusic();
 }
