@@ -21,6 +21,7 @@ extern UBYTE sfx_time_low_data;
 extern UBYTE sfx_time_pickup_data;
 
 UBYTE snd_active1, snd_active4;
+UBYTE snd_priority1, snd_priority4;
 
 UWORD snd_freq1; UBYTE snd_freq4;
 UBYTE *snd_data1, *snd_data4;
@@ -37,12 +38,29 @@ UBYTE snd_vib_pos1;
 UBYTE snd_noise_step;
 UBYTE snd_po1;
 
+const UBYTE sfx_priority[12] = {
+	8U, // SFX_BUMP
+	8U, // SFX_BUMP_ALIEN
+	7U, // SFX_DASH
+	8U, // SFX_HIGHSCORE_SWITCH
+	8U, // SFX_MENU_CANCEL
+	8U, // SFX_MENU_CONFIRM
+	8U, // SFX_MENU_SWITCH
+	9U, // SFX_PLAYER_DIE
+	8U, // SFX_STOMP
+	8U, // SFX_STOMP_BAT
+	9U, // SFX_TIME_LOW
+	9U  // SFX_TIME_PICKUP
+};
+
 void snd_init() {
 	snd_active1 = snd_active4 = 0U;
+	snd_priority1 = snd_priority4 = 0U;
 }
 
 void playSound(UBYTE id) {
-	UBYTE *data;
+	UBYTE *data, *data1, *data4;
+	UBYTE prio;
 
 	disable_interrupts();
 	SWITCH_ROM_MBC1(SOUND_BANK);
@@ -74,32 +92,37 @@ void playSound(UBYTE id) {
 			data = &sfx_time_pickup_data; break;
 	}
 
-	snd_data1 = data + ((UWORD*)data)[CHN1_OFFSET];
-	snd_data4 = data + ((UWORD*)data)[CHN4_OFFSET];
+	data1 = data + ((UWORD*)data)[CHN1_OFFSET];
+	data4 = data + ((UWORD*)data)[CHN4_OFFSET];
+	prio = sfx_priority[id];
 
-	if(*snd_data1 != T_EOF) {
+	if(*data1 != T_EOF && prio >= snd_priority1) {
 		mus_disable1();
+		snd_data1 = data1;
 		snd_active1 = 1U;
+		snd_priority1 = prio;
 
 		snd_wait1 = 0U;
 		snd_octave1 = 4U;
 		snd_length1 = 48U;
 		snd_volume1 = 14U;
-		snd_env1 = 15U;
+		snd_env1 = 0U;
 		snd_slide1 = 0U;
 		snd_vib_speed1 = 0U;
 		snd_po1 = 128U;
 		NR51_REG |= 0x11U;
 	}
-	if(*snd_data4 != T_EOF) {
+	if(*data4 != T_EOF && prio >= snd_priority4) {
 		mus_disable4();
+		snd_data4 = data4;
 		snd_active4 = 1U;
+		snd_priority4 = prio;
 
 		snd_wait4 = 0U;
 		snd_octave4 = 4U;
 		snd_length4 = 48U;
-		snd_volume4 = 15U;
-		snd_env4 = 3U;
+		snd_volume4 = 14U;
+		snd_env4 = 0U;
 		snd_slide4 = 0U;
 		snd_noise_step = 0U;
 		NR51_REG |= 0x88U;
@@ -221,6 +244,7 @@ void snd_update1() {
 				break;
 			case T_EOF:
 				snd_active1 = 0U;
+				snd_priority1 = 0U;
 				mus_restore1();
 				return;
 		}
@@ -306,6 +330,7 @@ void snd_update4() {
 				break;
 			case T_EOF:
 				snd_active4 = 0U;
+				snd_priority4 = 0U;
 				mus_restore4();
 				return;
 		}

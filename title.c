@@ -116,10 +116,9 @@ void enterTitle() {
 		wait_vbl_done();
 	}
 
+	stopMusic();
 	playSound(SFX_MENU_CONFIRM);
 
 	clearRemainingSprites();
 	fadeToWhite(6U);
-
-	stopMusic();
 }
