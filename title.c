@@ -121,4 +121,5 @@ void enterTitle() {
 
 	clearRemainingSprites();
 	fadeToWhite(6U);
+	wait_sound_done();
 }

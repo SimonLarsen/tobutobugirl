@@ -110,6 +110,7 @@ sounds:
 	java -jar jar/MMLGB.jar data/sounds/sfx_menu_cancel.mml data/sounds/sfx_menu_cancel.h
 	java -jar jar/MMLGB.jar data/sounds/sfx_menu_confirm.mml data/sounds/sfx_menu_confirm.h
 	java -jar jar/MMLGB.jar data/sounds/sfx_menu_switch.mml data/sounds/sfx_menu_switch.h
+	java -jar jar/MMLGB.jar data/sounds/sfx_menu_locked.mml data/sounds/sfx_menu_locked.h
 	java -jar jar/MMLGB.jar data/sounds/sfx_player_die.mml data/sounds/sfx_player_die.h
 	java -jar jar/MMLGB.jar data/sounds/sfx_stomp.mml data/sounds/sfx_stomp.h
 	java -jar jar/MMLGB.jar data/sounds/sfx_stomp_bat.mml data/sounds/sfx_stomp_bat.h

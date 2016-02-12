@@ -206,7 +206,6 @@ void enterHighscore() {
 
 		if(CLICKED(J_START) || CLICKED(J_B)) {
 			gamestate = GAMESTATE_SELECT;
-			stopMusic();
 			playSound(SFX_MENU_CANCEL);
 			break;
 		}
@@ -250,6 +249,8 @@ void enterHighscore() {
 	// Clear blinking after exit
 	last_highscore_slot = 5U;
 
+	stopMusic();
 	clearRemainingSprites();
 	fadeToWhite(6U);
+	wait_sound_done();
 }

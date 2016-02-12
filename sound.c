@@ -14,6 +14,7 @@ extern UBYTE sfx_highscore_switch_data;
 extern UBYTE sfx_menu_cancel_data;
 extern UBYTE sfx_menu_confirm_data;
 extern UBYTE sfx_menu_switch_data;
+extern UBYTE sfx_menu_locked_data;
 extern UBYTE sfx_player_die_data;
 extern UBYTE sfx_stomp_data;
 extern UBYTE sfx_stomp_bat_data;
@@ -38,7 +39,7 @@ UBYTE snd_vib_pos1;
 UBYTE snd_noise_step;
 UBYTE snd_po1;
 
-const UBYTE sfx_priority[12] = {
+const UBYTE sfx_priority[13] = {
 	8U, // SFX_BUMP
 	8U, // SFX_BUMP_ALIEN
 	7U, // SFX_DASH
@@ -46,6 +47,7 @@ const UBYTE sfx_priority[12] = {
 	8U, // SFX_MENU_CANCEL
 	8U, // SFX_MENU_CONFIRM
 	8U, // SFX_MENU_SWITCH
+	8U, // SFX_MENU_LOCKED
 	9U, // SFX_PLAYER_DIE
 	8U, // SFX_STOMP
 	8U, // SFX_STOMP_BAT
@@ -56,6 +58,13 @@ const UBYTE sfx_priority[12] = {
 void snd_init() {
 	snd_active1 = snd_active4 = 0U;
 	snd_priority1 = snd_priority4 = 0U;
+}
+
+void wait_sound_done() {
+	while(snd_active1 || snd_active4) {
+		snd_update();
+		wait_vbl_done();
+	}
 }
 
 void playSound(UBYTE id) {
@@ -80,6 +89,8 @@ void playSound(UBYTE id) {
 			data = &sfx_menu_confirm_data; break;
 		case SFX_MENU_SWITCH:
 			data = &sfx_menu_switch_data; break;
+		case SFX_MENU_LOCKED:
+			data = &sfx_menu_locked_data; break;
 		case SFX_PLAYER_DIE:
 			data = &sfx_player_die_data; break;
 		case SFX_STOMP:

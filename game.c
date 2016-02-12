@@ -908,6 +908,7 @@ ingame_start:
 		snd_update();
 		wait_vbl_done();
 	}
+
 	stopMusic();
 
 	if(scene_state == INGAME_DEAD) {
@@ -928,6 +929,7 @@ ingame_start:
 	clearRemainingSprites();
 	if(scene_state != INGAME_QUIT) {
 		fadeToWhite(10U);
+		wait_sound_done();
 	}
 
 	if(gamestate == GAMESTATE_INGAME) goto ingame_start;

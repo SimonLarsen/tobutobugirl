@@ -7,6 +7,7 @@
 #include "data/sounds/sfx_menu_cancel.h"
 #include "data/sounds/sfx_menu_confirm.h"
 #include "data/sounds/sfx_menu_switch.h"
+#include "data/sounds/sfx_menu_locked.h"
 #include "data/sounds/sfx_player_die.h"
 #include "data/sounds/sfx_stomp.h"
 #include "data/sounds/sfx_stomp_bat.h"

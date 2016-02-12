@@ -292,17 +292,22 @@ void enterSelect() {
 		if(CLICKED(J_START) || CLICKED(J_A)) {
 			if(selection == 5U) {
 				gamestate = GAMESTATE_JUKEBOX;
+				playSound(SFX_MENU_CONFIRM);
 			} else if(selection == 6U) {
 				gamestate = GAMESTATE_HIGHSCORE;
-			} else if(selection <= levels_completed+1U) {
-				level = selection;
-				gamestate = GAMESTATE_INGAME;
+				playSound(SFX_MENU_CONFIRM);
+			} else {
+				if(selection <= levels_completed+1U) {
+					level = selection;
+					gamestate = GAMESTATE_INGAME;
+					playSound(SFX_MENU_CONFIRM);
+				} else {
+					playSound(SFX_MENU_LOCKED);
+				}
 			}
-			playSound(SFX_MENU_CONFIRM);
 		}
 		if(CLICKED(J_B)) {
 			gamestate = GAMESTATE_TITLE;
-			stopMusic();
 			playSound(SFX_MENU_CANCEL);
 		}
 
@@ -327,6 +332,8 @@ void enterSelect() {
 		wait_vbl_done();
 	}
 
+	stopMusic();
 	clearRemainingSprites(); // Remove all sprites
 	fadeToWhite(6U);
+	wait_sound_done();
 }
