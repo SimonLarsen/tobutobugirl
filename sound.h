@@ -19,9 +19,11 @@ void snd_update4();
 #define SFX_MENU_SWITCH       6U
 #define SFX_MENU_LOCKED       7U
 #define SFX_PLAYER_DIE        8U
-#define SFX_STOMP             9U
+#define SFX_STOMP_BIRD        9U
 #define SFX_STOMP_BAT        10U
-#define SFX_TIME_LOW         11U
-#define SFX_TIME_PICKUP      12U
+#define SFX_STOMP_GHOST      11U
+#define SFX_STOMP_ALIEN      12U
+#define SFX_TIME_LOW         13U
+#define SFX_TIME_PICKUP      14U
 
 #endif

@@ -56,7 +56,7 @@ const UBYTE clock_interval[4] = {
 
 const UBYTE allowed_spikes[4] = { 1U, 1U, 1U, 3U };
 
-const UBYTE entity_sprites[] = {
+const UBYTE entity_sprites[10] = {
 	0,		// E_NONE
 	 // Hazards
 	9*4,	// E_SPIKES
@@ -268,13 +268,12 @@ void updatePlayer() {
 						blips += 32U;
 						if(blips > 128U) blips = 128U;
 						kills++;
-						if(type == E_BAT) playSound(SFX_STOMP_BAT);
-						else playSound(SFX_STOMP);
+						playSound(type + 6U); // SFX_STOMP_BIRD-E_BIRD = 6
 					}
 					else if(type == E_GHOST) {
 						entity_type[i] = E_NONE;
 						spawnEntity(E_CLOUD, player_x, player_y+5U, 0U);
-						playSound(SFX_STOMP);
+						playSound(SFX_STOMP_GHOST);
 					}
 					else {
 						if(type == E_ALIEN) playSound(SFX_BUMP_ALIEN);

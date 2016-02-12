@@ -16,8 +16,10 @@ extern UBYTE sfx_menu_confirm_data;
 extern UBYTE sfx_menu_switch_data;
 extern UBYTE sfx_menu_locked_data;
 extern UBYTE sfx_player_die_data;
-extern UBYTE sfx_stomp_data;
+extern UBYTE sfx_stomp_bird_data;
 extern UBYTE sfx_stomp_bat_data;
+extern UBYTE sfx_stomp_ghost_data;
+extern UBYTE sfx_stomp_alien_data;
 extern UBYTE sfx_time_low_data;
 extern UBYTE sfx_time_pickup_data;
 
@@ -39,7 +41,7 @@ UBYTE snd_vib_pos1;
 UBYTE snd_noise_step;
 UBYTE snd_po1;
 
-const UBYTE sfx_priority[13] = {
+const UBYTE sfx_priority[15] = {
 	8U, // SFX_BUMP
 	8U, // SFX_BUMP_ALIEN
 	7U, // SFX_DASH
@@ -49,8 +51,10 @@ const UBYTE sfx_priority[13] = {
 	8U, // SFX_MENU_SWITCH
 	8U, // SFX_MENU_LOCKED
 	9U, // SFX_PLAYER_DIE
-	8U, // SFX_STOMP
+	8U, // SFX_STOMP_BIRD
 	8U, // SFX_STOMP_BAT
+	8U, // SFX_STOMP_GHOST
+	8U, // SFX_STOMP_ALIEN
 	9U, // SFX_TIME_LOW
 	9U  // SFX_TIME_PICKUP
 };
@@ -93,10 +97,14 @@ void playSound(UBYTE id) {
 			data = &sfx_menu_locked_data; break;
 		case SFX_PLAYER_DIE:
 			data = &sfx_player_die_data; break;
-		case SFX_STOMP:
-			data = &sfx_stomp_data; break;
+		case SFX_STOMP_BIRD:
+			data = &sfx_stomp_bird_data; break;
 		case SFX_STOMP_BAT:
 			data = &sfx_stomp_bat_data; break;
+		case SFX_STOMP_GHOST:
+			data = &sfx_stomp_ghost_data; break;
+		case SFX_STOMP_ALIEN:
+			data = &sfx_stomp_alien_data; break;
 		case SFX_TIME_LOW:
 			data = &sfx_time_low_data; break;
 		case SFX_TIME_PICKUP:
