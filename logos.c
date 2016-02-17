@@ -11,6 +11,7 @@
 #include "data/sprite/shine.h"
 #include "data/samples/tangram.h"
 
+extern UBYTE tangram_shine_data;
 extern UBYTE potato_jingle_data;
 
 void initLogos() {
@@ -65,11 +66,17 @@ void enterLogos() {
 
 	clearRemainingSprites();
 
+	disable_interrupts();
+	setMusicBank(9U);
+	playMusic(&tangram_shine_data);
+	enable_interrupts();
+
 	for(i = 0U; i != 30U; ++i) {
 		snd_update();
 		wait_vbl_done();
 	}
 
+	stopMusic();
 	play_sample(tangram_sample_data, tangram_sample_samples);
 
 	for(i = 0U; i != 60U; ++i) wait_vbl_done();
@@ -90,8 +97,10 @@ void enterLogos() {
 
 	for(i = 0U; i != 10U; ++i) wait_vbl_done();
 
+	disable_interrupts();
 	setMusicBank(9U);
 	playMusic(&potato_jingle_data);
+	enable_interrupts();
 	enable_interrupts();
 
 	for(i = 0U; i != 160U; ++i) wait_vbl_done();

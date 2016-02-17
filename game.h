@@ -43,16 +43,16 @@ void addScore();
 
 #define E_SPIKES   1U
 #define E_FIREBALL 2U
-#define E_BIRD     3U
+#define E_ALIEN    3U
 #define E_BAT      4U
-#define E_GHOST    5U
-#define E_ALIEN    6U
+#define E_BIRD     5U
+#define E_GHOST    6U
 #define E_CLOCK    7U
 #define E_PORTAL   8U
 #define E_CLOUD	   9U
 
 #define FIRST_ENEMY E_SPIKES
-#define LAST_ENEMY E_ALIEN
+#define LAST_ENEMY E_GHOST
 
 #define LAST_COLLIDABLE E_PORTAL
 

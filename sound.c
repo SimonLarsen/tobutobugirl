@@ -9,19 +9,24 @@
 
 extern UBYTE sfx_bump_data;
 extern UBYTE sfx_bump_alien_data;
+extern UBYTE sfx_cat_disable_data;
+extern UBYTE sfx_cat_enable_data;
 extern UBYTE sfx_dash_data;
 extern UBYTE sfx_highscore_switch_data;
+extern UBYTE sfx_jetpack_data;
 extern UBYTE sfx_menu_cancel_data;
 extern UBYTE sfx_menu_confirm_data;
-extern UBYTE sfx_menu_switch_data;
 extern UBYTE sfx_menu_locked_data;
+extern UBYTE sfx_menu_switch_data;
 extern UBYTE sfx_player_die_data;
-extern UBYTE sfx_stomp_bird_data;
-extern UBYTE sfx_stomp_bat_data;
-extern UBYTE sfx_stomp_ghost_data;
+extern UBYTE sfx_stomp_data;
 extern UBYTE sfx_stomp_alien_data;
+extern UBYTE sfx_stomp_bat_data;
+extern UBYTE sfx_stomp_bird_data;
+extern UBYTE sfx_stomp_ghost_data;
 extern UBYTE sfx_time_low_data;
 extern UBYTE sfx_time_pickup_data;
+extern UBYTE sfx_warp_start_data;
 
 UBYTE snd_active1, snd_active4;
 UBYTE snd_priority1, snd_priority4;
@@ -41,22 +46,27 @@ UBYTE snd_vib_pos1;
 UBYTE snd_noise_step;
 UBYTE snd_po1;
 
-const UBYTE sfx_priority[15] = {
+const UBYTE sfx_priority[20] = {
 	8U, // SFX_BUMP
 	8U, // SFX_BUMP_ALIEN
+	8U, // SFX_CAT_DISABLE
+	8U, // SFX_CAT_ENABLE
 	7U, // SFX_DASH
 	8U, // SFX_HIGHSCORE_SWITCH
+	7U, // SFX_JETPACK
 	8U, // SFX_MENU_CANCEL
 	8U, // SFX_MENU_CONFIRM
-	8U, // SFX_MENU_SWITCH
 	8U, // SFX_MENU_LOCKED
+	8U, // SFX_MENU_SWITCH
 	9U, // SFX_PLAYER_DIE
-	8U, // SFX_STOMP_BIRD
-	8U, // SFX_STOMP_BAT
-	8U, // SFX_STOMP_GHOST
+	8U, // SFX_STOMP
 	8U, // SFX_STOMP_ALIEN
+	8U, // SFX_STOMP_BAT
+	8U, // SFX_STOMP_BIRD
+	8U, // SFX_STOMP_GHOST
 	9U, // SFX_TIME_LOW
-	9U  // SFX_TIME_PICKUP
+	9U, // SFX_TIME_PICKUP
+	8U  // SFX_WARP_START
 };
 
 void snd_init() {
@@ -83,32 +93,42 @@ void playSound(UBYTE id) {
 			data = &sfx_bump_data; break;
 		case SFX_BUMP_ALIEN:
 			data = &sfx_bump_alien_data; break;
+		case SFX_CAT_DISABLE:
+			data = &sfx_cat_disable_data; break;
+		case SFX_CAT_ENABLE:
+			data = &sfx_cat_enable_data; break;
 		case SFX_DASH:
 			data = &sfx_dash_data; break;
 		case SFX_HIGHSCORE_SWITCH:
 			data = &sfx_highscore_switch_data; break;
+		case SFX_JETPACK:
+			data = &sfx_jetpack_data; break;
 		case SFX_MENU_CANCEL:
 			data = &sfx_menu_cancel_data; break;
 		case SFX_MENU_CONFIRM:
 			data = &sfx_menu_confirm_data; break;
-		case SFX_MENU_SWITCH:
-			data = &sfx_menu_switch_data; break;
 		case SFX_MENU_LOCKED:
 			data = &sfx_menu_locked_data; break;
+		case SFX_MENU_SWITCH:
+			data = &sfx_menu_switch_data; break;
 		case SFX_PLAYER_DIE:
 			data = &sfx_player_die_data; break;
-		case SFX_STOMP_BIRD:
-			data = &sfx_stomp_bird_data; break;
-		case SFX_STOMP_BAT:
-			data = &sfx_stomp_bat_data; break;
-		case SFX_STOMP_GHOST:
-			data = &sfx_stomp_ghost_data; break;
+		case SFX_STOMP:
+			data = &sfx_stomp_data; break;
 		case SFX_STOMP_ALIEN:
 			data = &sfx_stomp_alien_data; break;
+		case SFX_STOMP_BAT:
+			data = &sfx_stomp_bat_data; break;
+		case SFX_STOMP_BIRD:
+			data = &sfx_stomp_bird_data; break;
+		case SFX_STOMP_GHOST:
+			data = &sfx_stomp_ghost_data; break;
 		case SFX_TIME_LOW:
 			data = &sfx_time_low_data; break;
 		case SFX_TIME_PICKUP:
 			data = &sfx_time_pickup_data; break;
+		case SFX_WARP_START:
+			data = &sfx_warp_start_data; break;
 	}
 
 	data1 = data + ((UWORD*)data)[CHN1_OFFSET];

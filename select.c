@@ -140,6 +140,7 @@ void selectUpdateSprites() {
 				if(CLICKED(J_SELECT)) {
 					select_cat_state = CAT_IN;
 					player_skin = 2U;
+					playSound(SFX_CAT_ENABLE);
 				}
 				break;
 			case CAT_IN:
@@ -159,6 +160,7 @@ void selectUpdateSprites() {
 				if(select_cat_frame == 4U) {
 					select_cat_state = CAT_OFF;
 					select_cat_frame_reverse = 1U;
+					playSound(SFX_CAT_DISABLE);
 				}
 				break;
 		}

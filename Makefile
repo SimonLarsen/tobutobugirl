@@ -97,27 +97,33 @@ songs:
 	java -jar jar/MMLGB.jar data/mml/plains.mml data/songs/plains_song.asm 5
 	java -jar jar/MMLGB.jar data/mml/clouds.mml data/songs/clouds_song.asm 5
 	java -jar jar/MMLGB.jar data/mml/space.mml data/songs/space_song.asm 5
+	java -jar jar/MMLGB.jar data/mml/dream.mml data/songs/dream_song.asm 5
 	java -jar jar/MMLGB.jar data/mml/intro_cutscene_part_1.mml data/songs/intro1_song.asm 6
-	java -jar jar/MMLGB.jar data/mml/intro_cutscene_part_2.mml data/songs/intro2_song.asm 6
 	java -jar jar/MMLGB.jar data/mml/potato_jingle.mml data/songs/potato_jingle.asm 9
+	java -jar jar/MMLGB.jar data/mml/tangram_shine.mml data/songs/tangram_shine.asm 9
 
 .PHONY: sounds
 sounds:
 	java -jar jar/MMLGB.jar data/sounds/sfx_bump.mml data/sounds/sfx_bump.h
 	java -jar jar/MMLGB.jar data/sounds/sfx_bump_alien.mml data/sounds/sfx_bump_alien.h
+	java -jar jar/MMLGB.jar data/sounds/sfx_cat_disable.mml data/sounds/sfx_cat_disable.h
+	java -jar jar/MMLGB.jar data/sounds/sfx_cat_enable.mml data/sounds/sfx_cat_enable.h
 	java -jar jar/MMLGB.jar data/sounds/sfx_dash.mml data/sounds/sfx_dash.h
 	java -jar jar/MMLGB.jar data/sounds/sfx_highscore_switch.mml data/sounds/sfx_highscore_switch.h
+	java -jar jar/MMLGB.jar data/sounds/sfx_jetpack.mml data/sounds/sfx_jetpack.h
 	java -jar jar/MMLGB.jar data/sounds/sfx_menu_cancel.mml data/sounds/sfx_menu_cancel.h
 	java -jar jar/MMLGB.jar data/sounds/sfx_menu_confirm.mml data/sounds/sfx_menu_confirm.h
-	java -jar jar/MMLGB.jar data/sounds/sfx_menu_switch.mml data/sounds/sfx_menu_switch.h
 	java -jar jar/MMLGB.jar data/sounds/sfx_menu_locked.mml data/sounds/sfx_menu_locked.h
+	java -jar jar/MMLGB.jar data/sounds/sfx_menu_switch.mml data/sounds/sfx_menu_switch.h
 	java -jar jar/MMLGB.jar data/sounds/sfx_player_die.mml data/sounds/sfx_player_die.h
+	java -jar jar/MMLGB.jar data/sounds/sfx_stomp.mml data/sounds/sfx_stomp.h
+	java -jar jar/MMLGB.jar data/sounds/sfx_stomp_alien.mml data/sounds/sfx_stomp_alien.h
 	java -jar jar/MMLGB.jar data/sounds/sfx_stomp_bat.mml data/sounds/sfx_stomp_bat.h
 	java -jar jar/MMLGB.jar data/sounds/sfx_stomp_bird.mml data/sounds/sfx_stomp_bird.h
 	java -jar jar/MMLGB.jar data/sounds/sfx_stomp_ghost.mml data/sounds/sfx_stomp_ghost.h
-	java -jar jar/MMLGB.jar data/sounds/sfx_stomp_alien.mml data/sounds/sfx_stomp_alien.h
 	java -jar jar/MMLGB.jar data/sounds/sfx_time_low.mml data/sounds/sfx_time_low.h
 	java -jar jar/MMLGB.jar data/sounds/sfx_time_pickup.mml data/sounds/sfx_time_pickup.h
+	java -jar jar/MMLGB.jar data/sounds/sfx_warp_start.mml data/sounds/sfx_warp_start.h
 
 .PHONY: tobu.gb
 tobu.gb:
@@ -156,6 +162,7 @@ tobu.gb:
 	$(CC) $(CFLAGS) -c data/songs/plains_song.asm # bank 5
 	$(CC) $(CFLAGS) -c data/songs/clouds_song.asm # bank 5
 	$(CC) $(CFLAGS) -c data/songs/space_song.asm # bank 5
+	$(CC) $(CFLAGS) -c data/songs/dream_song.asm # bank 5
 	$(CC) $(CFLAGS) -c data/songs/intro1_song.asm # bank 6
 	$(CC) $(CFLAGS) -c data/songs/intro2_song.asm # bank 6
 	$(CC) $(CFLAGS) -c winscreen.c -Wf-bo7
@@ -164,6 +171,7 @@ tobu.gb:
 	$(CC) $(CFLAGS) -c title.c -Wf-bo8
 	$(CC) $(CFLAGS) -c logos.c -Wf-bo9
 	$(CC) $(CFLAGS) -c data/songs/potato_jingle.asm # bank 9
+	$(CC) $(CFLAGS) -c data/songs/tangram_shine.asm # bank 9
 	$(CC) $(CFLAGS) -c sound_data.c -Wf-bo10
 	$(CC) $(CFLAGS) -c -Wf-ba0 -c ram.c # ram bank 0
 	$(CC) $(CFLAGS) -Wl-yt3 -Wl-yo16 -Wl-ya1 *.o -o $@

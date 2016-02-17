@@ -39,6 +39,7 @@ UBYTE entity_dir[MAX_ENTITIES];
 extern UBYTE plains_song_data;
 extern UBYTE clouds_song_data;
 extern UBYTE space_song_data;
+extern UBYTE dream_song_data;
 
 const UBYTE scrolled_length[4] = {
 	16U, // 16 * 111 / 36 = 49
@@ -62,10 +63,10 @@ const UBYTE entity_sprites[10] = {
 	9*4,	// E_SPIKES
 	19*4, 	// E_FIREBALL
 	 // Enemies
-	11*4,	// E_BIRD
-	13*4,	// E_BAT
-	15*4,	// E_GHOST
 	17*4,	// E_ALIEN
+	13*4,	// E_BAT
+	11*4,	// E_BIRD
+	15*4,	// E_GHOST
 	// Powerups
 	22*4,	// E_CLOCK
 	// Special
@@ -124,14 +125,11 @@ void initGame() {
 		setIngameBackground(level);
 
 		setMusicBank(5U);
-		if(level == 1U) {
-			playMusic(&plains_song_data);
-		}
-		else if(level == 2U) {
-			playMusic(&clouds_song_data);
-		}
-		else if(level == 3U) {
-			playMusic(&space_song_data);
+		switch(level) {
+			case 1U: playMusic(&plains_song_data); break;
+			case 2U: playMusic(&clouds_song_data); break;
+			case 3U: playMusic(&space_song_data); break;
+			case 4U: playMusic(&dream_song_data); break;
 		}
 	}
 	mus_setPaused(1U);
@@ -268,7 +266,7 @@ void updatePlayer() {
 						blips += 32U;
 						if(blips > 128U) blips = 128U;
 						kills++;
-						playSound(type + 6U); // SFX_STOMP_BIRD-E_BIRD = 6
+						playSound(type+SFX_STOMP_ALIEN-E_ALIEN);
 					}
 					else if(type == E_GHOST) {
 						entity_type[i] = E_NONE;
@@ -355,6 +353,7 @@ void updatePlayer() {
 		}
 		if(CLICKED(KEY_USE) || (ticks & 15U) == 15U) {
 			spawnEntity(E_CLOUD, player_x, player_y+4U, 0U);
+			playSound(SFX_JETPACK);
 		}
 	}
 
@@ -725,6 +724,8 @@ void introAnimation() {
 	UBYTE frame;
 	UBYTE *skin_data;
 
+	playSound(SFX_WARP_START);
+
 	for(ticks = 0U; ticks != 64U; ++ticks) {
 		frame = 20U - ((ticks >> 4) << 2);
 		if(ticks & 8U) {
@@ -747,7 +748,6 @@ void introAnimation() {
 		if(ticks & 4U) {
 			BGP_REG = 0xE4U; // 11100100
 		} else {
-
 			BGP_REG = 0x1BU; // 00011011
 		}
 
