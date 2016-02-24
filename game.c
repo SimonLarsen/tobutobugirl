@@ -645,7 +645,7 @@ void updateSpawns() {
 	if(next_spawn < SPAWN_INTERVAL) return;
 
 	if(progress < 111U) {
-		next_spawn -= 36U;
+		next_spawn -= SPAWN_INTERVAL;
 
 		x = ((last_spawn_x + 32U + ((UBYTE)rand() & 63U)) & 127U) + 24U;
 
@@ -713,7 +713,7 @@ void updateSpawns() {
 			spawnEntity(E_CLOCK, x, 1U, NONE);
 		}
 	}
-	else if(progress == 112U && !portal_spawned) {
+	else if(progress == 112U && !portal_spawned && next_spawn >= 56U) {
 		spawnEntity(E_PORTAL, 96U, 1U, NONE);
 		next_spawn = 0U;
 		portal_spawned = 1U;
@@ -771,6 +771,7 @@ void introAnimation() {
 
 void intoPortalAnimation() {
 	UBYTE frame;
+
 	disable_interrupts();
 	set_sprite_data(0U, portal_data_length, portal_data);
 	enable_interrupts();
