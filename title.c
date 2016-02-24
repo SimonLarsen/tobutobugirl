@@ -98,11 +98,27 @@ void enterTitle() {
 			checkCheats();
 
 			initrand(DIV_REG);
+			playSound(SFX_MENU_CONFIRM);
+			
+			for(ticks = 0U; ticks != 32U; ++ticks) {
+				if(ticks & 4U) {
+					for(i = 0U; i != 11U; ++i) {
+						if(i != 5U) {
+							setSprite(48U + (i << 3), 136U, title_message[i], OBJ_PAL0);
+						}
+					}
+				}
+
+				snd_update();
+				clearRemainingSprites();
+				wait_vbl_done();
+			}
+
 			gamestate = GAMESTATE_SELECT;
 			break;
 		}
 
-		if(ticks < 80U) {
+		if(ticks < 60U) {
 			for(i = 0U; i != 11U; ++i) {
 				if(i != 5U) {
 					setSprite(48U + (i << 3), 136U, title_message[i], OBJ_PAL0);
@@ -110,14 +126,13 @@ void enterTitle() {
 			}
 		}
 		ticks++;
-		if(ticks == 100U) ticks = 0U;
+		if(ticks == 80U) ticks = 0U;
 
 		clearRemainingSprites();
 		wait_vbl_done();
 	}
 
 	stopMusic();
-	playSound(SFX_MENU_CONFIRM);
 
 	clearRemainingSprites();
 	fadeToWhite(6U);
