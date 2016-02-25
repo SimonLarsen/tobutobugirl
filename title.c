@@ -84,8 +84,8 @@ void enterTitle() {
 	player_y = 50U;
 	player_xdir = LEFT;
 	player_ydir = DOWN;
-	player_xspeed = 0U;
-	player_yspeed = 0U;
+	player_xspeed = 128U;
+	player_yspeed = 128U;
 	scroll_x = 0U;
 	scroll_y = 0U;
 
@@ -141,56 +141,46 @@ void enterTitle() {
 		if(ticks == 80U) ticks = 0U;
 
 		// Update cat physics
-		scroll_x += player_xspeed >> 4U;
+		if(player_xspeed < 128U) {
+			scroll_x += (128U - player_xspeed) >> 4U;
+		} else {
+			scroll_x += (player_xspeed - 128U) >> 4U;
+		}
 		if(scroll_x >> 3U) {
-			player_x = player_x + 3U - player_xdir;
+			if(player_xspeed < 128U) player_x--;
+			else player_x++;
 			scroll_x &= 7U;
 		}
 
-		scroll_y += player_yspeed >> 4U;
+		if(player_yspeed < 128U) {
+			scroll_y += (128U - player_yspeed) >> 4U;
+		} else {
+			scroll_y += (player_yspeed - 128U) >> 4U;
+		}
 		if(scroll_y >> 3U) {
-			player_y = player_y - 2U + player_ydir;
+			if(player_yspeed < 128U) player_y--;
+			else player_y++;
 			scroll_y &= 7U;
 		}
 
-		if(ISDOWN(J_LEFT)) {
-			if(player_xdir == RIGHT) {
-				if(player_xspeed >= 2U) player_xspeed -= 2U;
-				else player_xdir = LEFT;
-			} else {
-				player_xspeed += 2U;
-			}
-		} else if(ISDOWN(J_RIGHT)) {
-			if(player_xdir == LEFT) {
-				if(player_xspeed >= 2U) player_xspeed -= 2U;
-				else player_xdir = RIGHT;
-			} else {
-				player_xspeed += 2U;
-			}
-		} else {
-			if(player_xspeed) player_xspeed--;
+		if(ISDOWN(J_LEFT)) { player_xspeed -= 2U; player_xdir = LEFT; }
+		else if(ISDOWN(J_RIGHT)) { player_xspeed += 2U; player_xdir = RIGHT; }
+		else {
+			if(player_xspeed < 128U) player_xspeed++;
+			else if(player_xspeed > 128U) player_xspeed--;
 		}
 
-		if(ISDOWN(J_UP)) {
-			if(player_ydir == DOWN) {
-				if(player_yspeed >= 2U) player_yspeed -= 2U;
-				else player_ydir = UP;
-			} else {
-				player_yspeed += 2U;
-			}
-		} else if(ISDOWN(J_DOWN)) {
-			if(player_ydir == UP) {
-				if(player_yspeed >= 2U) player_yspeed -= 2U;
-				else player_ydir = DOWN;
-			} else {
-				player_yspeed += 2U;
-			}
-		} else {
-			if(player_yspeed) player_yspeed--;
+		if(ISDOWN(J_UP)) player_yspeed -= 2U;
+		else if(ISDOWN(J_DOWN)) player_yspeed += 2U;
+		else {
+			if(player_yspeed < 128U) player_yspeed ++;
+			else if(player_yspeed > 128U) player_yspeed--;
 		}
 
-		if(player_xspeed > 100U) player_xspeed = 100U;
-		if(player_yspeed > 100U) player_yspeed = 100U;
+		if(player_xspeed < 32U) player_xspeed = 32U;
+		else if(player_xspeed > 224U) player_xspeed = 224U;
+		if(player_yspeed < 32U) player_yspeed = 32U;
+		else if(player_yspeed > 224U) player_yspeed = 224U;
 
 		// Draw cat
 		frame = 37U;
