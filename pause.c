@@ -77,6 +77,7 @@ UBYTE enterPause() {
 		if(CLICKED(J_A)) {
 			playSound(SFX_MENU_CONFIRM);
 			if(pause_selection == 0U) {
+				wait_sound_done();
 				return 0U;
 			} else if(pause_selection == 1U) {
 				ENABLE_RAM_MBC1;
@@ -89,6 +90,7 @@ UBYTE enterPause() {
 				pauseUpdateDashCounter();
 				enable_interrupts();
 			} else if(pause_selection == 2U) {
+				wait_sound_done();
 				return 3U;
 			}
 		}
