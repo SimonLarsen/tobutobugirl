@@ -28,8 +28,7 @@ UBYTE select_arrow_offset1;
 UBYTE select_arrow_offset2;
 UBYTE select_scroll_dir;
 UBYTE select_cat_state;
-UBYTE select_cat_frame;
-UBYTE select_cat_frame_reverse;
+UBYTE cat_frame_reverse;
 
 #define CAT_OFF 0U
 #define CAT_IN  1U
@@ -58,8 +57,8 @@ void initSelect() {
 	select_arrow_offset2 = 0U;
 
 	select_cat_state = CAT_OFF;
-	select_cat_frame = 0U;
-	select_cat_frame_reverse = 0U;
+	cat_frame = 0U;
+	cat_frame_reverse = 0U;
 	if(player_skin == 2U) select_cat_state = CAT_ON;
 
 	OBP0_REG = 0xD0U; // 11010000
@@ -129,13 +128,13 @@ void selectUpdateSprites() {
 		switch(select_cat_state) {
 			case CAT_OFF:
 				if((ticks & 15U) == 15U) {
-					if(select_cat_frame_reverse) {
-						select_cat_frame--;
+					if(cat_frame_reverse) {
+						cat_frame--;
 					} else {
-						select_cat_frame++;
+						cat_frame++;
 					}
-					if(select_cat_frame == 0U) select_cat_frame_reverse = 0U;
-					else if(select_cat_frame == 4U) select_cat_frame_reverse = 1U;
+					if(cat_frame == 0U) cat_frame_reverse = 0U;
+					else if(cat_frame == 4U) cat_frame_reverse = 1U;
 				}
 				if(CLICKED(J_SELECT)) {
 					select_cat_state = CAT_IN;
@@ -144,28 +143,28 @@ void selectUpdateSprites() {
 				}
 				break;
 			case CAT_IN:
-				if((ticks & 7U) == 7U) select_cat_frame++;
-				if(select_cat_frame == 8U) select_cat_state = CAT_ON;
+				if((ticks & 7U) == 7U) cat_frame++;
+				if(cat_frame == 8U) select_cat_state = CAT_ON;
 				break;
 			case CAT_ON:
-				if((ticks & 15U) == 15U) select_cat_frame++;
-				if(select_cat_frame == 10U) select_cat_frame = 8U;
+				if((ticks & 15U) == 15U) cat_frame++;
+				if(cat_frame == 10U) cat_frame = 8U;
 				if(CLICKED(J_SELECT)) {
 					select_cat_state = CAT_OUT;
 					player_skin = 1U;
 				}
 				break;
 			case CAT_OUT:
-				if((ticks & 7U) == 7U) select_cat_frame--;
-				if(select_cat_frame == 4U) {
+				if((ticks & 7U) == 7U) cat_frame--;
+				if(cat_frame == 4U) {
 					select_cat_state = CAT_OFF;
-					select_cat_frame_reverse = 1U;
+					cat_frame_reverse = 1U;
 					playSound(SFX_CAT_DISABLE);
 				}
 				break;
 		}
 
-		frame = 41U + (select_cat_frame << 2);
+		frame = 41U + (cat_frame << 2);
 		setSprite(136U, 20U, frame++, OBJ_PAL0);
 		setSprite(144U, 20U, frame++, OBJ_PAL0);
 		setSprite(136U, 28U, frame++, OBJ_PAL0);

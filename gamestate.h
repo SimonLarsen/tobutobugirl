@@ -27,7 +27,9 @@ extern UBYTE levels_completed;
 extern UBYTE unlocked_bits;
 extern UBYTE scroll_x, scroll_y;
 extern UBYTE player_x, player_y;
-extern UBYTE cat_x, cat_y;
+extern UBYTE player_xdir, player_ydir;
+extern UBYTE player_xspeed, player_yspeed, player_bounce;
+extern UBYTE cat_x, cat_y, cat_frame;
 
 extern UBYTE player_skin;
 extern UBYTE show_dashcounter;

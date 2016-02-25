@@ -9,8 +9,8 @@ void selectUpdateSprites();
 void selectScrollCircles();
 void enterSelect();
 
-#define SELECT_IDLE		0U
-#define SELECT_FADEOUT	1U
-#define SELECT_FADEIN	2U
+#define SELECT_IDLE    0U
+#define SELECT_FADEOUT 1U
+#define SELECT_FADEIN  2U
 
 #endif

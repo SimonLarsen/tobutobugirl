@@ -8,6 +8,7 @@
 
 #include "data/bg/titlescreen.h"
 #include "data/sprite/characters.h"
+#include "data/sprite/title_cat.h"
 
 extern UBYTE title_song_data;
 
@@ -40,9 +41,10 @@ void initTitle() {
 	set_bkg_data(0U, titlescreen_data_length, titlescreen_data);
 	set_bkg_tiles(0U, 0U, titlescreen_tiles_width, titlescreen_tiles_height, titlescreen_tiles);
 	set_sprite_data(0U, 37U, characters_data);
+	set_sprite_data(37U, title_cat_data_length, title_cat_data);
 
 	OBP0_REG = 0xD0U; // 11010000
-	BGP_REG = 0xE4U; // 11100100
+	BGP_REG = 0xE4U;  // 11100100
 
 	clearSprites();
 
@@ -69,7 +71,7 @@ void checkCheats() {
 }
 
 void enterTitle() {
-	UBYTE i;
+	UBYTE i, j, frame;
 
 	initTitle();
 
@@ -77,6 +79,15 @@ void enterTitle() {
 
 	selection = level = 1U;
 	cheat_offset = 0U;
+
+	player_x = 80U;
+	player_y = 50U;
+	player_xdir = LEFT;
+	player_ydir = DOWN;
+	player_xspeed = 0U;
+	player_yspeed = 0U;
+	scroll_x = 0U;
+	scroll_y = 0U;
 
 	setMusicBank(4U);
 	disable_interrupts();
@@ -118,6 +129,7 @@ void enterTitle() {
 			break;
 		}
 
+		// Draw PUSH START
 		if(ticks < 60U) {
 			for(i = 0U; i != 11U; ++i) {
 				if(i != 5U) {
@@ -127,6 +139,73 @@ void enterTitle() {
 		}
 		ticks++;
 		if(ticks == 80U) ticks = 0U;
+
+		// Update cat physics
+		scroll_x += player_xspeed >> 4U;
+		if(scroll_x >> 3U) {
+			player_x = player_x + 3U - player_xdir;
+			scroll_x &= 7U;
+		}
+
+		scroll_y += player_yspeed >> 4U;
+		if(scroll_y >> 3U) {
+			player_y = player_y - 2U + player_ydir;
+			scroll_y &= 7U;
+		}
+
+		if(ISDOWN(J_LEFT)) {
+			if(player_xdir == RIGHT) {
+				if(player_xspeed >= 2U) player_xspeed -= 2U;
+				else player_xdir = LEFT;
+			} else {
+				player_xspeed += 2U;
+			}
+		} else if(ISDOWN(J_RIGHT)) {
+			if(player_xdir == LEFT) {
+				if(player_xspeed >= 2U) player_xspeed -= 2U;
+				else player_xdir = RIGHT;
+			} else {
+				player_xspeed += 2U;
+			}
+		} else {
+			if(player_xspeed) player_xspeed--;
+		}
+
+		if(ISDOWN(J_UP)) {
+			if(player_ydir == DOWN) {
+				if(player_yspeed >= 2U) player_yspeed -= 2U;
+				else player_ydir = UP;
+			} else {
+				player_yspeed += 2U;
+			}
+		} else if(ISDOWN(J_DOWN)) {
+			if(player_ydir == UP) {
+				if(player_yspeed >= 2U) player_yspeed -= 2U;
+				else player_ydir = DOWN;
+			} else {
+				player_yspeed += 2U;
+			}
+		} else {
+			if(player_yspeed) player_yspeed--;
+		}
+
+		if(player_xspeed > 100U) player_xspeed = 100U;
+		if(player_yspeed > 100U) player_yspeed = 100U;
+
+		// Draw cat
+		frame = 37U;
+		if(ticks < 20U || (ticks >= 40U && ticks < 60U)) frame += 6U;
+
+		for(j = 0U; j != 3U; ++j) {
+			for(i = 0U; i != 2U; ++i) {
+				if(player_xdir == LEFT) {
+					setSprite(player_x+(i<<3U), player_y+(j<<3U), frame, OBJ_PAL0);
+				} else {
+					setSprite(player_x+8U-(i<<3U), player_y+(j<<3U), frame, FLIP_X | OBJ_PAL0);
+				}
+				++frame;
+			}
+		}
 
 		clearRemainingSprites();
 		wait_vbl_done();

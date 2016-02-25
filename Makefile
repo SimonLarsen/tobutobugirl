@@ -78,6 +78,7 @@ sprites:
 	$(IMGTOGB) --sprite --8x16 data/sprite/pause_cloud1.png data/sprite/pause_cloud1.h
 	$(IMGTOGB) --sprite --8x16 data/sprite/pause_cloud2.png data/sprite/pause_cloud2.h
 	$(IMGTOGB) --sprite --8x16 data/sprite/shine.png data/sprite/shine.h
+	$(IMGTOGB) --sprite data/sprite/title_cat.png data/sprite/title_cat.h
 	#$(IMGTOGB) --sprite data/sprite/characters.png data/sprite/characters.h # 40 tiles
 	#$(IMGTOGB) --sprite --8x16 data/sprite/arrow.png data/sprite/arrow.h
 	#$(IMGTOGB) --map -O 90 data/bg/selection1.png data/bg/selection1.h

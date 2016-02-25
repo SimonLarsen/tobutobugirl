@@ -27,8 +27,6 @@ UBYTE next_spawn, next_clock;
 
 UBYTE timer, progress, portal_spawned, repeat_spikes;
 UBYTE blips, blip_bar;
-UBYTE player_xdir, player_ydir;
-UBYTE player_yspeed, player_bounce;
 UBYTE dashing, dashes, dash_xdir, dash_ydir;
 
 UBYTE entity_x[MAX_ENTITIES];

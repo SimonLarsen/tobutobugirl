@@ -18,7 +18,9 @@ UBYTE levels_completed;
 UBYTE unlocked_bits;
 UBYTE scroll_x, scroll_y;
 UBYTE player_x, player_y;
-UBYTE cat_x, cat_y;
+UBYTE player_xdir, player_ydir;
+UBYTE player_xspeed, player_yspeed, player_bounce;
+UBYTE cat_x, cat_y, cat_frame;
 
 UBYTE player_skin;
 UBYTE show_dashcounter;
