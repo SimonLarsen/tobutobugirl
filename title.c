@@ -64,7 +64,7 @@ void drawTitleSprites(UBYTE triggered) {
 	if((!triggered && ticks < 60U) || (triggered && ticks & 4U)) {
 		for(i = 0U; i != 11U; ++i) {
 			if(i != 5U) {
-				setSprite(48U + (i << 3), 136U, title_message[i], OBJ_PAL0);
+				setSprite(48U + (i << 3), 140U, title_message[i], OBJ_PAL0);
 			}
 		}
 	}
@@ -190,8 +190,7 @@ void enterTitle() {
 
 		if(player_ydir == DOWN) {
 			player_xspeed = 96U;
-			if(ISDOWN(J_LEFT) || ISDOWN(J_RIGHT)
-			|| ISDOWN(J_UP) || ISDOWN(J_DOWN)) {
+			if(player_x < 154U && ISDOWN(J_LEFT | J_RIGHT | J_UP | J_DOWN)) {
 				player_ydir = UP;
 			}
 		} else {
