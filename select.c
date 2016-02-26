@@ -59,7 +59,10 @@ void initSelect() {
 	select_cat_state = CAT_OFF;
 	cat_frame = 0U;
 	cat_frame_reverse = 0U;
-	if(player_skin == 2U) select_cat_state = CAT_ON;
+	if(player_skin == 2U) {
+		select_cat_state = CAT_IN;
+		cat_frame = 4U;
+	}
 
 	OBP0_REG = 0xD0U; // 11010000
 	OBP1_REG = 0xB4U; // 11100100
