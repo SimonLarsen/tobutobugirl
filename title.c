@@ -117,6 +117,7 @@ void enterTitle() {
 	player_yspeed = 128U;
 	scroll_x = 0U;
 	scroll_y = 0U;
+	elapsed_time = 0U;
 
 	setMusicBank(4U);
 	disable_interrupts();
@@ -153,7 +154,16 @@ void enterTitle() {
 		}
 
 		ticks++;
-		if(ticks == 80U) ticks = 0U;
+		if(ticks == 80U) {
+			ticks = 0U;
+			elapsed_time++;
+		}
+
+		if(elapsed_time == 25U) {
+			gamestate = GAMESTATE_INTRO;
+			stopMusic();
+			break;
+		}
 
 		// Update cat physics
 		if(player_xspeed < 128U) {
