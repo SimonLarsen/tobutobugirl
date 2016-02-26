@@ -73,7 +73,10 @@ void drawTitleSprites(UBYTE triggered) {
 	frame = 37U;
 	if(ticks < 20U || (ticks >= 40U && ticks < 60U)) frame += 6U;
 
-	for(j = 0U; j != 3U; ++j) {
+	setSprite(player_x, player_y, frame++, OBJ_PAL0);
+	setSprite(player_x+8, player_y, frame++, OBJ_PAL0);
+
+	for(j = 1U; j != 3U; ++j) {
 		for(i = 0U; i != 2U; ++i) {
 			if(player_xdir == LEFT) {
 				setSprite(player_x+(i<<3U), player_y+(j<<3U), frame, OBJ_PAL0);
@@ -135,6 +138,7 @@ void enterTitle() {
 			checkCheats();
 
 			initrand(DIV_REG);
+			stopMusic();
 			playSound(SFX_MENU_CONFIRM);
 			
 			for(ticks = 0U; ticks != 32U; ++ticks) {
@@ -205,8 +209,6 @@ void enterTitle() {
 		clearRemainingSprites();
 		wait_vbl_done();
 	}
-
-	stopMusic();
 
 	clearRemainingSprites();
 	fadeToWhite(6U);
