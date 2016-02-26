@@ -24,7 +24,7 @@ B @ve0 @wd1 o4 l32
 B v6 g v1 g v6 g v1 g v6 g16 v1 ggr8 v6 g v1 g v6 a v1 a v6 b16. v1 b16.br v6 g16. v1 g16.gr
 B v6 e v1 e v6 e v1 e v6 e16 v1 eer8 v6 e v1 e v6 f+ v1 f+ v6 @v5,2,=32 g4.. v1 g @v0,0 r
 B v6 d+ v1 d+ v6 d+ v1 d+ v6 d+16 v1 d+d+r8 v6 d+ v1 d+ v6 f v1 f v6 g16. v1 g16.gr v6 d+16. v1 d+16.d+r
-B v8 d v2 d v1 dr16. v8 c v2 c v8 c4 v7 y1 @ve-2 @wd2 b16d16g16a16>c16<b16a16g16 @ve0 @wd1 y0
+B v8 d v2 d v1 dr16. v8 c v2 c v8 c4 v6 @ve-2 @wd2 b16d16g16a16>c16<b16a16g16 @ve0 @wd1
 B v6 g v1 g v6 g v1 g v6 g16 v1 ggr8 v6 g v1 g v6 a v1 g v6 b16. v1 b16.br v6 g16. v1 g16.gr
 B v6 e v1 e v6 e v1 e v6 e16 v1 eer8 v6 e v1 e v6 f+ v1 f+ v6 @v5,2,=32 g4.. v1 g @v0,0 r
 B v6 d+ v1 d+ v6 d+ v1 d+ v6 d+16 v1 d+d+r8 v6 d+ v1 d+ v6 f v1 f v6 g16. v1 g16.gr v6 f16. v1 f v6 d+16. v1 d+

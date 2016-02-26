@@ -1,6 +1,6 @@
 @wave0 = { 0 0 1 1 2 9 9 10 11 12 13 13 14 14 14 15 13 12 11 11 10 10 10 10 10 10 11 11 12 12 12 15 }
 
-AB t88 @wd1 @ve-3 o4 y0 v10
+AB t86 @wd1 @ve-3 o4 y0 v10
 A b12 v5 @ve-2 b8 v11 @ve-3 b32 v3 b12^32 v5 y-1 >d12^48 y0 v9
 B g12 v5 @ve-2 g8 v11 @ve-3 g32 v3 g16. v5 y-1 >g24<a8 y0 v4 y1r=1
 
@@ -20,7 +20,7 @@ A @@1
 A e4e12f+24g12b6 v8 b=4> v10 c=20<b12a24g12a6^8
 A e4g12f+24g12a8 v5 @wd2 y-1 c24g8 y0
 A @@1
-A t176 ;cut
+A t172 ;cut
 A c2c6e12g6 @ve-1 f+4
 A a4 @ve-4 g4<b12>c6d12
 A e2^6e12f+6g12

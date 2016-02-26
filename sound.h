@@ -22,13 +22,13 @@ void snd_update4();
 #define SFX_MENU_LOCKED 9U
 #define SFX_MENU_SWITCH 10U
 #define SFX_PLAYER_DIE 11U
-#define SFX_STOMP 12U
-#define SFX_STOMP_ALIEN 13U
-#define SFX_STOMP_BAT 14U
-#define SFX_STOMP_BIRD 15U
-#define SFX_STOMP_GHOST 16U
-#define SFX_TIME_LOW 17U
-#define SFX_TIME_PICKUP 18U
+#define SFX_STOMP_ALIEN 12U
+#define SFX_STOMP_BAT 13U
+#define SFX_STOMP_BIRD 14U
+#define SFX_STOMP_GHOST 15U
+#define SFX_TIME_LOW 16U
+#define SFX_TIME_PICKUP 17U
+#define SFX_WARP_END 18U
 #define SFX_WARP_START 19U
 
 #endif

@@ -19,13 +19,13 @@ extern UBYTE sfx_menu_confirm_data;
 extern UBYTE sfx_menu_locked_data;
 extern UBYTE sfx_menu_switch_data;
 extern UBYTE sfx_player_die_data;
-extern UBYTE sfx_stomp_data;
 extern UBYTE sfx_stomp_alien_data;
 extern UBYTE sfx_stomp_bat_data;
 extern UBYTE sfx_stomp_bird_data;
 extern UBYTE sfx_stomp_ghost_data;
 extern UBYTE sfx_time_low_data;
 extern UBYTE sfx_time_pickup_data;
+extern UBYTE sfx_warp_end_data;
 extern UBYTE sfx_warp_start_data;
 
 UBYTE snd_active1, snd_active4;
@@ -59,13 +59,13 @@ const UBYTE sfx_priority[20] = {
 	8U, // SFX_MENU_LOCKED
 	8U, // SFX_MENU_SWITCH
 	9U, // SFX_PLAYER_DIE
-	8U, // SFX_STOMP
 	8U, // SFX_STOMP_ALIEN
 	8U, // SFX_STOMP_BAT
 	8U, // SFX_STOMP_BIRD
 	8U, // SFX_STOMP_GHOST
 	9U, // SFX_TIME_LOW
 	9U, // SFX_TIME_PICKUP
+	8U, // SFX_WARP_END
 	8U  // SFX_WARP_START
 };
 
@@ -113,8 +113,6 @@ void playSound(UBYTE id) {
 			data = &sfx_menu_switch_data; break;
 		case SFX_PLAYER_DIE:
 			data = &sfx_player_die_data; break;
-		case SFX_STOMP:
-			data = &sfx_stomp_data; break;
 		case SFX_STOMP_ALIEN:
 			data = &sfx_stomp_alien_data; break;
 		case SFX_STOMP_BAT:
@@ -127,6 +125,8 @@ void playSound(UBYTE id) {
 			data = &sfx_time_low_data; break;
 		case SFX_TIME_PICKUP:
 			data = &sfx_time_pickup_data; break;
+		case SFX_WARP_END:
+			data = &sfx_warp_end_data; break;
 		case SFX_WARP_START:
 			data = &sfx_warp_start_data; break;
 	}

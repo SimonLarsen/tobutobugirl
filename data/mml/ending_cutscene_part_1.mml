@@ -1,0 +1,72 @@
+@wave0 = { 0 1 2 3 3 5 6 7 7 8 9 10 11 12 12 14 15 14 13 12 11 10 9 8 7 6 5 4 3 2 1 0 }
+@wave1 = { 0 0 1 1 2 9 9 10 11 12 13 13 14 14 14 15 13 12 11 11 10 10 10 10 10 10 11 11 12 12 12 15 }
+
+AB o5 y0 @ve0 @wd2 t112 v8
+B @po1 v3 b8.
+AB @v6,1,=22 b4....^96 @v0,0
+A v6
+B v2
+AB b192
+A v8
+B v3
+AB b8>c8d8 @v6,1,=22 g4..^6^64 @v0,0
+A v6
+B v2
+AB g192
+A v8
+B v3
+AB <b8>c8d8 @v6,1,=22 g4..^6^64 @v0,0
+A v6
+B v2
+AB g192
+A v8
+B v3
+AB d8c8<b16
+A v6
+B v2
+AB b16
+
+A v8 @v6,1,=22 b2 @v0,0
+A >c16<b16 v8 a4 @v6,1 ^2^4^16
+A v6 a16 v3 a16 v2 a16 @v0,0 r8 @wd1 v12 f+48>f+24^64 v5 f+24^64
+A v12 <f+48>f+24^64 v5 f+48^64 v9 @wd2 >c16<b16a16g16f+16e16d16c16<b16a16g16f+16e16d16
+A v6 d16 v3 d16 v2 d16r4 v15 o0 @wd2 @ve-6 @v6,4 y1 a+2.^16 @v0,0 @wd1 @ve-5 y0
+A v11 o6 c4<a4f+4
+A b4g4d4c4
+A <e4. @ve-6 a4>c4c16 v10 c16
+A v8 c16 @ve0 v6 c8. @ve-7 c1^4 L r1
+
+B v3 @v6,1,=22 b4.. @v0,0 v6 @po0 f+4 @v6,1 ^2^4^16 @v0,0
+B v3 f+8 v2 f+8. @v0,0 @wd1 v12 d48>d24^64 v5 d24^64
+B v12 <d48>d24^64 v5 d48^64 v10 @wd2 g16f+16e16d16c16<b16a16g16f+16e16d16c16<b16a16
+B v6 a16 v3 a16 v2 a16r4 v14 o1 @wd2 @ve-6 @v6,4 y-1 f2... @v0,0 @wd1 @ve-5 y0
+B v11 o5 b4g4d4
+B a4f+4<a4d4
+B g4^48> @ve-6 c8...^96g8..^48f+24^64 v10 f+16
+B v8 f+16 @ve0 v6 f+8. @ve-7 f+1^4 L r1
+
+C @wave0 o5 v3 y0
+C g2f+2
+C e2d2
+C c2c+2
+C d2^8. v2 d16 @wave1 v3 <<a8. v2 a16
+C v3 a+16 v2 a+16 v3 >d16 v2 d16 v3 f+16 v2 f+16 v3 a+16 v2 a+16 v3 >d16 v2 d16 v3 f+16 v2 f+16 v3 a+4..
+C v2 a+16 v1 a+2..
+C [r1]3
+C r4
+C @wave0 v3 <c8... v2 c64 v3 d+8... v2 d+64 v3 d2^4
+C v2 d16 v1 d8 L r1 ;r2...
+
+D t112 [r1]3r2
+D t240r=72 t225r8
+
+D t149r8.t129r4t100r8t90r8.t300 @ve0 v15 o6 b16>> @ve-1 v14 b=9 v8 b=3 t61 ^=4 r=44
+D t300 ^1^16
+D ^4 o5 @ve0 v15 b16<<< @ve-7 b16
+D t38 ^2 ;t61
+D ^16
+D t112r8t90r8t112r8t129r8t181r1..
+D t129r4t112r4t63r2
+D r8
+D t300r2
+D t61r8.t68r16t60 L r1

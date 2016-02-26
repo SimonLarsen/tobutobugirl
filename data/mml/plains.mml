@@ -26,10 +26,8 @@ B v1 >d+12 v1 <a v1 >d+12 v3 <a v3 >d+12 v4 <a v5 >d+12 v7 <a v7 >d+12 v5 <a v4 
 B @wd1 @ve0 o4 v9 <g+>c+ v5 c+ v9 d+
 
 
-
-
-A r1r2r6^24 @wd1 v11 @ve-1 l24
-A o4 y1 a+r12a+r12>c
+A @wd1 v11 @ve-1 l24 o4 y1 
+A r1r2r6^24 a+r12a+r12>c
 A L o5 v11 y0 @ve-1 @wd1 r8c+r6r8c+r6rc+r12c+r12d+
 A r8cr6r8cr6rcr12cr12d+
 A r8c+r6r8c+r6rc+r12c+r12d+
