@@ -19,6 +19,8 @@
 
 UBYTE ending_frame;
 
+extern UBYTE ending_song_data;
+
 void initEnding() {
 	disable_interrupts();
 	DISPLAY_OFF;
@@ -33,6 +35,9 @@ void initEnding() {
 	set_sprite_data(0U, ending_sprites1_data_length, ending_sprites1_data);
 
 	clearSprites();
+
+	setMusicBank(9U);
+	playMusic(&ending_song_data);
 
 	HIDE_WIN;
 	SHOW_BKG;
@@ -258,6 +263,7 @@ void enterEnding() {
 
 	gamestate = GAMESTATE_UNLOCKED;
 
+	stopMusic();
 	clearRemainingSprites();
 	fadeToWhite(8U);
 }
