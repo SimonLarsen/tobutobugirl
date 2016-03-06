@@ -75,11 +75,11 @@ void initWinscreen() {
 			break;
 		case 3:
 			set_bkg_data_rle(win3_offset, win3_data_length, win3_data);
-			set_bkg_tiles_rle(9U, 3U, win3_tiles_width, win3_tiles_height, win3_tiles);
+			set_bkg_tiles_rle(8U, 3U, win3_tiles_width, win3_tiles_height, win3_tiles);
 			break;
 		case 4:
 			set_bkg_data_rle(win4_offset, win4_data_length, win4_data);
-			set_bkg_tiles_rle(10U, 5U, win4_tiles_width, win4_tiles_height, win4_tiles);
+			set_bkg_tiles_rle(8U, 6U, win4_tiles_width, win4_tiles_height, win4_tiles);
 			break;
 	}
 
