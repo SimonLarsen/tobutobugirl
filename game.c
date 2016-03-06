@@ -81,17 +81,17 @@ const UBYTE spawn_levels[4][3][8] = {
 	{ // Clouds
 		{E_SPIKES, E_SPIKES, E_SPIKES, E_BIRD, E_BIRD, E_BAT, E_BAT, E_BAT},
 		{E_SPIKES, E_SPIKES, E_ALIEN, E_ALIEN, E_BIRD, E_BIRD, E_BAT, E_BAT},
-		{E_SPIKES, E_SPIKES, E_GHOST, E_GHOST, E_BIRD, E_BIRD, E_BAT, E_BAT}
+		{E_FIREBALL, E_FIREBALL, E_ALIEN, E_ALIEN, E_BIRD, E_BIRD, E_BAT, E_BAT}
 	},
 	{ // Space
-		{E_SPIKES, E_SPIKES, E_GHOST, E_GHOST, E_BIRD, E_BIRD, E_BAT, E_BAT},
-		{E_FIREBALL, E_FIREBALL, E_GHOST, E_GHOST, E_GHOST, E_BIRD, E_BIRD, E_BIRD},
-		{E_FIREBALL, E_FIREBALL, E_FIREBALL, E_FIREBALL, E_GHOST, E_GHOST, E_GHOST, E_GHOST}
+		{E_SPIKES, E_SPIKES, E_ALIEN, E_ALIEN, E_BIRD, E_BIRD, E_BAT, E_BAT},
+		{E_FIREBALL, E_FIREBALL, E_GHOST, E_GHOST, E_GHOST, E_BIRD, E_BIRD, E_ALIEN},
+		{E_FIREBALL, E_FIREBALL, E_FIREBALL, E_BIRD, E_GHOST, E_GHOST, E_GHOST, E_ALIEN}
 	},
 	{ // Dream
-		{E_SPIKES, E_SPIKES, E_GHOST, E_GHOST, E_GHOST, E_BAT, E_BIRD, E_BIRD},
-		{E_FIREBALL, E_FIREBALL, E_SPIKES, E_GHOST, E_GHOST, E_GHOST, E_BIRD, E_BIRD},
-		{E_FIREBALL, E_FIREBALL, E_SPIKES, E_SPIKES, E_GHOST, E_GHOST, E_BIRD, E_BIRD}
+		{E_SPIKES, E_SPIKES, E_GHOST, E_GHOST, E_GHOST, E_ALIEN, E_BIRD, E_BIRD},
+		{E_FIREBALL, E_FIREBALL, E_SPIKES, E_GHOST, E_GHOST, E_GHOST, E_BIRD, E_ALIEN},
+		{E_FIREBALL, E_FIREBALL, E_SPIKES, E_ALIEN, E_GHOST, E_GHOST, E_BIRD, E_BIRD}
 	}
 };
 
@@ -265,22 +265,22 @@ void updatePlayer() {
 						if(blips > 128U) blips = 128U;
 						kills++;
 						playSound(type+SFX_STOMP_ALIEN-E_ALIEN);
+						bouncePlayer(JUMP_SPEED);
 					}
 					else if(type == E_GHOST) {
 						entity_type[i] = E_NONE;
 						spawnEntity(E_CLOUD, player_x, player_y+5U, 0U);
 						playSound(SFX_STOMP_GHOST);
+						bouncePlayer(JUMP_SPEED);
+					}
+					else if(type == E_ALIEN) {
+						playSound(SFX_BUMP_ALIEN);
+						bouncePlayer(ALIEN_BUMP_SPEED);
 					}
 					else {
-						if(type == E_ALIEN) playSound(SFX_BUMP_ALIEN);
-						else playSound(SFX_BUMP);
+						playSound(SFX_BUMP);
+						bouncePlayer(JUMP_SPEED);
 					}
-					// Bounce player
-					player_ydir = UP;
-					player_bounce = 16U;
-					dashes = 3U;
-					dashing = 0;
-					player_yspeed = JUMP_SPEED;
 				} else {
 					diff = 0U;
 					if(player_x < entity_x[i]) diff += entity_x[i] - player_x;
@@ -471,6 +471,14 @@ void killPlayer() {
 	scene_state = INGAME_DEAD;
 }
 
+void bouncePlayer(UBYTE str) {
+	player_ydir = UP;
+	player_bounce = 16U;
+	dashes = 3U;
+	dashing = 0;
+	player_yspeed = str;
+}
+
 void updateEntities() {
 	UBYTE i, frame, type;
 	UBYTE xdist, ydist;
@@ -506,7 +514,6 @@ void updateEntities() {
 				}
 				break;
 
-			case E_ALIEN:
 			case E_GHOST:
 				if(ticks & 1U && scene_state == INGAME_ACTIVE) {
 					entity_x[i] -= cos32_64[ticks & 63U];

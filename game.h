@@ -9,6 +9,7 @@ void updatePlayer();
 void updateHUD();
 void updateHUDTime();
 void killPlayer();
+void bouncePlayer(UBYTE str);
 void updateEntities();
 UBYTE spawnEntity(UBYTE type, UBYTE x, UBYTE y, UBYTE dir);
 void clearEntities();
@@ -24,13 +25,14 @@ void addScore();
 
 #define NO_LAST_SPAWN 255U
 
-#define MOVE_SPEED       2U
-#define DASH_SPEED       4U
-#define DASH_TIME       14U
-#define SHORT_DASH_TIME  8U
-#define JUMP_SPEED      29U
-#define MAX_YSPEED      24U
-#define MAX_FLY_SPEED   24U
+#define MOVE_SPEED        2U
+#define DASH_SPEED        4U
+#define DASH_TIME        14U
+#define SHORT_DASH_TIME   8U
+#define JUMP_SPEED       29U
+#define ALIEN_BUMP_SPEED 19U
+#define MAX_YSPEED       24U
+#define MAX_FLY_SPEED    24U
 
 #define KEY_DASH J_A
 #define KEY_USE  J_B
