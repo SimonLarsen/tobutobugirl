@@ -827,8 +827,13 @@ void deathAnimation() {
 				setSprite(player_x-16U, player_y, 2U, FLIP_X | OBJ_PAL0);
 			}
 		} else if(ticks < 20U) {
-			setSprite(player_x-16U, player_y, 4U, OBJ_PAL0);
-			setSprite(player_x-8U, player_y, 6U, OBJ_PAL0);
+			if(player_xdir == LEFT) {
+				setSprite(player_x-16U, player_y, 4U, OBJ_PAL0);
+				setSprite(player_x-8U, player_y, 6U, OBJ_PAL0);
+			} else {
+				setSprite(player_x-8U, player_y, 4U, FLIP_X | OBJ_PAL0);
+				setSprite(player_x-16U, player_y, 6U, FLIP_X | OBJ_PAL0);
+			}
 		} else if(ticks < 24U) {
 			setSprite(player_x-16U, player_y, 8U, OBJ_PAL0);
 			setSprite(player_x-8U, player_y, 10U, OBJ_PAL0);
