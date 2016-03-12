@@ -5,6 +5,7 @@
 #include "logos.h"
 #include "fade.h"
 #include "sound.h"
+#include "mmlgb/driver/music.h"
 
 #include "data/bg/tangram.h"
 #include "data/bg/potato.h"
@@ -42,7 +43,16 @@ void enterLogos() {
 
 	fadeFromWhite(8U);
 
-	for(i = 0U; i != 50U; ++i) wait_vbl_done();
+	for(i = 0U; i != 8U; ++i) wait_vbl_done();
+
+	play_sample(tangram_sample_data, tangram_sample_samples);
+
+	for(i = 0U; i != 8U; ++i) wait_vbl_done();
+
+	disable_interrupts();
+	setMusicBank(9U);
+	playMusic(&tangram_shine_data);
+	enable_interrupts();
 
 	for(i = 10U; i != 142U; i += 6U) {
 		if(i < 64U) {
@@ -66,21 +76,11 @@ void enterLogos() {
 
 	clearRemainingSprites();
 
-	disable_interrupts();
-	setMusicBank(9U);
-	playMusic(&tangram_shine_data);
-	enable_interrupts();
-
-	for(i = 0U; i != 30U; ++i) {
-		snd_update();
+	while(!mus_is_done()) {
 		wait_vbl_done();
 	}
 
 	stopMusic();
-	play_sample(tangram_sample_data, tangram_sample_samples);
-
-	for(i = 0U; i != 60U; ++i) wait_vbl_done();
-	
 	fadeToWhite(8U);
 
 	disable_interrupts();
@@ -101,9 +101,10 @@ void enterLogos() {
 	setMusicBank(9U);
 	playMusic(&potato_jingle_data);
 	enable_interrupts();
-	enable_interrupts();
 
-	for(i = 0U; i != 160U; ++i) wait_vbl_done();
+	while(!mus_is_done()) {
+		wait_vbl_done();
+	}
 
 	stopMusic();
 	fadeToWhite(8U);

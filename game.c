@@ -38,6 +38,7 @@ extern UBYTE plains_song_data;
 extern UBYTE clouds_song_data;
 extern UBYTE space_song_data;
 extern UBYTE dream_song_data;
+extern UBYTE level_clear_song_data;
 
 const UBYTE scrolled_length[4] = {
 	16U, // 16 * 111 / 36 = 49
@@ -813,6 +814,19 @@ void intoPortalAnimation() {
 		snd_update();
 		wait_vbl_done();
 	}
+
+	clearRemainingSprites();
+	wait_vbl_done();
+
+	disable_interrupts();
+	setMusicBank(9U);
+	playMusic(&level_clear_song_data);
+	enable_interrupts();
+
+	while(!mus_is_done()) {
+		wait_vbl_done();
+	}
+	stopMusic();
 }
 
 void deathAnimation() {

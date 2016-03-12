@@ -103,6 +103,7 @@ songs:
 	java -jar jar/MMLGB.jar data/mml/ending_cutscene_part_1.mml data/songs/ending_song.asm 9
 	java -jar jar/MMLGB.jar data/mml/potato_jingle.mml data/songs/potato_jingle.asm 9
 	java -jar jar/MMLGB.jar data/mml/tangram_shine.mml data/songs/tangram_shine.asm 9
+	java -jar jar/MMLGB.jar data/mml/level_clear.mml data/songs/level_clear_song.asm 9
 
 .PHONY: sounds
 sounds:
@@ -166,7 +167,6 @@ tobu.gb:
 	$(CC) $(CFLAGS) -c data/songs/space_song.asm # bank 5
 	$(CC) $(CFLAGS) -c data/songs/dream_song.asm # bank 5
 	$(CC) $(CFLAGS) -c data/songs/intro1_song.asm # bank 6
-	$(CC) $(CFLAGS) -c data/songs/intro2_song.asm # bank 6
 	$(CC) $(CFLAGS) -c winscreen.c -Wf-bo7
 	$(CC) $(CFLAGS) -c game_backgrounds.c -Wf-bo7
 	$(CC) $(CFLAGS) -c cloud_animations.c -Wf-bo8
@@ -175,6 +175,7 @@ tobu.gb:
 	$(CC) $(CFLAGS) -c data/songs/ending_song.asm # bank 9
 	$(CC) $(CFLAGS) -c data/songs/potato_jingle.asm # bank 9
 	$(CC) $(CFLAGS) -c data/songs/tangram_shine.asm # bank 9
+	$(CC) $(CFLAGS) -c data/songs/level_clear_song.asm # bank 9
 	$(CC) $(CFLAGS) -c sound_data.c -Wf-bo10
 	$(CC) $(CFLAGS) -c -Wf-ba0 -c ram.c # ram bank 0
 	$(CC) $(CFLAGS) -Wl-yt3 -Wl-yo16 -Wl-ya1 *.o -o $@
