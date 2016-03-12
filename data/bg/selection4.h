@@ -1,7 +1,7 @@
 #ifndef SELECTION4_MAP_H
 #define SELECTION4_MAP_H
 
-#define selection4_data_length 39
+#define selection4_data_length 55
 extern const unsigned char selection4_data[];
 
 #define selection4_tiles_width 20
