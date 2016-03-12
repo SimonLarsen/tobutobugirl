@@ -9,7 +9,7 @@ void updatePlayer();
 void updateHUD();
 void updateHUDTime();
 void killPlayer();
-void bouncePlayer(UBYTE str);
+void bouncePlayer(UBYTE entity, UBYTE str);
 void updateEntities();
 UBYTE spawnEntity(UBYTE type, UBYTE x, UBYTE y, UBYTE dir);
 void clearEntities();
@@ -29,7 +29,7 @@ void addScore();
 #define DASH_SPEED        4U
 #define DASH_TIME        14U
 #define SHORT_DASH_TIME   8U
-#define JUMP_SPEED       29U
+#define BUMP_SPEED       28U
 #define ALIEN_BUMP_SPEED 19U
 #define MAX_YSPEED       24U
 #define MAX_FLY_SPEED    24U

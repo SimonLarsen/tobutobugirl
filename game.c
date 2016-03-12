@@ -265,21 +265,21 @@ void updatePlayer() {
 						if(blips > 128U) blips = 128U;
 						kills++;
 						playSound(type+SFX_STOMP_ALIEN-E_ALIEN);
-						bouncePlayer(JUMP_SPEED);
+						bouncePlayer(i, BUMP_SPEED);
 					}
 					else if(type == E_GHOST) {
 						entity_type[i] = E_NONE;
 						spawnEntity(E_CLOUD, player_x, player_y+5U, 0U);
 						playSound(SFX_STOMP_GHOST);
-						bouncePlayer(JUMP_SPEED);
+						bouncePlayer(i, BUMP_SPEED);
 					}
 					else if(type == E_ALIEN) {
 						playSound(SFX_BUMP_ALIEN);
-						bouncePlayer(ALIEN_BUMP_SPEED);
+						bouncePlayer(i, ALIEN_BUMP_SPEED);
 					}
 					else {
 						playSound(SFX_BUMP);
-						bouncePlayer(JUMP_SPEED);
+						bouncePlayer(i, BUMP_SPEED);
 					}
 				} else {
 					diff = 0U;
@@ -471,11 +471,12 @@ void killPlayer() {
 	scene_state = INGAME_DEAD;
 }
 
-void bouncePlayer(UBYTE str) {
+void bouncePlayer(UBYTE entity, UBYTE str) {
 	player_ydir = UP;
 	player_bounce = 16U;
 	dashes = 3U;
 	dashing = 0;
+	player_y = entity_y[entity]-12U;
 	player_yspeed = str;
 }
 
