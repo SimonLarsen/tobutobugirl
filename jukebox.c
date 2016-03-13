@@ -23,9 +23,10 @@ extern UBYTE mainmenu_song_data;  // bank 4
 extern UBYTE plains_song_data;    // bank 5
 extern UBYTE clouds_song_data;    // bank 5
 extern UBYTE space_song_data;     // bank 5
+extern UBYTE dream_song_data;     // bank 5
 extern UBYTE highscore_song_data; // bank 4
 extern UBYTE winscreen_song_data; // bank 4
-#define JUKEBOX_NUM_SONGS 8
+#define JUKEBOX_NUM_SONGS 9
 
 const UBYTE song_names[JUKEBOX_NUM_SONGS][6] = {
 	{19U, 24U, 30U, 28U, 25U, 10U}, // "INTRO "
@@ -34,6 +35,7 @@ const UBYTE song_names[JUKEBOX_NUM_SONGS][6] = {
 	{26U, 22U, 11U, 19U, 24U, 29U}, // "PLAINS"
 	{13U, 22U, 25U, 31U, 14U, 29U}, // "CLOUDS"
 	{29U, 26U, 11U, 13U, 15U, 10U}, // "SPACE "
+	{14U, 28U, 15U, 11U, 23U, 10U}, // "DREAM "
 	{29U, 13U, 25U, 28U, 15U, 29U}, // "SCORES"
 	{30U, 11U, 22U, 22U, 35U, 10U}  // "TALLY "
 };
@@ -191,10 +193,14 @@ void enterJukebox() {
 					playMusic(&space_song_data);
 					break;
 				case 6U:
+					setMusicBank(5U);
+					playMusic(&dream_song_data);
+					break;
+				case 7U:
 					setMusicBank(4U);
 					playMusic(&highscore_song_data);
 					break;
-				case 7U:
+				case 8U:
 					setMusicBank(4U);
 					playMusic(&winscreen_song_data);
 					break;
