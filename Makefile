@@ -104,6 +104,7 @@ songs:
 	java -jar jar/MMLGB.jar data/mml/potato_jingle.mml data/songs/potato_jingle.asm 9
 	java -jar jar/MMLGB.jar data/mml/tangram_shine.mml data/songs/tangram_shine.asm 9
 	java -jar jar/MMLGB.jar data/mml/level_clear.mml data/songs/level_clear_song.asm 9
+	java -jar jar/MMLGB.jar data/mml/unlocked.mml data/songs/unlocked_song.asm 9
 
 .PHONY: sounds
 sounds:
@@ -176,6 +177,7 @@ tobu.gb:
 	$(CC) $(CFLAGS) -c data/songs/potato_jingle.asm # bank 9
 	$(CC) $(CFLAGS) -c data/songs/tangram_shine.asm # bank 9
 	$(CC) $(CFLAGS) -c data/songs/level_clear_song.asm # bank 9
+	$(CC) $(CFLAGS) -c data/songs/unlocked_song.asm # bank 9
 	$(CC) $(CFLAGS) -c sound_data.c -Wf-bo10
 	$(CC) $(CFLAGS) -c -Wf-ba0 -c ram.c # ram bank 0
 	$(CC) $(CFLAGS) -Wl-yt3 -Wl-yo16 -Wl-ya1 *.o -o $@

@@ -12,6 +12,8 @@
 #include "data/bg/selection4.h"
 #include "data/bg/selection_jukebox.h"
 
+extern UBYTE unlocked_song_data;
+
 const UBYTE unlocked_messages[3][24] = {
 	{
 		10U, 24U, 15U, 34U, 30U, 10U, 22U, 15U, 32U, 15U, 22U, 10U, // " NEXT LEVEL "
@@ -86,6 +88,11 @@ void enterUnlocked() {
 	initUnlocked();
 
 	fadeFromWhite(6U);
+
+	setMusicBank(9U);
+	disable_interrupts();
+	playMusic(&unlocked_song_data);
+	enable_interrupts();
 
 	ticks = 0U;
 	while(1U) {
