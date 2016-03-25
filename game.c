@@ -947,7 +947,21 @@ ingame_start:
 	else if(scene_state == INGAME_COMPLETED) {
 		intoPortalAnimation();
 		addScore();
+
 		gamestate = GAMESTATE_WINSCREEN;
+
+		if(level > levels_completed) {
+			levels_completed = level;
+			if(level == 1U) {
+				unlocked_bits = UNLOCKED_CLOUDS;
+			}
+			else if(level == 2U) {
+				unlocked_bits = UNLOCKED_SPACE | UNLOCKED_MUSIC;
+			}
+			else if(level == 3U) {
+				unlocked_bits = UNLOCKED_DREAM;
+			}
+		}
 	}
 	else if(scene_state == INGAME_QUIT) {
 		gamestate = GAMESTATE_SELECT;
@@ -989,19 +1003,6 @@ void addScore() {
 
 		last_highscore_level = level;
 		last_highscore_slot = i;
-	}
-
-	if(level > levels_completed) {
-		levels_completed = level;
-		if(level == 1U) {
-			unlocked_bits = UNLOCKED_CLOUDS;
-		}
-		else if(level == 2U) {
-			unlocked_bits = UNLOCKED_SPACE | UNLOCKED_MUSIC;
-		}
-		else if(level == 3U) {
-			unlocked_bits = UNLOCKED_DREAM;
-		}
 	}
 
 	DISABLE_RAM_MBC1;

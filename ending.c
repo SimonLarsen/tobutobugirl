@@ -256,12 +256,20 @@ void enterEnding() {
 		updateEnding();
 		ticks++;
 
+		if(!unlocked_bits && CLICKED(J_START)) break;
+
 		clearRemainingSprites();
 		wait_vbl_done();
 		move_bkg(scroll_x, scroll_y);
 	}
 
-	gamestate = GAMESTATE_UNLOCKED;
+	clearRemainingSprites();
+
+	if(unlocked_bits) {
+		gamestate = GAMESTATE_UNLOCKED;
+	} else {
+		gamestate = GAMESTATE_HIGHSCORE;
+	}
 
 	stopMusic();
 	clearRemainingSprites();

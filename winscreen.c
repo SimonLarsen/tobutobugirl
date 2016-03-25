@@ -144,13 +144,10 @@ void enterWinscreen() {
 	while(1) {
 		updateJoystate();
 		if(CLICKED(J_START) || CLICKED(J_A)) {
-			if(unlocked_bits) {
-				if(level == 3U) {
-					// Show ending first
-					gamestate = GAMESTATE_ENDING;
-				} else {
-					gamestate = GAMESTATE_UNLOCKED;
-				}
+			if(level == 3U) {
+				gamestate = GAMESTATE_ENDING;
+			} else if(unlocked_bits) {
+				gamestate = GAMESTATE_UNLOCKED;
 			} else {
 				gamestate = GAMESTATE_HIGHSCORE;
 			}
