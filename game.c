@@ -578,9 +578,9 @@ void updateEntities() {
 
 		switch(type) {
 			case E_CLOUD:
-				frame += entity_dir[i] << 2U;
+				frame += entity_dir[i] << 1U;
 				setSprite(entity_x[i]-16U, entity_y[i], frame, OBJ_PAL0);
-				setSprite(entity_x[i]-8U, entity_y[i], frame+2U, OBJ_PAL0);
+				setSprite(entity_x[i]-8U, entity_y[i], frame, OBJ_PAL0 | FLIP_X);
 				break;
 
 			case E_PORTAL:
