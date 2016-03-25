@@ -447,7 +447,7 @@ void updateHUD() {
 
 	// Set last progress flag
 	if(last_progress) {
-		setSprite(153U, 115U-(last_progress >> 1), 96U, OBJ_PAL0);
+		setSprite(153U, 119U - (last_progress << 1U) / 3U, 96U, OBJ_PAL0);
 	}
 
 	// Low on time marker
