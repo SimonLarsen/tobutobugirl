@@ -74,7 +74,7 @@ UBYTE enterPause() {
 				playSound(SFX_MENU_SWITCH);
 			}
 		}
-		if(CLICKED(J_A)) {
+		if(CLICKED(J_A) || (pause_selection == 1U && (CLICKED(J_LEFT) || CLICKED(J_RIGHT)))) {
 			playSound(SFX_MENU_CONFIRM);
 			if(pause_selection == 0U) {
 				wait_sound_done();
