@@ -27,6 +27,7 @@ extern UBYTE sfx_time_low_data;
 extern UBYTE sfx_time_pickup_data;
 extern UBYTE sfx_warp_end_data;
 extern UBYTE sfx_warp_start_data;
+extern UBYTE sfx_save_cat_data;
 
 UBYTE snd_active1, snd_active4;
 UBYTE snd_priority1, snd_priority4;
@@ -46,7 +47,7 @@ UBYTE snd_vib_pos1;
 UBYTE snd_noise_step;
 UBYTE snd_po1;
 
-const UBYTE sfx_priority[20] = {
+const UBYTE sfx_priority[21] = {
 	8U, // SFX_BUMP
 	8U, // SFX_BUMP_ALIEN
 	8U, // SFX_CAT_DISABLE
@@ -66,7 +67,8 @@ const UBYTE sfx_priority[20] = {
 	9U, // SFX_TIME_LOW
 	9U, // SFX_TIME_PICKUP
 	8U, // SFX_WARP_END
-	8U  // SFX_WARP_START
+	8U, // SFX_WARP_START
+	8U  // SFX_SAVE_CAT
 };
 
 void snd_init() {
@@ -129,6 +131,8 @@ void playSound(UBYTE id) {
 			data = &sfx_warp_end_data; break;
 		case SFX_WARP_START:
 			data = &sfx_warp_start_data; break;
+		case SFX_SAVE_CAT:
+			data = &sfx_save_cat_data; break;
 	}
 
 	data1 = data + ((UWORD*)data)[CHN1_OFFSET];

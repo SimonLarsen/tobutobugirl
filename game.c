@@ -67,10 +67,10 @@ const UBYTE entity_sprites[10] = {
 	11*4,	// E_BIRD
 	15*4,	// E_GHOST
 	// Powerups
-	22*4,	// E_CLOCK
+	21*4,	// E_CLOCK
 	// Special
-	21*4,	// E_PORTAL
-	28*4	// E_CLOUD
+	29*4,	// E_PORTAL
+	27*4	// E_CLOUD
 };
 
 const UBYTE spawn_levels[4][3][8] = {
@@ -436,18 +436,18 @@ void updateHUD() {
 	}
 
 	// Blips
-	setSprite(168U-(blip_bar >> 3), 136U, 100U, OBJ_PAL0);
-	setSprite(176U-(blip_bar >> 3), 136U, 102U, OBJ_PAL0);
+	setSprite(168U-(blip_bar >> 3), 136U, 96U, OBJ_PAL0);
+	setSprite(176U-(blip_bar >> 3), 136U, 98U, OBJ_PAL0);
 
 	// Progress bar
-	frame = 104U + ((player_skin-1U) << 2U);
+	frame = 100U + ((player_skin-1U) << 2U);
 	progressbar = 118U - (progress << 1U) / 3U;
 	setSprite(152U, progressbar, frame, OBJ_PAL0);
 	setSprite(160U, progressbar, frame+2U, OBJ_PAL0);
 
 	// Set last progress flag
 	if(last_progress) {
-		setSprite(153U, 119U - (last_progress << 1U) / 3U, 96U, OBJ_PAL0);
+		setSprite(153U, 119U - (last_progress << 1U) / 3U, 92U, OBJ_PAL0);
 	}
 
 	// Low on time marker
@@ -543,7 +543,7 @@ void updateEntities() {
 				if(player_y < entity_y[i]) ydist = entity_y[i] - player_y;
 				else ydist = player_y - entity_y[i];
 
-				if(xdist < 38U && ydist < 38U) {
+				if(xdist < 24U && ydist < 24U) {
 					if(xdist > 3U) {
 						if(player_x < entity_x[i]) player_x += 3U;
 						else player_x -= 3U;
@@ -584,12 +584,19 @@ void updateEntities() {
 				break;
 
 			case E_PORTAL:
-				if(entity_dir[i] == LEFT) {
-					setSprite(entity_x[i]-16U, entity_y[i], frame, OBJ_PAL0);
-					setSprite(entity_x[i]-8U, entity_y[i], frame+2U, OBJ_PAL0);
+				if(level == 3U && player_skin == 1U) {
+					setSprite(entity_x[i]-16U, entity_y[i]-24U, 120U, OBJ_PAL0);
+					setSprite(entity_x[i]-8U, entity_y[i]-24U, 122U, OBJ_PAL0);
+					setSprite(entity_x[i]-16U, entity_y[i]-8U, 124U, OBJ_PAL0);
+					setSprite(entity_x[i]-8U, entity_y[i]-8U, 126U, OBJ_PAL0);
 				} else {
-					setSprite(entity_x[i]-8U, entity_y[i], frame, OBJ_PAL0 | FLIP_X);
-					setSprite(entity_x[i]-16U, entity_y[i], frame+2U, OBJ_PAL0 | FLIP_X);
+					if(entity_dir[i] == LEFT) {
+						setSprite(entity_x[i]-16U, entity_y[i], frame, OBJ_PAL0);
+						setSprite(entity_x[i]-8U, entity_y[i], frame+2U, OBJ_PAL0);
+					} else {
+						setSprite(entity_x[i]-8U, entity_y[i], frame, OBJ_PAL0 | FLIP_X);
+						setSprite(entity_x[i]-16U, entity_y[i], frame+2U, OBJ_PAL0 | FLIP_X);
+					}
 				}
 				break;
 
@@ -827,6 +834,39 @@ void intoPortalAnimation() {
 		wait_vbl_done();
 	}
 	stopMusic();
+
+	fadeToWhite(10U);
+	wait_sound_done();
+}
+
+void saveCatAnimation() {
+	playSound(SFX_SAVE_CAT);
+
+	player_y++;
+
+	for(ticks = 0U; ticks != 180U; ++ticks) {
+		if(ticks == 24U) BGP_REG = 0x90U;
+		else if(ticks == 48U) BGP_REG = 0x40U;
+		else if(ticks == 72U) BGP_REG = 0x00U;
+
+		if((ticks & 15U) == 15U) player_y++;
+
+		setSprite(player_x-16U, player_y, 4U, OBJ_PAL0);
+		setSprite(player_x-8U, player_y, 6U, OBJ_PAL0);
+
+		setSprite(player_x-16U, player_y-24U, 120U, OBJ_PAL0);
+		setSprite(player_x-8U,  player_y-24U, 122U, OBJ_PAL0);
+		setSprite(player_x-16U, player_y-8U, 124U, OBJ_PAL0);
+		setSprite(player_x-8U,  player_y-8U, 126U, OBJ_PAL0);
+
+		clearRemainingSprites();
+		snd_update();
+		wait_vbl_done();
+	}
+
+	fadeSpritesToWhite(8U);
+
+	stopMusic();
 }
 
 void deathAnimation() {
@@ -875,6 +915,38 @@ void deathAnimation() {
 		snd_update();
 		wait_vbl_done();
 	}
+}
+
+void addScore() {
+	UBYTE i, j, score;
+	UBYTE *data;
+
+	ENABLE_RAM_MBC1;
+	SWITCH_RAM_MBC1(0);
+
+	score = TOTAL_SCORE;
+
+	data = &ram_data[(level - 1U) << 4];
+	for(i = 0U; i != 5U; ++i) {
+		if(score > data[(i << 1) + 1U]
+		|| (score == data[(i << 1) + 1U] && elapsed_time < data[i << 1])) {
+			break;
+		}
+	}
+	
+	if(i < 5U) {
+		for(j = 4U; j != i; --j) {
+			data[j << 1] = data[(j - 1U) << 1];
+			data[(j << 1) + 1U] = data[((j - 1U) << 1) + 1U];
+		}
+		data[i << 1] = elapsed_time;
+		data[(i << 1) + 1U] = score;
+
+		last_highscore_level = level;
+		last_highscore_slot = i;
+	}
+
+	DISABLE_RAM_MBC1;
 }
 
 void enterGame() {
@@ -943,9 +1015,17 @@ ingame_start:
 		if(progress > last_progress) {
 			last_progress = progress;
 		}
+
+		clearRemainingSprites();
+		fadeToWhite(10U);
+		wait_sound_done();
 	}
 	else if(scene_state == INGAME_COMPLETED) {
-		intoPortalAnimation();
+		if(level == 3U && player_skin == 1U) {
+			saveCatAnimation();
+		} else {
+			intoPortalAnimation();
+		}
 		addScore();
 
 		gamestate = GAMESTATE_WINSCREEN;
@@ -967,43 +1047,5 @@ ingame_start:
 		gamestate = GAMESTATE_SELECT;
 	}
 
-	clearRemainingSprites();
-	if(scene_state != INGAME_QUIT) {
-		fadeToWhite(10U);
-		wait_sound_done();
-	}
-
 	if(gamestate == GAMESTATE_INGAME) goto ingame_start;
-}
-
-void addScore() {
-	UBYTE i, j, score;
-	UBYTE *data;
-
-	ENABLE_RAM_MBC1;
-	SWITCH_RAM_MBC1(0);
-
-	score = TOTAL_SCORE;
-
-	data = &ram_data[(level - 1U) << 4];
-	for(i = 0U; i != 5U; ++i) {
-		if(score > data[(i << 1) + 1U]
-		|| (score == data[(i << 1) + 1U] && elapsed_time < data[i << 1])) {
-			break;
-		}
-	}
-	
-	if(i < 5U) {
-		for(j = 4U; j != i; --j) {
-			data[j << 1] = data[(j - 1U) << 1];
-			data[(j << 1) + 1U] = data[((j - 1U) << 1) + 1U];
-		}
-		data[i << 1] = elapsed_time;
-		data[(i << 1) + 1U] = score;
-
-		last_highscore_level = level;
-		last_highscore_slot = i;
-	}
-
-	DISABLE_RAM_MBC1;
 }

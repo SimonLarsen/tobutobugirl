@@ -15,11 +15,12 @@ UBYTE spawnEntity(UBYTE type, UBYTE x, UBYTE y, UBYTE dir);
 void clearEntities();
 void initSpawns();
 void updateSpawns();
-void enterGame();
 void introAnimation();
 void intoPortalAnimation();
+void saveCatAnimation();
 void deathAnimation();
 void addScore();
+void enterGame();
 
 #define SCRLMGN 84U
 

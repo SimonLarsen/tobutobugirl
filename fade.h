@@ -3,5 +3,6 @@
 
 void fadeToWhite(UBYTE delay);
 void fadeFromWhite(UBYTE delay);
+void fadeSpritesToWhite(UBYTE delay);
 
 #endif

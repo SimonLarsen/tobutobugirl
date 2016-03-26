@@ -128,6 +128,7 @@ sounds:
 	java -jar jar/MMLGB.jar data/sounds/sfx_time_pickup.mml data/sounds/sfx_time_pickup.h
 	java -jar jar/MMLGB.jar data/sounds/sfx_warp_end.mml data/sounds/sfx_warp_end.h
 	java -jar jar/MMLGB.jar data/sounds/sfx_warp_start.mml data/sounds/sfx_warp_start.h
+	java -jar jar/MMLGB.jar data/sounds/sfx_save_cat.mml data/sounds/sfx_save_cat.h
 
 .PHONY: tobu.gb
 tobu.gb:

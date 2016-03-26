@@ -105,11 +105,11 @@ UBYTE enterPause() {
 		}
 
 		// Draw selection markers
-		setSprite(pause_marker_x1[pause_selection], pause_marker_y[pause_selection], 104U, OBJ_PAL0);
-		setSprite(pause_marker_x1[pause_selection]+8U, pause_marker_y[pause_selection], 106U, OBJ_PAL0);
+		setSprite(pause_marker_x1[pause_selection], pause_marker_y[pause_selection], 100U, OBJ_PAL0);
+		setSprite(pause_marker_x1[pause_selection]+8U, pause_marker_y[pause_selection], 102U, OBJ_PAL0);
 
-		setSprite(pause_marker_x2[pause_selection], pause_marker_y[pause_selection], 108U, OBJ_PAL0);
-		setSprite(pause_marker_x2[pause_selection]+8U, pause_marker_y[pause_selection], 110U, OBJ_PAL0);
+		setSprite(pause_marker_x2[pause_selection], pause_marker_y[pause_selection], 104U, OBJ_PAL0);
+		setSprite(pause_marker_x2[pause_selection]+8U, pause_marker_y[pause_selection], 106U, OBJ_PAL0);
 
 		clearRemainingSprites();
 		snd_update();
