@@ -1,4 +1,5 @@
 #include <gb/gb.h>
+#include <string.h>
 #include "gamestate.h"
 #include "fade.h"
 #include "winscreen.h"
@@ -9,11 +10,17 @@
 #include "data/bg/win2.h"
 #include "data/bg/win3.h"
 #include "data/bg/win4.h"
+#include "mmlgb/driver/notes.h"
+#include "mmlgb/driver/freq.h"
 
 extern UBYTE winscreen_song_data;
 
 const UBYTE winscreen_clear_text[5] = {
 	13U, 22U, 15U, 11U, 28U
+};
+
+const UBYTE sharkwave_data[16] = {
+	1U, 35U, 69U, 103U, 137U, 171U, 205U, 239U, 202U, 134U, 67U, 50U, 34U, 17U, 16U, 0U
 };
 
 void drawScore(UBYTE x, UBYTE y, UBYTE value) {
@@ -37,16 +44,49 @@ void drawScore(UBYTE x, UBYTE y, UBYTE value) {
 	set_bkg_tiles(x+4U, y, 1U, 1U, &tile);
 }
 
+void winscreenPlayNote(UBYTE note, UBYTE octave) {
+	UWORD freq3;
+
+	freq3 = freq[((octave-MUS_FIRST_OCTAVE) << 4) + note];
+
+	NR30_REG = 0x0U;
+	NR30_REG = 0x80U;
+	NR32_REG = 0xFFU;
+	NR33_REG = (UBYTE)freq3;
+	NR34_REG = 0x80U | (freq3 >> 8);
+}
+
 void countUpScore(UBYTE x, UBYTE y, UBYTE value, UBYTE delay_time) {
-	UBYTE i;
+	UBYTE i, j;
+
+	j = 0U;
 	for(i = 0U; i != value+1U; ++i) {
 		updateJoystate();
-		if(CLICKED(J_A) || CLICKED(J_B)) {
+		if(CLICKED(J_A) || CLICKED(J_B) || CLICKED(J_START)) {
 			i = value;
 		}
+
+		switch(j) {
+			case 0U: winscreenPlayNote(T_C, 6U); break;
+			case 1U: winscreenPlayNote(T_D, 7U); break;
+			case 2U: winscreenPlayNote(T_A, 6U); break;
+		}
+
+		j++;
+		if(j == 3U) j = 0U;
+
 		drawScore(x, y, i);
 		delay(delay_time);
 	}
+	
+	delay(30U);
+	winscreenPlayNote(T_Fs, 6U);
+	delay(80U);
+	winscreenPlayNote(T_A, 6U);
+	delay(80U);
+	winscreenPlayNote(T_E, 7U);
+	delay(200U);
+	NR30_REG = 0x0U;
 }
 
 void initWinscreen() {
@@ -86,6 +126,10 @@ void initWinscreen() {
 	// Set level name
 	data = level_names[level];
 	set_bkg_tiles(4U+(level==3U), 1U, 6U, 1U, data);
+
+	// Set wave channel data
+	NR30_REG = 0x0U;
+	memcpy(0xFF30, sharkwave_data, 16U);
 
 	HIDE_SPRITES;
 	HIDE_WIN;
