@@ -4,6 +4,7 @@
 #include "fade.h"
 #include "sound.h"
 #include "ram.h"
+#include "mmlgb/driver/music.h"
 
 #include "data/sprite/characters.h"
 
@@ -53,6 +54,8 @@ UBYTE enterPause() {
 
 	pause_selection = 0U;
 	pause_ticks = 0U;
+
+	mus_setPaused(0U);
 
 	while(1U) {
 		pause_ticks++;

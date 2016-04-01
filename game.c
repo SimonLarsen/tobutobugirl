@@ -997,9 +997,12 @@ ingame_start:
 		}
 
 		if(CLICKED(J_START)) {
+			mus_setPaused(1U);
 			scene_state = enterPause();
 			if(scene_state != INGAME_QUIT) {
+				mus_setPaused(1U);
 				restoreGame();
+				mus_setPaused(0U);
 			}
 		}
 
