@@ -101,6 +101,7 @@ songs:
 	java -jar jar/MMLGB.jar data/mml/dream.mml data/songs/dream_song.asm 5
 	java -jar jar/MMLGB.jar data/mml/intro_cutscene_part_1.mml data/songs/intro1_song.asm 6
 	java -jar jar/MMLGB.jar data/mml/ending_cutscene_part_1.mml data/songs/ending_song.asm 9
+	java -jar jar/MMLGB.jar data/mml/ending_cutscene_part_2.mml data/songs/ending2_song.asm 9
 	java -jar jar/MMLGB.jar data/mml/potato_jingle.mml data/songs/potato_jingle.asm 9
 	java -jar jar/MMLGB.jar data/mml/tangram_shine.mml data/songs/tangram_shine.asm 9
 	java -jar jar/MMLGB.jar data/mml/level_clear.mml data/songs/level_clear_song.asm 9
@@ -175,6 +176,7 @@ tobu.gb:
 	$(CC) $(CFLAGS) -c title.c -Wf-bo8
 	$(CC) $(CFLAGS) -c logos.c -Wf-bo9
 	$(CC) $(CFLAGS) -c data/songs/ending_song.asm # bank 9
+	$(CC) $(CFLAGS) -c data/songs/ending2_song.asm # bank 9
 	$(CC) $(CFLAGS) -c data/songs/potato_jingle.asm # bank 9
 	$(CC) $(CFLAGS) -c data/songs/tangram_shine.asm # bank 9
 	$(CC) $(CFLAGS) -c data/songs/level_clear_song.asm # bank 9

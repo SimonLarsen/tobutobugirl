@@ -7,6 +7,7 @@
 #include "data/bg/intro_bg.h"
 #include "data/sprite/ending_sprites1.h"
 #include "data/sprite/ending_sprites2.h"
+#include "mmlgb/driver/music.h"
 
 #define ENDING_STATE_WAIT      1U
 #define ENDING_STATE_FALL      2U
@@ -14,12 +15,14 @@
 #define ENDING_STATE_FALL2     4U
 #define ENDING_STATE_SHAKE     5U
 #define ENDING_STATE_PAN       6U
-#define ENDING_STATE_GET_UP    7U
-#define ENDING_STATE_END       8U
+#define ENDING_STATE_STRUGGLE  7U
+#define ENDING_STATE_GET_UP    8U
+#define ENDING_STATE_END       9U
 
 UBYTE ending_frame;
 
 extern UBYTE ending_song_data;
+extern UBYTE ending2_song_data;
 
 void initEnding() {
 	disable_interrupts();
@@ -173,7 +176,7 @@ void updateEnding() {
 				setSprite(player_x+8U, tmp2, tmp+2U, OBJ_PAL0 | FLIP_X);
 			}
 
-			if(ticks >= 127U) {
+			if(ticks >= 225U) {
 				scene_state = ENDING_STATE_PAN;
 				ticks = 0U;
 				disable_interrupts();
@@ -200,17 +203,50 @@ void updateEnding() {
 			setSprite(player_x+8U, player_y-scroll_y, 30U, OBJ_PAL0);
 
 			if(scroll_y == 112U) {
-				scene_state = ENDING_STATE_GET_UP;
+				scene_state = ENDING_STATE_STRUGGLE;
 				ticks = 0U;
 				ending_frame = 0U;
 			}
+			break;
+
+		case ENDING_STATE_STRUGGLE:
+			if(ticks == 32U) ending_frame = 1U;
+			else if(ticks == 48U) ending_frame = 0U;
+			else if(ticks == 96U) ending_frame = 1U;
+			else if(ticks == 112U) ending_frame = 0U;
+
+			if(ticks >= 170U) {
+				scene_state = ENDING_STATE_GET_UP;
+				ticks = 0U;
+				ending_frame = 0U;
+				selection = 1U;
+
+				disable_interrupts();
+				setMusicBank(9U);
+				playMusic(&ending2_song_data);
+				enable_interrupts();
+			}
+
+			tmp = ending_frame << 2;
+			setSprite(cat_x, cat_y-scroll_y, tmp, OBJ_PAL0);
+			setSprite(cat_x+8U, cat_y-scroll_y, tmp+2U, OBJ_PAL0);
+
+			tmp += 28U;
+			setSprite(player_x, player_y-scroll_y, tmp, OBJ_PAL0);
+			setSprite(player_x+8U, player_y-scroll_y, tmp+2U, OBJ_PAL0);
 			break;
 
 		case ENDING_STATE_GET_UP:
 			if(ending_frame <= 2U) {
 				if((ticks & 7U) == 7U) ending_frame++;
 			} else {
-				if((ticks & 15U) == 15U) ending_frame++;
+				if((ticks & 15U) == 15U) {
+					ending_frame++;
+				}
+			}
+
+			if(CLICKED(J_START)) {
+				scene_state = ENDING_STATE_END;
 			}
 
 			tmp = ending_frame;
@@ -227,10 +263,6 @@ void updateEnding() {
 			tmp += 28U;
 			setSprite(player_x, player_y-scroll_y, tmp, OBJ_PAL0);
 			setSprite(player_x+8U, player_y-scroll_y, tmp+2U, OBJ_PAL0);
-
-			if(ending_frame >= 28U) {
-				scene_state = ENDING_STATE_END;
-			}
 			break;
 	}
 }
@@ -243,6 +275,7 @@ void enterEnding() {
 	player_x = 104U;
 	player_y = 0U;
 	scene_state = ENDING_STATE_FALL;
+	selection = 0U; // Did ending theme 2 start
 
 	move_bkg(0U, scroll_y);
 
@@ -253,10 +286,12 @@ void enterEnding() {
 	while(scene_state != ENDING_STATE_END) {
 		updateJoystate();
 
+		if(!unlocked_bits && CLICKED(J_START)) {
+			scene_state = ENDING_STATE_END;
+		}
+
 		updateEnding();
 		ticks++;
-
-		if(!unlocked_bits && CLICKED(J_START)) break;
 
 		clearRemainingSprites();
 		wait_vbl_done();
@@ -264,14 +299,9 @@ void enterEnding() {
 	}
 
 	clearRemainingSprites();
+	gamestate = GAMESTATE_WINSCREEN;
 
-	if(unlocked_bits) {
-		gamestate = GAMESTATE_UNLOCKED;
-	} else {
-		gamestate = GAMESTATE_HIGHSCORE;
-	}
-
-	stopMusic();
+	mus_setPaused(1U);
 	clearRemainingSprites();
 	fadeToWhite(8U);
 }

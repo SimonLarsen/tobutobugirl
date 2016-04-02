@@ -1026,12 +1026,12 @@ ingame_start:
 	else if(scene_state == INGAME_COMPLETED) {
 		if(level == 3U && player_skin == 1U) {
 			saveCatAnimation();
+			gamestate = GAMESTATE_ENDING;
 		} else {
 			intoPortalAnimation();
+			gamestate = GAMESTATE_WINSCREEN;
 		}
 		addScore();
-
-		gamestate = GAMESTATE_WINSCREEN;
 
 		if(level > levels_completed) {
 			levels_completed = level;

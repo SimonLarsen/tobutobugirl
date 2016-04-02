@@ -3,6 +3,7 @@
 
 void drawScore(UBYTE x, UBYTE y, UBYTE value);
 void winscreenPlayNote(UBYTE note, UBYTE octave);
+void winscreenJingle();
 void countUpScore(UBYTE x, UBYTE y, UBYTE value, UBYTE delay_time);
 void initWinscreen();
 void enterWinscreen();

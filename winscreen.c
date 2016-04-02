@@ -10,6 +10,7 @@
 #include "data/bg/win2.h"
 #include "data/bg/win3.h"
 #include "data/bg/win4.h"
+#include "mmlgb/driver/music.h"
 #include "mmlgb/driver/notes.h"
 #include "mmlgb/driver/freq.h"
 
@@ -56,6 +57,17 @@ void winscreenPlayNote(UBYTE note, UBYTE octave) {
 	NR34_REG = 0x80U | (freq3 >> 8);
 }
 
+void winscreenJingle() {
+	delay(30U);
+	winscreenPlayNote(T_Fs, 6U);
+	delay(80U);
+	winscreenPlayNote(T_A, 6U);
+	delay(80U);
+	winscreenPlayNote(T_E, 7U);
+	delay(200U);
+	NR30_REG = 0x0U;
+}
+
 void countUpScore(UBYTE x, UBYTE y, UBYTE value, UBYTE delay_time) {
 	UBYTE i, j;
 
@@ -78,15 +90,6 @@ void countUpScore(UBYTE x, UBYTE y, UBYTE value, UBYTE delay_time) {
 		drawScore(x, y, i);
 		delay(delay_time);
 	}
-	
-	delay(30U);
-	winscreenPlayNote(T_Fs, 6U);
-	delay(80U);
-	winscreenPlayNote(T_A, 6U);
-	delay(80U);
-	winscreenPlayNote(T_E, 7U);
-	delay(200U);
-	NR30_REG = 0x0U;
 }
 
 void initWinscreen() {
@@ -144,9 +147,13 @@ void enterWinscreen() {
 
 	fadeFromWhite(10U);
 
-	setMusicBank(4U);
 	disable_interrupts();
-	playMusic(&winscreen_song_data);
+	if(selection == 0U) {
+		setMusicBank(4U);
+		playMusic(&winscreen_song_data);
+	} else {
+		mus_setPaused(0U);
+	}
 	enable_interrupts();
 
 	delay(255U);
@@ -160,11 +167,13 @@ void enterWinscreen() {
 	set_bkg_tiles(3U, 5U, 1U, 1U, &tile);
 	tile = (elapsed_time % 60U) % 10U;
 	set_bkg_tiles(4U, 5U, 1U, 1U, &tile);
+	winscreenJingle();
 
 	delay(512U);
 
 	// Count up time bonus
 	countUpScore(3, 6, TIME_BONUS, 30U);
+	winscreenJingle();
 
 	delay(512U);
 
@@ -174,23 +183,24 @@ void enterWinscreen() {
 	set_bkg_tiles(1U, 10U, 1U, 1U, &tile);
 	tile = tmp % 10U;
 	set_bkg_tiles(2U, 10U, 1U, 1U, &tile);
+	winscreenJingle();
 
 	delay(512U);
 
 	// Count up kill bonus
 	countUpScore(3U, 11U, KILL_BONUS, 30U);
+	winscreenJingle();
 
 	delay(512U);
 
 	// Count up total score
 	countUpScore(3U, 15U, TOTAL_SCORE, 30U);
+	winscreenJingle();
 
 	while(1) {
 		updateJoystate();
-		if(CLICKED(J_START) || CLICKED(J_A)) {
-			if(level == 3U) {
-				gamestate = GAMESTATE_ENDING;
-			} else if(unlocked_bits) {
+		if(CLICKED(J_A) || CLICKED(J_B) || CLICKED(J_START)) {
+			if(unlocked_bits) {
 				gamestate = GAMESTATE_UNLOCKED;
 			} else {
 				gamestate = GAMESTATE_HIGHSCORE;
