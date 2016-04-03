@@ -17,7 +17,7 @@ UBYTE jukebox_selection;
 UBYTE jukebox_music_ticks;
 UBYTE jukebox_bop;
 
-extern UBYTE intro1_song_data;    // bank 6
+extern UBYTE intro_song_data;    // bank 6
 extern UBYTE title_song_data;     // bank 4
 extern UBYTE mainmenu_song_data;  // bank 4
 extern UBYTE plains_song_data;    // bank 5
@@ -25,7 +25,7 @@ extern UBYTE clouds_song_data;    // bank 5
 extern UBYTE space_song_data;     // bank 5
 extern UBYTE dream_song_data;     // bank 5
 extern UBYTE highscore_song_data; // bank 4
-extern UBYTE winscreen_song_data; // bank 4
+extern UBYTE score_tally_song_data; // bank 4
 #define JUKEBOX_NUM_SONGS 9
 
 const UBYTE song_names[JUKEBOX_NUM_SONGS][6] = {
@@ -170,7 +170,7 @@ void enterJukebox() {
 			switch(jukebox_selection) {
 				case 0U:
 					setMusicBank(6U);
-					playMusic(&intro1_song_data);
+					playMusic(&intro_song_data);
 					break;
 				case 1U:
 					setMusicBank(4U);
@@ -202,7 +202,7 @@ void enterJukebox() {
 					break;
 				case 8U:
 					setMusicBank(4U);
-					playMusic(&winscreen_song_data);
+					playMusic(&score_tally_song_data);
 					break;
 			}
 			enable_interrupts();

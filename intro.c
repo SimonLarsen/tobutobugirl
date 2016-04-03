@@ -10,7 +10,7 @@
 
 UBYTE intro_frame;
 
-extern UBYTE intro1_song_data;
+extern UBYTE intro_song_data;
 
 #define INTRO_STATE_WALK  1U
 #define INTRO_STATE_TRIP  2U
@@ -33,7 +33,7 @@ void initIntro() {
 	clearSprites();
 	
 	setMusicBank(6U);
-	playMusic(&intro1_song_data);
+	playMusic(&intro_song_data);
 
 	HIDE_WIN;
 	SHOW_SPRITES;

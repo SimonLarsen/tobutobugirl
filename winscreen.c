@@ -14,7 +14,7 @@
 #include "mmlgb/driver/notes.h"
 #include "mmlgb/driver/freq.h"
 
-extern UBYTE winscreen_song_data;
+extern UBYTE score_tally_song_data;
 
 const UBYTE winscreen_clear_text[5] = {
 	13U, 22U, 15U, 11U, 28U
@@ -154,7 +154,7 @@ void enterWinscreen() {
 	// Else just play regular music
 	} else {
 		setMusicBank(4U);
-		playMusic(&winscreen_song_data);
+		playMusic(&score_tally_song_data);
 	}
 	enable_interrupts();
 

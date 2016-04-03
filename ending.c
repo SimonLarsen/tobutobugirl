@@ -21,8 +21,8 @@
 
 UBYTE ending_frame;
 
-extern UBYTE ending_song_data;
-extern UBYTE ending2_song_data;
+extern UBYTE ending_part1_song_data;
+extern UBYTE ending_part2_song_data;
 
 void initEnding() {
 	disable_interrupts();
@@ -40,7 +40,7 @@ void initEnding() {
 	clearSprites();
 
 	setMusicBank(9U);
-	playMusic(&ending_song_data);
+	playMusic(&ending_part1_song_data);
 
 	HIDE_WIN;
 	SHOW_BKG;
@@ -222,7 +222,7 @@ void updateEnding() {
 
 				disable_interrupts();
 				setMusicBank(9U);
-				playMusic(&ending2_song_data);
+				playMusic(&ending_part2_song_data);
 				enable_interrupts();
 			}
 

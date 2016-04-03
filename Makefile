@@ -3,7 +3,7 @@ CFLAGS=
 IMGTOGB=imgtogb
 EMULATOR=gambatte-qt
 
-default: backgrounds sprites tobu.gb
+default: backgrounds sprites sounds songs tobu.gb
 
 include backgrounds.mk
 include sprites.mk
@@ -30,7 +30,7 @@ OBJ_BANK9=logos.o
 
 OBJ_BANK10=sound_data.o
 
-OBJ_ASM=title_song.o mainmenu_song.o winscreen_song.o highscore_song.o plains_song.o clouds_song.o space_song.o dream_song.o intro1_song.o ending_song.o ending2_song.o potato_jingle.o tangram_shine.o level_clear_song.o unlocked_song.o
+OBJ_ASM=title_song.o mainmenu_song.o score_tally_song.o highscore_song.o plains_song.o clouds_song.o space_song.o dream_song.o intro_song.o ending_part1_song.o ending_part2_song.o potato_jingle_song.o tangram_shine_song.o level_clear_song.o unlocked_song.o
 
 $(OBJ_BANK1): CFLAGS+=-Wf-bo1
 $(OBJ_BANK2): CFLAGS+=-Wf-bo2
@@ -46,7 +46,7 @@ $(OBJ_BANK10): CFLAGS+=-Wf-bo10
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-%.o: data/songs/%.asm
+%.o: data/mml/%.asm
 	$(CC) $(CFLAGS) -c $< -o $@
 
 ram.o: ram.c

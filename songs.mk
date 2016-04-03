@@ -1,17 +1,17 @@
-.PHONY: songs
-songs:
-	java -jar jar/MMLGB.jar data/mml/intro_cutscene_part_2.mml data/songs/title_song.asm 4
-	java -jar jar/MMLGB.jar data/mml/mainmenu.mml data/songs/mainmenu_song.asm 4
-	java -jar jar/MMLGB.jar data/mml/score_tally.mml data/songs/winscreen_song.asm 4
-	java -jar jar/MMLGB.jar data/mml/score.mml data/songs/highscore_song.asm 4
-	java -jar jar/MMLGB.jar data/mml/plains.mml data/songs/plains_song.asm 5
-	java -jar jar/MMLGB.jar data/mml/clouds.mml data/songs/clouds_song.asm 5
-	java -jar jar/MMLGB.jar data/mml/space.mml data/songs/space_song.asm 5
-	java -jar jar/MMLGB.jar data/mml/dream.mml data/songs/dream_song.asm 5
-	java -jar jar/MMLGB.jar data/mml/intro_cutscene_part_1.mml data/songs/intro1_song.asm 6
-	java -jar jar/MMLGB.jar data/mml/ending_cutscene_part_1.mml data/songs/ending_song.asm 9
-	java -jar jar/MMLGB.jar data/mml/ending_cutscene_part_2.mml data/songs/ending2_song.asm 9
-	java -jar jar/MMLGB.jar data/mml/potato_jingle.mml data/songs/potato_jingle.asm 9
-	java -jar jar/MMLGB.jar data/mml/tangram_shine.mml data/songs/tangram_shine.asm 9
-	java -jar jar/MMLGB.jar data/mml/level_clear.mml data/songs/level_clear_song.asm 9
-	java -jar jar/MMLGB.jar data/mml/unlocked.mml data/songs/unlocked_song.asm 9
+songs: $(SONGS_BANK4) $(SONGS_BANK5) $(SONGS_BANK6) $(SONGS_BANK9)
+
+SONGS_BANK4=data/mml/title_song.asm data/mml/mainmenu_song.asm data/mml/score_tally_song.asm data/mml/highscore_song.asm
+
+SONGS_BANK5=data/mml/plains_song.asm data/mml/clouds_song.asm data/mml/space_song.asm data/mml/dream_song.asm
+
+SONGS_BANK6=data/mml/intro_song.asm
+
+SONGS_BANK9=data/mml/ending_part1_song.asm data/mml/ending_part2_song.asm data/mml/potato_jingle_song.asm data/mml/tangram_shine_song.asm data/mml/level_clear_song.asm data/mml/unlocked_song.asm
+
+$(SONGS_BANK4): MMLBANK:=4
+$(SONGS_BANK5): MMLBANK:=5
+$(SONGS_BANK6): MMLBANK:=6
+$(SONGS_BANK9): MMLBANK:=9
+
+data/mml/%_song.asm: data/mml/%.mml
+	java -jar jar/MMLGB.jar $< $@ $(MMLBANK)
