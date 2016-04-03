@@ -64,7 +64,7 @@ void winscreenJingle() {
 	winscreenPlayNote(T_A, 6U);
 	delay(80U);
 	winscreenPlayNote(T_E, 7U);
-	delay(200U);
+	delay(85U);
 	NR30_REG = 0x0U;
 }
 
