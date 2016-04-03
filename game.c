@@ -1024,6 +1024,7 @@ ingame_start:
 		wait_sound_done();
 	}
 	else if(scene_state == INGAME_COMPLETED) {
+		ending_finished = 0U;
 		if(level == 3U && player_skin == 1U) {
 			saveCatAnimation();
 			gamestate = GAMESTATE_ENDING;

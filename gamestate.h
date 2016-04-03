@@ -24,6 +24,7 @@ extern UBYTE last_highscore_slot;
 extern UBYTE last_progress;
 extern UBYTE game_bank, music_bank;
 extern UBYTE levels_completed;
+extern UBYTE ending_finished;
 extern UBYTE unlocked_bits;
 extern UBYTE scroll_x, scroll_y;
 extern UBYTE player_x, player_y;

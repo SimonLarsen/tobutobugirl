@@ -148,11 +148,13 @@ void enterWinscreen() {
 	fadeFromWhite(10U);
 
 	disable_interrupts();
-	if(selection == 0U) {
+	// Did we come from end of ending sequence?
+	if(ending_finished) {
+		mus_setPaused(0U);
+	// Else just play regular music
+	} else {
 		setMusicBank(4U);
 		playMusic(&winscreen_song_data);
-	} else {
-		mus_setPaused(0U);
 	}
 	enable_interrupts();
 

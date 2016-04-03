@@ -219,7 +219,6 @@ void updateEnding() {
 				scene_state = ENDING_STATE_GET_UP;
 				ticks = 0U;
 				ending_frame = 0U;
-				selection = 1U;
 
 				disable_interrupts();
 				setMusicBank(9U);
@@ -243,10 +242,6 @@ void updateEnding() {
 				if((ticks & 15U) == 15U) {
 					ending_frame++;
 				}
-			}
-
-			if(CLICKED(J_START)) {
-				scene_state = ENDING_STATE_END;
 			}
 
 			tmp = ending_frame;
@@ -275,7 +270,6 @@ void enterEnding() {
 	player_x = 104U;
 	player_y = 0U;
 	scene_state = ENDING_STATE_FALL;
-	selection = 0U; // Did ending theme 2 start
 
 	move_bkg(0U, scroll_y);
 
@@ -286,7 +280,9 @@ void enterEnding() {
 	while(scene_state != ENDING_STATE_END) {
 		updateJoystate();
 
-		if(!unlocked_bits && CLICKED(J_START)) {
+		if(CLICKED(J_START)
+		&& (scene_state == ENDING_STATE_GET_UP || !unlocked_bits)) {
+			ending_finished = scene_state == ENDING_STATE_GET_UP;
 			scene_state = ENDING_STATE_END;
 		}
 
