@@ -1,5 +1,5 @@
 CC=lcc
-CFLAGS=
+CFLAGS=-Wl-j
 IMGTOGB=imgtogb
 EMULATOR=gambatte-qt
 
@@ -46,7 +46,7 @@ $(OBJ_BANK10): CFLAGS+=-Wf-bo10
 %.o: %.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
-%.o: data/mml/%.asm
+%.o: data/songs/%.asm
 	$(CC) $(CFLAGS) -c $< -o $@
 
 ram.o: ram.c
