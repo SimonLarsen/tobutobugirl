@@ -32,12 +32,12 @@ const UBYTE song_names[JUKEBOX_NUM_SONGS][6] = {
 	{19U, 24U, 30U, 28U, 25U, 10U}, // "INTRO "
 	{30U, 19U, 30U, 22U, 15U, 10U}, // "TITLE "
 	{10U, 23U, 15U, 24U, 31U, 10U}, // " MENU "
+	{30U, 11U, 22U, 22U, 35U, 10U}, // "TALLY "
+	{29U, 13U, 25U, 28U, 15U, 29U}, // "SCORES"
 	{26U, 22U, 11U, 19U, 24U, 29U}, // "PLAINS"
 	{13U, 22U, 25U, 31U, 14U, 29U}, // "CLOUDS"
 	{29U, 26U, 11U, 13U, 15U, 10U}, // "SPACE "
-	{14U, 28U, 15U, 11U, 23U, 10U}, // "DREAM "
-	{29U, 13U, 25U, 28U, 15U, 29U}, // "SCORES"
-	{30U, 11U, 22U, 22U, 35U, 10U}  // "TALLY "
+	{14U, 28U, 15U, 11U, 23U, 10U}  // "DREAM "
 };
 
 void initJukebox() {
@@ -148,7 +148,8 @@ void enterJukebox() {
 
 		if(CLICKED(J_LEFT)) {
 			if(jukebox_selection == 0U) {
-				jukebox_selection = JUKEBOX_NUM_SONGS-1U;
+				jukebox_selection = 5U + levels_completed;
+				if(jukebox_selection == JUKEBOX_NUM_SONGS) jukebox_selection--;
 			} else {
 				jukebox_selection--;
 			}
@@ -156,10 +157,10 @@ void enterJukebox() {
 			playSound(SFX_MENU_CONFIRM);
 		}
 		if(CLICKED(J_RIGHT)) {
-			if(jukebox_selection == JUKEBOX_NUM_SONGS-1U) {
+			jukebox_selection++;
+			if(jukebox_selection > 5U+levels_completed
+			|| jukebox_selection == JUKEBOX_NUM_SONGS) {
 				jukebox_selection = 0U;
-			} else {
-				jukebox_selection++;
 			}
 			jukeboxUpdateTitle();
 			playSound(SFX_MENU_CONFIRM);
@@ -181,28 +182,28 @@ void enterJukebox() {
 					playMusic(&mainmenu_song_data);
 					break;
 				case 3U:
-					setMusicBank(5U);
-					playMusic(&plains_song_data);
+					setMusicBank(4U);
+					playMusic(&score_tally_song_data);
 					break;
 				case 4U:
-					setMusicBank(5U);
-					playMusic(&clouds_song_data);
-					break;
-				case 5U:
-					setMusicBank(5U);
-					playMusic(&space_song_data);
-					break;
-				case 6U:
-					setMusicBank(5U);
-					playMusic(&dream_song_data);
-					break;
-				case 7U:
 					setMusicBank(4U);
 					playMusic(&highscore_song_data);
 					break;
+				case 5U:
+					setMusicBank(5U);
+					playMusic(&plains_song_data);
+					break;
+				case 6U:
+					setMusicBank(5U);
+					playMusic(&clouds_song_data);
+					break;
+				case 7U:
+					setMusicBank(5U);
+					playMusic(&space_song_data);
+					break;
 				case 8U:
-					setMusicBank(4U);
-					playMusic(&score_tally_song_data);
+					setMusicBank(5U);
+					playMusic(&dream_song_data);
 					break;
 			}
 			enable_interrupts();
