@@ -62,3 +62,5 @@ run:
 .PHONY: clean
 clean:
 	rm *.o
+	rm data/songs/*.asm
+	rm data/sounds/*.h

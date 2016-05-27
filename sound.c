@@ -220,7 +220,7 @@ void snd_update1() {
 
 	while(1U) {
 		note = *snd_data1++;
-		if(note & MUS_HAS_LENGTH || note <= T_WAIT) {
+		if(note >= MUS_FIRST_NOTE) {
 			if(note & MUS_HAS_LENGTH) {
 				note ^= MUS_HAS_LENGTH;
 				snd_wait1 = *snd_data1++;
@@ -235,9 +235,9 @@ void snd_update1() {
 				NR12_REG = 0U;
 			} else {
 				if(snd_slide1) {
-					snd_target1 = freq[((snd_octave1-MUS_FIRST_OCTAVE) << 4) + note] + snd_po1 - 128U;
+					snd_target1 = freq[((snd_octave1-MUS_FIRST_OCTAVE) << 4) + note - MUS_FIRST_NOTE] + snd_po1 - 128U;
 				} else {
-					snd_freq1 = freq[((snd_octave1-MUS_FIRST_OCTAVE) << 4) + note] + snd_po1 - 128U;
+					snd_freq1 = freq[((snd_octave1-MUS_FIRST_OCTAVE) << 4) + note - MUS_FIRST_NOTE] + snd_po1 - 128U;
 				}
 				NR12_REG = (snd_volume1 << 4) | snd_env1;
 			}
@@ -269,11 +269,10 @@ void snd_update1() {
 			case T_WAVEDUTY:
 				NR11_REG = (*snd_data1++) << 5;
 				break;
+			case T_PAN:
+				break;
 			case T_PORTAMENTO:
 				snd_slide1 = *snd_data1++;
-				break;
-			case T_PITCH_OFFSET:
-				snd_po1 = *snd_data1++;
 				break;
 			case T_VIBRATO:
 				snd_vib_pos1 = 0U;
@@ -284,6 +283,23 @@ void snd_update1() {
 				else if(note == 2U) snd_vib_table1 = vib2;
 				else if(note == 3U) snd_vib_table1 = vib3;
 				else snd_vib_table1 = vib4;
+				break;
+			case T_VIBRATO_DELAY:
+				break;
+			case T_REP_START:
+				break;
+			case T_REP_END:
+				break;
+			case T_LOOP:
+				break;
+			case T_PITCH_OFFSET:
+				snd_po1 = *snd_data1++;
+				break;
+			case T_TEMPO:
+				break;
+			case T_NOISE_STEP:
+				break;
+			case T_WAVE:
 				break;
 			case T_EOF:
 				snd_active1 = 0U;
@@ -320,7 +336,7 @@ void snd_update4() {
 
 	while(1U) {
 		note = *snd_data4++;
-		if(note & MUS_HAS_LENGTH || note <= T_WAIT) {
+		if(note >= MUS_FIRST_NOTE) {
 			if(note & MUS_HAS_LENGTH) {
 				note ^= MUS_HAS_LENGTH;
 				snd_wait4 = *snd_data4++;
@@ -334,9 +350,9 @@ void snd_update4() {
 				NR42_REG = 0U;
 			} else {
 				if(snd_slide4) {
-					snd_target4 = noise_freq[((snd_octave4-MUS_NOISE_FIRST_OCTAVE) << 4) + note];
+					snd_target4 = noise_freq[((snd_octave4-MUS_NOISE_FIRST_OCTAVE) << 4) + note - MUS_FIRST_NOTE];
 				} else {
-					snd_freq4 = noise_freq[((snd_octave4-MUS_NOISE_FIRST_OCTAVE) << 4) + note];
+					snd_freq4 = noise_freq[((snd_octave4-MUS_NOISE_FIRST_OCTAVE) << 4) + note - MUS_FIRST_NOTE];
 				}
 				NR42_REG = (snd_volume4 << 4) | snd_env4;
 			}
@@ -365,11 +381,31 @@ void snd_update4() {
 				snd_env4 = *snd_data4++;
 				NR42_REG = (snd_volume4 << 4) | snd_env4;
 				break;
+			case T_WAVEDUTY:
+				break;
+			case T_PAN:
+				break;
 			case T_PORTAMENTO:
 				snd_slide4 = *snd_data4++;
 				break;
+			case T_VIBRATO:
+				break;
+			case T_VIBRATO_DELAY:
+				break;
+			case T_REP_START:
+				break;
+			case T_REP_END:
+				break;
+			case T_LOOP:
+				break;
+			case T_PITCH_OFFSET:
+				break;
+			case T_TEMPO:
+				break;
 			case T_NOISE_STEP:
 				snd_noise_step = (*snd_data4++) << 3;
+				break;
+			case T_WAVE:
 				break;
 			case T_EOF:
 				snd_active4 = 0U;
