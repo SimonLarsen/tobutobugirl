@@ -123,12 +123,23 @@ void initGame() {
 
 		setIngameBackground(level);
 
-		setMusicBank(5U);
 		switch(level) {
-			case 1U: playMusic(&plains_song_data); break;
-			case 2U: playMusic(&clouds_song_data); break;
-			case 3U: playMusic(&space_song_data); break;
-			case 4U: playMusic(&dream_song_data); break;
+			case 1U:
+				setMusicBank(5U);
+				playMusic(&plains_song_data);
+				break;
+			case 2U:
+				setMusicBank(5U);
+				playMusic(&clouds_song_data);
+				break;
+			case 3U:
+				setMusicBank(5U);
+				playMusic(&space_song_data);
+				break;
+			case 4U:
+				setMusicBank(6U);
+				playMusic(&dream_song_data);
+				break;
 		}
 	}
 	mus_setPaused(1U);
