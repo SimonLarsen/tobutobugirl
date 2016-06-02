@@ -1,0 +1,6 @@
+@wave0 = {0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 12 10 8 6 4 3 3 2 2 2 1 1 1 0 0 0 }
+
+A t75 l64 o6 @wd2 v11 @ve-1 d+ v4 d+ v11 e v4 e v11 f+ v4 f+ v11 b v4 b r32 v11 f+ v4 f+> v11 d+4 L r8
+B l32 o5 v6 @wd2 @ve-1 f+b>c+d+16 <f+> l64 @ve-5
+B v6 g+>f<g+>f< v5 g+>f< v4 g+>f<g+>f< @ve-4 v3 g+>f< v2 g+>f< v1 g+>f<g+>f L r8
+C @wave0 o6 l64 v2 b v1 b>v2 c+ v1 c+ v2 d+ v1 d+ v2 f+ v1 f+ r32 v2 d+ v1 d+ v2 f v1 f r1 L r8

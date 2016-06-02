@@ -1,14 +1,9 @@
 @wave0 = {0 0 1 1 2 9 9 10 11 12 13 13 14 14 14 15 13 12 11 11 10 10 10 10 10 10 11 11 12 12 12 15 }
+@wave1 = {0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 8 }
 
 
-@@1 = { c+d }
-
-B t155 l=2 o7 @wd2 @ve0 y0
-B v6 [ @@1 ]16 c+
-B v2 d@@1 v6 @@1 c+ v2 d@@1 v6 @@1 c+ v2 d@@1 v6 [ @@1 ]24
-B v2 [ @@1 ]6 v6 @@1 c+ v2 d@@1 v6 @@1 c+ v2 d@@1 v6 [ @@1 ]3 v2 [ @@1 ]3 v6 [ @@1 ]3 v2 [ @@1 ]3 v6 [ @@1 ]6 v2 [ @@1 ]3 v6 [ @@1 ]12 v2 [ @@1 ]3
-
-
+B o5 v9 y0 @wd2 @ve-1 l16
+B [f+8f+8c+c+8f+8f+8f+c+8c+c+]2
 B L @wd1 @ve0 o4 l16
 B v11 b v4 b v11 ea v4 a v11 eb v4 b v11 ea v4 a v11 eb v4 b v11 a v4 a
 B v11 a v4 a v11 dg v4 g v11 da v4 a v11 dg v4 g v11 da v4 a v11 g v4 g
@@ -45,18 +40,15 @@ B v11 b16. v4 b v11 b v4 b v11 b16 v4 b16 v11 a v4 a v11 g v4 g v11 a v4 a v11 b
 B v11 <g v4 g v11 g16 v4 g16 v11 g16 v4 g16 v11 g16 v4 g16 v11 g v4 g v11 f+16 v4 f+ v3 f+ v2 f+
 B r4^16^32
 
-
-A o5 v9 y0 @wd2 @ve-1 l16
-A [f+8f+8c+c+8f+8f+8f+c+8c+c+]2 L @ve0 @wd1 o4 v9 l16
+A @ve0 @wd1 o4 v0 r1r1
+A L l16 v9
 A g v3 g v9 cf+ v3 f+ v9 cg v3 g v9 cf+ v3 f+ v9 cg v3 g v9 e v3 e
 A v9 f+ v3 f+ v9 <b>d v3 d v9 <b>f+ v3 f+ v9 <b>d v3 d v9 <b>f+ v3 f+ v9 d v3 d
 A v9 g v3 g v9 cf+ v3 f+ v9 c>c v3 c v9 <cf+ v3 f+ v9 cg v3 g v9 e v3 e
 A v9 f+ v3 f+ v9 <b>d v3 d v9 <b>>e v3 e v9 d v3 d v9 <b v3 b v9 g v3 g v9 f+ v3 f+
 A v9 b v3 b v9 <g>d v3 d v9 cg v3 g v9 <g>d v3 d v9 <g>b v3 b v9 c v3 c
-A v9 f+ v3 f+ v9 <a>d v3 d v9 <f+>e v3 e v9 <a>d v3 d v9 <a>a v3 a v9 d v3 d
-A v9 b v3 b v9 <g>d v3 d v9 cg v3 g v9 <g>d v3 d v9 <g>b v3 b v9 c v3 c
-A v9 f+ v3 f+ v9 <a>d v3 d v9 <f+>e v3 e v9 <a>d v3 d v9 <a>a v3 a v9 d v3 d
-A v9 b v3 b v9 <g>d v3 d v9 cg v3 g v9 <g>d v3 d v9 <g>b v3 b v9 c v3 c
+A [v9 f+ v3 f+ v9 <a>d v3 d v9 <f+>e v3 e v9 <a>d v3 d v9 <a>a v3 a v9 d v3 d
+A v9 b v3 b v9 <g>d v3 d v9 cg v3 g v9 <g>d v3 d v9 <g>b v3 b v9 c v3 c]2
 A v9 f+ v3 f+ v9 <a>d v3 d v9 <f+>e v3 e v9 <a>d v3 d v9 <a>a v3 a v9 d v3 d
 A v9 a+ v3 a+ v9 c+d+ v3 d+ v9 c+a+ v3 a+ v9 c+d+ v3 d+ v9 <a+>g v3 g v9 d+ v3 d+
 A v9 d v3 d v9 <g>c v3 c v9 <a>e v3 e v9 cf+ v3 f+ v7 >d>d v3 d v7 <d v3 d
@@ -72,7 +64,14 @@ A @wd1 y0 @ve0 <c v3 c v9 c16 v3 c16 v9 c16 v3 c16 v9 c16 v3 c16 v9 c v3 c v9 c1
 A r4^16^32
 
 
-C r1r1 L @wave0 o3 l16
+@@1 = { c+d }
+
+C t155 l=2 o8 @wave1 y0
+C v3 [ @@1 ]16 c+
+C v1 d@@1 v3 @@1 c+ v1 d@@1 v3 @@1 c+ v1 d@@1 v3 [ @@1 ]24
+C v1 [ @@1 ]6 v3 @@1 c+ v1 d@@1 v3 @@1 c+ v1 d@@1 v3 [ @@1 ]3 v1 [ @@1 ]3 v3 [ @@1 ]3 v1 [ @@1 ]3 v3 [ @@1 ]6 v1 [ @@1 ]3 v3 [ @@1 ]12 v1 [ @@1 ]3
+
+C L @wave0 o3 l16
 C v3 c8 v2 c v3 g8 v2 g v3 >d v2 d v3 <c8 v2 c v3 g8 v2 g v3 >d v2 d
 C v3 <<g8 v2 g v3 >d8 v2 d v3 g v2 g v3 a8 v2 a v3 b8 v2 b v3 d v2 d
 C v3 c8 v2 c v3 g8 v2 g v3 >d v2 d v3 <c8 v2 c v3 g8 v2 g v3 >d v2 d

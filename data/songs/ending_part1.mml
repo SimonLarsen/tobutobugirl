@@ -30,7 +30,7 @@ A v8 @v6,1,=22 b2 @v0,0
 A >c16<b16 v8 a4 @v6,1 ^2^4^16
 A v6 a16 v3 a16 v2 a16 @v0,0 r8 @wd1 v12 f+48>f+24^64 v5 f+24^64
 A v12 <f+48>f+24^64 v5 f+48^64 v9 @wd2 >c16<b16a16g16f+16e16d16c16<b16a16g16f+16e16d16
-A v6 d16 v3 d16 v2 d16r4 v15 o0 @wd2 @ve-6 @v6,4 y1 a+2.^16 @v0,0 @wd1 @ve-5 y0
+A v6 d16 v3 d16 v2 d16r4 v15 o2 @wd2 @ve-6 @v6,4 y1 d2.^16 @v0,0 @wd1 @ve-5 y0
 A v11 o6 c4<a4f+4
 A b4g4d4c4
 A <e4. @ve-6 a4>c4c16 v10 c16
