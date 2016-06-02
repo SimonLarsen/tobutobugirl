@@ -148,7 +148,7 @@ void playSound(UBYTE id) {
 		snd_wait1 = 0U;
 		snd_octave1 = 4U;
 		snd_length1 = 48U;
-		snd_volume1 = 14U;
+		snd_volume1 = 0xE0U;
 		snd_env1 = 0U;
 		snd_slide1 = 0U;
 		snd_vib_speed1 = 0U;
@@ -164,7 +164,7 @@ void playSound(UBYTE id) {
 		snd_wait4 = 0U;
 		snd_octave4 = 4U;
 		snd_length4 = 48U;
-		snd_volume4 = 14U;
+		snd_volume4 = 0xE0U;
 		snd_env4 = 0U;
 		snd_slide4 = 0U;
 		snd_noise_step = 0U;
@@ -239,7 +239,7 @@ void snd_update1() {
 				} else {
 					snd_freq1 = freq[((snd_octave1-MUS_FIRST_OCTAVE) << 4) + note - MUS_FIRST_NOTE] + snd_po1 - 128U;
 				}
-				NR12_REG = (snd_volume1 << 4) | snd_env1;
+				NR12_REG = snd_volume1 | snd_env1;
 			}
 			NR13_REG = (UBYTE)snd_freq1;
 			NR14_REG = (snd_freq1 >> 8) | 0x80U;
@@ -260,11 +260,11 @@ void snd_update1() {
 				break;
 			case T_VOL:
 				snd_volume1 = *snd_data1++;
-				NR12_REG = (snd_volume1 << 4) | snd_env1;
+				NR12_REG = snd_volume1 | snd_env1;
 				break;
 			case T_ENV:
 				snd_env1 = *snd_data1++;
-				NR12_REG = (snd_volume1 << 4) | snd_env1;
+				NR12_REG = snd_volume1 | snd_env1;
 				break;
 			case T_WAVEDUTY:
 				NR11_REG = (*snd_data1++) << 5;
@@ -354,7 +354,7 @@ void snd_update4() {
 				} else {
 					snd_freq4 = noise_freq[((snd_octave4-MUS_NOISE_FIRST_OCTAVE) << 4) + note - MUS_FIRST_NOTE];
 				}
-				NR42_REG = (snd_volume4 << 4) | snd_env4;
+				NR42_REG = snd_volume4 | snd_env4;
 			}
 			NR43_REG = snd_freq4 | snd_noise_step;
 			NR44_REG = 0x80U;
@@ -375,11 +375,11 @@ void snd_update4() {
 				break;
 			case T_VOL:
 				snd_volume4 = *snd_data4++;
-				NR42_REG = (snd_volume4 << 4) | snd_env4;
+				NR42_REG = snd_volume4 | snd_env4;
 				break;
 			case T_ENV:
 				snd_env4 = *snd_data4++;
-				NR42_REG = (snd_volume4 << 4) | snd_env4;
+				NR42_REG = snd_volume4 | snd_env4;
 				break;
 			case T_WAVEDUTY:
 				break;
