@@ -522,9 +522,25 @@ void updateEntities() {
 		// Update entity
 		switch(type) {
 			case E_NONE: continue;
+			case E_SPIKES: break;
+
+			case E_FIREBALL:
+				if(ticks & 1U && !scene_state) {
+					if(entity_dir[i] == RIGHT) {
+						entity_x[i]++;
+						if(entity_x[i] >= 152U) entity_dir[i] = LEFT;
+					}
+					else {
+						entity_x[i]--;
+						if(entity_x[i] <= 24U) entity_dir[i] = RIGHT;
+					}
+				}
+				break;
+
+			case E_ALIEN: break;
+			case E_BAT: break;
 
 			case E_BIRD:
-			case E_FIREBALL:
 				if(ticks & 1U && !scene_state) {
 					if(entity_dir[i] == RIGHT) {
 						entity_x[i]++;
@@ -545,6 +561,8 @@ void updateEntities() {
 					entity_dir[i] = RIGHT;
 				}
 				break;
+
+			case E_CLOCK: break;
 
 			case E_CLOUD:
 				if((ticks & 3U) == 3U) entity_dir[i]++;
