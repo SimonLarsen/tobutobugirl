@@ -48,7 +48,7 @@ void drawScore(UBYTE x, UBYTE y, UBYTE value) {
 void winscreenPlayNote(UBYTE note, UBYTE octave) {
 	UWORD freq3;
 
-	freq3 = freq[((octave-MUS_FIRST_OCTAVE) << 4) + note];
+	freq3 = freq[(octave << 4) + note];
 
 	NR30_REG = 0x0U;
 	NR30_REG = 0x80U;

@@ -235,9 +235,9 @@ void snd_update1() {
 				NR12_REG = 0U;
 			} else {
 				if(snd_slide1) {
-					snd_target1 = freq[((snd_octave1-MUS_FIRST_OCTAVE) << 4) + note - MUS_FIRST_NOTE] + snd_po1 - 128U;
+					snd_target1 = freq[(snd_octave1 << 4) + note - MUS_FIRST_NOTE] + snd_po1 - 128U;
 				} else {
-					snd_freq1 = freq[((snd_octave1-MUS_FIRST_OCTAVE) << 4) + note - MUS_FIRST_NOTE] + snd_po1 - 128U;
+					snd_freq1 = freq[(snd_octave1 << 4) + note - MUS_FIRST_NOTE] + snd_po1 - 128U;
 				}
 				NR12_REG = snd_volume1 | snd_env1;
 			}
