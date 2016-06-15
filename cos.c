@@ -7,6 +7,13 @@ const UBYTE cos32_64[64] = {
 	18U, 16U, 14U, 13U, 11U, 10U, 8U, 7U, 6U, 5U, 4U, 3U, 2U, 1U, 1U, 0U, 0U
 };
 
+const UBYTE cos16_32[32] = {
+	0U, 0U, 1U, 1U, 2U, 4U, 5U, 6U, 8U, 10U,
+	11U, 12U, 14U, 15U, 15U, 16U, 16U, 16U,
+	15U, 15U, 14U, 12U, 11U, 10U, 8U,
+	6U, 5U, 4U, 2U, 1U, 1U, 0U
+};
+
 const UBYTE cos4_8[8] = {
 	0U, 0U, 1U, 2U, 3U, 3U, 2U, 1U
 };

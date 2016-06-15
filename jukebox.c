@@ -202,7 +202,7 @@ void enterJukebox() {
 					playMusic(&space_song_data);
 					break;
 				case 8U:
-					setMusicBank(5U);
+					setMusicBank(6U);
 					playMusic(&dream_song_data);
 					break;
 			}

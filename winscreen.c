@@ -128,7 +128,7 @@ void initWinscreen() {
 
 	// Set level name
 	data = level_names[level];
-	set_bkg_tiles(4U+(level==3U), 1U, 6U, 1U, data);
+	set_bkg_tiles(4U, 1U, 6U, 1U, data);
 
 	// Set wave channel data
 	NR30_REG = 0x0U;

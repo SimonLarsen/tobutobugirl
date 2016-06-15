@@ -28,6 +28,7 @@ UBYTE next_spawn, next_clock;
 UBYTE timer, progress, portal_spawned, repeat_spikes;
 UBYTE blips, blip_bar;
 UBYTE dashing, dashes, dash_xdir, dash_ydir;
+UBYTE ghost_frame;
 
 UBYTE entity_x[MAX_ENTITIES];
 UBYTE entity_y[MAX_ENTITIES];
@@ -173,6 +174,7 @@ void initGame() {
 	progress = 0U;
 	portal_spawned = 0U;
 	repeat_spikes = 0U;
+	ghost_frame = 0U;
 
 	timer = 0U;
 	remaining_time = 32U;
@@ -260,9 +262,11 @@ void updatePlayer() {
 
 	// Check entity collisions
 	for(i = 0U; i != MAX_ENTITIES; ++i) {
-		if(entity_type[i] != E_NONE && entity_type[i] <= LAST_COLLIDABLE
-		&& player_y < entity_y[i]+10U && player_y > entity_y[i]-12U
-		&& player_x > entity_x[i]-12U && player_x < entity_x[i]+12U) {
+		if(entity_type[i] && entity_type[i] <= LAST_COLLIDABLE
+		&& player_y <= entity_y[i]+9U
+		&& player_y >= entity_y[i]-11U
+		&& player_x <= entity_x[i]+11U
+		&& player_x >= entity_x[i]-11U) {
 			type = entity_type[i];
 			// Spikes
 			if(type <= E_FIREBALL) {
@@ -341,7 +345,7 @@ void updatePlayer() {
 		}
 
 		if(!ISDOWN(KEY_DASH)) {
-			if(DASH_TIME - dashing > 6U) {
+			if(DASH_TIME - dashing >= 7U) {
 				dashing = 0U;
 			}
 		}
@@ -506,6 +510,12 @@ void updateEntities() {
 		}
 	}
 
+	xdist = 0U;
+	if(ticks & 1U && !scene_state) {
+		ghost_frame++;
+		xdist = cos16_32[(ghost_frame+1U) & 31U] - cos16_32[ghost_frame & 31U];
+	}
+
 	for(i = 0U; i != MAX_ENTITIES; ++i) {
 		type = entity_type[i];
 
@@ -515,7 +525,7 @@ void updateEntities() {
 
 			case E_BIRD:
 			case E_FIREBALL:
-				if(ticks & 1U && scene_state == INGAME_ACTIVE) {
+				if(ticks & 1U && !scene_state) {
 					if(entity_dir[i] == RIGHT) {
 						entity_x[i]++;
 						if(entity_x[i] >= 152U) entity_dir[i] = LEFT;
@@ -528,14 +538,11 @@ void updateEntities() {
 				break;
 
 			case E_GHOST:
-				if(ticks & 1U && scene_state == INGAME_ACTIVE) {
-					entity_x[i] -= cos32_64[ticks & 63U];
-					entity_x[i] += cos32_64[(ticks+1U) & 63U];
-					if(ticks & 32U) {
-						entity_dir[i] = LEFT;
-					} else {
-						entity_dir[i] = RIGHT;
-					}
+				entity_x[i] += xdist;
+				if(ghost_frame & 16U) {
+					entity_dir[i] = LEFT;
+				} else {
+					entity_dir[i] = RIGHT;
 				}
 				break;
 
@@ -961,6 +968,9 @@ void addScore() {
 }
 
 void enterGame() {
+	UBYTE level_scrolled_length;
+
+	level_scrolled_length = scrolled_length[level-1U];
 	first_load = 1U;
 ingame_start:
 	initGame();
@@ -1001,8 +1011,8 @@ ingame_start:
 
 		// Scroll screen
 		scrolled += scroll_y;
-		if(scrolled >= scrolled_length[level-1U]) {
-			scrolled -= scrolled_length[level-1U];
+		if(scrolled >= level_scrolled_length) {
+			scrolled -= level_scrolled_length;
 			if(progress < 112U) progress++;
 			move_bkg(0U, 112U-progress);
 		}
