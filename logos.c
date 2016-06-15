@@ -1,5 +1,4 @@
 #include <gb/gb.h>
-#include <gb/sample.h>
 #include "defines.h"
 #include "gamestate.h"
 #include "logos.h"
@@ -10,9 +9,9 @@
 #include "data/bg/tangram.h"
 #include "data/bg/potato.h"
 #include "data/sprite/shine.h"
-#include "data/samples/tangram.h"
 
 extern UBYTE tangram_shine_song_data;
+extern UBYTE tangram_vox_song_data;
 extern UBYTE potato_jingle_song_data;
 
 void initLogos() {
@@ -45,12 +44,15 @@ void enterLogos() {
 
 	for(i = 0U; i != 8U; ++i) wait_vbl_done();
 
-	play_sample(tangram_sample_data, tangram_sample_samples);
+	setMusicBank(9U);
+	disable_interrupts();
+	playMusic(&tangram_vox_song_data);
+	enable_interrupts();
 
-	for(i = 0U; i != 8U; ++i) wait_vbl_done();
+	for(i = 0U; i != 60U; ++i) wait_vbl_done();
+	stopMusic();
 
 	disable_interrupts();
-	setMusicBank(9U);
 	playMusic(&tangram_shine_song_data);
 	enable_interrupts();
 

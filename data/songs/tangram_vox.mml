@@ -1,0 +1,8 @@
+@wave0 = {8 11 10 8 5 2 2 6 9 10 10 9 8 5 13 8 9 10 15 15 1 1 5 5 10 9 8 6 5 2 4 8 }
+@wave1 = {7 9 9 10 10 11 11 11 12 12 12 13 13 13 14 14 14 14 13 13 12 12 11 11 10 10 9 8 8 8 7 7 }
+
+A t84 l=1 @ve0 @wd1 r=22 @po19 o4 v5 d+ v6 d+ v7 d+ v4 d+ r=14 L r1; @wd1 @po5 v5 d v3 d v2 d v1 d L r1
+
+C l=1 r=2 @wave0 o5 @po-1 v1 g v2 g+ @po-9 g+ g+ a=9 @wave1 a=6 g v1 g=2 @po0 v2 @po-5 @wave0 f+ v3 f+ @po0 f=2 @po-8 f=2 @po-10 f=2 @po-5 e=2 @po-12 e=2 @po-13 e=2 @po-15 v2 e @wave1 e @po-17 e=2 @po-20 e=2 v1 @po-12 d+=2 L r1
+
+D o8 @ve-1 v6 b=22 o2 v5 @ve0 b=2 o6 @ve-1 b1 L r1
