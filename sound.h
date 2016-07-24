@@ -30,6 +30,5 @@ void snd_update4();
 #define SFX_TIME_PICKUP 17U
 #define SFX_WARP_END 18U
 #define SFX_WARP_START 19U
-#define SFX_SAVE_CAT 20U
 
 #endif

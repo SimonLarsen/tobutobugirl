@@ -1,2 +1,16 @@
-A t235 @wd2 @ve0 v7 o4 g+32 v4 ^32 v7a+32 v4 ^32 v7>c32 v4 ^32 v7d+32 v4 ^32 v7g32 v4 ^32 v7a+32 v4 ^32 v7>@ve-6 f1 L r1
-B @wd2 @ve0 v4 o4 r16g+32 v2 ^32 v4a+32 v2 ^32 v4>c32 v2 ^32 v4d+32 v2 ^32 v4g32 v2 ^32 v4a+32 v2 ^32 v4> @po1 @ve-6 f1 L r1
+AB t135
+A v9 @ve-2
+B v4 @po1 r16.
+AB @wd2 o5 l16 a >d>c+<a^8 
+
+A v5
+B v2
+AB >c+<a^8 
+
+A v3
+B v1
+
+AB >c+<
+A a^8
+B @po0 a^8
+AB ^1^1 L r1^1

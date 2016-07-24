@@ -90,26 +90,3 @@ D v11 o6 b6 o8 b=4r=12 o8 b=4r=28 v13 o3 a+r=9 v11 o6 b6 o8 b=4r=12
 D o8 b=4r=44 o6 b6 o8 b=4r=4 o8 b=4r=4 o8 b=4r=28 v13 o3 a+r=9 v11 o6 b6 o8 b=4r=12
 D o8 b=4r=44 o6 b6 o8 b=4r=12 o8 b=4r=28 v13 o3 a+r=9 v11 o6 b6 o8 b=4r=4 v13 o8 b=4r=4
 D v12 o8 b=4r=28 v11 o6 b12 o6 b6 v8 @ve-5 o8 b3 v7 @ve-7 o7 b1[^1]8 L r1
-
-
-
-;;clean ver
-;@@3={v13 c4 v9 f+6f+12d4f+6f+12}
-;@@4={v13 c4 v9 f+6f+12d4f+6f+24f+24}
-;
-;D y0 l=7 @ve-1
-;D @@4
-;D v13 c4 v9 f+6f+12d6 v10 a+3
-;D [@@3]6
-;D @@4
-;D f+6a+12f+6a+12f+6a+3
-;D [@@3]3
-;D v13 c4 v9 f+6f+12d6d24d24d6a+3
-;D v11 d6f+12f+6f+12d6f+12
-;D v13 c6 v11 f+12d6 v13 c4 v11 f+12d6f+12
-;D f+4d6f+12f+6f+12d8r24f+24f+24
-;D f+6f+12 v9 d12 v7 d12 v12 d12 v11 f+6f+24 v12 f+24 v13 f+6 v12 a+3
-;D v11 d6f+12f+6 v13 c12 v11 d6f+12
-;D f+4d6f+24f+24f+6 v13 c12 v11 d6f+12
-;D f+4d6f+12f+6 v13 c12 v11 d6f+24 v13 f+24
-;D v12 f+6 v11 d12d6 v10 a+3>c+1^4 L r1

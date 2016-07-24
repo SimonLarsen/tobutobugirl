@@ -876,7 +876,7 @@ void intoPortalAnimation() {
 }
 
 void saveCatAnimation() {
-	playSound(SFX_SAVE_CAT);
+	//playSound(SFX_SAVE_CAT);
 
 	player_y++;
 
