@@ -17,6 +17,7 @@
 #include "data/sounds/sfx_stomp_bird.h"
 #include "data/sounds/sfx_stomp_ghost.h"
 #include "data/sounds/sfx_time_low.h"
+#include "data/sounds/sfx_time_out.h"
 #include "data/sounds/sfx_time_pickup.h"
 #include "data/sounds/sfx_warp_end.h"
 #include "data/sounds/sfx_warp_start.h"

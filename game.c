@@ -466,7 +466,7 @@ void updateHUD() {
 	}
 
 	// Low on time marker
-	if(remaining_time < 16U && ticks & 16U) {
+	if(remaining_time < 12U && ticks & 16U) {
 		setSprite(136U, 24U, 32U, OBJ_PAL0);
 		setSprite(144U, 24U, 34U, OBJ_PAL0);
 	}
@@ -1019,10 +1019,11 @@ ingame_start:
 			remaining_time--;
 			updateHUDTime();
 
-			if(remaining_time == 15U) {
+			if(remaining_time == 11U) {
 				playSound(SFX_TIME_LOW);
-			}
-			else if(remaining_time == 0U) {
+			} else if(remaining_time == 1U) {
+				playSound(SFX_TIME_OUT);
+			} else if(remaining_time == 0U) {
 				scene_state = INGAME_DEAD;
 			}
 		}

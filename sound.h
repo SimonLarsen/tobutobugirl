@@ -27,8 +27,11 @@ void snd_update4();
 #define SFX_STOMP_BIRD 14U
 #define SFX_STOMP_GHOST 15U
 #define SFX_TIME_LOW 16U
-#define SFX_TIME_PICKUP 17U
-#define SFX_WARP_END 18U
-#define SFX_WARP_START 19U
+#define SFX_TIME_OUT 17U
+#define SFX_TIME_PICKUP 18U
+#define SFX_WARP_END 19U
+#define SFX_WARP_START 20U
+
+#define SFX_COUNT 21U
 
 #endif
