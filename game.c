@@ -25,7 +25,7 @@ UBYTE scrolled;
 UBYTE last_spawn_x, last_spawn_index;
 UBYTE next_spawn, next_clock;
 
-UBYTE timer, progress, portal_spawned, repeat_spikes;
+UBYTE timer, progress, progressbar, portal_spawned, repeat_spikes;
 UBYTE blips, blip_bar;
 UBYTE dashing, dashes, dash_xdir, dash_ydir;
 UBYTE ghost_frame;
@@ -96,6 +96,8 @@ const UBYTE spawn_levels[4][3][8] = {
 		{E_FIREBALL, E_FIREBALL, E_SPIKES, E_ALIEN, E_GHOST, E_GHOST, E_BIRD, E_BIRD}
 	}
 };
+
+#define PROGRESS_POS(x) (((x) << 1U) / 3U)
 
 void initGame() {
 	UBYTE *skin_data;
@@ -172,6 +174,7 @@ void initGame() {
 	next_spawn = 0U;
 	next_clock = clock_interval[level-1U];
 	progress = 0U;
+	progressbar = 117U - PROGRESS_POS(progress);
 	portal_spawned = 0U;
 	repeat_spikes = 0U;
 	ghost_frame = 0U;
@@ -442,7 +445,7 @@ void updatePlayer() {
 }
 
 void updateHUD() {
-	UBYTE frame, progressbar;
+	UBYTE frame;
 
 	if(blip_bar > blips) {
 		blip_bar = blips;
@@ -456,13 +459,12 @@ void updateHUD() {
 
 	// Progress bar
 	frame = 100U + ((player_skin-1U) << 2U);
-	progressbar = 118U - (progress << 1U) / 3U;
 	setSprite(152U, progressbar, frame, OBJ_PAL0);
 	setSprite(160U, progressbar, frame+2U, OBJ_PAL0);
 
 	// Set last progress flag
 	if(last_progress) {
-		setSprite(153U, 119U - (last_progress << 1U) / 3U, 92U, OBJ_PAL0);
+		setSprite(153U, 119U - last_progress, 92U, OBJ_PAL0);
 	}
 
 	// Low on time marker
@@ -1038,7 +1040,10 @@ ingame_start:
 		scrolled += scroll_y;
 		if(scrolled >= level_scrolled_length) {
 			scrolled -= level_scrolled_length;
-			if(progress < 112U) progress++;
+			if(progress < 112U) {
+				progress++;
+				progressbar = 117U - PROGRESS_POS(progress);
+			}
 			move_bkg(0U, 112U-progress);
 		}
 
@@ -1061,8 +1066,8 @@ ingame_start:
 
 	if(scene_state == INGAME_DEAD) {
 		deathAnimation();
-		if(progress > last_progress) {
-			last_progress = progress;
+		if(PROGRESS_POS(progress) > last_progress) {
+			last_progress = PROGRESS_POS(progress);
 		}
 
 		clearRemainingSprites();
