@@ -263,12 +263,12 @@ void updatePlayer() {
 	// Check entity collisions
 	for(i = 0U; i != MAX_ENTITIES; ++i) {
 		if(entity_type[i] && entity_type[i] <= LAST_COLLIDABLE
-		&& player_y <= entity_y[i]+9U
-		&& player_y >= entity_y[i]-11U
 		&& player_x <= entity_x[i]+11U
-		&& player_x >= entity_x[i]-11U) {
+		&& player_x >= entity_x[i]-11U
+		&& player_y <= entity_y[i]+9U
+		&& player_y >= entity_y[i]-11U) {
 			type = entity_type[i];
-			// Spikes
+			// Spikes and fireballs
 			if(type <= E_FIREBALL) {
 				killPlayer();
 			// Enemies
@@ -306,7 +306,7 @@ void updatePlayer() {
 
 					if(diff < 12U) killPlayer();
 				}
-			// Watch pickup
+			// Clock pickup
 			} else if(type == E_CLOCK) {
 				entity_type[i] = E_NONE;
 				remaining_time += CLOCK_BONUS;
@@ -351,7 +351,7 @@ void updatePlayer() {
 		}
 	}
 
-	// Using jetpack
+	// Using boost
 	if(ISDOWN(KEY_USE) && blips) {
 		blips--;
 		if(player_ydir == UP && player_yspeed < MAX_FLY_SPEED) {
@@ -876,7 +876,10 @@ void intoPortalAnimation() {
 }
 
 void saveCatAnimation() {
-	//playSound(SFX_SAVE_CAT);
+	disable_interrupts();
+	setMusicBank(9U);
+	playMusic(&level_clear_song_data);
+	enable_interrupts();
 
 	player_y++;
 
@@ -900,9 +903,12 @@ void saveCatAnimation() {
 		wait_vbl_done();
 	}
 
-	fadeSpritesToWhite(8U);
-
+	while(!mus_is_done()) {
+		wait_vbl_done();
+	}
 	stopMusic();
+
+	fadeSpritesToWhite(8U);
 }
 
 void deathAnimation() {

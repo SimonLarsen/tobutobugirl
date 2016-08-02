@@ -59,11 +59,11 @@ void winscreenPlayNote(UBYTE note, UBYTE octave) {
 
 void winscreenJingle() {
 	delay(30U);
-	winscreenPlayNote(T_Fs, 6U);
+	winscreenPlayNote(T_Fs, 5U);
 	delay(80U);
-	winscreenPlayNote(T_A, 6U);
+	winscreenPlayNote(T_A, 5U);
 	delay(80U);
-	winscreenPlayNote(T_E, 7U);
+	winscreenPlayNote(T_E, 6U);
 	delay(85U);
 	NR30_REG = 0x0U;
 }
@@ -79,9 +79,9 @@ void countUpScore(UBYTE x, UBYTE y, UBYTE value, UBYTE delay_time) {
 		}
 
 		switch(j) {
-			case 0U: winscreenPlayNote(T_C, 6U); break;
-			case 1U: winscreenPlayNote(T_D, 7U); break;
-			case 2U: winscreenPlayNote(T_A, 6U); break;
+			case 0U: winscreenPlayNote(T_C, 5U); break;
+			case 1U: winscreenPlayNote(T_D, 6U); break;
+			case 2U: winscreenPlayNote(T_A, 5U); break;
 		}
 
 		j++;
