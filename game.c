@@ -369,7 +369,7 @@ void updatePlayer() {
 			}
 		}
 		if(CLICKED(KEY_USE) || (ticks & 15U) == 15U) {
-			spawnEntity(E_CLOUD, player_x, player_y+4U, 0U);
+			//spawnEntity(E_CLOUD, player_x, player_y+4U, 0U);
 			playSound(SFX_JETPACK);
 		}
 	}
@@ -500,7 +500,7 @@ void bouncePlayer(UBYTE entity, UBYTE str) {
 
 void updateEntities() {
 	UBYTE i, frame, type;
-	UBYTE xdist, ydist;
+	UBYTE xdist, ydist, ghost_move;
 
 	// Update last spawn position with last spawned
 	// enemy if it still exists
@@ -512,10 +512,10 @@ void updateEntities() {
 		}
 	}
 
-	xdist = 0U;
+	ghost_move = 0U;
 	if(ticks & 1U && !scene_state) {
 		ghost_frame++;
-		xdist = cos16_32[(ghost_frame+1U) & 31U] - cos16_32[ghost_frame & 31U];
+		ghost_move = cos16_32[(ghost_frame+1U) & 31U] - cos16_32[ghost_frame & 31U];
 	}
 
 	for(i = 0U; i != MAX_ENTITIES; ++i) {
@@ -556,7 +556,7 @@ void updateEntities() {
 				break;
 
 			case E_GHOST:
-				entity_x[i] += xdist;
+				entity_x[i] += ghost_move;
 				if(ghost_frame & 16U) {
 					entity_dir[i] = LEFT;
 				} else {
@@ -565,15 +565,6 @@ void updateEntities() {
 				break;
 
 			case E_CLOCK: break;
-
-			case E_CLOUD:
-				if((ticks & 3U) == 3U) entity_dir[i]++;
-				if(entity_dir[i] == 4U) {
-					entity_type[i] = E_NONE;
-					entity_y[i] = 0U;
-					continue;
-				}
-				break;
 
 			case E_PORTAL:
 				if(player_x < entity_x[i]) xdist = entity_x[i] - player_x;
@@ -600,6 +591,15 @@ void updateEntities() {
 					entity_dir[i] = LEFT;
 				} else {
 					entity_dir[i] = RIGHT;
+				}
+				break;
+
+			case E_CLOUD:
+				if((ticks & 3U) == 3U) entity_dir[i]++;
+				if(entity_dir[i] == 4U) {
+					entity_type[i] = E_NONE;
+					entity_y[i] = 0U;
+					continue;
 				}
 				break;
 		}
