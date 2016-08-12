@@ -15,13 +15,14 @@
 #include "mmlgb/driver/freq.h"
 
 extern UBYTE score_tally_song_data;
+extern UBYTE dream_score_song_data;
 
 const UBYTE winscreen_clear_text[5] = {
 	13U, 22U, 15U, 11U, 28U
 };
 
 const UBYTE sharkwave_data[16] = {
-	1U, 35U, 69U, 103U, 137U, 171U, 205U, 239U, 202U, 134U, 67U, 50U, 34U, 17U, 16U, 0U
+	1U, 35U, 69U, 103U, 138U, 166U, 205U, 239U, 255U, 134U, 67U, 50U, 162U, 17U, 16U, 0U
 };
 
 void drawScore(UBYTE x, UBYTE y, UBYTE value) {
@@ -48,7 +49,7 @@ void drawScore(UBYTE x, UBYTE y, UBYTE value) {
 void winscreenPlayNote(UBYTE note, UBYTE octave) {
 	UWORD freq3;
 
-	freq3 = freq[(octave << 4) + note];
+	freq3 = freq[(octave << 4) + note - MUS_FIRST_NOTE];
 
 	NR30_REG = 0x0U;
 	NR30_REG = 0x80U;
@@ -59,12 +60,27 @@ void winscreenPlayNote(UBYTE note, UBYTE octave) {
 
 void winscreenJingle() {
 	delay(30U);
-	winscreenPlayNote(T_Fs, 5U);
+	winscreenPlayNote(T_Fs, 6U);
 	delay(80U);
-	winscreenPlayNote(T_A, 5U);
+	winscreenPlayNote(T_A, 6U);
 	delay(80U);
-	winscreenPlayNote(T_E, 6U);
+	winscreenPlayNote(T_E, 7U);
 	delay(85U);
+	NR30_REG = 0x0U;
+}
+
+void winscreenTextJingle() {
+	delay(30U);
+	winscreenPlayNote(T_E, 6U);
+	delay(40U);
+	winscreenPlayNote(T_B, 6U);
+	delay(40U);
+	winscreenPlayNote(T_A, 7U);
+	delay(40U);
+	winscreenPlayNote(T_E, 7U);
+	delay(40U);
+	winscreenPlayNote(T_Cs, 8U);
+	delay(60U);
 	NR30_REG = 0x0U;
 }
 
@@ -79,9 +95,9 @@ void countUpScore(UBYTE x, UBYTE y, UBYTE value, UBYTE delay_time) {
 		}
 
 		switch(j) {
-			case 0U: winscreenPlayNote(T_C, 5U); break;
-			case 1U: winscreenPlayNote(T_D, 6U); break;
-			case 2U: winscreenPlayNote(T_A, 5U); break;
+			case 0U: winscreenPlayNote(T_C, 6U); break;
+			case 1U: winscreenPlayNote(T_D, 7U); break;
+			case 2U: winscreenPlayNote(T_A, 6U); break;
 		}
 
 		j++;
@@ -151,6 +167,10 @@ void enterWinscreen() {
 	// Did we come from end of ending sequence?
 	if(ending_finished) {
 		mus_setPaused(0U);
+	// Else did we complete Dream?
+	} else if(level == 4U) {
+		setMusicBank(6U);
+		playMusic(&dream_score_song_data);
 	// Else just play regular music
 	} else {
 		setMusicBank(4U);
@@ -169,7 +189,7 @@ void enterWinscreen() {
 	set_bkg_tiles(3U, 5U, 1U, 1U, &tile);
 	tile = (elapsed_time % 60U) % 10U;
 	set_bkg_tiles(4U, 5U, 1U, 1U, &tile);
-	winscreenJingle();
+	winscreenTextJingle();
 
 	delay(512U);
 
@@ -185,7 +205,7 @@ void enterWinscreen() {
 	set_bkg_tiles(1U, 10U, 1U, 1U, &tile);
 	tile = tmp % 10U;
 	set_bkg_tiles(2U, 10U, 1U, 1U, &tile);
-	winscreenJingle();
+	winscreenTextJingle();
 
 	delay(512U);
 

@@ -879,6 +879,7 @@ void intoPortalAnimation() {
 
 void saveCatAnimation() {
 	disable_interrupts();
+	stopMusic();
 	setMusicBank(9U);
 	playMusic(&level_clear_song_data);
 	enable_interrupts();
