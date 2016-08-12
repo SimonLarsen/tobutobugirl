@@ -15,10 +15,11 @@
 #include "unlocked.h"
 #include "jukebox.h"
 #include "ending.h"
+#include "wipe.h"
 
 const UBYTE RAM_SIG[8] = {'T','O','B','U','T','O','B','U'};
 
-void initRAM() {
+void initRAM(UBYTE force_clear) {
 	UBYTE initialized, i;
 
 	ENABLE_RAM_MBC1;
@@ -34,7 +35,7 @@ void initRAM() {
 	}
 
 	// Initialize memory
-	if(initialized == 0U) {
+	if(initialized == 0U || force_clear) {
 		for(i = 0U; i != 64U; ++i) {
 			ram_data[i] = 0U;
 		}
@@ -57,12 +58,13 @@ void initRAM() {
 }
 
 void main() {
-	initRAM();
+	initRAM(0U);
 	snd_init();
 
 	last_highscore_level = 0U;
 	last_highscore_slot = 5U;
 	last_progress = 0U;
+	selection = level = 1U;
 
 	joystate = oldjoystate = 0U;
 	level = 1U;
@@ -116,6 +118,10 @@ void main() {
 			case GAMESTATE_WINSCREEN:
 				setGameBank(7U);
 				enterWinscreen();
+				break;
+			case GAMESTATE_WIPE:
+				setGameBank(1U);
+				enterWipe();
 				break;
 		}
 	}

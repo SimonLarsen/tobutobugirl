@@ -6,7 +6,6 @@ UBYTE *selectGetBannerData();
 void selectUpdateScreen();
 void _selectUpdateScreen();
 void selectUpdateSprites();
-void selectScrollCircles();
 void enterSelect();
 
 #define SELECT_IDLE    0U

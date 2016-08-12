@@ -1,4 +1,4 @@
-sprites: data/sprite/sprites.h data/sprite/portal.h data/sprite/skin1.h data/sprite/skin2.h data/sprite/notes.h data/sprite/intro_sprites.h data/sprite/intro_flash.h data/sprite/bobblehead.h data/sprite/ending_sprites1.h data/sprite/ending_sprites2.h data/sprite/digital.h data/sprite/select_arrow.h data/sprite/togglecat.h data/sprite/pause_cloud1.h data/sprite/pause_cloud2.h data/sprite/shine.h data/sprite/title_cat.h
+sprites: data/sprite/sprites.h data/sprite/portal.h data/sprite/skin1.h data/sprite/skin2.h data/sprite/notes.h data/sprite/intro_sprites.h data/sprite/intro_flash.h data/sprite/bobblehead.h data/sprite/ending_sprites1.h data/sprite/ending_sprites2.h data/sprite/digital.h data/sprite/select_arrow.h data/sprite/togglecat.h data/sprite/pause_cloud1.h data/sprite/pause_cloud2.h data/sprite/shine.h data/sprite/title_cat.h data/sprite/wipe_marker.h
 
 data/sprite/sprites.h: data/sprite/sprites.png
 	$(IMGTOGB) --sprite --8x16 $< $@
@@ -49,6 +49,9 @@ data/sprite/shine.h: data/sprite/shine.png
 
 data/sprite/title_cat.h: data/sprite/title_cat.png
 	$(IMGTOGB) --sprite $< $@
+
+data/sprite/wipe_marker.h: data/sprite/wipe_marker.png
+	$(IMGTOGB) --sprite --8x16 $< $@
 
 	#$(IMGTOGB) --sprite data/sprite/characters.png data/sprite/characters.h # 40 tiles
 	#$(IMGTOGB) --sprite --8x16 data/sprite/arrow.png data/sprite/arrow.h

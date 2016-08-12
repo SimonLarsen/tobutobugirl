@@ -1,4 +1,4 @@
-backgrounds: logos_backgrounds intro_backgrounds title_backgrounds select_backgrounds ingame_backgrounds pause_backgrounds winscreen_backgrounds highscore_backgrounds ending_backgrounds unlocked_backgrounds jukebox_backgrounds
+backgrounds: logos_backgrounds intro_backgrounds title_backgrounds select_backgrounds ingame_backgrounds pause_backgrounds winscreen_backgrounds highscore_backgrounds ending_backgrounds unlocked_backgrounds jukebox_backgrounds wipe_backgrounds
 
 logos_backgrounds: data/bg/tangram.h
 
@@ -71,7 +71,7 @@ data/bg/highscore.h: data/bg/highscore.png
 	$(IMGTOGB) --map -O 47 $< $@
 
 data/sprite/empty.h: data/sprite/empty.png
-	$(IMGTOGB) --sprite $< $@
+	$Ma(IMGTOGB) --sprite $< $@
 
 ending_backgrounds: data/bg/ending_thanks.h
 
@@ -91,3 +91,7 @@ jukebox_backgrounds: data/bg/jukebox.h
 data/bg/jukebox.h: data/bg/jukebox.png
 	$(IMGTOGB) --map --rle -O 37 $< $@
 
+wipe_backgrounds: data/bg/wipe.h
+
+data/bg/wipe.h: data/bg/wipe.png
+	$(IMGTOGB) --map --rle  -O 13 $< $@

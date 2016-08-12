@@ -19,9 +19,6 @@
 #include "data/bg/selection4.h"
 #include "data/bg/selection_locked.h"
 
-UBYTE highscore_circle_index;
-UBYTE highscore_selection;
-
 extern UBYTE highscore_song_data;
 
 void initHighscore() {
@@ -37,8 +34,9 @@ void initHighscore() {
 	set_sprite_data(0U, arrow_data_length, arrow_data);
 	set_sprite_data(arrow_data_length, 1U, empty_data);
 
-	highscore_circle_index = 0U;;
-	highscore_selection = level;
+	ticks = 0U;
+	circle_index = 0U;;
+	sub_selection = level;
 
 	OBP0_REG = 0xD0U; // 11010000
 	BGP_REG = 0xE4U; // 11100100
@@ -53,11 +51,6 @@ void initHighscore() {
 
 	DISPLAY_ON;
 	enable_interrupts();
-}
-
-void highscoreScrollCircles() {
-	highscore_circle_index = (highscore_circle_index+1U) & 7U;
-	set_bkg_data(47U, 1U, &circles_data[(highscore_circle_index << 4)]);
 }
 
 void highscoreUpdateScreen() {
@@ -76,7 +69,7 @@ void _highscoreUpdateScreen() {
 	UBYTE *data;
 
 	// Select level images
-	tile = highscore_selection;
+	tile = sub_selection;
 	if(tile > levels_completed+1U) {
 		tile = 0U;
 	}
@@ -122,7 +115,7 @@ void _highscoreUpdateScreen() {
 	SWITCH_RAM_MBC1(0);
 
 	// Set scores
-	data = &ram_data[(highscore_selection-1U) << 4];
+	data = &ram_data[(sub_selection-1U) << 4];
 	for(i = 0U; i != 5U; ++i) {
 		tile = 10U;
 		for(j = 6U; j != 11U; ++j) {
@@ -182,24 +175,24 @@ void enterHighscore() {
 	playMusic(&highscore_song_data);
 	enable_interrupts();
 
-	ticks = 0U;
 	while(1) {
 		updateJoystate();
 
 		ticks++;
 		if((ticks & 3U) == 3U) {
-			highscoreScrollCircles();
+			circle_index = (circle_index+1U) & 7U;
+			set_bkg_data(47U, 1U, &circles_data[(circle_index << 4)]);
 		}
 
 		if(ISDOWN(J_LEFT)) {
-			highscore_selection--;
-			if(highscore_selection == 0U) highscore_selection = 4U;
+			sub_selection--;
+			if(sub_selection == 0U) sub_selection = 4U;
 			playSound(SFX_HIGHSCORE_SWITCH);
 			highscoreUpdateScreen();
 		}
 		if(ISDOWN(J_RIGHT)) {
-			highscore_selection++;
-			if(highscore_selection == 5U) highscore_selection = 1U;
+			sub_selection++;
+			if(sub_selection == 5U) sub_selection = 1U;
 			playSound(SFX_HIGHSCORE_SWITCH);
 			highscoreUpdateScreen();
 		}
@@ -224,7 +217,7 @@ void enterHighscore() {
 		setSprite(148U+offset, 72U, 1U, OBJ_PAL0 | FLIP_X);
 
 		if((ticks & 63U) < 16U
-		&& last_highscore_level == highscore_selection
+		&& last_highscore_level == sub_selection
 		&& last_highscore_slot < 5U) {
 			offset = 104U + (last_highscore_slot << 3);
 			setSprite(32U, offset, 4U, OBJ_PAL0);

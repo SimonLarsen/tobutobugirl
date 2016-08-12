@@ -16,14 +16,15 @@ void updateMusic();
 void stopMusic();
 
 extern UBYTE ticks, paused;
-extern UBYTE gamestate, scene_state, level, selection;
+extern UBYTE gamestate, scene_state;
+extern UBYTE level, levels_completed;
+extern UBYTE selection, sub_selection;
 extern UBYTE joystate, oldjoystate;
+extern UBYTE next_sprite, sprites_used;
 extern UBYTE elapsed_time, remaining_time, kills;
-extern UBYTE last_highscore_level;
-extern UBYTE last_highscore_slot;
+extern UBYTE last_highscore_level, last_highscore_slot;
 extern UBYTE last_progress;
 extern UBYTE game_bank, music_bank;
-extern UBYTE levels_completed;
 extern UBYTE ending_finished;
 extern UBYTE unlocked_bits;
 extern UBYTE scroll_x, scroll_y;
@@ -31,9 +32,10 @@ extern UBYTE player_x, player_y;
 extern UBYTE player_xdir, player_ydir;
 extern UBYTE player_xspeed, player_yspeed, player_bounce;
 extern UBYTE cat_x, cat_y, cat_frame;
-
+extern UBYTE arrow_offset1, arrow_offset2;
 extern UBYTE player_skin;
 extern UBYTE show_dashcounter;
+extern UBYTE circle_index;
 
 #define CLICKED(x) ((joystate & x) && (joystate & x) != (oldjoystate & x))
 #define RELEASED(x) (!(joystate & x) && (joystate & x) != (oldjoystate & x))
@@ -50,6 +52,7 @@ extern UBYTE show_dashcounter;
 #define GAMESTATE_JUKEBOX    8U
 #define GAMESTATE_UNLOCKED   9U
 #define GAMESTATE_ENDING    10U
+#define GAMESTATE_WIPE      11U
 
 #define UNLOCKED_CLOUDS 1U
 #define UNLOCKED_SPACE  2U

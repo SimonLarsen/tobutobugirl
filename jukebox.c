@@ -14,7 +14,6 @@
 #include "data/sprite/bobblehead.h"
 
 UBYTE jukebox_active;
-UBYTE jukebox_selection;
 UBYTE jukebox_playing;
 UBYTE jukebox_music_ticks;
 UBYTE jukebox_bop;
@@ -71,9 +70,10 @@ void initJukebox() {
 	OBP1_REG = 0xE4; // 11100100
 	BGP_REG = 0xE4U; // 11100100
 
+	sub_selection = 0U;
 	ticks = 0U;
 	jukebox_active = 0U;
-	jukebox_selection = 0U;
+	sub_selection = 0U;
 	jukebox_music_ticks = 0U;
 	jukeboxUpdateTitle();
 
@@ -143,7 +143,7 @@ void jukeboxUpdateSprites() {
 
 void jukeboxUpdateTitle() {
 	// 7,12
-	set_bkg_tiles(6U, 12U, 8U, 1U, &song_names[jukebox_selection]);
+	set_bkg_tiles(6U, 12U, 8U, 1U, &song_names[sub_selection]);
 }
 
 void enterJukebox() {
@@ -166,19 +166,19 @@ void enterJukebox() {
 		}
 
 		if(CLICKED(J_LEFT)) {
-			if(jukebox_selection == 0U) {
-				jukebox_selection = jukebox_unlocked[levels_completed] - 1U;
+			if(sub_selection == 0U) {
+				sub_selection = jukebox_unlocked[levels_completed] - 1U;
 			} else {
-				jukebox_selection--;
+				sub_selection--;
 			}
 
 			jukeboxUpdateTitle();
 			playSound(SFX_MENU_CONFIRM);
 		}
 		if(CLICKED(J_RIGHT)) {
-			jukebox_selection++;
-			if(jukebox_selection >= jukebox_unlocked[levels_completed]) {
-				jukebox_selection = 0U;
+			sub_selection++;
+			if(sub_selection >= jukebox_unlocked[levels_completed]) {
+				sub_selection = 0U;
 			}
 
 			jukeboxUpdateTitle();
@@ -187,7 +187,7 @@ void enterJukebox() {
 		if(CLICKED(J_A) || CLICKED(J_START)) {
 			stopMusic();
 			disable_interrupts();
-			switch(jukebox_selection) {
+			switch(sub_selection) {
 				case 0U:
 					setMusicBank(6U);
 					playMusic(&intro_song_data);
@@ -237,7 +237,7 @@ void enterJukebox() {
 			jukebox_music_ticks = 0U;
 			jukebox_bop = 1U;
 			jukebox_active = 1U;
-			jukebox_playing = jukebox_selection;
+			jukebox_playing = sub_selection;
 		}
 		if(CLICKED(J_B)) {
 			gamestate = GAMESTATE_SELECT;

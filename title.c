@@ -45,6 +45,7 @@ void initTitle() {
 
 	OBP0_REG = 0xD0U; // 11010000
 	BGP_REG = 0xE4U;  // 11100100
+	SPRITES_8x16;
 
 	clearSprites();
 
@@ -106,7 +107,6 @@ void enterTitle() {
 
 	fadeFromWhite(6U);
 
-	selection = level = 1U;
 	cheat_offset = 0U;
 
 	player_x = 220U;
@@ -150,6 +150,11 @@ void enterTitle() {
 			}
 
 			gamestate = GAMESTATE_SELECT;
+			break;
+		}
+		else if(ISDOWN(J_DOWN) && ISDOWN(J_SELECT) && ISDOWN(J_B)) {
+			gamestate = GAMESTATE_WIPE;
+			stopMusic();
 			break;
 		}
 

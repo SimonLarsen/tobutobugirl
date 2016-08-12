@@ -4,7 +4,6 @@
 void initHighscore();
 void highscoreUpdateScreen();
 void _highscoreUpdateScreen();
-void highscoreScrollCircles();
 void enterHighscore();
 
 #endif

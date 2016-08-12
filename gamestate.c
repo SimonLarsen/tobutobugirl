@@ -6,15 +6,15 @@
 #include "mmlgb/driver/music.h"
 
 UBYTE ticks, paused;
-UBYTE gamestate, scene_state, level, selection;
+UBYTE gamestate, scene_state;
+UBYTE level, levels_completed;
+UBYTE selection, sub_selection;
 UBYTE joystate, oldjoystate;
 UBYTE next_sprite, sprites_used;
 UBYTE elapsed_time, remaining_time, kills;
-UBYTE last_highscore_level;
-UBYTE last_highscore_slot;
+UBYTE last_highscore_level, last_highscore_slot;
 UBYTE last_progress;
 UBYTE game_bank, music_bank;
-UBYTE levels_completed;
 UBYTE ending_finished;
 UBYTE unlocked_bits;
 UBYTE scroll_x, scroll_y;
@@ -22,9 +22,10 @@ UBYTE player_x, player_y;
 UBYTE player_xdir, player_ydir;
 UBYTE player_xspeed, player_yspeed, player_bounce;
 UBYTE cat_x, cat_y, cat_frame;
-
+UBYTE arrow_offset1, arrow_offset2;
 UBYTE player_skin;
 UBYTE show_dashcounter;
+UBYTE circle_index;
 
 const UBYTE level_names[7][6] = {
 	{22U, 25U, 13U, 21U, 15U, 14U}, // "LOCKED"
