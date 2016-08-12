@@ -5,6 +5,7 @@
 #include "gamestate.h"
 #include "fade.h"
 #include "data/bg/intro_bg.h"
+#include "data/bg/ending_thanks.h"
 #include "data/sprite/ending_sprites1.h"
 #include "data/sprite/ending_sprites2.h"
 #include "mmlgb/driver/music.h"
@@ -33,6 +34,7 @@ void initEnding() {
 	BGP_REG  = 0xE4U; // 11101000
 
 	set_bkg_data_rle(0U, intro_bg_data_length, intro_bg_data);
+	set_bkg_data_rle(ending_thanks_offset, ending_thanks_data_length, ending_thanks_data);
 	set_bkg_tiles_rle(0U, 0U, intro_bg_tiles_width, intro_bg_tiles_height, intro_bg_tiles);
 
 	set_sprite_data(0U, ending_sprites1_data_length, ending_sprites1_data);
@@ -242,6 +244,12 @@ void updateEnding() {
 				if((ticks & 15U) == 15U) {
 					ending_frame++;
 				}
+
+				if(ending_frame == 12U) {
+					disable_interrupts();
+					set_bkg_tiles_rle(5U, 15U, ending_thanks_tiles_width, ending_thanks_tiles_height, ending_thanks_tiles);
+					enable_interrupts();
+				}
 			}
 
 			tmp = ending_frame;
@@ -280,7 +288,7 @@ void enterEnding() {
 	while(scene_state != ENDING_STATE_END) {
 		updateJoystate();
 
-		if(CLICKED(J_START)
+		if((CLICKED(J_START) || CLICKED(J_A))
 		&& (scene_state == ENDING_STATE_GET_UP || !unlocked_bits)) {
 			ending_finished = scene_state == ENDING_STATE_GET_UP;
 			scene_state = ENDING_STATE_END;
