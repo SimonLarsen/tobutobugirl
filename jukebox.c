@@ -5,6 +5,7 @@
 #include "gamestate.h"
 #include "cos.h"
 #include "sound.h"
+#include "mmlgb/driver/music.h"
 
 #include "data/bg/jukebox.h"
 #include "data/sprite/digital.h"
@@ -14,31 +15,40 @@
 
 UBYTE jukebox_active;
 UBYTE jukebox_selection;
+UBYTE jukebox_playing;
 UBYTE jukebox_music_ticks;
 UBYTE jukebox_bop;
 
-extern UBYTE intro_song_data;    // bank 6
-extern UBYTE title_song_data;     // bank 4
-extern UBYTE mainmenu_song_data;  // bank 4
-extern UBYTE plains_song_data;    // bank 5
-extern UBYTE clouds_song_data;    // bank 5
-extern UBYTE space_song_data;     // bank 5
-extern UBYTE dream_song_data;     // bank 5
-extern UBYTE highscore_song_data; // bank 4
-extern UBYTE score_tally_song_data; // bank 4
-#define JUKEBOX_NUM_SONGS 9
+extern UBYTE intro_song_data;        // bank 6
+extern UBYTE title_song_data;        // bank 4
+extern UBYTE mainmenu_song_data;     // bank 4
+extern UBYTE plains_song_data;       // bank 5
+extern UBYTE score_tally_song_data;  // bank 4
+extern UBYTE highscore_song_data;    // bank 4
+extern UBYTE clouds_song_data;       // bank 5
+extern UBYTE space_song_data;        // bank 5
+extern UBYTE ending_part1_song_data; // bank 9
+extern UBYTE ending_part2_song_data; // bank 9
+extern UBYTE dream_song_data;        // bank 5
+extern UBYTE dream_score_song_data;  // bank 6
 
-const UBYTE song_names[JUKEBOX_NUM_SONGS][6] = {
-	{19U, 24U, 30U, 28U, 25U, 10U}, // "INTRO "
-	{30U, 19U, 30U, 22U, 15U, 10U}, // "TITLE "
-	{10U, 23U, 15U, 24U, 31U, 10U}, // " MENU "
-	{30U, 11U, 22U, 22U, 35U, 10U}, // "TALLY "
-	{29U, 13U, 25U, 28U, 15U, 29U}, // "SCORES"
-	{26U, 22U, 11U, 19U, 24U, 29U}, // "PLAINS"
-	{13U, 22U, 25U, 31U, 14U, 29U}, // "CLOUDS"
-	{29U, 26U, 11U, 13U, 15U, 10U}, // "SPACE "
-	{14U, 28U, 15U, 11U, 23U, 10U}  // "DREAM "
+#define JUKEBOX_NUM_SONGS 11U
+
+const UBYTE song_names[JUKEBOX_NUM_SONGS][8] = {
+	{10U, 19U, 24U, 30U, 28U, 25U, 10U, 10U}, // " INTRO  "
+	{10U, 30U, 19U, 30U, 22U, 15U, 10U, 10U}, // " TITLE  "
+	{10U, 10U, 23U, 15U, 24U, 31U, 10U, 10U}, // "  MENU  "
+	{10U, 26U, 22U, 11U, 19U, 24U, 29U, 10U}, // " PLAINS "
+	{10U, 30U, 11U, 22U, 22U, 35U, 10U, 10U}, // " TALLY  "
+	{10U, 29U, 13U, 25U, 28U, 15U, 29U, 10U}, // " SCORES "
+	{10U, 13U, 22U, 25U, 31U, 14U, 29U, 10U}, // " CLOUDS "
+	{10U, 29U, 26U, 11U, 13U, 15U, 10U, 10U}, // " SPACE  "
+	{10U, 15U, 24U, 14U, 19U, 24U, 17U, 10U}, // " ENDING "
+	{10U, 14U, 28U, 15U, 11U, 23U, 10U, 10U}, // " DREAM  "
+	{16U, 11U, 28U, 15U, 33U, 15U, 22U, 22U}  // "FAREWELL"
 };
+
+const UBYTE jukebox_unlocked[5U] = { 4U, 7U, 8U, 10U, 11U }; 
 
 void initJukebox() {
 	disable_interrupts();
@@ -133,7 +143,7 @@ void jukeboxUpdateSprites() {
 
 void jukeboxUpdateTitle() {
 	// 7,12
-	set_bkg_tiles(7U, 12U, 6U, 1U, &song_names[jukebox_selection]);
+	set_bkg_tiles(6U, 12U, 8U, 1U, &song_names[jukebox_selection]);
 }
 
 void enterJukebox() {
@@ -146,22 +156,31 @@ void enterJukebox() {
 
 		ticks++;
 
+		if(mus_is_done() && jukebox_playing == 8U) {
+			jukebox_playing = 42U;
+			disable_interrupts();
+			stopMusic();
+			setMusicBank(9U);
+			playMusic(&ending_part2_song_data);
+			enable_interrupts();
+		}
+
 		if(CLICKED(J_LEFT)) {
 			if(jukebox_selection == 0U) {
-				jukebox_selection = 5U + levels_completed;
-				if(jukebox_selection == JUKEBOX_NUM_SONGS) jukebox_selection--;
+				jukebox_selection = jukebox_unlocked[levels_completed] - 1U;
 			} else {
 				jukebox_selection--;
 			}
+
 			jukeboxUpdateTitle();
 			playSound(SFX_MENU_CONFIRM);
 		}
 		if(CLICKED(J_RIGHT)) {
 			jukebox_selection++;
-			if(jukebox_selection > 5U+levels_completed
-			|| jukebox_selection == JUKEBOX_NUM_SONGS) {
+			if(jukebox_selection >= jukebox_unlocked[levels_completed]) {
 				jukebox_selection = 0U;
 			}
+
 			jukeboxUpdateTitle();
 			playSound(SFX_MENU_CONFIRM);
 		}
@@ -182,16 +201,16 @@ void enterJukebox() {
 					playMusic(&mainmenu_song_data);
 					break;
 				case 3U:
-					setMusicBank(4U);
-					playMusic(&score_tally_song_data);
+					setMusicBank(5U);
+					playMusic(&plains_song_data);
 					break;
 				case 4U:
 					setMusicBank(4U);
-					playMusic(&highscore_song_data);
+					playMusic(&score_tally_song_data);
 					break;
 				case 5U:
-					setMusicBank(5U);
-					playMusic(&plains_song_data);
+					setMusicBank(4U);
+					playMusic(&highscore_song_data);
 					break;
 				case 6U:
 					setMusicBank(5U);
@@ -202,14 +221,23 @@ void enterJukebox() {
 					playMusic(&space_song_data);
 					break;
 				case 8U:
+					setMusicBank(9U);
+					playMusic(&ending_part1_song_data);
+					break;
+				case 9U:
 					setMusicBank(6U);
 					playMusic(&dream_song_data);
+					break;
+				case 10U:
+					setMusicBank(6U);
+					playMusic(&dream_score_song_data);
 					break;
 			}
 			enable_interrupts();
 			jukebox_music_ticks = 0U;
 			jukebox_bop = 1U;
 			jukebox_active = 1U;
+			jukebox_playing = jukebox_selection;
 		}
 		if(CLICKED(J_B)) {
 			gamestate = GAMESTATE_SELECT;
