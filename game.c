@@ -352,10 +352,9 @@ void updatePlayer() {
 				dashing = 0U;
 			}
 		}
-	}
-
+	} 
 	// Using boost
-	if(ISDOWN(KEY_USE) && blips) {
+	else if(ISDOWN(KEY_USE) && blips) {
 		blips--;
 		if(player_ydir == UP && player_yspeed < MAX_FLY_SPEED) {
 			player_yspeed += 2U;
