@@ -26,7 +26,6 @@ extern UBYTE sfx_stomp_ghost_data;
 extern UBYTE sfx_time_low_data;
 extern UBYTE sfx_time_out_data;
 extern UBYTE sfx_time_pickup_data;
-extern UBYTE sfx_warp_end_data;
 extern UBYTE sfx_warp_start_data;
 
 UBYTE snd_active1, snd_active4;
@@ -67,7 +66,6 @@ const UBYTE sfx_priority[SFX_COUNT] = {
 	9U, // SFX_TIME_LOW
 	9U, // SFX_TIME_OUT
 	9U, // SFX_TIME_PICKUP
-	8U, // SFX_WARP_END
 	8U  // SFX_WARP_START
 };
 
@@ -129,8 +127,6 @@ void playSound(UBYTE id) {
 			data = &sfx_time_out_data; break;
 		case SFX_TIME_PICKUP:
 			data = &sfx_time_pickup_data; break;
-		case SFX_WARP_END:
-			data = &sfx_warp_end_data; break;
 		case SFX_WARP_START:
 			data = &sfx_warp_start_data; break;
 	}

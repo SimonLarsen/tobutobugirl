@@ -1,3 +1,5 @@
+;For Tobu Tobu Girl
+;Compile with MMLGB
 A l=1 o5 v14 @wd0 g @wd1 g+b v13 >cc+dc+c v12 <b v6 a v2 >cc+dc+c v3 <b v2 a g+ v1 gf
 
 D l=1 r o3 v13 a+>a+<b>  b v15 b v13 b <b=4 v11 a+ < v7 a+ v4 a+ v2 a+

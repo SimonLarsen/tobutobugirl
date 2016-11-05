@@ -828,7 +828,7 @@ void intoPortalAnimation() {
 	set_sprite_data(0U, portal_data_length, portal_data);
 	enable_interrupts();
 
-	playSound(SFX_WARP_END);
+	playSound(SFX_WARP_START);
 
 	for(ticks = 0U; ticks != 32U; ++ticks) {
 		if(ticks & 4U) {

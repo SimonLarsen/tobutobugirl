@@ -1,3 +1,5 @@
+;For Tobu Tobu Girl
+;Compile with MMLGB
 @wave0 = {0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 12 10 8 6 4 3 3 2 2 2 1 1 1 0 0 0 }
 
 A t75 l64 o6 @wd2 v11 @ve-1 d+ v4 d+ v11 e v4 e v11 f+ v4 f+ v11 b v4 b r32 v11 f+ v4 f+> v11 d+4 L r8

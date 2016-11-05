@@ -1,3 +1,5 @@
+;For Tobu Tobu Girl
+;Compile with MMLGB
 AB t135
 A v9 @ve-2
 B v4 @po1 r16.
@@ -13,4 +15,4 @@ B v1
 AB >c+<
 A a^8
 B @po0 a^8
-AB ^1^1 L r32
+AB L r1
