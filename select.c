@@ -27,10 +27,10 @@ UBYTE select_scroll_dir;
 UBYTE select_cat_state;
 UBYTE cat_frame_reverse;
 
-#define CAT_OFF 0U
-#define CAT_IN  1U
-#define CAT_ON  2U
-#define CAT_OUT 3U
+#define CAT_ANIM_OFF 0U
+#define CAT_ANIM_IN  1U
+#define CAT_ANIM_ON  2U
+#define CAT_ANIM_OUT 3U
 
 extern UBYTE mainmenu_song_data;
 
@@ -53,11 +53,11 @@ void initSelect() {
 	arrow_offset1 = 0U;
 	arrow_offset2 = 0U;
 
-	select_cat_state = CAT_OFF;
+	select_cat_state = CAT_ANIM_OFF;
 	cat_frame = 0U;
 	cat_frame_reverse = 0U;
 	if(player_skin == 2U) {
-		select_cat_state = CAT_IN;
+		select_cat_state = CAT_ANIM_IN;
 		cat_frame = 4U;
 	}
 
@@ -126,7 +126,7 @@ void selectUpdateSprites() {
 
 	if(levels_completed >= 3U) {
 		switch(select_cat_state) {
-			case CAT_OFF:
+			case CAT_ANIM_OFF:
 				if((ticks & 15U) == 15U) {
 					if(cat_frame_reverse) {
 						cat_frame--;
@@ -137,28 +137,28 @@ void selectUpdateSprites() {
 					else if(cat_frame == 4U) cat_frame_reverse = 1U;
 				}
 				if(CLICKED(J_SELECT)) {
-					select_cat_state = CAT_IN;
+					select_cat_state = CAT_ANIM_IN;
 					player_skin = 2U;
 					playSound(SFX_CAT_ENABLE);
 				}
 				break;
-			case CAT_IN:
+			case CAT_ANIM_IN:
 				if((ticks & 7U) == 7U) cat_frame++;
-				if(cat_frame == 8U) select_cat_state = CAT_ON;
+				if(cat_frame == 8U) select_cat_state = CAT_ANIM_ON;
 				break;
-			case CAT_ON:
+			case CAT_ANIM_ON:
 				if((ticks & 15U) == 15U) cat_frame++;
 				if(cat_frame == 10U) cat_frame = 8U;
 				if(CLICKED(J_SELECT)) {
-					select_cat_state = CAT_OUT;
+					select_cat_state = CAT_ANIM_OUT;
 					player_skin = 1U;
 					playSound(SFX_CAT_DISABLE);
 				}
 				break;
-			case CAT_OUT:
+			case CAT_ANIM_OUT:
 				if((ticks & 7U) == 7U) cat_frame--;
 				if(cat_frame == 4U) {
-					select_cat_state = CAT_OFF;
+					select_cat_state = CAT_ANIM_OFF;
 					cat_frame_reverse = 1U;
 				}
 				break;
