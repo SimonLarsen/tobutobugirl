@@ -15,7 +15,7 @@ UBYTE elapsed_time, remaining_time, kills;
 UBYTE last_highscore_level, last_highscore_slot;
 UBYTE last_progress;
 UBYTE game_bank, music_bank;
-UBYTE ending_finished;
+UBYTE ending_flags;
 UBYTE unlocked_bits;
 UBYTE scroll_x, scroll_y;
 UBYTE player_x, player_y;

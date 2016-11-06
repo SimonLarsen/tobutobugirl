@@ -20,6 +20,7 @@
 #include "data/bg/selection_locked.h"
 
 extern UBYTE highscore_song_data;
+extern UBYTE dream_score_song_data;
 
 void initHighscore() {
 	disable_interrupts();
@@ -171,8 +172,14 @@ void enterHighscore() {
 	fadeFromWhite(6U);
 
 	disable_interrupts();
-	setMusicBank(4U);
-	playMusic(&highscore_song_data);
+	if(ending_flags & ENDING_FLAG_FROM_DREAM) {
+		setMusicBank(6U);
+		playMusic(&dream_score_song_data);
+	} else {
+		setMusicBank(4U);
+		playMusic(&highscore_song_data);
+	}
+	ending_flags = 0U;
 	enable_interrupts();
 
 	while(1) {

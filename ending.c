@@ -290,7 +290,9 @@ void enterEnding() {
 
 		if((CLICKED(J_START) || CLICKED(J_A))
 		&& (scene_state == ENDING_STATE_GET_UP || !unlocked_bits)) {
-			ending_finished = scene_state == ENDING_STATE_GET_UP;
+			if(scene_state == ENDING_STATE_GET_UP) {
+				ending_flags |= ENDING_FLAG_ENDING_FINISHED;
+			}
 			scene_state = ENDING_STATE_END;
 		}
 

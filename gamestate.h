@@ -25,7 +25,7 @@ extern UBYTE elapsed_time, remaining_time, kills;
 extern UBYTE last_highscore_level, last_highscore_slot;
 extern UBYTE last_progress;
 extern UBYTE game_bank, music_bank;
-extern UBYTE ending_finished;
+extern UBYTE ending_flags;
 extern UBYTE unlocked_bits;
 extern UBYTE scroll_x, scroll_y;
 extern UBYTE player_x, player_y;
@@ -62,6 +62,9 @@ extern UBYTE circle_index;
 #define TIME_BONUS (2U*(level_max_time[level-1U] - elapsed_time))
 #define KILL_BONUS (kills)
 #define TOTAL_SCORE (TIME_BONUS + KILL_BONUS)
+
+#define ENDING_FLAG_ENDING_FINISHED 1U
+#define ENDING_FLAG_FROM_DREAM      2U
 
 extern const UBYTE level_names[7][6];
 extern const UBYTE level_max_time[4];

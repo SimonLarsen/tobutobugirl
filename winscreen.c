@@ -15,7 +15,6 @@
 #include "mmlgb/driver/freq.h"
 
 extern UBYTE score_tally_song_data;
-extern UBYTE dream_score_song_data;
 
 const UBYTE winscreen_clear_text[5] = {
 	13U, 22U, 15U, 11U, 28U
@@ -165,12 +164,8 @@ void enterWinscreen() {
 
 	disable_interrupts();
 	// Did we come from end of ending sequence?
-	if(ending_finished) {
+	if(ending_flags & ENDING_FLAG_ENDING_FINISHED) {
 		mus_setPaused(0U);
-	// Else did we complete Dream?
-	} else if(level == 4U) {
-		setMusicBank(6U);
-		playMusic(&dream_score_song_data);
 	// Else just play regular music
 	} else {
 		setMusicBank(4U);

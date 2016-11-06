@@ -70,6 +70,7 @@ void main() {
 	level = 1U;
 	unlocked_bits = 0U;
 	player_skin = 1U;
+	ending_flags = 0U;
 	
 	gamestate = GAMESTATE_LOGOS;
 

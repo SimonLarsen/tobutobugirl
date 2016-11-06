@@ -1075,7 +1075,10 @@ ingame_start:
 		wait_sound_done();
 	}
 	else if(scene_state == INGAME_COMPLETED) {
-		ending_finished = 0U;
+		ending_flags = 0U;
+		if(level == 4U) {
+			ending_flags |= ENDING_FLAG_FROM_DREAM;
+		}
 		if(level == 3U && player_skin == 1U) {
 			saveCatAnimation();
 			gamestate = GAMESTATE_ENDING;
