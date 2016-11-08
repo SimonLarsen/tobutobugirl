@@ -244,12 +244,14 @@ void updateInput() {
 	if(CLICKED(KEY_DASH)) {
 		if(dashes) {
 			dash_xdir = dash_ydir = NONE;
+			
 			if(ISDOWN(J_LEFT)) dash_xdir = LEFT;
 			else if(ISDOWN(J_RIGHT)) dash_xdir = RIGHT;
+
 			if(ISDOWN(J_UP)) dash_ydir = UP;
 			else if(ISDOWN(J_DOWN)) dash_ydir = DOWN;
 
-			if(dash_xdir != NONE || dash_ydir != NONE) {
+			if(dash_xdir || dash_ydir) {
 				dashing = DASH_TIME;
 				dashes--;
 				spawnEntity(E_CLOUD, player_x, player_y-6U, 0U);
@@ -266,10 +268,8 @@ void updatePlayer() {
 	// Check entity collisions
 	for(i = 0U; i != MAX_ENTITIES; ++i) {
 		if(entity_type[i] && entity_type[i] <= LAST_COLLIDABLE
-		&& player_x <= entity_x[i]+11U
-		&& player_x >= entity_x[i]-11U
-		&& player_y <= entity_y[i]+9U
-		&& player_y >= entity_y[i]-11U) {
+		&& (player_x - entity_x[i] + 11U) <= 22U
+		&& (player_y - entity_y[i] + 11U) <= 22U) {
 			type = entity_type[i];
 			// Spikes and fireballs
 			if(type <= E_FIREBALL) {
@@ -307,7 +307,7 @@ void updatePlayer() {
 					if(player_y < entity_y[i]) diff += entity_y[i] - player_y;
 					else diff += player_y - entity_y[i];
 
-					if(diff < 12U) killPlayer();
+					if(diff < 10U) killPlayer();
 				}
 			// Clock pickup
 			} else if(type == E_CLOCK) {
@@ -318,8 +318,8 @@ void updatePlayer() {
 				playSound(SFX_TIME_PICKUP);
 			// End level portal
 			} else if(type == E_PORTAL
-			&& player_y > entity_y[i]-4U && player_y < entity_y[i]+4U
-			&& player_x > entity_x[i]-4U && player_x < entity_x[i]+4U) {
+			&& (player_y - entity_y[i] + 4U) <= 8U
+			&& (player_x - entity_x[i] + 4U) <= 8U) {
 				scene_state = INGAME_COMPLETED;
 				player_x = entity_x[i];
 				player_y = entity_y[i];
@@ -368,7 +368,6 @@ void updatePlayer() {
 			}
 		}
 		if(CLICKED(KEY_USE) || (ticks & 15U) == 15U) {
-			//spawnEntity(E_CLOUD, player_x, player_y+4U, 0U);
 			playSound(SFX_JETPACK);
 		}
 	}
@@ -512,7 +511,7 @@ void updateEntities() {
 	}
 
 	ghost_move = 0U;
-	if(ticks & 1U && !scene_state) {
+	if(!(ticks & 1U) && !scene_state) {
 		ghost_frame++;
 		ghost_move = cos16_32[(ghost_frame+1U) & 31U] - cos16_32[ghost_frame & 31U];
 	}
@@ -520,13 +519,20 @@ void updateEntities() {
 	for(i = 0U; i != MAX_ENTITIES; ++i) {
 		type = entity_type[i];
 
+		// Scroll entitites
+		entity_y[i] += scroll_y;
+		if(entity_y[i] > SCREENHEIGHT+16U) {
+			entity_type[i] = E_NONE;
+			continue;
+		}
+
 		// Update entity
 		switch(type) {
 			case E_NONE: continue;
 			case E_SPIKES: break;
 
 			case E_FIREBALL:
-				if(ticks & 1U && !scene_state) {
+				if(!(ticks & 1U) && !scene_state) {
 					if(entity_dir[i] == RIGHT) {
 						entity_x[i]++;
 						if(entity_x[i] >= 152U) entity_dir[i] = LEFT;
@@ -556,11 +562,8 @@ void updateEntities() {
 
 			case E_GHOST:
 				entity_x[i] += ghost_move;
-				if(ghost_frame & 16U) {
-					entity_dir[i] = LEFT;
-				} else {
-					entity_dir[i] = RIGHT;
-				}
+				if(ghost_frame & 16U) entity_dir[i] = LEFT;
+				else entity_dir[i] = RIGHT;
 				break;
 
 			case E_CLOCK: break;
@@ -568,6 +571,7 @@ void updateEntities() {
 			case E_PORTAL:
 				if(player_x < entity_x[i]) xdist = entity_x[i] - player_x;
 				else xdist = player_x - entity_x[i];
+
 				if(player_y < entity_y[i]) ydist = entity_y[i] - player_y;
 				else ydist = player_y - entity_y[i];
 
@@ -586,11 +590,8 @@ void updateEntities() {
 					player_ydir = UP;
 				}
 
-				if(ticks & 8U) {
-					entity_dir[i] = LEFT;
-				} else {
-					entity_dir[i] = RIGHT;
-				}
+				if(ticks & 8U) entity_dir[i] = LEFT;
+				else entity_dir[i] = RIGHT;
 				break;
 
 			case E_CLOUD:
@@ -601,13 +602,6 @@ void updateEntities() {
 					continue;
 				}
 				break;
-		}
-
-		// Scroll entitites
-		entity_y[i] += scroll_y;
-		if(entity_y[i] > SCREENHEIGHT+16U) {
-			entity_type[i] = E_NONE;
-			continue;
 		}
 
 		// Draw entities on screen
