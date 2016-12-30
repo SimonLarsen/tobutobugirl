@@ -166,7 +166,7 @@ void initGame() {
 	scroll_y = 0U;
 
 	scene_state = INGAME_ACTIVE;
-	blips = 128U;
+	blips = MAX_BOOST;
 	blip_bar = 0U;
 	kills = 0U;
 
@@ -178,9 +178,10 @@ void initGame() {
 	portal_spawned = 0U;
 	repeat_spikes = 0U;
 	ghost_frame = 0U;
+	next_entity = 0U;
 
 	timer = 0U;
-	remaining_time = 32U;
+	remaining_time = MAX_TIME;
 	elapsed_time = 0U;
 
 	move_bkg(0U, 112U);
@@ -280,8 +281,8 @@ void updatePlayer() {
 					if(dashing && dash_ydir == DOWN) {
 						entity_type[i] = E_NONE;
 						spawnEntity(E_CLOUD, player_x, player_y+5U, 0U);
-						blips += 32U;
-						if(blips > 128U) blips = 128U;
+						blips += STOMP_BONUS;
+						if(blips > MAX_BOOST) blips = MAX_BOOST;
 						kills++;
 						playSound(type+SFX_STOMP_ALIEN-E_ALIEN);
 						bouncePlayer(i, BUMP_SPEED);
@@ -313,7 +314,7 @@ void updatePlayer() {
 			} else if(type == E_CLOCK) {
 				entity_type[i] = E_NONE;
 				remaining_time += CLOCK_BONUS;
-				if(remaining_time > 32U) remaining_time = 32;
+				if(remaining_time > MAX_TIME) remaining_time = MAX_TIME;
 				updateHUDTime();
 				playSound(SFX_TIME_PICKUP);
 			// End level portal
@@ -466,7 +467,7 @@ void updateHUD() {
 	}
 
 	// Low on time marker
-	if(remaining_time < 12U && ticks & 16U) {
+	if(remaining_time < LOW_TIME && ticks & 16U) {
 		setSprite(136U, 24U, 32U, OBJ_PAL0);
 		setSprite(144U, 24U, 34U, OBJ_PAL0);
 	}
