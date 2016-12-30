@@ -186,6 +186,7 @@ void enterJukebox() {
 		}
 		if(CLICKED(J_A) || CLICKED(J_START)) {
 			stopMusic();
+			wait_sound_done();
 			disable_interrupts();
 			switch(sub_selection) {
 				case 0U:

@@ -59,7 +59,7 @@ extern UBYTE circle_index;
 #define UNLOCKED_MUSIC  4U
 #define UNLOCKED_DREAM  8U
 
-#define TIME_BONUS (2U*(level_max_time[level-1U] - elapsed_time))
+#define TIME_BONUS (3U*(level_max_time[level-1U] - elapsed_time))
 #define KILL_BONUS (kills)
 #define TOTAL_SCORE (TIME_BONUS + KILL_BONUS)
 

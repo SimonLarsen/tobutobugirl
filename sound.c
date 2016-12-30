@@ -81,6 +81,18 @@ void wait_sound_done() {
 	}
 }
 
+void stop_sound1() {
+	snd_active1 = 0U;
+	snd_priority1 = 0U;
+	mus_restore1();
+}
+
+void stop_sound4() {
+	snd_active4 = 0U;
+	snd_priority4 = 0U;
+	mus_restore4();
+}
+
 void playSound(UBYTE id) {
 	UBYTE *data, *data1, *data4;
 	UBYTE prio;
@@ -298,9 +310,7 @@ void snd_update1() {
 			case T_WAVE:
 				break;
 			case T_EOF:
-				snd_active1 = 0U;
-				snd_priority1 = 0U;
-				mus_restore1();
+				stop_sound1();
 				return;
 		}
 	}
@@ -404,9 +414,7 @@ void snd_update4() {
 			case T_WAVE:
 				break;
 			case T_EOF:
-				snd_active4 = 0U;
-				snd_priority4 = 0U;
-				mus_restore4();
+				stop_sound4();
 				return;
 		}
 	}
