@@ -41,7 +41,7 @@ void enterGame();
 #define SPAWN_INTERVAL 36U
 #define MAX_TIME 32U
 #define LOW_TIME 12U
-#define CLOCK_BONUS 8U
+#define CLOCK_BONUS 4U
 
 #define MAX_BOOST 128U
 #define STOMP_BONUS 32U

@@ -72,7 +72,7 @@ void main() {
 	player_skin = 1U;
 	ending_flags = 0U;
 	
-	gamestate = GAMESTATE_SELECT;
+	gamestate = GAMESTATE_LOGOS;
 
 	SWITCH_16_8_MODE_MBC1;
 	add_TIM(updateMusic);

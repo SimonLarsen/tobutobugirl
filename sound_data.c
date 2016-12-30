@@ -20,3 +20,4 @@
 #include "data/sounds/sfx_time_out.h"
 #include "data/sounds/sfx_time_pickup.h"
 #include "data/sounds/sfx_warp_start.h"
+#include "data/sounds/sfx_rank_crash.h"

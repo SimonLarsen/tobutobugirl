@@ -324,7 +324,7 @@ void enterSelect() {
 			offset += 4U;
 		}
 		for(i = 0U; i != 6; ++i) {
-			setSprite(offset+(i << 3), 69U+cos4_16[(i+(ticks >> 1)) & 15U], level_names[name_index][i], OBJ_PAL0);
+			setSprite(offset+(i << 3), 70U+cos4_16[(i+(ticks >> 1)) & 15U], level_names[name_index][i], OBJ_PAL0);
 		}
 
 		selectUpdateSprites();

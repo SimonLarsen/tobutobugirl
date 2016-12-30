@@ -2,6 +2,7 @@
 #include "defines.h"
 #include "gamestate.h"
 #include "game_backgrounds.h"
+#include "win_backgrounds.h"
 #include "cloud_animations.h"
 #include "mmlgb/driver/music.h"
 
@@ -38,6 +39,23 @@ const UBYTE level_names[7][6] = {
 };
 
 const UBYTE level_max_time[4] = { 56U, 56U, 64U, 64U };
+
+const UBYTE level_tiers[4][4] = {
+	{120U, 100U, 60U, 0U},
+	{120U, 100U, 60U, 0U},
+	{120U, 100U, 60U, 0U},
+	{120U, 100U, 60U, 0U}
+};
+
+const UBYTE rank_letters[4] = {29U, 11U, 12U, 13U};
+
+UBYTE getRank(UBYTE score, UBYTE level) {
+	UBYTE i;
+	for(i = 0U; i != 4U; ++i) {
+		if(score >= level_tiers[level-1U][i]) break;
+	}
+	return i;
+}
 
 void setGameBank(UBYTE i) {
 	game_bank = i;
@@ -95,7 +113,7 @@ void clearRemainingSprites() {
 }
 
 void setIngameBackground(UBYTE level) {
-	SWITCH_ROM_MBC1(7U);
+	SWITCH_ROM_MBC1(GAME_BACKGROUNDS_BANK);
 
 	switch(level) {
 		case 1U:
@@ -124,8 +142,34 @@ void setIngameBackground(UBYTE level) {
 	SWITCH_ROM_MBC1(game_bank);
 }
 
+void setWinscreenBackground(UBYTE level) {
+	SWITCH_ROM_MBC1(WINSCREEN_BACKGROUNDS_BANK);
+
+	switch(level) {
+		case 1:
+			set_bkg_data_rle(win1_offset, win1_data_length, win1_data);
+			set_bkg_tiles_rle(10U, 5U, win1_tiles_width, win1_tiles_height, win1_tiles);
+			break;
+		case 2:
+			set_bkg_data_rle(win2_offset, win2_data_length, win2_data);
+			set_bkg_tiles_rle(8U, 3U, win2_tiles_width, win2_tiles_height, win2_tiles);
+			break;
+		case 3:
+			set_bkg_data_rle(win3_offset, win3_data_length, win3_data);
+			set_bkg_tiles_rle(8U, 3U, win3_tiles_width, win3_tiles_height, win3_tiles);
+			break;
+		case 4:
+			set_bkg_data_rle(win4_offset, win4_data_length, win4_data);
+			set_bkg_tiles_rle(8U, 6U, win4_tiles_width, win4_tiles_height, win4_tiles);
+			break;
+	}
+
+
+	SWITCH_ROM_MBC1(game_bank);
+}
+
 void setCloudAnimation(UBYTE skin) {
-	SWITCH_ROM_MBC1(8U);
+	SWITCH_ROM_MBC1(CLOUD_ANIMATIONS_BANK);
 
 	switch(skin) {
 		case 1U:

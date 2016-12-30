@@ -26,7 +26,7 @@ OBJ_BANK7=winscreen.o game_backgrounds.o
 
 OBJ_BANK8=cloud_animations.o title.o
 
-OBJ_BANK9=logos.o
+OBJ_BANK9=logos.o win_backgrounds.o
 
 OBJ_BANK10=sound_data.o
 

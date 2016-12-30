@@ -1,15 +1,16 @@
 #include <gb/gb.h>
 #include <string.h>
+#include <rand.h>
+#include "defines.h"
 #include "gamestate.h"
 #include "fade.h"
 #include "winscreen.h"
+#include "sound.h"
 
 #include "data/sprite/characters.h"
 #include "data/bg/win_base.h"
-#include "data/bg/win1.h"
-#include "data/bg/win2.h"
-#include "data/bg/win3.h"
-#include "data/bg/win4.h"
+#include "data/bg/rank_banner.h"
+#include "data/sprite/ranks.h"
 #include "mmlgb/driver/music.h"
 #include "mmlgb/driver/notes.h"
 #include "mmlgb/driver/freq.h"
@@ -59,28 +60,71 @@ void winscreenPlayNote(UBYTE note, UBYTE octave) {
 
 void winscreenJingle() {
 	delay(30U);
-	winscreenPlayNote(T_Fs, 6U);
-	delay(80U);
-	winscreenPlayNote(T_A, 6U);
-	delay(80U);
-	winscreenPlayNote(T_E, 7U);
-	delay(85U);
+	winscreenPlayNote(T_Fs, 6U); delay(80U);
+	winscreenPlayNote(T_A,  6U); delay(80U);
+	winscreenPlayNote(T_E,  7U); delay(85U);
 	NR30_REG = 0x0U;
 }
 
 void winscreenTextJingle() {
 	delay(30U);
-	winscreenPlayNote(T_E, 6U);
-	delay(40U);
-	winscreenPlayNote(T_B, 6U);
-	delay(40U);
-	winscreenPlayNote(T_A, 7U);
-	delay(40U);
-	winscreenPlayNote(T_E, 7U);
-	delay(40U);
-	winscreenPlayNote(T_Cs, 8U);
-	delay(60U);
+	winscreenPlayNote(T_E,  6U); delay(40U);
+	winscreenPlayNote(T_B,  6U); delay(40U);
+	winscreenPlayNote(T_A,  7U); delay(40U);
+	winscreenPlayNote(T_E,  7U); delay(40U);
+	winscreenPlayNote(T_Cs, 8U); delay(60U);
 	NR30_REG = 0x0U;
+}
+
+void winscreenShowRank() {
+	UBYTE i, offset;
+
+	disable_interrupts();
+	set_bkg_tiles_rle(0U, 6U, 20U, 6U, rank_banner_tiles);
+	enable_interrupts();
+
+	delay(255U);
+
+	for(offset = 64U; offset != 252U; offset -= 4U) {
+		setSprite(104U-offset, 72U-offset, 0U, OBJ_PAL0);
+		setSprite(112U-offset, 72U-offset, 2U, OBJ_PAL0);
+		setSprite(120U+offset, 72U-offset, 4U, OBJ_PAL0);
+		setSprite(128U+offset, 72U-offset, 6U, OBJ_PAL0);
+
+		setSprite(104U-offset, 88U+offset,  8U, OBJ_PAL0);
+		setSprite(112U-offset, 88U+offset, 10U, OBJ_PAL0);
+		setSprite(120U+offset, 88U+offset, 12U, OBJ_PAL0);
+		setSprite(128U+offset, 88U+offset, 14U, OBJ_PAL0);
+
+		wait_vbl_done();
+	}
+
+	clearRemainingSprites();
+
+	setSprite(104U, 72U, 0U, OBJ_PAL0);
+	setSprite(112U, 72U, 2U, OBJ_PAL0);
+	setSprite(120U, 72U, 4U, OBJ_PAL0);
+	setSprite(128U, 72U, 6U, OBJ_PAL0);
+
+	setSprite(104U, 88U, 8U, OBJ_PAL0);
+	setSprite(112U, 88U, 10U, OBJ_PAL0);
+	setSprite(120U, 88U, 12U, OBJ_PAL0);
+	setSprite(128U, 88U, 14U, OBJ_PAL0);
+
+	playSound(SFX_RANK_CRASH);
+
+	// shake screen
+	for(i = 0; i != 6U; ++i) {
+		move_bkg(((UBYTE)rand() & 4U) - 2U, ((UBYTE)rand() & 4U) - 2U);
+		wait_vbl_done();
+		snd_update();
+		wait_vbl_done();
+		snd_update();
+	}
+
+	move_bkg(0U, 0U);
+
+	wait_sound_done();
 }
 
 void countUpScore(UBYTE x, UBYTE y, UBYTE value, UBYTE delay_time) {
@@ -92,7 +136,6 @@ void countUpScore(UBYTE x, UBYTE y, UBYTE value, UBYTE delay_time) {
 		if(CLICKED(J_A) || CLICKED(J_B) || CLICKED(J_START)) {
 			i = value;
 		}
-
 		switch(j) {
 			case 0U: winscreenPlayNote(T_C, 6U); break;
 			case 1U: winscreenPlayNote(T_D, 7U); break;
@@ -108,6 +151,7 @@ void countUpScore(UBYTE x, UBYTE y, UBYTE value, UBYTE delay_time) {
 }
 
 void initWinscreen() {
+	UBYTE rank;
 	UBYTE *data;
 
 	disable_interrupts();
@@ -119,27 +163,21 @@ void initWinscreen() {
 
 	set_bkg_data(0U, 40U, characters_data);
 	set_bkg_data_rle(win_base_offset, win_base_data_length, win_base_data);
+	set_bkg_data_rle(rank_banner_offset, rank_banner_data_length, rank_banner_data);
+
 	set_bkg_tiles_rle(0U, 0U, win_base_tiles_width, win_base_tiles_height, win_base_tiles);
 	set_bkg_tiles(11U, 1U, 5U, 1U, winscreen_clear_text);
 
-	switch(level) {
-		case 1:
-			set_bkg_data_rle(win1_offset, win1_data_length, win1_data);
-			set_bkg_tiles_rle(10U, 5U, win1_tiles_width, win1_tiles_height, win1_tiles);
-			break;
-		case 2:
-			set_bkg_data_rle(win2_offset, win2_data_length, win2_data);
-			set_bkg_tiles_rle(8U, 3U, win2_tiles_width, win2_tiles_height, win2_tiles);
-			break;
-		case 3:
-			set_bkg_data_rle(win3_offset, win3_data_length, win3_data);
-			set_bkg_tiles_rle(8U, 3U, win3_tiles_width, win3_tiles_height, win3_tiles);
-			break;
-		case 4:
-			set_bkg_data_rle(win4_offset, win4_data_length, win4_data);
-			set_bkg_tiles_rle(8U, 6U, win4_tiles_width, win4_tiles_height, win4_tiles);
-			break;
+	setWinscreenBackground(level);
+
+	// Load rank sprite
+	rank = getRank(TOTAL_SCORE, level);
+	data = ranks_data;
+	while(rank != 0U) {
+		data += 256UL;
+		--rank;
 	}
+	set_sprite_data(0U, 16U, data);
 
 	// Set level name
 	data = level_names[level];
@@ -149,9 +187,15 @@ void initWinscreen() {
 	NR30_REG = 0x0U;
 	memcpy(0xFF30, sharkwave_data, 16U);
 
-	HIDE_SPRITES;
 	HIDE_WIN;
 	SHOW_BKG;
+	SHOW_SPRITES;
+	SPRITES_8x16;
+
+	OBP0_REG = 0xD0U; // 11010000
+
+	clearSprites();
+
 	DISPLAY_ON;
 	enable_interrupts();
 }
@@ -171,8 +215,7 @@ void enterWinscreen() {
 		setMusicBank(4U);
 		playMusic(&score_tally_song_data);
 	}
-	enable_interrupts();
-
+	enable_interrupts(); 
 	delay(255U);
 
 	// Time
@@ -214,7 +257,17 @@ void enterWinscreen() {
 	countUpScore(3U, 15U, TOTAL_SCORE, 30U);
 	winscreenJingle();
 
-	while(1) {
+	while(1U) {
+		updateJoystate();
+		if(CLICKED(J_A) || CLICKED(J_B) || CLICKED(J_START)) {
+			break;
+		}
+		wait_vbl_done();
+	}
+
+	winscreenShowRank();
+
+	while(1U) {
 		updateJoystate();
 		if(CLICKED(J_A) || CLICKED(J_B) || CLICKED(J_START)) {
 			if(unlocked_bits) {
@@ -224,10 +277,11 @@ void enterWinscreen() {
 			}
 			break;
 		}
+		snd_update();
 		wait_vbl_done();
 	}
 
+	clearSprites();
 	fadeToWhite(10U);
-
 	stopMusic();
 }

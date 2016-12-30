@@ -6,6 +6,7 @@ void updateJoystate();
 void setSprite(UBYTE x, UBYTE y, UBYTE tile, UBYTE prop);
 void clearRemainingSprites();
 void setIngameBackground(UBYTE level);
+void setWinscreenBackground(UBYTE level);
 void setCloudAnimation(UBYTE skin);
 void set_bkg_data_rle(UBYTE first, UBYTE n, UBYTE *data);
 void set_bkg_tiles_rle(UBYTE x, UBYTE y, UBYTE width, UBYTE height, UBYTE *tiles);
@@ -14,6 +15,7 @@ void setMusicBank(UBYTE i);
 void playMusic(UBYTE *data);
 void updateMusic();
 void stopMusic();
+UBYTE getRank(UBYTE score, UBYTE level);
 
 extern UBYTE ticks, paused;
 extern UBYTE gamestate, scene_state;
@@ -66,7 +68,12 @@ extern UBYTE circle_index;
 #define ENDING_FLAG_ENDING_FINISHED 1U
 #define ENDING_FLAG_FROM_DREAM      2U
 
+#define GAME_BACKGROUNDS_BANK 7U
+#define WINSCREEN_BACKGROUNDS_BANK 9U
+#define CLOUD_ANIMATIONS_BANK 8U
+
 extern const UBYTE level_names[7][6];
 extern const UBYTE level_max_time[4];
+extern const UBYTE rank_letters[4];
 
 #endif

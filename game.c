@@ -50,10 +50,10 @@ const UBYTE scrolled_length[4] = {
 };
 
 const UBYTE clock_interval[4] = {
-	13U, //  49/13 = 3
-	19U, //  74/19 = 3
-	20U, //  98/20 = 4
-	25U  // 123/25 = 4
+	7U, //  49/7 = 7
+	10U, //  74/19 = 7
+	11U, //  98/11 = 8
+	14U  // 123/14 = 8
 };
 
 const UBYTE allowed_spikes[4] = { 1U, 1U, 1U, 3U };

@@ -24,6 +24,7 @@ void initWipe() {
 	ticks = 0U;
 	circle_index = 0U;
 	sub_selection = 0U;
+	player_skin = 1U;
 
 	OBP0_REG = 0xD0U;
 	BGP_REG = 0xE4U;

@@ -1,6 +1,6 @@
 backgrounds: logos_backgrounds intro_backgrounds title_backgrounds select_backgrounds ingame_backgrounds pause_backgrounds winscreen_backgrounds highscore_backgrounds ending_backgrounds unlocked_backgrounds jukebox_backgrounds wipe_backgrounds
 
-logos_backgrounds: data/bg/tangram.h
+logos_backgrounds: data/bg/tangram.h data/bg/potato.h
 
 data/bg/tangram.h: data/bg/tangram.png
 	$(IMGTOGB) --map --rle $< $@
@@ -48,22 +48,25 @@ pause_backgrounds: data/bg/pause_bg.h
 data/bg/pause_bg.h: data/bg/pause_bg.png
 	$(IMGTOGB) --map --rle -O 38 $< $@
 
-winscreen_backgrounds: data/bg/win_base.h data/bg/win1.h data/bg/win2.h data/bg/win3.h data/bg/win4.h
+winscreen_backgrounds: data/bg/win_base.h data/bg/rank_banner.h
 
 data/bg/win_base.h: data/bg/win_base.png
 	$(IMGTOGB) --map -O 40 --rle $< $@
 
-data/bg/win1.h: data/bg/win1.png
+data/bg/rank_banner.h: data/bg/rank_banner.png
 	$(IMGTOGB) --map -O 69 --rle $< $@
 
-data/bg/win2.h: data/bg/win2.png
-	$(IMGTOGB) --map -O 69 --rle $< $@
-
-data/bg/win3.h: data/bg/win3.png
-	$(IMGTOGB) --map -O 69 --rle $< $@
-
-data/bg/win4.h: data/bg/win4.png
-	$(IMGTOGB) --map -O 69 --rle $< $@
+#data/bg/win1.h: data/bg/win1.png
+#	$(IMGTOGB) --map -O 84 --rle $< $@
+#
+#data/bg/win2.h: data/bg/win2.png
+#	$(IMGTOGB) --map -O 84 --rle $< $@
+#
+#data/bg/win3.h: data/bg/win3.png
+#	$(IMGTOGB) --map -O 84 --rle $< $@
+#
+#data/bg/win4.h: data/bg/win4.png
+#	$(IMGTOGB) --map -O 84 --rle $< $@
 
 highscore_backgrounds: data/bg/highscore.h data/sprite/empty.h
 
@@ -71,7 +74,7 @@ data/bg/highscore.h: data/bg/highscore.png
 	$(IMGTOGB) --map -O 47 $< $@
 
 data/sprite/empty.h: data/sprite/empty.png
-	$Ma(IMGTOGB) --sprite $< $@
+	$(IMGTOGB) --sprite $< $@
 
 ending_backgrounds: data/bg/ending_thanks.h
 
