@@ -24,6 +24,7 @@ UBYTE first_load;
 UBYTE scrolled;
 UBYTE last_spawn_x, last_spawn_index;
 UBYTE next_spawn, next_clock;
+UBYTE next_entity;
 
 UBYTE timer, progress, progressbar, portal_spawned, repeat_spikes;
 UBYTE blips, blip_bar;
@@ -649,16 +650,18 @@ void updateEntities() {
 UBYTE spawnEntity(UBYTE type, UBYTE x, UBYTE y, UBYTE dir) {
 	UBYTE i;
 	for(i = 0U; i != MAX_ENTITIES; ++i) {
-		if(entity_type[i] == E_NONE) break;
+		if(entity_type[next_entity] == E_NONE) break;
+		++next_entity;
+		if(next_entity == MAX_ENTITIES) next_entity = 0U;
 	}
 	if(i == MAX_ENTITIES) return NO_LAST_SPAWN;
 
-	entity_x[i] = x;
-	entity_y[i] = y;
-	entity_type[i] = type;
-	entity_dir[i] = dir;
+	entity_x[next_entity] = x;
+	entity_y[next_entity] = y;
+	entity_type[next_entity] = type;
+	entity_dir[next_entity] = dir;
 
-	return i;
+	return next_entity;
 }
 
 void clearEntities() {
