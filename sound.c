@@ -67,7 +67,7 @@ const UBYTE sfx_priority[SFX_COUNT] = {
 	9U, // SFX_TIME_LOW
 	9U, // SFX_TIME_OUT
 	9U, // SFX_TIME_PICKUP
-	8U, // SFX_WARP_START
+	10U, // SFX_WARP_START
 	8U, // SFX_RANK_CRASH
 };
 
