@@ -29,10 +29,9 @@ void snd_update4();
 #define SFX_TIME_LOW			16U
 #define SFX_TIME_OUT			17U
 #define SFX_TIME_PICKUP			18U
-#define SFX_WARP_END			19U
-#define SFX_WARP_START			20U
-#define SFX_RANK_CRASH			21U
+#define SFX_WARP_START			19U
+#define SFX_RANK_CRASH			20U
 
-#define SFX_COUNT				22U
+#define SFX_COUNT				21U
 
 #endif
