@@ -7,6 +7,7 @@
 #include "winscreen.h"
 #include "sound.h"
 
+#include "data/bg/circles.h"
 #include "data/sprite/characters.h"
 #include "data/bg/win_base.h"
 #include "data/bg/rank_banner.h"
@@ -25,132 +26,6 @@ const UBYTE sharkwave_data[16] = {
 	1U, 35U, 69U, 103U, 138U, 166U, 205U, 239U, 255U, 134U, 67U, 50U, 162U, 17U, 16U, 0U
 };
 
-void drawScore(UBYTE x, UBYTE y, UBYTE value) {
-	UBYTE tile;
-
-	if(value >= 100U) {
-		tile = value / 100U;
-		set_bkg_tiles(x, y, 1U, 1U, &tile);
-	}
-	if(value >= 10U) {
-		tile = (value / 10U) % 10U;
-		set_bkg_tiles(x+1U, y, 1U, 1U, &tile);
-	}
-	if(value) {
-		tile = value % 10U;
-		set_bkg_tiles(x+2U, y, 1U, 1U, &tile);
-		tile = 0U;
-		set_bkg_tiles(x+3U, y, 1U, 1U, &tile);
-	}
-	tile = 0U;
-	set_bkg_tiles(x+4U, y, 1U, 1U, &tile);
-}
-
-void winscreenPlayNote(UBYTE note, UBYTE octave) {
-	UWORD freq3;
-
-	freq3 = freq[(octave << 4) + note - MUS_FIRST_NOTE];
-
-	NR30_REG = 0x0U;
-	NR30_REG = 0x80U;
-	NR32_REG = 0xFFU;
-	NR33_REG = (UBYTE)freq3;
-	NR34_REG = 0x80U | (freq3 >> 8);
-}
-
-void winscreenJingle() {
-	delay(30U);
-	winscreenPlayNote(T_Fs, 6U); delay(80U);
-	winscreenPlayNote(T_A,  6U); delay(80U);
-	winscreenPlayNote(T_E,  7U); delay(85U);
-	NR30_REG = 0x0U;
-}
-
-void winscreenTextJingle() {
-	delay(30U);
-	winscreenPlayNote(T_E,  6U); delay(40U);
-	winscreenPlayNote(T_B,  6U); delay(40U);
-	winscreenPlayNote(T_A,  7U); delay(40U);
-	winscreenPlayNote(T_E,  7U); delay(40U);
-	winscreenPlayNote(T_Cs, 8U); delay(60U);
-	NR30_REG = 0x0U;
-}
-
-void winscreenShowRank() {
-	UBYTE i, offset;
-
-	disable_interrupts();
-	set_bkg_tiles_rle(0U, 6U, 20U, 6U, rank_banner_tiles);
-	enable_interrupts();
-
-	delay(255U);
-
-	for(offset = 64U; offset != 252U; offset -= 4U) {
-		setSprite(104U-offset, 72U-offset, 0U, OBJ_PAL0);
-		setSprite(112U-offset, 72U-offset, 2U, OBJ_PAL0);
-		setSprite(120U+offset, 72U-offset, 4U, OBJ_PAL0);
-		setSprite(128U+offset, 72U-offset, 6U, OBJ_PAL0);
-
-		setSprite(104U-offset, 88U+offset,  8U, OBJ_PAL0);
-		setSprite(112U-offset, 88U+offset, 10U, OBJ_PAL0);
-		setSprite(120U+offset, 88U+offset, 12U, OBJ_PAL0);
-		setSprite(128U+offset, 88U+offset, 14U, OBJ_PAL0);
-
-		wait_vbl_done();
-	}
-
-	clearRemainingSprites();
-
-	setSprite(104U, 72U, 0U, OBJ_PAL0);
-	setSprite(112U, 72U, 2U, OBJ_PAL0);
-	setSprite(120U, 72U, 4U, OBJ_PAL0);
-	setSprite(128U, 72U, 6U, OBJ_PAL0);
-
-	setSprite(104U, 88U, 8U, OBJ_PAL0);
-	setSprite(112U, 88U, 10U, OBJ_PAL0);
-	setSprite(120U, 88U, 12U, OBJ_PAL0);
-	setSprite(128U, 88U, 14U, OBJ_PAL0);
-
-	playSound(SFX_RANK_CRASH);
-
-	// shake screen
-	for(i = 0; i != 6U; ++i) {
-		//move_bkg(((UBYTE)rand() & 4U) - 2U, ((UBYTE)rand() & 4U) - 2U);
-		move_bkg(0U, ((UBYTE)rand() & 4U) - 2U);
-		wait_vbl_done();
-		snd_update();
-		wait_vbl_done();
-		snd_update();
-	}
-
-	move_bkg(0U, 0U);
-
-	wait_sound_done();
-}
-
-void countUpScore(UBYTE x, UBYTE y, UBYTE value, UBYTE delay_time) {
-	UBYTE i, j;
-
-	j = 0U;
-	for(i = 0U; i != value+1U; ++i) {
-		updateJoystate();
-		if(CLICKED(J_A) || CLICKED(J_B) || CLICKED(J_START)) {
-			i = value;
-		}
-		switch(j) {
-			case 0U: winscreenPlayNote(T_C, 6U); break;
-			case 1U: winscreenPlayNote(T_D, 7U); break;
-			case 2U: winscreenPlayNote(T_A, 6U); break;
-		}
-
-		j++;
-		if(j == 3U) j = 0U;
-
-		drawScore(x, y, i);
-		delay(delay_time);
-	}
-}
-
 void initWinscreen() {
 	UBYTE rank;
 	UBYTE *data;
@@ -158,6 +33,8 @@ void initWinscreen() {
 	disable_interrupts();
 	DISPLAY_OFF;
 
+	ticks = 0U;
+	circle_index = 0U;
 	move_bkg(0U, 0U);
 	clearSprites();
 	BGP_REG = 0xE4U; // 11100100
@@ -201,6 +78,144 @@ void initWinscreen() {
 	enable_interrupts();
 }
 
+void winscreenWait(UBYTE steps) {
+	for(; steps != 0U; --steps) {
+		snd_update();
+		winscreenScrollCircles();
+		wait_vbl_done();
+	}
+}
+
+void winscreenScrollCircles() {
+	ticks++;
+	if((ticks & 3U) == 3U) {
+		circle_index = (circle_index+1U) & 7U;
+		set_bkg_data(40U, 1U, &circles_data[(circle_index << 4)]);
+	}
+}
+
+void drawScore(UBYTE x, UBYTE y, UBYTE value) {
+	UBYTE tile;
+
+	if(value >= 100U) {
+		tile = value / 100U;
+		set_bkg_tiles(x, y, 1U, 1U, &tile);
+	}
+	if(value >= 10U) {
+		tile = (value / 10U) % 10U;
+		set_bkg_tiles(x+1U, y, 1U, 1U, &tile);
+	}
+	if(value) {
+		tile = value % 10U;
+		set_bkg_tiles(x+2U, y, 1U, 1U, &tile);
+		tile = 0U;
+		set_bkg_tiles(x+3U, y, 1U, 1U, &tile);
+	}
+	tile = 0U;
+	set_bkg_tiles(x+4U, y, 1U, 1U, &tile);
+}
+
+void winscreenPlayNote(UBYTE note, UBYTE octave) {
+	UWORD freq3;
+
+	freq3 = freq[(octave << 4) + note - MUS_FIRST_NOTE];
+
+	NR30_REG = 0x0U;
+	NR30_REG = 0x80U;
+	NR32_REG = 0xFFU;
+	NR33_REG = (UBYTE)freq3;
+	NR34_REG = 0x80U | (freq3 >> 8);
+}
+
+void winscreenJingle() {
+	winscreenWait(2U);
+	winscreenPlayNote(T_Fs, 6U); winscreenWait(3U);
+	winscreenPlayNote(T_A,  6U); winscreenWait(3U);
+	winscreenPlayNote(T_E,  7U); winscreenWait(3U);
+	NR30_REG = 0x0U;
+}
+
+void winscreenTextJingle() {
+	winscreenWait(2U);
+	winscreenPlayNote(T_E,  6U); winscreenWait(4U);
+	winscreenPlayNote(T_B,  6U); winscreenWait(4U);
+	winscreenPlayNote(T_A,  7U); winscreenWait(4U);
+	winscreenPlayNote(T_E,  7U); winscreenWait(4U);
+	winscreenPlayNote(T_Cs, 8U); winscreenWait(5U);
+	NR30_REG = 0x0U;
+}
+
+void winscreenShowRank() {
+	UBYTE i, offset;
+
+	disable_interrupts();
+	set_bkg_tiles_rle(0U, 6U, 20U, 6U, rank_banner_tiles);
+	enable_interrupts();
+
+	winscreenWait(15U);
+
+	for(offset = 64U; offset != 252U; offset -= 4U) {
+		setSprite(104U-offset, 72U-offset, 0U, OBJ_PAL0);
+		setSprite(112U-offset, 72U-offset, 2U, OBJ_PAL0);
+		setSprite(120U+offset, 72U-offset, 4U, OBJ_PAL0);
+		setSprite(128U+offset, 72U-offset, 6U, OBJ_PAL0);
+
+		setSprite(104U-offset, 88U+offset,  8U, OBJ_PAL0);
+		setSprite(112U-offset, 88U+offset, 10U, OBJ_PAL0);
+		setSprite(120U+offset, 88U+offset, 12U, OBJ_PAL0);
+		setSprite(128U+offset, 88U+offset, 14U, OBJ_PAL0);
+
+		winscreenWait(1U);
+	}
+
+	clearRemainingSprites();
+
+	setSprite(104U, 72U, 0U, OBJ_PAL0);
+	setSprite(112U, 72U, 2U, OBJ_PAL0);
+	setSprite(120U, 72U, 4U, OBJ_PAL0);
+	setSprite(128U, 72U, 6U, OBJ_PAL0);
+
+	setSprite(104U, 88U, 8U, OBJ_PAL0);
+	setSprite(112U, 88U, 10U, OBJ_PAL0);
+	setSprite(120U, 88U, 12U, OBJ_PAL0);
+	setSprite(128U, 88U, 14U, OBJ_PAL0);
+
+	playSound(SFX_RANK_CRASH);
+
+	// shake screen
+	for(i = 0; i != 6U; ++i) {
+		move_bkg(0U, ((UBYTE)rand() & 4U) - 2U);
+		winscreenWait(2U);
+	}
+
+	move_bkg(0U, 0U);
+
+	winscreenWait(8U);
+}
+
+void countUpScore(UBYTE x, UBYTE y, UBYTE value) {
+	UBYTE i, j;
+
+	j = 0U;
+	for(i = 0U; i != value+1U; ++i) {
+		updateJoystate();
+		if(CLICKED(J_A) || CLICKED(J_B) || CLICKED(J_START)) {
+			i = value;
+		}
+		switch(j) {
+			case 0U: winscreenPlayNote(T_C, 6U); break;
+			case 1U: winscreenPlayNote(T_D, 7U); break;
+			case 2U: winscreenPlayNote(T_A, 6U); break;
+		}
+
+		j++;
+		if(j == 3U) j = 0U;
+
+		drawScore(x, y, i);
+		winscreenWait(2U);
+	}
+}
+
 void enterWinscreen() {
 	UBYTE tile, tmp;
 	initWinscreen();
@@ -217,7 +232,8 @@ void enterWinscreen() {
 		playMusic(&score_tally_song_data);
 	}
 	enable_interrupts(); 
-	delay(255U);
+
+	winscreenWait(15U);
 
 	// Time
 	tile = elapsed_time / 60U;
@@ -230,13 +246,13 @@ void enterWinscreen() {
 	set_bkg_tiles(4U, 5U, 1U, 1U, &tile);
 	winscreenTextJingle();
 
-	delay(512U);
+	winscreenWait(30U);
 
 	// Count up time bonus
-	countUpScore(3, 6, TIME_BONUS, 30U);
+	countUpScore(3, 6, TIME_BONUS);
 	winscreenJingle();
 
-	delay(512U);
+	winscreenWait(30U);
 
 	// Kills
 	tmp = kills;
@@ -246,16 +262,16 @@ void enterWinscreen() {
 	set_bkg_tiles(2U, 10U, 1U, 1U, &tile);
 	winscreenTextJingle();
 
-	delay(512U);
+	winscreenWait(30U);
 
 	// Count up kill bonus
-	countUpScore(3U, 11U, KILL_BONUS, 30U);
+	countUpScore(3U, 11U, KILL_BONUS);
 	winscreenJingle();
 
-	delay(512U);
+	winscreenWait(30U);
 
 	// Count up total score
-	countUpScore(3U, 15U, TOTAL_SCORE, 30U);
+	countUpScore(3U, 15U, TOTAL_SCORE);
 	winscreenJingle();
 
 	while(1U) {
@@ -263,7 +279,7 @@ void enterWinscreen() {
 		if(CLICKED(J_A) || CLICKED(J_B) || CLICKED(J_START)) {
 			break;
 		}
-		wait_vbl_done();
+		winscreenWait(1U);
 	}
 
 	winscreenShowRank();
@@ -278,11 +294,11 @@ void enterWinscreen() {
 			}
 			break;
 		}
-		snd_update();
-		wait_vbl_done();
+		winscreenWait(1U);
 	}
 
 	clearSprites();
 	fadeToWhite(10U);
+
 	stopMusic();
 }
