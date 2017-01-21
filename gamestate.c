@@ -28,6 +28,11 @@ UBYTE player_skin;
 UBYTE show_dashcounter;
 UBYTE circle_index;
 
+UBYTE entity_x[MAX_ENTITIES];
+UBYTE entity_y[MAX_ENTITIES];
+UBYTE entity_type[MAX_ENTITIES];
+UBYTE entity_dir[MAX_ENTITIES];
+
 const UBYTE level_names[7][6] = {
 	{22U, 25U, 13U, 21U, 15U, 14U}, // "LOCKED"
 	{26U, 22U, 11U, 19U, 24U, 29U}, // "PLAINS"

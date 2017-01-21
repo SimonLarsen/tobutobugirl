@@ -33,14 +33,14 @@ void enterGame();
 #define BUMP_SPEED       28U
 #define ALIEN_BUMP_SPEED 19U
 #define MAX_YSPEED       24U
-#define MAX_FLY_SPEED    24U
+#define MAX_FLY_SPEED    23U
 
 #define KEY_DASH J_A
 #define KEY_USE  J_B
 
 #define SPAWN_INTERVAL 36U
 #define MAX_TIME 32U
-#define LOW_TIME 12U
+#define LOW_TIME 11U
 #define CLOCK_BONUS 4U
 
 #define MAX_BOOST 128U
@@ -63,8 +63,6 @@ void enterGame();
 #define LAST_ENEMY E_GHOST
 
 #define LAST_COLLIDABLE E_PORTAL
-
-#define MAX_ENTITIES 10U
 
 // States
 #define INGAME_ACTIVE    0U

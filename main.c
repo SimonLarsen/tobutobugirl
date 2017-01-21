@@ -72,12 +72,11 @@ void main() {
 	player_skin = 1U;
 	ending_flags = 0U;
 	
-	gamestate = GAMESTATE_WINSCREEN;
+	gamestate = GAMESTATE_TITLE;
 
 	SWITCH_16_8_MODE_MBC1;
 	add_TIM(updateMusic);
 	set_interrupts(TIM_IFLAG | VBL_IFLAG);
-	//set_interrupts(TIM_IFLAG);
 
 	while(1U) {
 		switch(gamestate) {

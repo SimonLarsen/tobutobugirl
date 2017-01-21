@@ -31,11 +31,6 @@ UBYTE blips, blip_bar;
 UBYTE dashing, dashes, dash_xdir, dash_ydir;
 UBYTE ghost_frame;
 
-UBYTE entity_x[MAX_ENTITIES];
-UBYTE entity_y[MAX_ENTITIES];
-UBYTE entity_type[MAX_ENTITIES];
-UBYTE entity_dir[MAX_ENTITIES];
-
 extern UBYTE plains_song_data;
 extern UBYTE clouds_song_data;
 extern UBYTE space_song_data;
@@ -234,13 +229,15 @@ UBYTE *getSkinData() {
 void updateInput() {
 	updateJoystate();
 
-	if(ISDOWN(J_LEFT) && !dashing) {
-		player_x -= MOVE_SPEED;
-		player_xdir = LEFT;
-	}
-	else if(ISDOWN(J_RIGHT) && !dashing) {
-		player_x += MOVE_SPEED;
-		player_xdir = RIGHT;
+	if(!dashing) {
+		if(ISDOWN(J_LEFT)) {
+			player_x -= MOVE_SPEED;
+			player_xdir = LEFT;
+		}
+		else if(ISDOWN(J_RIGHT)) {
+			player_x += MOVE_SPEED;
+			player_xdir = RIGHT;
+		}
 	}
 
 	if(CLICKED(KEY_DASH)) {
@@ -278,7 +275,7 @@ void updatePlayer() {
 				killPlayer();
 			// Enemies
 			} else if(type <= LAST_ENEMY) {
-				if(player_ydir == DOWN && player_y < entity_y[i]+2U) {
+				if(player_ydir == DOWN && player_y <= entity_y[i]+1U) {
 					if(dashing && dash_ydir == DOWN) {
 						entity_type[i] = E_NONE;
 						spawnEntity(E_CLOUD, player_x, player_y+5U, 0U);
@@ -303,13 +300,12 @@ void updatePlayer() {
 						bouncePlayer(i, BUMP_SPEED);
 					}
 				} else {
-					diff = 0U;
-					if(player_x < entity_x[i]) diff += entity_x[i] - player_x;
-					else diff += player_x - entity_x[i];
-					if(player_y < entity_y[i]) diff += entity_y[i] - player_y;
+					if(player_x <= entity_x[i]) diff = entity_x[i] - player_x;
+					else diff = player_x - entity_x[i];
+					if(player_y <= entity_y[i]) diff += entity_y[i] - player_y;
 					else diff += player_y - entity_y[i];
 
-					if(diff < 10U) killPlayer();
+					if(diff <= 9U) killPlayer();
 				}
 			// Clock pickup
 			} else if(type == E_CLOCK) {
@@ -358,7 +354,7 @@ void updatePlayer() {
 	// Using boost
 	else if(ISDOWN(KEY_USE) && blips) {
 		blips--;
-		if(player_ydir == UP && player_yspeed < MAX_FLY_SPEED) {
+		if(player_ydir == UP && player_yspeed <= MAX_FLY_SPEED) {
 			player_yspeed += 2U;
 		}
 		else {
@@ -392,8 +388,8 @@ void updatePlayer() {
 	}
 
 	// Left and right borders
-	if(player_x < 23U) player_x = 23U;
-	else if(player_x > 153U) player_x = 153U;
+	if(player_x <= 22U) player_x = 23U;
+	else if(player_x >= 154U) player_x = 153U;
 
 	// Check bounds
 	if(player_y > SCREENHEIGHT+5U) {
@@ -468,7 +464,7 @@ void updateHUD() {
 	}
 
 	// Low on time marker
-	if(remaining_time < LOW_TIME && ticks & 16U) {
+	if(remaining_time <= LOW_TIME && ticks & 16U) {
 		setSprite(136U, 24U, 32U, OBJ_PAL0);
 		setSprite(144U, 24U, 34U, OBJ_PAL0);
 	}
@@ -756,7 +752,7 @@ void updateSpawns() {
 		last_spawn_x = x - 24U;
 
 		next_clock--;
-		if(next_clock == 0U) {
+		if(!next_clock) {
 			next_clock = clock_interval[level-1U];
 			x = ((last_spawn_x + 32U + ((UBYTE)rand() & 63U)) & 127U) + 24U;
 			spawnEntity(E_CLOCK, x, 1U, NONE);

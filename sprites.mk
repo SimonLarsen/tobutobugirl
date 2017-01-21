@@ -48,7 +48,7 @@ data/sprite/shine.h: data/sprite/shine.png
 	$(IMGTOGB) --sprite --8x16 $< $@
 
 data/sprite/title_cat.h: data/sprite/title_cat.png
-	$(IMGTOGB) --sprite $< $@
+	$(IMGTOGB) --sprite --8x16 $< $@
 
 data/sprite/wipe_marker.h: data/sprite/wipe_marker.png
 	$(IMGTOGB) --sprite --8x16 $< $@

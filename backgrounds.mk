@@ -10,10 +10,13 @@ data/bg/potato.h: data/bg/potato.png
 
 intro_backgrounds:
 
-title_backgrounds: data/bg/titlescreen.h
+title_backgrounds: data/bg/titlescreen.h data/bg/titlescreen_bg.h
 
 data/bg/titlescreen.h: data/bg/titlescreen.png
 	$(IMGTOGB) --map $< $@
+
+data/bg/titlescreen_bg.h: data/bg/titlescreen_bg.png
+	$(IMGTOGB) --map -O 90 $< $@
 
 select_backgrounds: data/bg/catface.h data/bg/select.h
 
