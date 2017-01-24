@@ -70,7 +70,7 @@ void updateTitleEnemies() {
 	UBYTE i;
 
 	i = next_enemy;
-	if(next_enemy < 6U && !entity_type[i]) {
+	if(next_enemy < 8U && !entity_type[i]) {
 		entity_type[i] = 1U;
 		entity_y[i] = ((UBYTE)rand() & 127U) + 16U;
 		if(i & 1U) {
@@ -97,7 +97,7 @@ void updateTitleEnemies() {
 		}
 
 		if((player_x - entity_x[i] + 11U) <= 22U
-		&& (player_y - entity_y[i] + 15U) <= 22U) {
+		&& (player_y - entity_y[i] + 16U) <= 22U) {
 			scene_state = TITLE_DEAD;
 			ticks = 0U;
 			elapsed_time = 0U;
@@ -161,6 +161,11 @@ void drawTitleSprites(UBYTE triggered) {
 			} else {
 				setSprite(player_x+8U, player_y+8, 58U, FLIP_X | OBJ_PAL0);
 				setSprite(player_x, player_y+8, 60U, FLIP_X | OBJ_PAL0);
+			}
+
+			if(ticks <= 10U) {
+				setSprite(player_x, player_y-6U, 62U, OBJ_PAL0);
+				setSprite(player_x+8U, player_y-6U, 64U, OBJ_PAL0);
 			}
 		}
 
@@ -304,7 +309,9 @@ void enterTitle() {
 
 				if(scroll_y >= 72U) {
 					scene_state = TITLE_MINIGAME;
-					SPRITES_8x16;
+					ticks = 40U;
+					elapsed_time = 255U;
+					player_yspeed = 128U;
 				}
 			}
 			// top
@@ -343,6 +350,10 @@ void enterTitle() {
 		drawTitleSprites(0U);
 		clearRemainingSprites();
 		wait_vbl_done();
+
+		if(scene_state == TITLE_MINIGAME) {
+			SPRITES_8x16;
+		}
 	}
 
 	clearRemainingSprites();
