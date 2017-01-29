@@ -253,7 +253,7 @@ void updateInput() {
 			if(dash_xdir || dash_ydir) {
 				dashing = DASH_TIME;
 				dashes--;
-				spawnEntity(E_CLOUD, player_x, player_y-6U, 0U);
+				//spawnEntity(E_CLOUD, player_x, player_y-6U, 0U);
 				playSound(SFX_DASH);
 			}
 		}
