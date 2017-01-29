@@ -48,8 +48,8 @@ const UBYTE level_max_time[4] = { 56U, 56U, 64U, 64U };
 const UBYTE level_tiers[4][4] = {
 	{120U, 100U, 60U, 0U},
 	{110U,  95U, 60U, 0U},
-	{110U,  90U, 60U, 0U},
-	{110U,  95U, 60U, 0U}
+	{110U,  95U, 60U, 0U},
+	{100U,  90U, 60U, 0U}
 };
 
 const UBYTE rank_letters[4] = {29U, 11U, 12U, 13U};
