@@ -153,7 +153,7 @@ void setWinscreenBackground(UBYTE level) {
 	switch(level) {
 		case 1:
 			set_bkg_data_rle(win1_offset, win1_data_length, win1_data);
-			set_bkg_tiles_rle(10U, 5U, win1_tiles_width, win1_tiles_height, win1_tiles);
+			set_bkg_tiles_rle(8U, 3U, win1_tiles_width, win1_tiles_height, win1_tiles);
 			break;
 		case 2:
 			set_bkg_data_rle(win2_offset, win2_data_length, win2_data);
@@ -165,7 +165,7 @@ void setWinscreenBackground(UBYTE level) {
 			break;
 		case 4:
 			set_bkg_data_rle(win4_offset, win4_data_length, win4_data);
-			set_bkg_tiles_rle(8U, 6U, win4_tiles_width, win4_tiles_height, win4_tiles);
+			set_bkg_tiles_rle(8U, 3U, win4_tiles_width, win4_tiles_height, win4_tiles);
 			break;
 	}
 

@@ -51,7 +51,7 @@ pause_backgrounds: data/bg/pause_bg.h
 data/bg/pause_bg.h: data/bg/pause_bg.png
 	$(IMGTOGB) --map --rle -O 38 $< $@
 
-winscreen_backgrounds: data/bg/win_base.h data/bg/rank_banner.h
+winscreen_backgrounds: data/bg/win_base.h data/bg/rank_banner.h data/bg/win1.h data/bg/win2.h data/bg/win3.h data/bg/win4.h
 
 data/bg/win_base.h: data/bg/win_base.png
 	$(IMGTOGB) --map -O 40 --rle $< $@
@@ -59,17 +59,17 @@ data/bg/win_base.h: data/bg/win_base.png
 data/bg/rank_banner.h: data/bg/rank_banner.png
 	$(IMGTOGB) --map -O 69 --rle $< $@
 
-#data/bg/win1.h: data/bg/win1.png
-#	$(IMGTOGB) --map -O 84 --rle $< $@
-#
-#data/bg/win2.h: data/bg/win2.png
-#	$(IMGTOGB) --map -O 84 --rle $< $@
-#
-#data/bg/win3.h: data/bg/win3.png
-#	$(IMGTOGB) --map -O 84 --rle $< $@
-#
-#data/bg/win4.h: data/bg/win4.png
-#	$(IMGTOGB) --map -O 84 --rle $< $@
+data/bg/win1.h: data/bg/win1.png
+	$(IMGTOGB) --map -O 84 --rle $< $@
+
+data/bg/win2.h: data/bg/win2.png
+	$(IMGTOGB) --map -O 84 --rle $< $@
+
+data/bg/win3.h: data/bg/win3.png
+	$(IMGTOGB) --map -O 84 --rle $< $@
+
+data/bg/win4.h: data/bg/win4.png
+	$(IMGTOGB) --map -O 84 --rle $< $@
 
 highscore_backgrounds: data/bg/highscore.h data/sprite/empty.h
 
