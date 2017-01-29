@@ -316,8 +316,8 @@ void updatePlayer() {
 				playSound(SFX_TIME_PICKUP);
 			// End level portal
 			} else if(type == E_PORTAL
-			&& (player_y - entity_y[i] + 4U) <= 8U
-			&& (player_x - entity_x[i] + 4U) <= 8U) {
+			&& (player_y - entity_y[i] + 8U) <= 16U
+			&& (player_x - entity_x[i] + 8U) <= 16U) {
 				scene_state = INGAME_COMPLETED;
 				player_x = entity_x[i];
 				player_y = entity_y[i];
@@ -495,8 +495,7 @@ void bouncePlayer(UBYTE entity, UBYTE str) {
 }
 
 void updateEntities() {
-	UBYTE i, frame, type;
-	UBYTE xdist, ydist, ghost_move;
+	UBYTE i, frame, type, ghost_move;
 
 	// Update last spawn position with last spawned
 	// enemy if it still exists
@@ -565,32 +564,7 @@ void updateEntities() {
 				break;
 
 			case E_CLOCK: break;
-
-			case E_PORTAL:
-				if(player_x < entity_x[i]) xdist = entity_x[i] - player_x;
-				else xdist = player_x - entity_x[i];
-
-				if(player_y < entity_y[i]) ydist = entity_y[i] - player_y;
-				else ydist = player_y - entity_y[i];
-
-				if(xdist < 24U && ydist < 24U) {
-					if(xdist > 3U) {
-						if(player_x < entity_x[i]) player_x += 3U;
-						else player_x -= 3U;
-					}
-
-					if(ydist > 3U) {
-						if(player_y < entity_y[i]) player_y += 3U;
-						else player_y -= 3U;
-					}
-
-					player_yspeed = 1U;
-					player_ydir = UP;
-				}
-
-				if(ticks & 8U) entity_dir[i] = LEFT;
-				else entity_dir[i] = RIGHT;
-				break;
+			case E_PORTAL: break;
 
 			case E_CLOUD:
 				if((ticks & 3U) == 3U) entity_dir[i]++;

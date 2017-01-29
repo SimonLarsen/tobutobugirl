@@ -97,7 +97,7 @@ void updateTitleEnemies() {
 		}
 
 		if((player_x - entity_x[i] + 11U) <= 22U
-		&& (player_y - entity_y[i] + 16U) <= 22U) {
+		&& (player_y - entity_y[i] + 14U) <= 22U) {
 			scene_state = TITLE_DEAD;
 			ticks = 0U;
 			elapsed_time = 0U;
