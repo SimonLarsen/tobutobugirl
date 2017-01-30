@@ -99,6 +99,8 @@ void updateTitleEnemies() {
 		if((player_x - entity_x[i] + 11U) <= 22U
 		&& (player_y - entity_y[i] + 14U) <= 22U) {
 			scene_state = TITLE_DEAD;
+			stopMusic();
+			playSound(SFX_PLAYER_DIE);
 			ticks = 0U;
 			elapsed_time = 0U;
 			player_xspeed = 128U;
@@ -349,6 +351,7 @@ void enterTitle() {
 		move_bkg(0U, scroll_x);
 		drawTitleSprites(0U);
 		clearRemainingSprites();
+		snd_update();
 		wait_vbl_done();
 
 		if(scene_state == TITLE_MINIGAME) {
