@@ -72,8 +72,8 @@ void updateTitleEnemies() {
 	i = next_enemy;
 	if(next_enemy < 8U && !entity_type[i]) {
 		entity_type[i] = 1U;
-		entity_y[i] = ((UBYTE)rand() & 127U) + 16U;
-		if(i & 1U) {
+		entity_y[i] = player_y;
+		if(i & 2U) {
 			entity_x[i] = 248U;
 			entity_dir[i] = RIGHT;
 		} else {
@@ -82,18 +82,33 @@ void updateTitleEnemies() {
 		}
 	}
 
-	if(ticks == 0U && elapsed_time & 1U) next_enemy++;
+	if(ticks == 0U && elapsed_time & 1U && next_enemy < 8) next_enemy++;
 
 	i = 0U;
 	while(entity_type[i]) {
-		if(entity_dir[i] == RIGHT) entity_x[i]++;
-		else entity_x[i]--;
+		if(entity_type[i] == 1U) {
+			if(entity_dir[i] == RIGHT) entity_x[i]++;
+			else entity_x[i]--;
+		} else {
+			if(entity_dir[i] == RIGHT) entity_y[i]++;
+			else entity_y[i]--;
+		}
 
 		if(entity_x[i] <= 240U && entity_x[i] >= 172U) {
-			entity_y[i] = ((UBYTE)rand() & 127U) + 16U;
+			if(!(i & 1U)) {
+				entity_type[i] = 2U;
+			}
+			if(entity_type[i] == 1U) {
+				entity_y[i] = player_y + ((UBYTE)rand() & 31U) - 16U;
 
-			if(entity_dir[i] == RIGHT) entity_x[i] = 248U;
-			else entity_x[i] = 168U;
+				if(entity_dir[i] == RIGHT) entity_x[i] = 248U;
+				else entity_x[i] = 168U;
+			} else {
+				entity_x[i] = player_x + ((UBYTE)rand() & 31U) - 16U;
+
+				if(entity_dir[i] == RIGHT) entity_y[i] = 248U;
+				else entity_y[i] = 152U;
+			}
 		}
 
 		if((player_x - entity_x[i] + 11U) <= 22U
@@ -158,22 +173,22 @@ void drawTitleSprites(UBYTE triggered) {
 			}
 		} else {
 			if(player_xdir == LEFT) {
-				setSprite(player_x, player_y+8, 58U, OBJ_PAL0);
-				setSprite(player_x+8U, player_y+8, 60U, OBJ_PAL0);
+				setSprite(player_x, player_y+8, 50U, OBJ_PAL0);
+				setSprite(player_x+8U, player_y+8, 52U, OBJ_PAL0);
 			} else {
-				setSprite(player_x+8U, player_y+8, 58U, FLIP_X | OBJ_PAL0);
-				setSprite(player_x, player_y+8, 60U, FLIP_X | OBJ_PAL0);
+				setSprite(player_x+8U, player_y+8, 50U, FLIP_X | OBJ_PAL0);
+				setSprite(player_x, player_y+8, 52U, FLIP_X | OBJ_PAL0);
 			}
 
 			if(ticks <= 10U) {
-				setSprite(player_x, player_y-6U, 62U, OBJ_PAL0);
-				setSprite(player_x+8U, player_y-6U, 64U, OBJ_PAL0);
+				setSprite(player_x, player_y-6U, 54U, OBJ_PAL0);
+				setSprite(player_x+8U, player_y-6U, 56U, OBJ_PAL0);
 			}
 		}
 
 		i = 0U;
-		frame = 50U + ((ticks & 8U) >> 1);
 		while(entity_type[i]) {
+			frame = 50U + (entity_type[i] << 3) + ((ticks & 8U) >> 1);
 			if(entity_dir[i] == LEFT) {
 				setSprite(entity_x[i], entity_y[i], frame, OBJ_PAL0);
 				setSprite(entity_x[i]+8U, entity_y[i], frame+2U, OBJ_PAL0);

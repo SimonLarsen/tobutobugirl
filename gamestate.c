@@ -54,6 +54,23 @@ const UBYTE level_tiers[4][4] = {
 
 const UBYTE rank_letters[4] = {29U, 11U, 12U, 13U};
 
+const UBYTE entity_sprites[10] = {
+	0,		// E_NONE
+	 // Hazards
+	9*4,	// E_SPIKES
+	19*4, 	// E_FIREBALL
+	 // Enemies
+	17*4,	// E_ALIEN
+	13*4,	// E_BAT
+	11*4,	// E_BIRD
+	15*4,	// E_GHOST
+	// Powerups
+	21*4,	// E_CLOCK
+	// Special
+	29*4,	// E_PORTAL
+	27*4	// E_CLOUD
+};
+
 UBYTE getRank(UBYTE score, UBYTE level) {
 	UBYTE i;
 	for(i = 0U; i != 4U; ++i) {

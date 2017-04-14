@@ -53,23 +53,6 @@ const UBYTE clock_interval[4] = {
 
 const UBYTE allowed_spikes[4] = { 1U, 1U, 1U, 3U };
 
-const UBYTE entity_sprites[10] = {
-	0,		// E_NONE
-	 // Hazards
-	9*4,	// E_SPIKES
-	19*4, 	// E_FIREBALL
-	 // Enemies
-	17*4,	// E_ALIEN
-	13*4,	// E_BAT
-	11*4,	// E_BIRD
-	15*4,	// E_GHOST
-	// Powerups
-	21*4,	// E_CLOCK
-	// Special
-	29*4,	// E_PORTAL
-	27*4	// E_CLOUD
-};
-
 const UBYTE spawn_levels[4][3][8] = {
 	{ // Plains
 		{E_BIRD, E_BIRD, E_BAT, E_BAT, E_BAT, E_BAT, E_BAT, E_BAT},
