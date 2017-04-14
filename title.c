@@ -5,6 +5,7 @@
 #include "fade.h"
 #include "gamestate.h"
 #include "sound.h"
+#include "ram.h"
 
 #include "data/bg/titlescreen.h"
 #include "data/bg/titlescreen_bg.h"
@@ -45,6 +46,11 @@ void initTitle() {
 	SHOW_SPRITES;
 	SHOW_BKG;
 
+	ticks = 0U;
+	timer = 0U;
+	elapsed_time = 0U;
+	elapsed_minutes = 0U;
+
 	player_x = 220U;
 	player_y = 40U;
 	player_xdir = LEFT;
@@ -55,7 +61,6 @@ void initTitle() {
 	cat_y = 0U;
 	scroll_y = 0U;
 	scroll_x = 72U;
-	elapsed_time = 0U;
 	next_enemy = 0U;
 
 	for(i = 0U; i != MAX_ENTITIES; ++i) {
@@ -82,7 +87,7 @@ void updateTitleEnemies() {
 		}
 	}
 
-	if(ticks == 0U && elapsed_time & 1U && next_enemy < 8) next_enemy++;
+	if(timer == 0U && !(elapsed_time & 3U) && next_enemy < 8) next_enemy++;
 
 	i = 0U;
 	while(entity_type[i]) {
@@ -116,10 +121,10 @@ void updateTitleEnemies() {
 			scene_state = TITLE_DEAD;
 			stopMusic();
 			playSound(SFX_PLAYER_DIE);
-			ticks = 0U;
-			elapsed_time = 0U;
+			timer = 0U;
 			player_xspeed = 128U;
 			player_yspeed = 128U;
+			saveMinigameTime();
 		}
 
 		++i;
@@ -144,7 +149,7 @@ void drawTitleSprites(UBYTE triggered) {
 		setSprite(player_x+8, player_y, 41U, OBJ_PAL0);
 
 		frame = 42U;
-		if(ticks < 20U || (ticks >= 40U && ticks < 60U)) frame += 4U;
+		if(ticks & 16U) frame += 4U;
 
 		for(i = 0U; i != 2U; ++i) {
 			for(j = 1U; j != 3U; ++j) {
@@ -162,7 +167,7 @@ void drawTitleSprites(UBYTE triggered) {
 			setSprite(player_x+8, player_y-8U, 40U, OBJ_PAL0);
 
 			frame = 42U;
-			if(ticks < 20U || (ticks >= 40U && ticks < 60U)) frame += 4U;
+			if(ticks & 16U) frame += 4U;
 
 			if(player_xdir == LEFT) {
 				setSprite(player_x, player_y+8, frame, OBJ_PAL0);
@@ -180,7 +185,7 @@ void drawTitleSprites(UBYTE triggered) {
 				setSprite(player_x, player_y+8, 52U, FLIP_X | OBJ_PAL0);
 			}
 
-			if(ticks <= 10U) {
+			if(timer <= 12U) {
 				setSprite(player_x, player_y-6U, 54U, OBJ_PAL0);
 				setSprite(player_x+8U, player_y-6U, 56U, OBJ_PAL0);
 			}
@@ -202,6 +207,24 @@ void drawTitleSprites(UBYTE triggered) {
 	}
 }
 
+void saveMinigameTime() {
+	UBYTE *data;
+
+	ENABLE_RAM_MBC1;
+	SWITCH_RAM_MBC1(0U);
+
+	data = &ram_data[RAM_MINIGAME_MIN];
+
+	if (elapsed_minutes > data[0U]
+	|| (elapsed_minutes == data[0U] && elapsed_time > data[1U])) {
+		*data = elapsed_minutes;
+		data++;
+		*data = elapsed_time;
+	}
+
+	DISABLE_RAM_MBC1;
+}
+
 void enterTitle() {
 	initTitle();
 
@@ -212,7 +235,6 @@ void enterTitle() {
 	playMusic(&title_song_data);
 	enable_interrupts();
 
-	ticks = 0U;
 	while(1U) {
 		updateJoystate();
 
@@ -238,12 +260,17 @@ void enterTitle() {
 		}
 
 		ticks++;
-		if(ticks == 80U) {
-			ticks = 0U;
+		timer++;
+		if(timer == 60U) {
+			timer = 0U;
 			elapsed_time++;
 		}
+		if(elapsed_time == 60U) {
+			elapsed_time = 0U;
+			elapsed_minutes++;
+		}
 
-		if(elapsed_time == 25U && scene_state <= TITLE_MOVE) {
+		if(elapsed_time == 33U && scene_state <= TITLE_MOVE) {
 			gamestate = GAMESTATE_INTRO;
 			stopMusic();
 			break;
@@ -277,7 +304,12 @@ void enterTitle() {
 			if(player_x <= 152U && ISDOWN(J_LEFT | J_RIGHT | J_UP | J_DOWN)) {
 				scene_state = TITLE_MOVE;
 			}
-		} else if (scene_state != TITLE_DEAD) {
+		} else if (scene_state == TITLE_DEAD) {
+			if(timer == 59U) {
+				gamestate = GAMESTATE_MINIGAME_SCORE;
+				break;
+			}
+		} else {
 			if(ISDOWN(J_LEFT)) { player_xspeed -= 3U; player_xdir = LEFT; }
 			else if(ISDOWN(J_RIGHT)) { player_xspeed += 3U; player_xdir = RIGHT; }
 			else {
@@ -349,11 +381,6 @@ void enterTitle() {
 					player_y = 7U;
 					player_yspeed = 128U + ((128U - player_yspeed) >> 1);
 				}
-			}
-		}
-		else {
-			if(elapsed_time == 1U) {
-				break;
 			}
 		}
 

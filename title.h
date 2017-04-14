@@ -4,6 +4,7 @@
 void initTitle();
 void updateTitleEnemies();
 void drawTitleSprites(UBYTE triggered);
+void saveMinigameTime();
 void enterTitle();
 
 #define TITLE_SCROLL   0U

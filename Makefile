@@ -12,7 +12,7 @@ include sounds.mk
 
 OBJ=main.o fade.o gamestate.o cos.o circles.o characters.o sound.o mmlgb/driver/music.o mmlgb/driver/freq.o mmlgb/driver/noisefreq.o mmlgb/driver/vib.o arrow.o
 
-OBJ_BANK1=game.o pause.o wipe.o
+OBJ_BANK1=game.o pause.o wipe.o minigamescore.o
 
 OBJ_BANK2=select.o highscore.o unlocked.o selection1.o selection2.o selection3.o selection4.o selection_highscore.o selection_jukebox.o selection_locked.o
 

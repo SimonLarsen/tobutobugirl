@@ -1,4 +1,4 @@
-backgrounds: logos_backgrounds intro_backgrounds title_backgrounds select_backgrounds ingame_backgrounds pause_backgrounds winscreen_backgrounds highscore_backgrounds ending_backgrounds unlocked_backgrounds jukebox_backgrounds wipe_backgrounds
+backgrounds: logos_backgrounds intro_backgrounds title_backgrounds select_backgrounds ingame_backgrounds pause_backgrounds winscreen_backgrounds highscore_backgrounds ending_backgrounds unlocked_backgrounds jukebox_backgrounds wipe_backgrounds minigame_score_backgrounds
 
 logos_backgrounds: data/bg/tangram.h data/bg/potato.h
 
@@ -100,4 +100,9 @@ data/bg/jukebox.h: data/bg/jukebox.png
 wipe_backgrounds: data/bg/wipe.h
 
 data/bg/wipe.h: data/bg/wipe.png
-	$(IMGTOGB) --map --rle  -O 13 $< $@
+	$(IMGTOGB) --map --rle -O 13 $< $@
+
+minigame_score_backgrounds: data/bg/minigame_score_bg.h
+
+data/bg/minigame_score_bg.h: data/bg/minigame_score_bg.png
+	$(IMGTOGB) --map --rle -O 18 $< $@

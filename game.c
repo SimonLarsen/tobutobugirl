@@ -26,7 +26,7 @@ UBYTE last_spawn_x, last_spawn_index;
 UBYTE next_spawn, next_clock;
 UBYTE next_entity;
 
-UBYTE timer, progress, progressbar, portal_spawned, repeat_spikes;
+UBYTE progress, progressbar, portal_spawned, repeat_spikes;
 UBYTE blips, blip_bar;
 UBYTE dashing, dashes, dash_xdir, dash_ydir;
 UBYTE ghost_frame;
@@ -917,7 +917,7 @@ void addScore() {
 	UBYTE *data;
 
 	ENABLE_RAM_MBC1;
-	SWITCH_RAM_MBC1(0);
+	SWITCH_RAM_MBC1(0U);
 
 	score = TOTAL_SCORE;
 

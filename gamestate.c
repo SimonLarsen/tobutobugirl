@@ -6,13 +6,13 @@
 #include "cloud_animations.h"
 #include "mmlgb/driver/music.h"
 
-UBYTE ticks, paused;
+UBYTE ticks, paused, timer;
 UBYTE gamestate, scene_state;
 UBYTE level, levels_completed;
 UBYTE selection, sub_selection;
 UBYTE joystate, oldjoystate;
 UBYTE next_sprite, sprites_used;
-UBYTE elapsed_time, remaining_time, kills;
+UBYTE elapsed_time, elapsed_minutes, remaining_time, kills;
 UBYTE last_highscore_level, last_highscore_slot;
 UBYTE last_progress;
 UBYTE game_bank, music_bank;

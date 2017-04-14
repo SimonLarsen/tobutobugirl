@@ -12,6 +12,9 @@ Memory:
 
 	58U     Show dash counter
 
+	60U     Minigame minutes
+	61U     Minigame seconds
+
 	120-127 Ram signature "TOBUTOBU"
  */
 

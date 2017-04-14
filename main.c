@@ -16,6 +16,7 @@
 #include "jukebox.h"
 #include "ending.h"
 #include "wipe.h"
+#include "minigamescore.h"
 
 const UBYTE RAM_SIG[8] = {'T','O','B','U','T','O','B','U'};
 
@@ -72,7 +73,7 @@ void main() {
 	player_skin = 1U;
 	ending_flags = 0U;
 	
-	gamestate = GAMESTATE_TITLE;
+	gamestate = GAMESTATE_LOGOS;
 
 	SWITCH_16_8_MODE_MBC1;
 	add_TIM(updateMusic);
@@ -123,6 +124,10 @@ void main() {
 			case GAMESTATE_WIPE:
 				setGameBank(1U);
 				enterWipe();
+				break;
+			case GAMESTATE_MINIGAME_SCORE:
+				setGameBank(1U);
+				enterMinigamescore();
 				break;
 		}
 	}

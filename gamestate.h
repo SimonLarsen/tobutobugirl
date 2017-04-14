@@ -17,13 +17,13 @@ void updateMusic();
 void stopMusic();
 UBYTE getRank(UBYTE score, UBYTE level);
 
-extern UBYTE ticks, paused;
+extern UBYTE ticks, paused, timer;
 extern UBYTE gamestate, scene_state;
 extern UBYTE level, levels_completed;
 extern UBYTE selection, sub_selection;
 extern UBYTE joystate, oldjoystate;
 extern UBYTE next_sprite, sprites_used;
-extern UBYTE elapsed_time, remaining_time, kills;
+extern UBYTE elapsed_time, elapsed_minutes, remaining_time, kills;
 extern UBYTE last_highscore_level, last_highscore_slot;
 extern UBYTE last_progress;
 extern UBYTE game_bank, music_bank;
@@ -51,18 +51,19 @@ extern UBYTE entity_sprites[10];
 #define RELEASED(x) (!(joystate & x) && (joystate & x) != (oldjoystate & x))
 #define ISDOWN(x) (joystate & (x))
 
-#define GAMESTATE_LOGOS      0U
-#define GAMESTATE_INTRO      1U
-#define GAMESTATE_TITLE      2U
-#define GAMESTATE_SELECT     3U
-#define GAMESTATE_INGAME     4U
-#define GAMESTATE_PAUSE      5U
-#define GAMESTATE_WINSCREEN  6U
-#define GAMESTATE_HIGHSCORE  7U
-#define GAMESTATE_JUKEBOX    8U
-#define GAMESTATE_UNLOCKED   9U
-#define GAMESTATE_ENDING    10U
-#define GAMESTATE_WIPE      11U
+#define GAMESTATE_LOGOS           0U
+#define GAMESTATE_INTRO           1U
+#define GAMESTATE_TITLE           2U
+#define GAMESTATE_SELECT          3U
+#define GAMESTATE_INGAME          4U
+#define GAMESTATE_PAUSE           5U
+#define GAMESTATE_WINSCREEN       6U
+#define GAMESTATE_HIGHSCORE       7U
+#define GAMESTATE_JUKEBOX         8U
+#define GAMESTATE_UNLOCKED        9U
+#define GAMESTATE_ENDING         10U
+#define GAMESTATE_WIPE           11U
+#define GAMESTATE_MINIGAME_SCORE 12U
 
 #define UNLOCKED_CLOUDS 1U
 #define UNLOCKED_SPACE  2U
