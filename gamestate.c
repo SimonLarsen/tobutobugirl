@@ -27,6 +27,8 @@ UBYTE arrow_offset1, arrow_offset2;
 UBYTE player_skin;
 UBYTE show_dashcounter;
 UBYTE circle_index;
+UBYTE next_spawn, next_clock;
+UBYTE next_entity;
 
 UBYTE entity_x[MAX_ENTITIES];
 UBYTE entity_y[MAX_ENTITIES];

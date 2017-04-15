@@ -48,6 +48,7 @@ void initTitle() {
 
 	ticks = 0U;
 	timer = 0U;
+	next_spawn = 0U;
 	elapsed_time = 0U;
 	elapsed_minutes = 0U;
 
@@ -74,8 +75,8 @@ void initTitle() {
 void updateTitleEnemies() {
 	UBYTE i;
 
-	i = next_enemy;
-	if(next_enemy < 8U && !entity_type[i]) {
+	if(next_enemy < 8U && !entity_type[next_enemy]) {
+		i = next_enemy;
 		entity_type[i] = 1U;
 		entity_y[i] = player_y;
 		if(i & 2U) {
@@ -87,7 +88,11 @@ void updateTitleEnemies() {
 		}
 	}
 
-	if(timer == 0U && !(elapsed_time & 3U) && next_enemy < 8) next_enemy++;
+	next_spawn++;
+	if(next_spawn == 213U && next_enemy < 8U) {
+		next_spawn = 0U;
+		next_enemy++;
+	}
 
 	i = 0U;
 	while(entity_type[i]) {
@@ -103,6 +108,7 @@ void updateTitleEnemies() {
 			if(!(i & 1U)) {
 				entity_type[i] = 2U;
 			}
+
 			if(entity_type[i] == 1U) {
 				entity_y[i] = player_y + ((UBYTE)rand() & 31U) - 16U;
 

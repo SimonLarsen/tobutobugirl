@@ -23,8 +23,6 @@
 UBYTE first_load;
 UBYTE scrolled;
 UBYTE last_spawn_x, last_spawn_index;
-UBYTE next_spawn, next_clock;
-UBYTE next_entity;
 
 UBYTE progress, progressbar, portal_spawned, repeat_spikes;
 UBYTE blips, blip_bar;

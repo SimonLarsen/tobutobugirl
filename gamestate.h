@@ -38,6 +38,8 @@ extern UBYTE arrow_offset1, arrow_offset2;
 extern UBYTE player_skin;
 extern UBYTE show_dashcounter;
 extern UBYTE circle_index;
+extern UBYTE next_spawn, next_clock;
+extern UBYTE next_entity;
 
 #define MAX_ENTITIES 10U
 
