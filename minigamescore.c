@@ -7,7 +7,7 @@
 
 #include "data/sprite/characters.h"
 #include "data/bg/minigame_score_bg.h"
-#include "data/bg/circles.h"
+#include "data/bg/zoom_circles.h"
 
 void initMinigamescore() {
 	UBYTE tile;
@@ -18,8 +18,9 @@ void initMinigamescore() {
 	move_bkg(0U, 0U);
 
 	set_bkg_data(0U, 10U, characters_data);
-	set_bkg_data(10U, circles_data_length, circles_data);
+	set_bkg_data(10U, zoom_circles_data_length, zoom_circles_data);
 	set_bkg_data_rle(18U, minigame_score_bg_data_length, minigame_score_bg_data);
+	set_bkg_data(18U, 8U, zoom_circles_data);
 
 	set_bkg_tiles_rle(0U, 0U, minigame_score_bg_tiles_width, minigame_score_bg_tiles_height, minigame_score_bg_tiles);
 
@@ -81,7 +82,10 @@ void enterMinigamescore() {
 		ticks++;
 		if((ticks & 3U) == 3U) {
 			circle_index = (circle_index+1U) & 7U;
-			set_bkg_data(18U, 1U, &circles_data[(circle_index << 4)]);
+			set_bkg_data(18U+circle_index, 8U-circle_index, zoom_circles_data);
+			if(circle_index) {
+				set_bkg_data(18U, circle_index, &zoom_circles_data[(8U-circle_index) << 4]);
+			}
 		}
 
 		if(CLICKED(J_START) || CLICKED(J_A)) {

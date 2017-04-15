@@ -30,8 +30,6 @@ const UBYTE unlocked_messages[3][24] = {
 };
 
 
-UBYTE unlocked_circle_index;
-
 void initUnlocked() {
 	disable_interrupts();
 	DISPLAY_OFF;
@@ -41,7 +39,7 @@ void initUnlocked() {
 	set_bkg_data(0U, 38U, characters_data);
 	set_bkg_data(38U, zoom_circles_data_length, zoom_circles_data);
 	set_bkg_data(unlocked_offset, unlocked_data_length, unlocked_data);
-	set_bkg_data(47U, 8U, &zoom_circles_data[0]);
+	set_bkg_data(47U, 8U, zoom_circles_data);
 
 	set_bkg_tiles(0U, 0U, unlocked_tiles_width, unlocked_tiles_height, unlocked_tiles);
 
@@ -72,7 +70,7 @@ void initUnlocked() {
 
 	BGP_REG = 0xE4U; // 11100100
 
-	unlocked_circle_index = 0U;
+	circle_index = 0U;
 
 	clearSprites();
 
@@ -100,10 +98,10 @@ void enterUnlocked() {
 
 		ticks++;
 		if((ticks & 3U) == 3U) {
-			unlocked_circle_index = (unlocked_circle_index+1U) & 7U;
-			set_bkg_data(47U+unlocked_circle_index, 8U-unlocked_circle_index, &zoom_circles_data[0]);
-			if(unlocked_circle_index) {
-				set_bkg_data(47U, unlocked_circle_index, &zoom_circles_data[(8U-unlocked_circle_index) << 4]);
+			circle_index = (circle_index+1U) & 7U;
+			set_bkg_data(47U+circle_index, 8U-circle_index, zoom_circles_data);
+			if(circle_index) {
+				set_bkg_data(47U, circle_index, &zoom_circles_data[(8U-circle_index) << 4]);
 			}
 		}
 

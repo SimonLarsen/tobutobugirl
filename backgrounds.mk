@@ -84,13 +84,13 @@ ending_backgrounds: data/bg/ending_thanks.h
 data/bg/ending_thanks.h: data/bg/ending_thanks.png
 	$(IMGTOGB) --map -O 174 --rle $< $@
 
-unlocked_backgrounds: data/bg/unlocked.h data/bg/zoom_circles.h
+unlocked_backgrounds: data/bg/unlocked.h
 
 data/bg/unlocked.h: data/bg/unlocked.png
 	$(IMGTOGB) --map -O 47 $< $@
 
-data/bg/zoom_circles.h: data/bg/zoom_circles.png
-	$(IMGTOGB) --map $< $@
+#data/bg/zoom_circles.h: data/bg/zoom_circles.png
+#	$(IMGTOGB) --map $< $@
 
 jukebox_backgrounds: data/bg/jukebox.h
 

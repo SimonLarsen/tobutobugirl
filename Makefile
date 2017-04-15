@@ -10,7 +10,7 @@ include sprites.mk
 include songs.mk
 include sounds.mk
 
-OBJ=main.o fade.o gamestate.o cos.o circles.o characters.o sound.o mmlgb/driver/music.o mmlgb/driver/freq.o mmlgb/driver/noisefreq.o mmlgb/driver/vib.o arrow.o
+OBJ=main.o fade.o gamestate.o cos.o circles.o zoom_circles.o characters.o sound.o mmlgb/driver/music.o mmlgb/driver/freq.o mmlgb/driver/noisefreq.o mmlgb/driver/vib.o arrow.o
 
 OBJ_BANK1=game.o pause.o wipe.o minigamescore.o
 
