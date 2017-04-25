@@ -189,6 +189,7 @@ void restoreGame() {
 	skin_data = getSkinData();
 	set_sprite_data(0U, 24U, skin_data);
 	set_sprite_data(24U, sprites_data_length, sprites_data);
+	updateHUDTime();
 
 	move_bkg(0U, 112U-progress);
 
