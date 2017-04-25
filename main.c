@@ -58,26 +58,36 @@ void initRAM(UBYTE force_clear) {
 	DISABLE_RAM_MBC1;
 }
 
+void vbl_update() {
+	++vbl_count;
+}
+
 void main() {
+	disable_interrupts();
+
 	initRAM(0U);
 	snd_init();
 
-	last_highscore_level = 0U;
-	last_highscore_slot = 5U;
-	last_progress = 0U;
-	selection = level = 1U;
-
+	vbl_count = 0U;
 	joystate = oldjoystate = 0U;
 	level = 1U;
 	unlocked_bits = 0U;
 	player_skin = 1U;
 	ending_flags = 0U;
+
+	last_highscore_level = 0U;
+	last_highscore_slot = 5U;
+	last_progress = 0U;
+	selection = level = 1U;
 	
 	gamestate = GAMESTATE_LOGOS;
 
 	SWITCH_16_8_MODE_MBC1;
 	add_TIM(updateMusic);
+	add_VBL(vbl_update);
 	set_interrupts(TIM_IFLAG | VBL_IFLAG);
+
+	enable_interrupts();
 
 	while(1U) {
 		switch(gamestate) {

@@ -6,6 +6,7 @@
 #include "cloud_animations.h"
 #include "mmlgb/driver/music.h"
 
+UBYTE vbl_count;
 UBYTE ticks, paused, timer;
 UBYTE gamestate, scene_state;
 UBYTE level, levels_completed;

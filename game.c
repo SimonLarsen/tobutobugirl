@@ -964,6 +964,7 @@ ingame_start:
 
 	mus_setPaused(0U);
 
+	vbl_count = 0U;
 	while(scene_state == INGAME_ACTIVE) {
 		updateInput();
 
@@ -1015,7 +1016,9 @@ ingame_start:
 
 		clearRemainingSprites();
 		snd_update();
-		wait_vbl_done();
+
+		if(!vbl_count) wait_vbl_done();
+		vbl_count = 0U;
 	}
 
 	stopMusic();

@@ -17,6 +17,7 @@ void updateMusic();
 void stopMusic();
 UBYTE getRank(UBYTE score, UBYTE level);
 
+extern UBYTE vbl_count;
 extern UBYTE ticks, paused, timer;
 extern UBYTE gamestate, scene_state;
 extern UBYTE level, levels_completed;
