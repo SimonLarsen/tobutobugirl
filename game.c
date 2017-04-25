@@ -477,7 +477,7 @@ void bouncePlayer(UBYTE entity, UBYTE str) {
 }
 
 void updateEntities() {
-	UBYTE i, frame, type, ghost_move;
+	UBYTE i, x, y, frame, type, ghost_move;
 
 	// Update last spawn position with last spawned
 	// enemy if it still exists
@@ -497,28 +497,31 @@ void updateEntities() {
 
 	for(i = 0U; i != MAX_ENTITIES; ++i) {
 		type = entity_type[i];
+		if(!type) continue;
+
+		x = entity_x[i];
+		y = entity_y[i];
 
 		// Scroll entitites
-		entity_y[i] += scroll_y;
-		if(entity_y[i] > SCREENHEIGHT+16U) {
+		y += scroll_y;
+		if(y >= SCREENHEIGHT+17U) {
 			entity_type[i] = E_NONE;
 			continue;
 		}
 
 		// Update entity
 		switch(type) {
-			case E_NONE: continue;
 			case E_SPIKES: break;
 
 			case E_FIREBALL:
 				if(!(ticks & 1U) && !scene_state) {
 					if(entity_dir[i] == RIGHT) {
-						entity_x[i]++;
-						if(entity_x[i] >= 152U) entity_dir[i] = LEFT;
+						x++;
+						if(x >= 152U) entity_dir[i] = LEFT;
 					}
 					else {
-						entity_x[i]--;
-						if(entity_x[i] <= 24U) entity_dir[i] = RIGHT;
+						x--;
+						if(x <= 24U) entity_dir[i] = RIGHT;
 					}
 				}
 				break;
@@ -529,18 +532,18 @@ void updateEntities() {
 			case E_BIRD:
 				if(ticks & 1U && !scene_state) {
 					if(entity_dir[i] == RIGHT) {
-						entity_x[i]++;
-						if(entity_x[i] >= 152U) entity_dir[i] = LEFT;
+						x++;
+						if(x >= 152U) entity_dir[i] = LEFT;
 					}
 					else {
-						entity_x[i]--;
-						if(entity_x[i] <= 24U) entity_dir[i] = RIGHT;
+						x--;
+						if(x <= 24U) entity_dir[i] = RIGHT;
 					}
 				}
 				break;
 
 			case E_GHOST:
-				entity_x[i] += ghost_move;
+				x += ghost_move;
 				if(ghost_frame & 16U) entity_dir[i] = LEFT;
 				else entity_dir[i] = RIGHT;
 				break;
@@ -552,7 +555,7 @@ void updateEntities() {
 				if((ticks & 3U) == 3U) entity_dir[i]++;
 				if(entity_dir[i] == 4U) {
 					entity_type[i] = E_NONE;
-					entity_y[i] = 0U;
+					y = 0U;
 					continue;
 				}
 				break;
@@ -561,26 +564,29 @@ void updateEntities() {
 		// Draw entities on screen
 		frame = entity_sprites[type];
 
+		entity_x[i] = x;
+		entity_y[i] = y;
+
 		switch(type) {
 			case E_CLOUD:
 				frame += entity_dir[i] << 1U;
-				setSprite(entity_x[i]-16U, entity_y[i], frame, OBJ_PAL0);
-				setSprite(entity_x[i]-8U, entity_y[i], frame, OBJ_PAL0 | FLIP_X);
+				setSprite(x-16U, y, frame, OBJ_PAL0);
+				setSprite(x-8U,  y, frame, OBJ_PAL0 | FLIP_X);
 				break;
 
 			case E_PORTAL:
 				if(level == 3U && player_skin == 1U) {
-					setSprite(entity_x[i]-16U, entity_y[i]-24U, 120U, OBJ_PAL0);
-					setSprite(entity_x[i]-8U, entity_y[i]-24U, 122U, OBJ_PAL0);
-					setSprite(entity_x[i]-16U, entity_y[i]-8U, 124U, OBJ_PAL0);
-					setSprite(entity_x[i]-8U, entity_y[i]-8U, 126U, OBJ_PAL0);
+					setSprite(x-16U, y-24U, 120U, OBJ_PAL0);
+					setSprite(x-8U,  y-24U, 122U, OBJ_PAL0);
+					setSprite(x-16U, y-8U, 124U, OBJ_PAL0);
+					setSprite(x-8U,  y-8U, 126U, OBJ_PAL0);
 				} else {
 					if(entity_dir[i] == LEFT) {
-						setSprite(entity_x[i]-16U, entity_y[i], frame, OBJ_PAL0);
-						setSprite(entity_x[i]-8U, entity_y[i], frame+2U, OBJ_PAL0);
+						setSprite(x-16U, y, frame, OBJ_PAL0);
+						setSprite(x-8U,  y, frame+2U, OBJ_PAL0);
 					} else {
-						setSprite(entity_x[i]-8U, entity_y[i], frame, OBJ_PAL0 | FLIP_X);
-						setSprite(entity_x[i]-16U, entity_y[i], frame+2U, OBJ_PAL0 | FLIP_X);
+						setSprite(x-8U,  y, frame, OBJ_PAL0 | FLIP_X);
+						setSprite(x-16U, y, frame+2U, OBJ_PAL0 | FLIP_X);
 					}
 				}
 				break;
@@ -588,11 +594,11 @@ void updateEntities() {
 			default:
 				frame += ((ticks & 8U) >> 1);
 				if(entity_dir[i] == LEFT) {
-					setSprite(entity_x[i]-16U, entity_y[i], frame, OBJ_PAL0);
-					setSprite(entity_x[i]-8U, entity_y[i], frame+2U, OBJ_PAL0);
+					setSprite(x-16U, y, frame, OBJ_PAL0);
+					setSprite(x-8U,  y, frame+2U, OBJ_PAL0);
 				} else {
-					setSprite(entity_x[i]-8U, entity_y[i], frame, OBJ_PAL0 | FLIP_X);
-					setSprite(entity_x[i]-16U, entity_y[i], frame+2U, OBJ_PAL0 | FLIP_X);
+					setSprite(x-8U,  y, frame, OBJ_PAL0 | FLIP_X);
+					setSprite(x-16U, y, frame+2U, OBJ_PAL0 | FLIP_X);
 				}
 				break;
 		}
