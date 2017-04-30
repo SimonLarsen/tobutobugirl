@@ -423,3 +423,11 @@ void snd_update4() {
 		}
 	}
 }
+
+UBYTE snd_isActive1() {
+	return snd_active1;
+}
+
+UBYTE snd_isActive4() {
+	return snd_active4;
+}

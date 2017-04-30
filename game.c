@@ -235,7 +235,7 @@ void updateInput() {
 			if(dash_xdir || dash_ydir) {
 				dashing = DASH_TIME;
 				dashes--;
-				//spawnEntity(E_CLOUD, player_x, player_y-6U, 0U);
+				spawnEntity(E_CLOUD, player_x, player_y-6U, 0U);
 				playSound(SFX_DASH);
 			}
 		}
@@ -248,10 +248,11 @@ void updatePlayer() {
 
 	// Check entity collisions
 	for(i = 0U; i != MAX_ENTITIES; ++i) {
-		if(entity_type[i] && entity_type[i] <= LAST_COLLIDABLE
+		type = entity_type[i];
+
+		if(type && type <= LAST_COLLIDABLE
 		&& (player_x - entity_x[i] + 11U) <= 22U
 		&& (player_y - entity_y[i] + 11U) <= 22U) {
-			type = entity_type[i];
 			// Spikes and fireballs
 			if(type <= E_FIREBALL) {
 				killPlayer();
@@ -347,8 +348,9 @@ void updatePlayer() {
 				player_yspeed -= 2U;
 			}
 		}
-		if(CLICKED(KEY_USE) || (ticks & 15U) == 15U) {
+		if((ticks & 15U) == 15U) {
 			playSound(SFX_JETPACK);
+			spawnEntity(E_CLOUD, player_x, player_y+5U, 0U);
 		}
 	}
 

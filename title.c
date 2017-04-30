@@ -13,6 +13,8 @@
 #include "data/sprite/title_cat.h"
 
 extern UBYTE title_song_data;
+extern UBYTE mainmenu_song_data;
+extern UBYTE highscore_song_data;
 
 const UBYTE title_message[11] = {
 	26U, 28U, 15U, 29U, 29U, 10U, 29U, 30U, 11U, 28U, 30U
@@ -142,7 +144,7 @@ void drawTitleSprites(UBYTE triggered) {
 
 	if(scene_state <= TITLE_MOVE) {
 		// Draw PUSH START
-		if(scroll_y < 48U && (!triggered && ticks < 60U) || (triggered && ticks & 4U)) {
+		if(scroll_y < 48U && (!triggered && (ticks & 63U) < 48U) || (triggered && ticks & 4U)) {
 			for(i = 0U; i != 11U; ++i) {
 				if(i != 5U) {
 					setSprite(48U + (i << 3), 140U+scroll_y, title_message[i], OBJ_PAL0);
@@ -354,7 +356,7 @@ void enterTitle() {
 					}
 				}
 
-				if(scene_state == TITLE_MOVE && player_y < 30U) {
+				if(player_y < 30U) {
 					player_y++;
 					scroll_y++;
 					if(!(scroll_y & 1U)) {
@@ -367,6 +369,11 @@ void enterTitle() {
 					ticks = 40U;
 					elapsed_time = 255U;
 					player_yspeed = 128U;
+
+					setMusicBank(4U);
+					disable_interrupts();
+					playMusic(&highscore_song_data);
+					enable_interrupts();
 				}
 			}
 			// top
@@ -381,6 +388,10 @@ void enterTitle() {
 					}
 				} else {
 					updateTitleEnemies();
+				}
+
+				if(CLICKED(J_A) && !snd_isActive1()) {
+					playSound(SFX_CAT_ENABLE);
 				}
 
 				if(player_y < 7U) {

@@ -7,6 +7,8 @@ void playSound(UBYTE id);
 void snd_update();
 void snd_update1();
 void snd_update4();
+UBYTE snd_isActive1();
+UBYTE snd_isActive4();
 
 #define SOUND_BANK 10U
 
