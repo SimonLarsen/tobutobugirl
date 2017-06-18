@@ -1,0 +1,7 @@
+;For Tobu Tobu Girl
+;Compile with MMLGB
+A @wd2 @ve-1 t75 o4
+A v13 d+64 v4 d+64r16. v13 d+64 v4 d+64 v13 e64 v4 e64 v13 f+64 v4 f+64r16. v13 e64 v4 e64r32 v13 d+64 v4 d+64r8r32 v13 b64 v4 b64r8r32 v13 >d+64 v4 d+64r16. v13 <b64 v4 b64r32 v13 g+64 v4 g+64r8^32
+A v13 f+64 v4 f+64r3r96 v13 f+64 v4 f+64r16. v13 f+64 v4 f+64 v13 g64 v4 g64 v13 f+64 v4 f+64r8r32 v13 g+64 v4 g+64r16.
+A v13 b64 v4 b64r32 v13 a64 v4 a64r8.. v13 b64 v4 b64r4 v13 >e64 v4 e64r4r16 v13 e64 v4 e64
+A L [r1]255

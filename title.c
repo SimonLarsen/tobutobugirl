@@ -13,8 +13,7 @@
 #include "data/sprite/title_cat.h"
 
 extern UBYTE title_song_data;
-extern UBYTE mainmenu_song_data;
-extern UBYTE highscore_song_data;
+extern UBYTE minigame_song_data;
 
 const UBYTE title_message[11] = {
 	26U, 28U, 15U, 29U, 29U, 10U, 29U, 30U, 11U, 28U, 30U
@@ -370,9 +369,9 @@ void enterTitle() {
 					elapsed_time = 255U;
 					player_yspeed = 128U;
 
-					setMusicBank(4U);
+					setMusicBank(11U);
 					disable_interrupts();
-					playMusic(&highscore_song_data);
+					playMusic(&minigame_song_data);
 					enable_interrupts();
 				}
 			}

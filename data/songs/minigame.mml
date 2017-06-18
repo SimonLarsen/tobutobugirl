@@ -1,0 +1,86 @@
+;For Tobu Tobu Girl
+;Compile with MMLGB
+@wave0 = {0 0 1 1 2 9 9 10 11 12 13 13 14 14 14 15 13 12 11 11 10 10 10 10 10 10 11 11 12 12 12 15 }
+
+A t90 @wd0 @ve0 y0 o5 v10 @po2
+B @wd0 @ve0 o5 y0 v4 @po0 r16 ;Channel B (Pulse 2) will serve as a pseudo-echo of Channel A (Pulse 1) until Line 31
+AB @p0 e32 @p3 f16. @p0 e32 @p3 f16. @p0 e32d+32c+32<a+32> c+64d+32.c+64d16..<a+16f16g+16a+16>c16c+64d32.<a+16>
+AB @p0 e32 @p3 f16. @p0 e32 @p3 f16. @p0 e32d+32c+32<a+32> c+64d+32.c+64 @v6,3,=18 d4..^64
+A v5
+B v2
+AB d32
+A v10
+B v4
+AB @v0,0 <a+16>
+AB @p0 e32 @p3 f16. @p0 e32 @p3 f16. @p0 e32d+32c+32<a+32>c+64d+32.c+64d16..<e16f16g+16a+16>c16d16<a+16>
+AB @p0 e32 @p3 f16. @p0 e32 @p3 f16. @p0 e32d+32c+32<a+32>c+64d+32.c+64 @v6,3,=18 d2^64
+A v5
+B v2
+AB d32
+A v10
+B v4
+AB @v0,0 c32 @p3 c+16. @p0 c32 @p3 c+16. @p0 d+16c+16d+16f8c+16<e16f16g+16a+16>c16c+16
+AB @p0 e32 @p3 f16. @p0 e32 @p3 f16. @p0 e32d+32c+32<a+32>g+16g+32
+A @v6,3,=18 a+4... @v0,0 @ve0 v5 a+16 <
+A @wd1 @po0
+A v9 f32 v5 f32 v9 f32 v5 f32 v9 a+32 v5 a+32 v9 f32 v5 f32 v9 f32 v5 f32 v9 f32 v5 f32 v9 a+32 v5 a+32 v9 f32 v5 f32 v9 f32 v5 f32 v9 f32 v5 f32 v9 a+32 v5 a+32 v9 f32 v5 f32 v9 >c32 v5 c32 v9 <f32 v5 f32 v9 a+32 v5 a+32 v9 f32 v5 f32
+A v9 f32 v5 f32 v9 f32 v5 f32 v9 a+32 v5 a+32 v9 f32 v5 f32 v9 f32 v5 f32 v9 f32 v5 f32 v9 a+32 v5 a+32 v9 f32 v5 f32 v9 f32 v5 f32 v9 f32 v5 f32 v9 a+32 v5 a+32 v9 f32 v5 f32 v9 >c32 v5 c32 v9 <f32 v5 f32 v9 a+32 v5 a+32 v9 f32 v5 f32
+A v9 a+32 v5 a+32 v9 a+32 v5 a+32 v9 >d+32 v5 d+32 v9 <a+32 v5 a+32 v9 a+32 v5 a+32 v9 a+32 v5 a+32 v9 >d+32 v5 d+32 v9 <a+32 v5 a+32 v9 a+32 v5 a+32 v9 a+32 v5 a+32 v9 >d+32 v5 d+32 v9 <a+32 v5 a+32 v9 >f32 v5 f32 v9 <a+32 v5 a+32 v9 >d+32 v5 d+32 v9 <a+32 v5 a+32
+A v9 f32 v5 f32 v9 f32 v5 f32 v9 a+32 v5 a+32 v9 f32 v5 f32 v9 f32 v5 f32 v9 f32 v5 f32 v9 a+32 v5 a+32 v9 f32 v5 f32 v9 f32 v5 f32 v9 f32 v5 f32 v9 a+32 v5 a+32 v9 f32 v5 f32 v9 >c32 v5 c32 v9 <f32 v5 f32 v9 a+32 v5 a+32 v9 f32 v5 f32
+A v9 a+32 v5 a+32 v9 a+32 v5 a+32 v9 >d+32 v5 d+32 v9 <a+32 v5 a+32 v9 a+32 v5 a+32 v9 a+32 v5 a+32 v9 >d+32 v5 d+32 v9 <a+32 v5 a+32 v9 a+32 v5 a+32 v9 a+32 v5 a+32 v9 >d+32 v5 d+32 v9 <a+32 v5 a+32 v9 >f32 v5 f32 v9 <a+32 v5 a+32 v9 >d+32 v5 d+32 v9 <a+32 v5 a+32
+A v9 f32 v5 f32 v9 f32 v5 f32 v9 a+32 v5 a+32 v9 f32 v5 f32 v9 f32 v5 f32 v9 f32 v5 f32 v9 a+32 v5 a+32 v9 f32 v5 f32 v9 f32 v5 f32 v9 f32 v5 f32 v9 a+32 v5 a+32 v9 f32 v5 f32 v9 >c32 v5 c32 v9 <f32 v5 f32 v9 a+32 v5 a+32 v9 f32 v5 f32
+
+B a+4...
+B @wd1 @po2 o3 ;End of echo: change pulse and correct detune
+B v9 a+32 v5 a+32 v9 a+32 v5 a+32 v9 >f32 v5 f32 v9 <a+32 v5 a+32 v9 a+32 v5 a+32 v9 a+32 v5 a+32 v9 >f32 v5 f32 v9 <a+32 v5 a+32 v9 a+32 v5 a+32 v9 a+32 v5 a+32 v9 >f32 v5 f32 v9 <a+32 v5 a+32 v9 >f32 v5 f32 v9 <a+32 v5 a+32 v9 >f32 v5 f32 v9 <a+32 v5 a+32
+B v9 a+32 v5 a+32 v9 a+32 v5 a+32 v9 >f32 v5 f32 v9 <a+32 v5 a+32 v9 a+32 v5 a+32 v9 a+32 v5 a+32 v9 >f32 v5 f32 v9 <a+32 v5 a+32 v9 a+32 v5 a+32 v9 a+32 v5 a+32 v9 >f32 v5 f32 v9 <a+32 v5 a+32 v9 >f32 v5 f32 v9 <a+32 v5 a+32 v9 >f32 v5 f32 v9 <a+32 v5 a+32
+B v9 >d+32 v5 d+32 v9 d+32 v5 d+32 v9 a+32 v5 a+32 v9 d+32 v5 d+32 v9 d+32 v5 d+32 v9 d+32 v5 d+32 v9 a+32 v5 a+32 v9 d+32 v5 d+32 v9 d+32 v5 d+32 v9 d+32 v5 d+32 v9 a+32 v5 a+32 v9 d+32 v5 d+32 v9 a+32 v5 a+32 v9 d+32 v5 d+32 v9 a+32 v5 a+32 v9 d+32 v5 d+32
+B v9 <a+32 v5 a+32 v9 a+32 v5 a+32 v9 >f32 v5 f32 v9 <a+32 v5 a+32 v9 a+32 v5 a+32 v9 a+32 v5 a+32 v9 >f32 v5 f32 v9 <a+32 v5 a+32 v9 a+32 v5 a+32 v9 a+32 v5 a+32 v9 >f32 v5 f32 v9 <a+32 v5 a+32 v9 >f32 v5 f32 v9 <a+32 v5 a+32 v9 >f32 v5 f32 v9 <a+32 v5 a+32
+B v9 >d+32 v5 d+32 v9 d+32 v5 d+32 v9 a+32 v5 a+32 v9 d+32 v5 d+32 v9 d+32 v5 d+32 v9 d+32 v5 d+32 v9 a+32 v5 a+32 v9 d+32 v5 d+32 v9 d+32 v5 d+32 v9 d+32 v5 d+32 v9 a+32 v5 a+32 v9 d+32 v5 d+32 v9 a+32 v5 a+32 v9 d+32 v5 d+32 v9 a+32 v5 a+32 v9 d+32 v5 d+32
+B v9 <a+32 v5 a+32 v9 a+32 v5 a+32 v9 >f32 v5 f32 v9 <a+32 v5 a+32 v9 a+32 v5 a+32 v9 a+32 v5 a+32 v9 >f32 v5 f32 v9 <a+32 v5 a+32 v9 a+32 v5 a+32 v9 a+32 v5 a+32 v9 >f32 v5 f32 v9 <a+32 v5 a+32 v9 >f32 v5 f32 v9 <a+32 v5 a+32 v9 >f32 v5 f32 v9 <a+32 v5 a+32  
+
+C @wave0 o3 y0
+C v3 a+32 v2 a+32 v3 a+32 v2 a+32 v3 a+32 v2 a+32 v3 a+32 v2 a+32 v3 f32 v2 f32 v3 f32 v2 f32 v3 >c32 v2 c32 v3 c32 v2 c32 v3 <a+32 v2 a+32 v3 a+32 v2 a+32 v3 a+32 v2 a+32 v3 a+32 v2 a+32 v3 f32 v2 f32 v3 f32 v2 f32 v3 >c32 v2 c32 v3 c32 v2 c32
+C v3 <a+32 v2 a+32 v3 a+32 v2 a+32 v3 a+32 v2 a+32 v3 a+32 v2 a+32 v3 f32 v2 f32 v3 f32 v2 f32 v3 >c32 v2 c32 v3 c32 v2 c32 v3 <a+32 v2 a+32 v3 a+32 v2 a+32 v3 a+32 v2 a+32 v3 a+32 v2 a+32 v3 f32 v2 f32 v3 f32 v2 f32 v3 >c32 v2 c32 v3 c32 v2 c32
+C v3 d+32 v2 d+32 v3 d+32 v2 d+32 v3 d+32 v2 d+32 v3 d+32 v2 d+32 v3 <a+32 v2 a+32 v3 a+32 v2 a+32 v3 >f32 v2 f32 v3 f32 v2 f32 v3 d+32 v2 d+32 v3 d+32 v2 d+32 v3 d+32 v2 d+32 v3 d+32 v2 d+32 v3 <a+32 v2 a+32 v3 a+32 v2 a+32 v3 >f32 v2 f32 v3 f32 v2 f32
+C v3 <a+32 v2 a+32 v3 a+32 v2 a+32 v3 a+32 v2 a+32 v3 a+32 v2 a+32 v3 f32 v2 f32 v3 f32 v2 f32 v3 >c32 v2 c32 v3 c32 v2 c32 v3 <a+32 v2 a+32 v3 a+32 v2 a+32 v3 a+32 v2 a+32 v3 a+32 v2 a+32 v3 f32 v2 f32 v3 f32 v2 f32 v3 >c32 v2 c32 v3 c32 v2 c32
+C v3 d+32 v2 d+32 v3 d+32 v2 d+32 v3 d+32 v2 d+32 v3 d+32 v2 d+32 v3 <a+32 v2 a+32 v3 a+32 v2 a+32 v3 >f32 v2 f32 v3 f32 v2 f32 v3 c+32 v2 c+32 v3 c+32 v2 c+32 v3 c+32 v2 c+32 v3 c+32 v2 c+32 v3 <g+32 v2 g+32 v3 g+32 v2 g+32 v3 >d+32 v2 d+32 v3 d+32 v2 d+32
+C v3 <a+32 v2 a+32 v3 a+32 v2 a+32 v3 a+32 v2 a+32 v3 a+32 v2 a+32 v3 f32 v2 f32 v3 f32 v2 f32 v3 >c32 v2 c32 v3 c32 v2 c32 v3 <a+32 v2 a+32 v3 a+32 v2 a+32 v3 a+32 v2 a+32 v3 a+32 v2 a+32 v3 f32 v2 f32 v3 f32 v2 f32 v3 >c32 v2 c32 v3 c32 v2 c32
+C v3 <a+32 v2 a+32 v3 a+32 v2 a+32 v3 a+32 v2 a+32 v3 a+32 v2 a+32 v3 f32 v2 f32 v3 f32 v2 f32 v3 >c32 v2 c32 v3 c32 v2 c32 v3 <a+32 v2 a+32 v3 a+32 v2 a+32 v3 a+32 v2 a+32 v3 a+32 v2 a+32 v3 f32 v2 f32 v3 f32 v2 f32 v3 >c32 v2 c32 v3 c32 v2 c32
+C v3 <a+32 v2 a+32 v3 a+32 v2 a+32 v3 a+32 v2 a+32 v3 a+32 v2 a+32 v3 f32 v2 f32 v3 f32 v2 f32 v3 >c32 v2 c32 v3 c32 v2 c32 v3 <a+32 v2 a+32 v3 a+32 v2 a+32 v3 a+32 v2 a+32 v3 a+32 v2 a+32 v3 f32 v2 f32 v3 f32 v2 f32 v3 >c32 v2 c32 v3 c32 v2 c32
+C v3 d+32 v2 d+32 v3 d+32 v2 d+32 v3 d+32 v2 d+32 v3 d+32 v2 d+32 v3 <a+32 v2 a+32 v3 a+32 v2 a+32 v3 >f32 v2 f32 v3 f32 v2 f32 v3 d+32 v2 d+32 v3 d+32 v2 d+32 v3 d+32 v2 d+32 v3 d+32 v2 d+32 v3 <a+32 v2 a+32 v3 a+32 v2 a+32 v3 >f32 v2 f32 v3 f32 v2 f32
+C v3 <a+32 v2 a+32 v3 a+32 v2 a+32 v3 a+32 v2 a+32 v3 a+32 v2 a+32 v3 f32 v2 f32 v3 f32 v2 f32 v3 >c32 v2 c32 v3 c32 v2 c32 v3 <a+32 v2 a+32 v3 a+32 v2 a+32 v3 a+32 v2 a+32 v3 a+32 v2 a+32 v3 f32 v2 f32 v3 f32 v2 f32 v3 >c32 v2 c32 v3 c32 v2 c32
+C v3 d+32 v2 d+32 v3 d+32 v2 d+32 v3 d+32 v2 d+32 v3 d+32 v2 d+32 v3 <a+32 v2 a+32 v3 a+32 v2 a+32 v3 >f32 v2 f32 v3 f32 v2 f32 v3 d+32 v2 d+32 v3 d+32 v2 d+32 v3 d+32 v2 d+32 v3 d+32 v2 d+32 v3 <a+32 v2 a+32 v3 a+32 v2 a+32 v3 >f32 v2 f32 v3 f32 v2 f32
+C v3 <a+32 v2 a+32 v3 a+32 v2 a+32 v3 a+32 v2 a+32 v3 a+32 v2 a+32 v3 f32 v2 f32 v3 f32 v2 f32 v3 >c32 v2 c32 v3 c32 v2 c32 v3 <a+32 v2 a+32 v3 a+32 v2 a+32 v3 a+32 v2 a+32 v3 a+32 v2 a+32 v3 f32 v2 f32 v3 f32 v2 f32 v3 >c32 v2 c32 v3 c32 v2 c32
+
+;;kicks
+@@9 = { o3 a+=6 }
+@@2 = { o3 a+r=5 }
+@@3 = { o3 a+r=17 }
+
+;;cl hat
+@@1 = { o8 b=4r=20 } ;x8
+@@4 = { o8 b=4r=8 } ;x16
+@@7 = { o8 b=4r=2 } ;x32
+
+;;op hat
+@@0 = { @ve-4 o8 b8 @ve-1 }
+
+;;snares
+@@5 = { o6 b16 }
+@@6 = { o6 b8 }
+@@8 = { o6 b32 }
+
+D y0 l=7 @ve-1
+D v14 @@2 @@2 v13 @@5 v11 @@5 v14 @@2 @@2 v13 @@6 v14 @@2 @@2 v13 @@5 v11 @@5 v14 @@2 @@2 v13 @@6 
+D v14 @@2 @@2 v13 @@5 v11 @@5 v14 @@2 @@2 v13 @@6 v14 @@2 @@2 v13 @@5 v11 @@5 v14 @@9 @@9 @@2 v13 @@5 v11 @@8 v11 @@8 
+D v14 @@2 @@2 v13 @@5 v11 @@5 v14 @@2 @@2 v13 @@6 v14 @@2 @@2 v13 @@5 v11 @@5 v14 @@2 @@2 v13 @@6 
+D v14 @@2 @@2 v13 @@5 v11 @@5 v14 @@2 @@2 v13 @@6 v14 @@2 @@2 v13 @@5 v11 @@8 @@8 v14 @@2 @@2 v13 @@6 
+D v14 @@2 @@2 v13 @@5 v11 @@5 v14 @@2 @@2 v13 @@6 v14 @@2 @@2 v13 @@5 v11 @@5 v14 @@2 @@2 v13 @@6 
+D v14 @@2 @@2 v13 @@5 v11 @@5 v14 @@2 @@2 v13 @@6 v14 @@2 v11 @@8 v12 @@8 v13 @@5 v8 @@0 v11 @@8 v12 @@8 v13 @@5 v11 @@5 
+D v13 @@2 @@2 v12 @@5 v9 @@4 v13 @@2 @@2 v12 @@5 v9 @@7 @@7 v13 @@2 @@2 v12 @@5 v9 @@4 v13 @@9 @@9 @@2 v12 @@5 v9 @@7 @@7 
+D v13 @@2 @@9 @@9 v12 @@5 v9 @@4 v13 @@2 @@2 v12 @@6 v13 @@2 @@2 v12 @@5 v9 @@4 v13 @@2 v9 @@4 v12 @@5 v9 @@7 @@7 
+D v13 @@2 @@2 v12 @@5 v9 @@4 v13 @@2 @@2 v12 @@6 v13 @@2 @@2 v12 @@5 v9 @@4 v13 @@9 @@9 @@2 v12 @@6 
+D v13 @@2 @@9 @@9 v12 @@5 v9 @@4 v13 @@2 @@2 v12 @@6 v13 @@2 @@2 v12 @@5 v9 @@4 v13 @@2 v9 @@4 v12 @@5 v9 @@7 @@7 
+D v13 @@2 @@2 v12 @@5 v9 @@4 v13 @@2 @@2 v12 @@6 v13 @@2 @@2 v12 @@5 v9 @@4 v13 @@9 @@9 @@2 v12 @@6 
+D v13 @@2 @@2 v12 @@5 v9 @@4 v13 @@2 v12 @@8 @@8 @@8 @@8 v13 @@2 v10 @@5 @@8 v11 @@8 v12 @@5 v8 @@0 v10 @@8 v11 @@8 v12 @@5 v11 @@5

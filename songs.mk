@@ -8,10 +8,13 @@ SONGS_BANK6=data/songs/intro_song.asm data/songs/dream_song.asm data/songs/dream
 
 SONGS_BANK9=data/songs/ending_part1_song.asm data/songs/ending_part2_song.asm data/songs/potato_jingle_song.asm data/songs/tangram_shine_song.asm data/songs/tangram_vox_song.asm data/songs/level_clear_song.asm data/songs/unlocked_song.asm
 
+SONGS_BANK11=data/songs/minigame_song.asm
+
 $(SONGS_BANK4): MMLBANK:=4
 $(SONGS_BANK5): MMLBANK:=5
 $(SONGS_BANK6): MMLBANK:=6
 $(SONGS_BANK9): MMLBANK:=9
+$(SONGS_BANK11): MMLBANK:=11
 
 data/songs/%_song.asm: data/songs/%.mml
 	java -jar jar/MMLGB.jar $< $@ $(MMLBANK)
