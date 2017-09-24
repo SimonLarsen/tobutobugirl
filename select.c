@@ -6,6 +6,7 @@
 #include "cos.h"
 #include "ram.h"
 #include "sound.h"
+#include "mmlgb/driver/music.h"
 
 #include "data/sprite/characters.h"
 #include "data/sprite/arrow.h"
@@ -49,6 +50,8 @@ void initSelect() {
 	set_bkg_tiles_rle(0U, 0U, select_tiles_width, select_tiles_height, select_tiles);
 
 	ticks = 0U;
+	timer = 0U;
+	elapsed_time = 0U;
 	circle_index = 0U;
 	arrow_offset1 = 0U;
 	arrow_offset2 = 0U;
@@ -268,6 +271,25 @@ void enterSelect() {
 		ticks++;
 		if((ticks & 3U) == 3U) {
 			selectScrollCircles();
+		}
+
+		timer++;
+		if(timer == 60U) {
+			timer = 0U;
+			elapsed_time++;
+
+			if(elapsed_time == 120U) {
+				mus_setPaused(1U);
+			}
+
+			else if(elapsed_time == 136U) {
+				elapsed_time = 0U;
+				mus_setPaused(0U);
+			}
+		}
+
+		if(elapsed_time == 120U && timer == 32) {
+			playSound(SFX_POTAKA);
 		}
 
 		if(ISDOWN(J_RIGHT)) {
