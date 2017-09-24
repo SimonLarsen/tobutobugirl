@@ -33,8 +33,7 @@ UBYTE snd_isActive4();
 #define SFX_TIME_PICKUP      18U
 #define SFX_WARP_START       19U
 #define SFX_RANK_CRASH       20U
-#define SFX_POTAKA           21U
 
-#define SFX_COUNT            22U
+#define SFX_COUNT            21U
 
 #endif

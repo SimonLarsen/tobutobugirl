@@ -34,6 +34,7 @@ UBYTE cat_frame_reverse;
 #define CAT_ANIM_OUT 3U
 
 extern UBYTE mainmenu_song_data;
+extern UBYTE potaka_song_data;
 
 void initSelect() {
 	disable_interrupts();
@@ -278,18 +279,28 @@ void enterSelect() {
 			timer = 0U;
 			elapsed_time++;
 
-			if(elapsed_time == 120U) {
-				mus_setPaused(1U);
+			if(elapsed_time == 110U) {
+				//mus_setPaused(1U);
+				disable_interrupts();
+				stopMusic();
+				enable_interrupts();
 			}
 
-			else if(elapsed_time == 136U) {
+			else if(elapsed_time == 120U) {
+				disable_interrupts();
+				setMusicBank(4U);
+				playMusic(&mainmenu_song_data);
+				enable_interrupts();
+
 				elapsed_time = 0U;
-				mus_setPaused(0U);
 			}
 		}
 
-		if(elapsed_time == 120U && timer == 32) {
-			playSound(SFX_POTAKA);
+		if(elapsed_time == 110U && timer == 32) {
+			disable_interrupts();
+			setMusicBank(11U);
+			playMusic(&potaka_song_data);
+			enable_interrupts();
 		}
 
 		if(ISDOWN(J_RIGHT)) {

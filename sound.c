@@ -28,7 +28,6 @@ extern UBYTE sfx_time_out_data;
 extern UBYTE sfx_time_pickup_data;
 extern UBYTE sfx_warp_start_data;
 extern UBYTE sfx_rank_crash_data;
-extern UBYTE sfx_potaka_data;
 
 UBYTE snd_active1, snd_active4;
 UBYTE snd_priority1, snd_priority4;
@@ -147,8 +146,6 @@ void playSound(UBYTE id) {
 			data = &sfx_warp_start_data; break;
 		case SFX_RANK_CRASH:
 			data = &sfx_rank_crash_data; break;
-		case SFX_POTAKA:
-			data = &sfx_potaka_data; break;
 	}
 
 	data1 = data + ((UWORD*)data)[CHN1_OFFSET];
