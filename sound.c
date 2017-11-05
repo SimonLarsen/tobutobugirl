@@ -68,8 +68,7 @@ const UBYTE sfx_priority[SFX_COUNT] = {
 	8U, // SFX_TIME_OUT
 	8U, // SFX_TIME_PICKUP
 	9U, // SFX_WARP_START
-	7U, // SFX_RANK_CRASH
-	1U  // SFX_POTAKA
+	7U  // SFX_RANK_CRASH
 };
 
 void snd_init() {
