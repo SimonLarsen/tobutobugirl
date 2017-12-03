@@ -1,4 +1,4 @@
-# Tobu Tobu Girl
+# Tobu Tobu Girl ![MIT License](https://img.shields.io/badge/license-MIT%20License-blue.svg) ![CC BY 4.0](https://img.shields.io/badge/license-CC%20BY%204.0-blue.svg) ![Game Boy](https://img.shields.io/badge/platform-Game%20Boy-blue.svg)
 
 An arcade platformer for the Game Boy.
 
