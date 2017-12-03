@@ -2,6 +2,7 @@ CC=lcc
 CFLAGS=-Wl-j
 IMGTOGB=imgtogb
 EMULATOR=gambatte-qt
+MMLGB=MMLGB.jar
 
 default: backgrounds sprites sounds songs tobu.gb
 

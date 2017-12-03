@@ -17,4 +17,4 @@ $(SONGS_BANK9): MMLBANK:=9
 $(SONGS_BANK11): MMLBANK:=11
 
 data/songs/%_song.asm: data/songs/%.mml
-	java -jar jar/MMLGB.jar $< $@ $(MMLBANK)
+	java -jar $(MMLGB) $< $@ $(MMLBANK)
