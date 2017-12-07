@@ -24,7 +24,7 @@ Download and compile [imgtogb](https://github.com/SimonLarsen/imgtogb) and add i
 
 ### Compiling the rom
 
-Clone the Tobu Tobu Girl repository using the `--recursive` to clone the [mmlgb](https://github.com/SimonLarsen/mmlgb) submodule as well.
+Clone the Tobu Tobu Girl repository using the `--recursive` flag to clone the [mmlgb](https://github.com/SimonLarsen/mmlgb) submodule as well.
 
 ```
 git clone --recursive https://github.com/SimonLarsen/tobutobugirl
@@ -49,4 +49,4 @@ If all went well, a rom file `tobu.gb` will be created in the project root.
 
 The source code for Tobu Tobu Girl is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
-All assets (images, text, sound and music) is licensed under the [Creative Commons Attribution 4.0 International License](http://creativecommons.org/licenses/by/4.0/).
+All assets (images, text, sound and music) are licensed under the [Creative Commons Attribution 4.0 International License](http://creativecommons.org/licenses/by/4.0/).
