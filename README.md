@@ -2,7 +2,7 @@
 
 An arcade platformer for the Game Boy.
 
-More info at: http://tangramgames.dk/tobutobugirl/.
+More info at: http://tangramgames.dk/tobutobugirl.
 
 Compilation has only been tested on Linux using GBDK 2.96a.
 
@@ -18,7 +18,7 @@ Install GBDK version 2.96a. Make sure the `lcc` compiler is in your PATH and the
 
 ### Install imgtogb
 
-Download and compile [imgtogb](https://github.com/SimonLarsen/imgtogb) and add it to your PATH. Alternatively you can change the `IMGTOGB` variable in the [Makefile](Makefile) to point to the imgtogb binary.
+Download and compile [imgtogb](https://github.com/SimonLarsen/pyimgtogb) and add it to your PATH. Alternatively you can change the `IMGTOGB` variable in the [Makefile](Makefile) to point to the imgtogb.py file.
 
 ### Compiling the rom
 
