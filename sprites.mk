@@ -1,60 +1,69 @@
+define make-sprite-8x16
+	$(IMGTOGB) --sprite --8x16 $< $@
+endef
+
+define make-sprite-8x8
+	$(IMGTOGB) --sprite $< $@
+endef
+
 sprites: data/sprite/sprites.h data/sprite/portal.h data/sprite/skin1.h data/sprite/skin2.h data/sprite/notes.h data/sprite/intro_sprites.h data/sprite/intro_flash.h data/sprite/bobblehead.h data/sprite/ending_sprites1.h data/sprite/ending_sprites2.h data/sprite/digital.h data/sprite/select_arrow.h data/sprite/togglecat.h data/sprite/pause_cloud1.h data/sprite/pause_cloud2.h data/sprite/shine.h data/sprite/title_cat.h data/sprite/wipe_marker.h data/sprite/ranks.h
 
 data/sprite/sprites.h: data/sprite/sprites.png
-	$(IMGTOGB) --sprite --8x16 $< $@
+	$(make-sprite-8x16)
+
 data/sprite/portal.h: data/sprite/portal.png
-	$(IMGTOGB) --sprite --8x16 $< $@
+	$(make-sprite-8x16)
 
 data/sprite/skin1.h: data/sprite/skin1.png
-	$(IMGTOGB) --sprite --8x16 $< $@
+	$(make-sprite-8x16)
 
 data/sprite/skin2.h: data/sprite/skin2.png
-	$(IMGTOGB) --sprite --8x16 $< $@
+	$(make-sprite-8x16)
 
 data/sprite/notes.h: data/sprite/notes.png
-	$(IMGTOGB) --sprite --8x16 $< $@
+	$(make-sprite-8x16)
 
 data/sprite/intro_sprites.h: data/sprite/intro_sprites.png
-	$(IMGTOGB) --sprite --8x16 $< $@
+	$(make-sprite-8x16)
 
 data/sprite/intro_flash.h: data/sprite/intro_flash.png
-	$(IMGTOGB) --sprite --8x16 $< $@
+	$(make-sprite-8x16)
 
 data/sprite/bobblehead.h: data/sprite/bobblehead.png
-	$(IMGTOGB) --sprite --8x16 $< $@
+	$(make-sprite-8x16)
 
 data/sprite/ending_sprites1.h: data/sprite/ending_sprites1.png
-	$(IMGTOGB) --sprite --8x16 $< $@
+	$(make-sprite-8x16)
 
 data/sprite/ending_sprites2.h: data/sprite/ending_sprites2.png
-	$(IMGTOGB) --sprite --8x16 $< $@
+	$(make-sprite-8x16)
 
 data/sprite/digital.h: data/sprite/digital.png
-	$(IMGTOGB) --sprite $< $@
+	$(make-sprite-8x8)
 
 data/sprite/select_arrow.h: data/sprite/select_arrow.png
-	$(IMGTOGB) --sprite --8x16 $< $@
+	$(make-sprite-8x16)
 
 data/sprite/togglecat.h: data/sprite/togglecat.png
-	$(IMGTOGB) --sprite $< $@
+	$(make-sprite-8x8)
 
 data/sprite/pause_cloud1.h: data/sprite/pause_cloud1.png
-	$(IMGTOGB) --sprite --8x16 $< $@
+	$(make-sprite-8x16)
 
 data/sprite/pause_cloud2.h: data/sprite/pause_cloud2.png
-	$(IMGTOGB) --sprite --8x16 $< $@
+	$(make-sprite-8x16)
 
 data/sprite/shine.h: data/sprite/shine.png
-	$(IMGTOGB) --sprite --8x16 $< $@
+	$(make-sprite-8x16)
 
 data/sprite/title_cat.h: data/sprite/title_cat.png
-	$(IMGTOGB) --sprite --8x16 $< $@
+	$(make-sprite-8x16)
 
 data/sprite/wipe_marker.h: data/sprite/wipe_marker.png
-	$(IMGTOGB) --sprite --8x16 $< $@
+	$(make-sprite-8x16)
 
 data/sprite/ranks.h: data/sprite/ranks.png
-	$(IMGTOGB) --sprite --8x16 $< $@
+	$(make-sprite-8x16)
 
 #$(IMGTOGB) --map data/bg/circles.png data/bg/circles.h
 #$(IMGTOGB) --sprite data/sprite/characters.png data/sprite/characters.h # 40 tiles
