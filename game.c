@@ -1,9 +1,9 @@
 #include <gb/gb.h>
 #include <rand.h>
 #include "defines.h"
+#include "game.h"
 #include "fade.h"
 #include "gamestate.h"
-#include "game.h"
 #include "cos.h"
 #include "ram.h"
 #include "highscore.h"
