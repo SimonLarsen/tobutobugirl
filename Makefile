@@ -1,7 +1,6 @@
 CC=lcc
 CFLAGS=-Wl-j
-IMGTOGB=imgtogb
-EMULATOR=gambatte_sdl -s 3
+IMGTOGB=imgtogb.py
 MMLGB=MMLGB.jar
 
 define compile-source

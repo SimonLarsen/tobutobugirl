@@ -29,7 +29,7 @@ void initHighscore() {
 	move_bkg(0U, 0U);
 	set_bkg_data(0U, 38U, characters_data);
 	set_bkg_data(38U, circles_data_length, circles_data);
-	set_bkg_data(highscore_offset, highscore_data_length, highscore_data);
+	set_bkg_data(highscore_tiles_offset, highscore_data_length, highscore_data);
 
 	set_bkg_tiles(0U, 0U, highscore_tiles_width, highscore_tiles_height, highscore_tiles);
 	set_sprite_data(0U, arrow_data_length, arrow_data);
@@ -77,23 +77,23 @@ void _highscoreUpdateScreen() {
 
 	switch(tile) {
 		case 1U:
-			set_bkg_data(selection1_offset, selection1_data_length, selection1_data);
+			set_bkg_data(selection1_tiles_offset, selection1_data_length, selection1_data);
 			data = selection1_tiles;
 			break;
 		case 2U:
-			set_bkg_data(selection2_offset, selection2_data_length, selection2_data);
+			set_bkg_data(selection2_tiles_offset, selection2_data_length, selection2_data);
 			data = selection2_tiles;
 			break;
 		case 3U:
-			set_bkg_data(selection3_offset, selection3_data_length, selection3_data);
+			set_bkg_data(selection3_tiles_offset, selection3_data_length, selection3_data);
 			data = selection3_tiles;
 			break;
 		case 4U:
-			set_bkg_data(selection4_offset, selection4_data_length, selection4_data);
+			set_bkg_data(selection4_tiles_offset, selection4_data_length, selection4_data);
 			data = selection4_tiles;
 			break;
 		case 0U:
-			set_bkg_data(selection_locked_offset, selection_locked_data_length, selection_locked_data);
+			set_bkg_data(selection_locked_tiles_offset, selection_locked_data_length, selection_locked_data);
 			data = selection_locked_tiles;
 			break;
 	}

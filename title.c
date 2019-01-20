@@ -31,7 +31,7 @@ void initTitle() {
 	move_bkg(0U, 72U);
 
 	set_bkg_data(0U, titlescreen_data_length, titlescreen_data);
-	set_bkg_data(titlescreen_bg_offset, titlescreen_bg_data_length, titlescreen_bg_data);
+	set_bkg_data(titlescreen_bg_tiles_offset, titlescreen_bg_data_length, titlescreen_bg_data);
 	set_win_tiles(0U, 0U, titlescreen_tiles_width, titlescreen_tiles_height, titlescreen_tiles);
 	set_bkg_tiles(0U, 0U, titlescreen_bg_tiles_width, titlescreen_bg_tiles_height, titlescreen_bg_tiles);
 	set_sprite_data(0U, 37U, characters_data);

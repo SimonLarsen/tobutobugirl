@@ -1,9 +1,9 @@
 define make-sprite-8x16
-	$(IMGTOGB) --sprite --8x16 $< $@
+	$(IMGTOGB) --s8x16 $< $@
 endef
 
 define make-sprite-8x8
-	$(IMGTOGB) --sprite $< $@
+	$(IMGTOGB) $< $@
 endef
 
 sprites: data/sprite/sprites.h data/sprite/portal.h data/sprite/skin1.h data/sprite/skin2.h data/sprite/notes.h data/sprite/intro_sprites.h data/sprite/intro_flash.h data/sprite/bobblehead.h data/sprite/ending_sprites1.h data/sprite/ending_sprites2.h data/sprite/digital.h data/sprite/select_arrow.h data/sprite/togglecat.h data/sprite/pause_cloud1.h data/sprite/pause_cloud2.h data/sprite/shine.h data/sprite/title_cat.h data/sprite/wipe_marker.h data/sprite/ranks.h

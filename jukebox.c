@@ -63,7 +63,7 @@ void initJukebox() {
 	set_sprite_data(arrow_data_length+notes_data_length, bobblehead_data_length, bobblehead_data);
 
 	set_bkg_data(0U, 37U, digital_data);
-	set_bkg_data_rle(jukebox_offset, jukebox_data_length, jukebox_data);
+	set_bkg_data_rle(jukebox_tiles_offset, jukebox_data_length, jukebox_data);
 	set_bkg_tiles_rle(0U, 0U, jukebox_tiles_width, jukebox_tiles_height, jukebox_tiles);
 
 	OBP0_REG = 0xD0U; // 11010000

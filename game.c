@@ -88,8 +88,8 @@ void initGame() {
 	BGP_REG = 0xE4U;  // 11100100
 
 	// Load tile data
-	set_bkg_data(hud_offset, hud_data_length, hud_data);
-	set_bkg_data(clock_offset, clock_data_length, clock_data);
+	set_bkg_data(hud_tiles_offset, hud_data_length, hud_data);
+	set_bkg_data(clock_tiles_offset, clock_data_length, clock_data);
 	set_win_tiles(0U, 0U, hud_tiles_width, hud_tiles_height, hud_tiles);
 
 	skin_data = getSkinData();
@@ -182,8 +182,8 @@ void restoreGame() {
 
 	setIngameBackground(level);
 
-	set_bkg_data(hud_offset, hud_data_length, hud_data);
-	set_bkg_data(clock_offset, clock_data_length, clock_data);
+	set_bkg_data(hud_tiles_offset, hud_data_length, hud_data);
+	set_bkg_data(clock_tiles_offset, clock_data_length, clock_data);
 	set_win_tiles(0U, 0U, hud_tiles_width, hud_tiles_height, hud_tiles);
 
 	skin_data = getSkinData();

@@ -77,7 +77,7 @@ data/bg/highscore.h: data/bg/highscore.png
 	$(IMGTOGB) --map -O 47 $< $@
 
 data/sprite/empty.h: data/sprite/empty.png
-	$(IMGTOGB) --sprite $< $@
+	$(IMGTOGB) $< $@
 
 ending_backgrounds: data/bg/ending_thanks.h
 

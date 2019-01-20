@@ -4,8 +4,6 @@ An arcade platformer for the Game Boy.
 
 More info at: http://tangramgames.dk/tobutobugirl/.
 
-Note: The makefiles are currently a mess and dependencies are not handled properly. Many changes will require a `make clean` before recompiling. I will try to fix this soon.
-
 Compilation has only been tested on Linux using GBDK 2.96a.
 
 ## Playing the game

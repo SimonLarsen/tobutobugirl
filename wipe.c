@@ -16,7 +16,7 @@ void initWipe() {
 
 	move_bkg(0U, 0U);
 	set_bkg_data(0U, circles_data_length, circles_data);
-	set_bkg_data_rle(wipe_offset, wipe_data_length, wipe_data);
+	set_bkg_data_rle(wipe_tiles_offset, wipe_data_length, wipe_data);
 	set_sprite_data(0U, wipe_marker_data_length, wipe_marker_data);
 
 	set_bkg_tiles_rle(0U, 0U, wipe_tiles_width, wipe_tiles_height, wipe_tiles);

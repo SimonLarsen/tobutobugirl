@@ -46,8 +46,8 @@ void initSelect() {
 	set_sprite_data(41U, togglecat_data_length, togglecat_data);
 
 	set_bkg_data(0U, circles_data_length, circles_data);
-	set_bkg_data(catface_offset, catface_data_length, catface_data);
-	set_bkg_data_rle(select_offset, select_data_length, select_data);
+	set_bkg_data(catface_tiles_offset, catface_data_length, catface_data);
+	set_bkg_data_rle(select_tiles_offset, select_data_length, select_data);
 	set_bkg_tiles_rle(0U, 0U, select_tiles_width, select_tiles_height, select_tiles);
 
 	ticks = 0U;
@@ -86,25 +86,25 @@ void initSelect() {
 
 UBYTE *selectGetBannerData() {
 	if(selection <= 4U && selection > levels_completed+1U) {
-		set_bkg_data(selection_locked_offset, selection_locked_data_length, selection_locked_data);
+		set_bkg_data(selection_locked_tiles_offset, selection_locked_data_length, selection_locked_data);
 		return selection_locked_tiles;
 	} else if(selection == 1U) {
-		set_bkg_data(selection1_offset, selection1_data_length, selection1_data);
+		set_bkg_data(selection1_tiles_offset, selection1_data_length, selection1_data);
 		return selection1_tiles;
 	} else if(selection == 2U) {
-		set_bkg_data(selection2_offset, selection2_data_length, selection2_data);
+		set_bkg_data(selection2_tiles_offset, selection2_data_length, selection2_data);
 		return selection2_tiles;
 	} else if(selection == 3U) {
-		set_bkg_data(selection3_offset, selection3_data_length, selection3_data);
+		set_bkg_data(selection3_tiles_offset, selection3_data_length, selection3_data);
 		return selection3_tiles;
 	} else if(selection == 4U) {
-		set_bkg_data(selection4_offset, selection4_data_length, selection4_data);
+		set_bkg_data(selection4_tiles_offset, selection4_data_length, selection4_data);
 		return selection4_tiles;
 	} else if(selection == 5U) {
-		set_bkg_data(selection_jukebox_offset, selection_jukebox_data_length, selection_jukebox_data);
+		set_bkg_data(selection_jukebox_tiles_offset, selection_jukebox_data_length, selection_jukebox_data);
 		return selection_jukebox_tiles;
 	} else if(selection == 6U) {
-		set_bkg_data(selection_highscore_offset, selection_highscore_data_length, selection_highscore_data);
+		set_bkg_data(selection_highscore_tiles_offset, selection_highscore_data_length, selection_highscore_data);
 		return selection_highscore_tiles;
 	}
 	return 0U;

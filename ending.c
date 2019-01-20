@@ -34,7 +34,7 @@ void initEnding() {
 	BGP_REG  = 0xE4U; // 11101000
 
 	set_bkg_data_rle(0U, intro_bg_data_length, intro_bg_data);
-	set_bkg_data_rle(ending_thanks_offset, ending_thanks_data_length, ending_thanks_data);
+	set_bkg_data_rle(ending_thanks_tiles_offset, ending_thanks_data_length, ending_thanks_data);
 	set_bkg_tiles_rle(0U, 0U, intro_bg_tiles_width, intro_bg_tiles_height, intro_bg_tiles);
 
 	set_sprite_data(0U, ending_sprites1_data_length, ending_sprites1_data);

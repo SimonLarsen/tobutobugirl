@@ -6,7 +6,7 @@ extern const unsigned char selection_highscore_data[];
 
 #define selection_highscore_tiles_width 20
 #define selection_highscore_tiles_height 6
-#define selection_highscore_offset 90
+#define selection_highscore_tiles_offset 90
 extern const unsigned char selection_highscore_tiles[];
 
 #endif
