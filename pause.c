@@ -6,7 +6,7 @@
 #include "ram.h"
 #include "mmlgb/driver/music.h"
 
-#include "data/sprite/characters.h"
+#include "characters.h"
 
 const UBYTE pause_text_on[] = { 10U, 25U, 24U };
 const UBYTE pause_text_off[] = { 25U, 16U, 16U };

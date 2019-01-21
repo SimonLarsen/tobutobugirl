@@ -9,7 +9,7 @@
 
 #include "data/bg/jukebox.h"
 #include "data/sprite/digital.h"
-#include "data/sprite/arrow.h"
+#include "arrow.h"
 #include "data/sprite/notes.h"
 #include "data/sprite/bobblehead.h"
 

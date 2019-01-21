@@ -9,7 +9,7 @@
 
 #include "data/bg/titlescreen.h"
 #include "data/bg/titlescreen_bg.h"
-#include "data/sprite/characters.h"
+#include "characters.h"
 #include "data/sprite/title_cat.h"
 
 extern UBYTE title_song_data;

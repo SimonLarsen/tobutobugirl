@@ -7,17 +7,17 @@
 #include "ram.h"
 #include "sound.h"
 
-#include "data/sprite/characters.h"
-#include "data/sprite/arrow.h"
+#include "characters.h"
+#include "arrow.h"
 #include "data/sprite/empty.h"
 
-#include "data/bg/circles.h"
 #include "data/bg/highscore.h"
-#include "data/bg/selection1.h"
-#include "data/bg/selection2.h"
-#include "data/bg/selection3.h"
-#include "data/bg/selection4.h"
-#include "data/bg/selection_locked.h"
+#include "circles.h"
+#include "selection1.h"
+#include "selection2.h"
+#include "selection3.h"
+#include "selection4.h"
+#include "selection_locked.h"
 
 extern UBYTE highscore_song_data;
 extern UBYTE dream_score_song_data;

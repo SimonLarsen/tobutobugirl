@@ -8,21 +8,21 @@
 #include "sound.h"
 #include "mmlgb/driver/music.h"
 
-#include "data/sprite/characters.h"
-#include "data/sprite/arrow.h"
+#include "characters.h"
+#include "arrow.h"
 #include "data/sprite/togglecat.h"
 
-#include "data/bg/circles.h"
+#include "circles.h"
 #include "data/bg/catface.h"
 #include "data/bg/select.h"
 
-#include "data/bg/selection1.h"
-#include "data/bg/selection2.h"
-#include "data/bg/selection3.h"
-#include "data/bg/selection4.h"
-#include "data/bg/selection_highscore.h"
-#include "data/bg/selection_jukebox.h"
-#include "data/bg/selection_locked.h"
+#include "selection1.h"
+#include "selection2.h"
+#include "selection3.h"
+#include "selection4.h"
+#include "selection_highscore.h"
+#include "selection_jukebox.h"
+#include "selection_locked.h"
 
 UBYTE select_scroll_dir;
 UBYTE select_cat_state;

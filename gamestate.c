@@ -2,7 +2,10 @@
 #include "defines.h"
 #include "gamestate.h"
 #include "game_backgrounds.h"
-#include "win_backgrounds.h"
+#include "win1.h"
+#include "win2.h"
+#include "win3.h"
+#include "win4.h"
 #include "cloud_animations.h"
 #include "mmlgb/driver/music.h"
 
@@ -172,19 +175,19 @@ void setWinscreenBackground(UBYTE level) {
 
 	switch(level) {
 		case 1:
-			set_bkg_data_rle(win1_offset, win1_data_length, win1_data);
+			set_bkg_data_rle(win1_tiles_offset, win1_data_length, win1_data);
 			set_bkg_tiles_rle(8U, 3U, win1_tiles_width, win1_tiles_height, win1_tiles);
 			break;
 		case 2:
-			set_bkg_data_rle(win2_offset, win2_data_length, win2_data);
+			set_bkg_data_rle(win2_tiles_offset, win2_data_length, win2_data);
 			set_bkg_tiles_rle(8U, 3U, win2_tiles_width, win2_tiles_height, win2_tiles);
 			break;
 		case 3:
-			set_bkg_data_rle(win3_offset, win3_data_length, win3_data);
+			set_bkg_data_rle(win3_tiles_offset, win3_data_length, win3_data);
 			set_bkg_tiles_rle(8U, 3U, win3_tiles_width, win3_tiles_height, win3_tiles);
 			break;
 		case 4:
-			set_bkg_data_rle(win4_offset, win4_data_length, win4_data);
+			set_bkg_data_rle(win4_tiles_offset, win4_data_length, win4_data);
 			set_bkg_tiles_rle(8U, 3U, win4_tiles_width, win4_tiles_height, win4_tiles);
 			break;
 	}

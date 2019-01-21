@@ -6,7 +6,7 @@
 #include "gamestate.h"
 #include "sound.h"
 
-#include "data/bg/circles.h"
+#include "circles.h"
 #include "data/bg/wipe.h"
 #include "data/sprite/wipe_marker.h"
 

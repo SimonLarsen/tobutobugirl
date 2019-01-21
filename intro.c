@@ -4,7 +4,7 @@
 #include "gamestate.h"
 #include "intro.h"
 
-#include "data/bg/intro_bg.h"
+#include "intro_bg.h"
 #include "data/sprite/intro_sprites.h"
 #include "data/sprite/intro_flash.h"
 

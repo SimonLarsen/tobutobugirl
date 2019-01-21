@@ -5,9 +5,9 @@
 #include "sound.h"
 #include "ram.h"
 
-#include "data/sprite/characters.h"
 #include "data/bg/minigame_score_bg.h"
-#include "data/bg/zoom_circles.h"
+#include "characters.h"
+#include "zoom_circles.h"
 
 void initMinigamescore() {
 	UBYTE tile;

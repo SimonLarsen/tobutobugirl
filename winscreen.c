@@ -7,11 +7,11 @@
 #include "winscreen.h"
 #include "sound.h"
 
-#include "data/bg/circles.h"
-#include "data/sprite/characters.h"
+#include "characters.h"
 #include "data/bg/win_base.h"
 #include "data/bg/rank_banner.h"
 #include "data/sprite/ranks.h"
+#include "circles.h"
 #include "mmlgb/driver/music.h"
 #include "mmlgb/driver/notes.h"
 #include "mmlgb/driver/freq.h"

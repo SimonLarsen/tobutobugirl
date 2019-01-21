@@ -4,13 +4,13 @@
 #include "fade.h"
 #include "gamestate.h"
 
-#include "data/sprite/characters.h"
-#include "data/bg/zoom_circles.h"
+#include "characters.h"
+#include "zoom_circles.h"
 #include "data/bg/unlocked.h"
-#include "data/bg/selection2.h"
-#include "data/bg/selection3.h"
-#include "data/bg/selection4.h"
-#include "data/bg/selection_jukebox.h"
+#include "selection2.h"
+#include "selection3.h"
+#include "selection4.h"
+#include "selection_jukebox.h"
 
 extern UBYTE unlocked_song_data;
 

@@ -4,7 +4,7 @@
 #include "ending.h"
 #include "gamestate.h"
 #include "fade.h"
-#include "data/bg/intro_bg.h"
+#include "intro_bg.h"
 #include "data/bg/ending_thanks.h"
 #include "data/sprite/ending_sprites1.h"
 #include "data/sprite/ending_sprites2.h"

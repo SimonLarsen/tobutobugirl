@@ -1,3 +1,4 @@
 *.o
 data/sounds/*.h
 data/songs/*.asm
+*.swp

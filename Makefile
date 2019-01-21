@@ -27,7 +27,7 @@ OBJ_BANK5=
 OBJ_BANK6=
 OBJ_BANK7=winscreen.o game_backgrounds.o
 OBJ_BANK8=cloud_animations.o title.o
-OBJ_BANK9=logos.o win_backgrounds.o
+OBJ_BANK9=logos.o win1.o win2.o win3.o win4.o
 OBJ_BANK10=sound_data.o
 
 OBJ_ASM=title_song.o mainmenu_song.o score_tally_song.o highscore_song.o plains_song.o \
@@ -47,13 +47,16 @@ $(OBJ_BANK9): CFLAGS+=-Wf-bo9
 $(OBJ_BANK10): CFLAGS+=-Wf-bo10
 $(OBJ_BANK11): CFLAGS+=-Wf-bo11
 
-arrow.o: arrow.c data/sprite/arrow.h
+arrow.o: arrow.c arrow.h
 	$(compile-source)
 
-characters.o: characters.c data/sprite/characters.h
+catface.o: catface.c catface.h
 	$(compile-source)
 
-circles.o: circles.c data/bg/circles.h
+characters.o: characters.c characters.h
+	$(compile-source)
+
+circles.o: circles.c circles.h
 	$(compile-source)
 
 cloud_animations.o: cloud_animations.c cloud_animations.h data/sprite/pause_cloud1.h data/sprite/pause_cloud2.h
@@ -62,15 +65,23 @@ cloud_animations.o: cloud_animations.c cloud_animations.h data/sprite/pause_clou
 cos.o: cos.c cos.h
 	$(compile-source)
 
-ending.o: ending.c defines.h ending.h gamestate.h fade.h data/bg/intro_bg.h data/bg/ending_thanks.h \
+ending.o: ending.c defines.h ending.h gamestate.h fade.h intro_bg.h data/bg/ending_thanks.h \
 	data/sprite/ending_sprites1.h data/sprite/ending_sprites2.h mmlgb/driver/music.h
 	$(compile-source)
 
 fade.o: fade.c sound.h fade.h
 	$(compile-source)
 
-game_backgrounds.o: game_backgrounds.c game_backgrounds.h data/bg/background1.h \
-	data/bg/background2.h data/bg/background3.h data/bg/background4.h data/bg/pause_bg.h
+background1.o: background1.c background1.h
+	$(compile-source)
+
+background2.o: background2.c background2.h
+	$(compile-source)
+
+background3.o: background3.c background3.h
+	$(compile-source)
+
+background4.o: background4.c background4.h
 	$(compile-source)
 
 game.o: game.c defines.h game.h fade.h gamestate.h cos.h ram.h highscore.h sound.h \
@@ -78,22 +89,24 @@ game.o: game.c defines.h game.h fade.h gamestate.h cos.h ram.h highscore.h sound
 	data/sprite/portal.h data/sprite/skin1.h data/sprite/skin2.h
 	$(compile-source)
 
-gamestate.o: gamestate.c defines.h gamestate.h game_backgrounds.h win_backgrounds.h cloud_animations.h mmlgb/driver/music.h
+gamestate.o: gamestate.c defines.h gamestate.h win1.h win2.h win3.h win4.h \
+	background1.h background2.h background3.h background4.h \
+	cloud_animations.h mmlgb/driver/music.h
 	$(compile-source)
 
 highscore.o: highscore.c defines.h gamestate.h fade.h cos.h highscore.h ram.h sound.h \
-	data/sprite/characters.h data/sprite/arrow.h data/sprite/empty.h data/bg/circles.h \
-	data/bg/highscore.h data/bg/selection1.h data/bg/selection2.h data/bg/selection3.h data/bg/selection4.h data/bg/selection_locked.h
+	characters.h arrow.h data/sprite/empty.h circles.h catface.h \
+	data/bg/highscore.h selection1.h selection2.h selection3.h selection4.h selection_locked.h
+	${compile-source}
+
+intro_bg.o: intro_bg.c intro_bg.h
 	$(compile-source)
 
-intro_bg.o: intro_bg.c data/bg/intro_bg.h
-	$(compile-source)
-
-intro.o: intro.c defines.h fade.h gamestate.h intro.h data/bg/intro_bg.h data/sprite/intro_sprites.h data/sprite/intro_flash.h
+intro.o: intro.c defines.h fade.h gamestate.h intro.h intro_bg.h data/sprite/intro_sprites.h data/sprite/intro_flash.h
 	$(compile-source)
 
 jukebox.o: jukebox.c defines.h jukebox.h fade.h gamestate.h cos.h sound.h mmlgb/driver/music.h \
-	data/bg/jukebox.h data/sprite/digital.h data/sprite/arrow.h data/sprite/notes.h data/sprite/bobblehead.h
+	data/bg/jukebox.h data/sprite/digital.h arrow.h data/sprite/notes.h data/sprite/bobblehead.h
 	$(compile-source)
 
 logos.o: logos.c defines.h gamestate.h logos.h fade.h sound.h mmlgb/driver/music.h data/bg/tangram.h data/bg/potato.h data/sprite/shine.h
@@ -104,37 +117,38 @@ main.o: main.c gamestate.h main.h ram.h sound.h mmlgb/driver/music.h logos.h int
 	$(compile-source)
 
 minigamescore.o: minigamescore.c defines.h fade.h gamestate.h sound.h ram.h \
-	data/sprite/characters.h data/bg/minigame_score_bg.h data/bg/zoom_circles.h
+	characters.h data/bg/minigame_score_bg.h zoom_circles.h
 	$(compile-source)
 
-pause.o: pause.c defines.h gamestate.h fade.h sound.h ram.h mmlgb/driver/music.h data/sprite/characters.h
+pause.o: pause.c defines.h gamestate.h fade.h sound.h ram.h mmlgb/driver/music.h characters.h
 	$(compile-source)
 
-select.o: select.c defines.h select.h fade.h gamestate.h cos.h ram.h sound.h mmlgb/driver/music.h \
-	data/sprite/characters.h data/sprite/arrow.h data/sprite/togglecat.h data/bg/circles.h \
-	data/bg/catface.h data/bg/select.h data/bg/selection1.h data/bg/selection2.h data/bg/selection3.h \
-	data/bg/selection4.h data/bg/selection_highscore.h data/bg/selection_jukebox.h data/bg/selection_locked.h
+select.o: select.c defines.h select.h fade.h gamestate.h cos.h ram.h sound.h \
+	mmlgb/driver/music.h characters.h arrow.h data/sprite/togglecat.h \
+	circles.h data/bg/catface.h data/bg/select.h \
+	selection1.h selection2.h selection3.h selection4.h selection_highscore.h \
+	selection_jukebox.h selection_locked.h
+	${compile-source}
+
+selection1.o: selection1.c selection1.h
 	$(compile-source)
 
-selection1.o: selection1.c data/bg/selection1.h
+selection2.o: selection2.c selection2.h
 	$(compile-source)
 
-selection2.o: selection2.c data/bg/selection2.h
+selection3.o: selection3.c selection3.h
 	$(compile-source)
 
-selection3.o: selection3.c data/bg/selection3.h
+selection4.o: selection4.c selection4.h
 	$(compile-source)
 
-selection4.o: selection4.c data/bg/selection4.h
+selection_highscore.o: selection_highscore.c selection_highscore.h
 	$(compile-source)
 
-selection_highscore.o: selection_highscore.c data/bg/selection_highscore.h
+selection_jukebox.o: selection_jukebox.c selection_jukebox.h
 	$(compile-source)
 
-selection_jukebox.o: selection_jukebox.c data/bg/selection_jukebox.h
-	$(compile-source)
-
-selection_locked.o: selection_locked.c data/bg/selection_locked.h
+selection_locked.o: selection_locked.c selection_locked.h
 	$(compile-source)
 
 sound.o: sound.c sound.h gamestate.h mmlgb/driver/music.h mmlgb/driver/notes.h mmlgb/driver/freq.h mmlgb/driver/noisefreq.h mmlgb/driver/vib.h
@@ -150,27 +164,36 @@ sound_data.o: sound_data.c data/sounds/sfx_bump.h data/sounds/sfx_bump_alien.h \
 	$(compile-source)
 
 title.o: title.c defines.h title.h fade.h gamestate.h sound.h ram.h data/bg/titlescreen.h \
-	data/bg/titlescreen_bg.h data/sprite/characters.h data/sprite/title_cat.h
+	data/bg/titlescreen_bg.h characters.h data/sprite/title_cat.h
 	$(compile-source)
 
-unlocked.o: unlocked.c defines.h unlocked.h fade.h gamestate.h data/sprite/characters.h \
-	data/bg/zoom_circles.h data/bg/unlocked.h data/bg/selection2.h data/bg/selection3.h \
-	data/bg/selection4.h data/bg/selection_jukebox.h
+unlocked.o: unlocked.c defines.h unlocked.h fade.h gamestate.h characters.h \
+	zoom_circles.h data/bg/unlocked.h selection2.h selection3.h \
+	selection4.h selection_jukebox.h
 	$(compile-source)
 
-win_backgrounds.o: win_backgrounds.c win_backgrounds.h data/bg/win1.h data/bg/win2.h data/bg/win3.h data/bg/win4.h
+win1.o: win1.c win1.h
 	$(compile-source)
 
-winscreen.o: winscreen.c defines.h gamestate.h fade.h winscreen.h sound.h data/bg/circles.h \
-	data/sprite/characters.h data/bg/win_base.h data/bg/rank_banner.h data/sprite/ranks.h \
+win2.o: win2.c win2.h
+	$(compile-source)
+
+win3.o: win3.c win3.h
+	$(compile-source)
+
+win4.o: win4.c win4.h
+	$(compile-source)
+
+winscreen.o: winscreen.c defines.h gamestate.h fade.h winscreen.h sound.h circles.h \
+	characters.h data/bg/win_base.h data/bg/rank_banner.h data/sprite/ranks.h \
 	mmlgb/driver/music.h mmlgb/driver/notes.h mmlgb/driver/freq.h
 	$(compile-source)
 
-wipe.o: wipe.c main.h wipe.h defines.h fade.h gamestate.h sound.h data/bg/circles.h \
+wipe.o: wipe.c main.h wipe.h defines.h fade.h gamestate.h sound.h circles.h \
 	data/bg/wipe.h data/sprite/wipe_marker.h
 	$(compile-source)
 
-zoom_circles.o: zoom_circles.c data/bg/zoom_circles.h
+zoom_circles.o: zoom_circles.c zoom_circles.h
 	$(compile-source)
 
 ram.o: ram.c
