@@ -1,12 +1,17 @@
 #include <gb/gb.h>
 #include "defines.h"
 #include "gamestate.h"
-#include "game_backgrounds.h"
+#include "background1.h"
+#include "background2.h"
+#include "background3.h"
+#include "background4.h"
+#include "data/bg/pause_bg.h"
 #include "win1.h"
 #include "win2.h"
 #include "win3.h"
 #include "win4.h"
-#include "cloud_animations.h"
+#include "pause_cloud1.h"
+#include "pause_cloud2.h"
 #include "mmlgb/driver/music.h"
 
 UBYTE vbl_count;
@@ -145,24 +150,24 @@ void setIngameBackground(UBYTE level) {
 
 	switch(level) {
 		case 1U:
-			set_bkg_data_rle(background1_offset, background1_data_length, background1_data);
+			set_bkg_data_rle(background1_tiles_offset, background1_data_length, background1_data);
 			set_bkg_tiles_rle(0U, 0U, background1_tiles_width, background1_tiles_height, background1_tiles);
 			break;
 		case 2U:
-			set_bkg_data_rle(background2_offset, background2_data_length, background2_data);
+			set_bkg_data_rle(background2_tiles_offset, background2_data_length, background2_data);
 			set_bkg_tiles_rle(0U, 0U, background2_tiles_width, background2_tiles_height, background2_tiles);
 			break;
 		case 3U:
-			set_bkg_data_rle(background3_offset, background3_data_length, background3_data);
+			set_bkg_data_rle(background3_tiles_offset, background3_data_length, background3_data);
 			set_bkg_tiles_rle(0U, 0U, background3_tiles_width, background3_tiles_height, background3_tiles);
 			break;
 		case 4U:
-			set_bkg_data_rle(background4_offset, background4_data_length, background4_data);
+			set_bkg_data_rle(background4_tiles_offset, background4_data_length, background4_data);
 			set_bkg_tiles_rle(0U, 0U, background4_tiles_width, background4_tiles_height, background4_tiles);
 			break;
 
 		case 255U: // pause menu
-			set_bkg_data_rle(pause_bg_offset, pause_bg_data_length, pause_bg_data);
+			set_bkg_data_rle(pause_bg_tiles_offset, pause_bg_data_length, pause_bg_data);
 			set_bkg_tiles_rle(0U, 0U, pause_bg_tiles_width, pause_bg_tiles_height, pause_bg_tiles);
 			break;
 	}
