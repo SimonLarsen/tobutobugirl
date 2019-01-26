@@ -298,9 +298,7 @@ void updatePlayer() {
 				updateHUDTime();
 				playSound(SFX_TIME_PICKUP);
 			// End level portal
-			} else if(type == E_PORTAL
-			&& (player_y - entity_y[i] + 12U) <= 24U
-			&& (player_x - entity_x[i] + 12U) <= 24U) {
+			} else if(type == E_PORTAL) {
 				scene_state = INGAME_COMPLETED;
 				player_x = entity_x[i];
 				player_y = entity_y[i];
